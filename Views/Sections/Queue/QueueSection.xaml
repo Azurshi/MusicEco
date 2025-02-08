@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MusicEco.ViewModels.Sections"
+             xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+             x:Class="MusicEco.Views.Sections.QueueSection">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="TemplateWrapper.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.BindingContext>
+        <vm:QueueSection/>
+    </ContentView.BindingContext>
+    <Grid ColumnDefinitions="*"
+          RowDefinitions="*, 2, 15*">
+        <Grid Grid.Row="0"
+              ColumnDefinitions="*"
+              RowDefinitions="*"
+              BackgroundColor="{StaticResource BCBlack}">
+            <Entry x:Name="SearchField" 
+                   Grid.Row="0" 
+                   Grid.Column="0" 
+                   Placeholder="Search"
+                   IsVisible="True"
+                   BackgroundColor="Transparent"
+                   TextChanged="SearchField_TextChanged"/>
+            <Button x:Name="BackButton"
+                    Grid.Row="1" 
+                    Grid.Column="0"
+                    Clicked="BackButton_Clicked"
+                    Text="Back" 
+                    IsVisible="False"
+                    BackgroundColor="Transparent"/>
+        </Grid>
+        <BoxView Grid.Row="1"
+                 BackgroundColor="{StaticResource BorderColor}"/>
+        <w:DataList x:Name="OverviewList"
+                    Grid.Row="2"
+                    ItemsSource="{Binding OverviewData}"
+                    ItemTemplate="{StaticResource QueueOverviewSlotTemplate}"
+                    SlotSelected="OverviewList_SlotSelected"
+                    LoadMoreItemRequest="OverviewList_LoadMoreItemRequest"/>
+        <w:DataList x:Name="DetailList"
+                    Grid.Row="2"
+                    ItemsSource="{Binding DetailData}"
+                    ItemTemplate="{StaticResource QueueDetailSlotTemplate}"
+                    IsVisible="False"
+                    SlotSelected="DetailList_SlotSelected"
+                    LoadMoreItemRequest="DetailList_LoadMoreItemRequest"/>
+    </Grid>
+</ContentView>

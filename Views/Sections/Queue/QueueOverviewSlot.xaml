@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+             xmlns:vm="clr-namespace:MusicEco.ViewModels.Slots"
+             x:Class="MusicEco.Views.Sections.Queue.QueueOverviewSlot"
+             x:DataType="vm:PlaylistSlot">
+    <ContentView.Resources>
+        <DataTemplate x:Key="QueueOverviewOptionTemplate">
+            <StackLayout Orientation="Vertical">
+                <w:LabelButton Text="Rename"
+                               BackgroundColor="{StaticResource SlotBackground}"
+                               Entered="OnEntered"
+                               Exited="OnExited"
+                               Clicked="RenameOption_Clicked"/>
+                <w:LabelButton Text="Delete"
+                               BackgroundColor="{StaticResource SlotBackground}"
+                               Entered="OnEntered"
+                               Exited="OnExited"
+                               Clicked="DeleteOption_Clicked"/>
+            </StackLayout>
+        </DataTemplate>
+    </ContentView.Resources>
+    <Grid ColumnDefinitions="7*, 1, *"
+                      RowDefinitions="*"
+                      HeightRequest="{Binding SlotHeight}"
+                      BackgroundColor="{StaticResource SlotBackground}">
+        <w:LabelButton x:Name="TitleButton"
+                       Grid.Column="0"
+                       Text="{Binding Title}"
+                       Clicked="Title_Clicked"
+                       Entered="OnLabelEntered"
+                       Exited="OnLabelExited"/>
+        <Entry x:Name="TitleInput"
+               Grid.Column="0"
+               IsVisible="False"/>
+        <BoxView Grid.Column="1"
+                 BackgroundColor="{StaticResource SlotBorder}"/>
+        <w:ConfirmButton x:Name="DialogButton"
+                         Grid.Column="2"
+                         ConfirmClicked="DialogButton_ConfirmClicked"
+                         CancelClicked="DialogButton_CancelClicked"
+                         IsVisible="False"/>
+        <w:LabelButton x:Name="OptionButton"
+                       Text=":"
+                       Grid.Column="2"
+                       TextAlign="Center"
+                       Clicked="Option_Clicked"
+                       Entered="OnLabelEntered"
+                       Exited="OnLabelExited"/>
+    </Grid>
+</ContentView>

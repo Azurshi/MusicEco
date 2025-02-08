@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+             xmlns:vm="clr-namespace:MusicEco.ViewModels.Sections"
+             x:Class="MusicEco.Views.Sections.SearchSection">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="TemplateWrapper.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.BindingContext>
+        <vm:SearchSection/>
+    </ContentView.BindingContext>
+    <Grid ColumnDefinitions="*"
+          RowDefinitions="*, 1, 15*">
+        <Entry x:Name="SearchField"
+               Grid.Row="0"
+               Placeholder="Search"
+               TextChanged="SearchField_TextChanged"
+               BackgroundColor="{StaticResource BCDark}"/>
+        <BoxView Grid.Row="1"
+                 BackgroundColor="{StaticResource BorderColor}"/>
+        <w:DataList x:Name="ContentList"
+                    Grid.Row="2"
+                    ItemsSource="{Binding Data}"
+                    ItemTemplate="{StaticResource SearchSlotTemplate}"
+                    SlotSelected="ContentList_SlotSelected"
+                    LoadMoreItemRequest="ContentList_LoadMoreItemRequest"/>
+    </Grid>
+</ContentView>

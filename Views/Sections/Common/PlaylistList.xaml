@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+             xmlns:vm="clr-namespace:MusicEco.ViewModels.Misc"
+             x:Class="MusicEco.Views.Sections.Common.PlaylistList">
+    <ContentView.BindingContext>
+        <vm:PlaylistList/>
+    </ContentView.BindingContext>
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="PlaylistListSlotTemplate">
+                <Border StrokeThickness="1"
+                        BackgroundColor="{StaticResource BorderColorLight}"
+                        HeightRequest="{Binding SlotHeight}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8"/>
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="*"
+                          RowDefinitions="1*"
+                          BackgroundColor="{StaticResource SlotBackground}">
+                        <w:LabelButton Text="{Binding Title}"
+                                       Grid.Row="0"
+                                       Clicked="OnLabelClicked"
+                                       Entered="OnEntered"
+                                       Exited="OnExited"
+                                       BackgroundColor="{StaticResource BCBlack}"/>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <w:DataList x:Name="ContentList"
+                ItemsSource="{Binding Data}"
+                ItemTemplate="{StaticResource PlaylistListSlotTemplate}"
+                LoadMoreItemRequest="ContentList_LoadMoreItemRequest"/>
+</ContentView>
