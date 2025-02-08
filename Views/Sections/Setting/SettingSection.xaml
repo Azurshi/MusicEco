@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MusicEco.ViewModels.Sections"
+             x:Class="MusicEco.Views.Sections.SettingSection">
+    <ContentView.BindingContext>
+        <vm:SettingSection/>
+    </ContentView.BindingContext>
+    <Grid ColumnDefinitions="*"
+          RowDefinitions="*">
+        <ScrollView x:Name="AppSettingView">
+            <StackLayout>
+                <Button x:Name="FileScanButton"
+                        Text="Scan file"
+                        HeightRequest="{Binding SlotHeight}"
+                        Clicked="FileScanButton_Clicked"/>
+                <Button x:Name="PluginSettingButton"
+                        Text="Plugin Setting"
+                        HeightRequest="{Binding SlotHeight}"
+                        Clicked="PluginSettingButton_Clicked"/>
+                <Button x:Name="DeleteUserDataButton"
+                        Text="Delete user data"
+                        HeightRequest="{Binding SlotHeight}"
+                        Clicked="DeleteUserDataButton_Clicked"/>
+                <Button x:Name="DeveloperSectionButton"
+                        Text="Developer"
+                        HeightRequest="{Binding SlotHeight}"
+                        Clicked="DeveloperSectionButton_Clicked"/>
+            </StackLayout>
+        </ScrollView>
+        <ScrollView x:Name="DeveloperView"
+                    IsVisible="False">
+            <StackLayout x:Name="DeveloperHolder">
+                <Button x:Name="DeveloperBackButton"
+                        Text="Back"
+                        HeightRequest="{Binding SlotHeight}"
+                        Clicked="DeveloperBackButton_Clicked"/>
+                <Button x:Name="Button_1"
+                        Text="Button 1"
+                        HeightRequest="{Binding SlotHeight}"
+                        Clicked="Button_1_Clicked"/>
+                <Button x:Name="Button_2"
+                        Text="Button 2"
+                        HeightRequest="{Binding SlotHeight}"
+                        Clicked="Button_2_Clicked"/>
+                <Button x:Name="Button_3"
+                        Text="Button 3"
+                        HeightRequest="{Binding SlotHeight}"
+                        Clicked="Button_3_Clicked"/>
+                <Button x:Name="Button_4"
+                        Text="Button 4"
+                        HeightRequest="{Binding SlotHeight}"
+                        Clicked="Button_4_Clicked"/>
+                <Button x:Name="Button_5"
+                        Text="Button 5"
+                        HeightRequest="{Binding SlotHeight}"
+                        Clicked="Button_5_Clicked"/>
+            </StackLayout>
+        </ScrollView>
+        <ScrollView x:Name="PluginListView"
+                    IsVisible="False">
+            <StackLayout x:Name="PluginHolder">
+                <Button x:Name="PluginBackButton"
+                        Text="Back"
+                        HeightRequest="{Binding SlotHeight}"
+                        Clicked="PluginBackButton_Clicked"/>
+            </StackLayout>
+        </ScrollView>
+        <ScrollView x:Name="PluginSettingView"
+                    IsVisible="False">
+            <StackLayout x:Name="PluginSettingHolder">
+                <Grid ColumnDefinitions="*, *"
+                      RowDefinitions="*"
+                      HeightRequest="{Binding SlotHeight}">
+                    <Button x:Name="PluginSettingApplyButton"
+                            Grid.Column="0"
+                            Text="Apply" 
+                            Clicked="PluginSettingApplyButton_Clicked"/>
+                    <Button x:Name="PluginSettingCancelButton"
+                            Grid.Column="1"
+                            Text="Cancel"
+                            Clicked="PluginSettingCancelButton_Clicked"/>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentView>

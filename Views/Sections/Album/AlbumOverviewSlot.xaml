@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+             xmlns:vm="clr-namespace:MusicEco.ViewModels.Slots"
+             x:Class="MusicEco.Views.Sections.Album.AlbumOverviewSlot"
+             x:DataType="vm:AlbumOverviewSlot">
+    <Border StrokeThickness="1"
+            BackgroundColor="{StaticResource BorderColorLight}"
+            HeightRequest="{Binding SlotHeight}">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="8"/>
+        </Border.StrokeShape>
+        <Grid ColumnDefinitions="*"
+              RowDefinitions="7*, 1, 1*"
+              BackgroundColor="{StaticResource SlotBackground}">
+            <Image Source="{Binding Icon}"
+                   Grid.Row="0"/>
+            <BoxView Grid.Row="1"
+                     BackgroundColor="{StaticResource BorderColor}"/>
+            <w:LabelButton Text="{Binding Title}"
+                           Grid.Row="2"
+                           Clicked="Title_Clicked"
+                           Entered="OnLabelEntered"
+                           Exited="OnLabelExited"
+                           BackgroundColor="{StaticResource BCBlack}"/>
+        </Grid>
+    </Border>
+</ContentView>

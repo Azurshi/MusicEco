@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="MusicEco.Themes.Style">
+
+    <Color x:Key="PrimaryColor">Red</Color>
+    <Color x:Key="AccentColor">Blue</Color>
+    <Color x:Key="TextColorWhite">White</Color>
+    <Color x:Key="BCBright">#888888</Color>
+    <Color x:Key="BCLight">#555555</Color>
+    <Color x:Key="BCNormal">#404040</Color>
+    <Color x:Key="BCDark">#303030</Color>
+    <Color x:Key="BCBlack">#202020</Color>
+    <Color x:Key="BorderColor">#999999</Color>
+    <Color x:Key="BorderColorDark">#777777</Color>
+    <Color x:Key="BorderColorLight">#bbbbbb</Color>
+    <Color x:Key="TextPlaceholder">#aaaaaa</Color>
+    <Color x:Key="TextColor">#dddddd</Color>
+
+    <Color x:Key="SlotBackground">#303030</Color>
+    <Color x:Key="SlotBorder">#999999</Color>
+    <Color x:Key="SlotText">#eeeeee</Color>
+    <Color x:Key="ListBackground">#555555</Color>
+    <Color x:Key="MiniMenuBackground">#444444</Color>
+    <Color x:Key="MiniMenuSlotBackground">#303030</Color>
+
+    <Color x:Key="ProgressUnderColor">#777777</Color>
+    <Color x:Key="ProgressOverColor">#111111</Color>
+    <Color x:Key="InfoContentText">#cccccc</Color>
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource TextColor}"></Setter>
+        <Setter Property="BackgroundColor" Value="{StaticResource BCBlack}"></Setter>
+        <Setter Property="FontSize" Value="18"></Setter>
+    </Style>
+    <Style TargetType="StackLayout">
+        <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+    </Style>
+    <Style TargetType="Button">
+        <Setter Property="TextColor" Value="{StaticResource TextColor}"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource BCDark}"/>
+    </Style>
+    <Style TargetType="Image">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+    </Style>
+    <Style TargetType="Entry">
+        <Setter Property="TextColor" Value="{StaticResource TextColor}"/>
+        <Setter Property="PlaceholderColor" Value="{StaticResource TextPlaceholder}"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource BCDark}"/>
+    </Style>
+
+</ResourceDictionary>
