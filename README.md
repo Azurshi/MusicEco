@@ -73,4 +73,4 @@ MusicEco is lincensed under the **GNU GPL v3.0**. See the [Lincense](./LINCENSE)
 - Developed solely by [Azurshi](https://github.com/Azurshi) with [Anh39](https://github.com/Anh39) as school account.
 - Special thanks to open-source community and libraries.
 ## Notice
-Contact [me](vda3904@gmail.com) if you need any preview images removed due to copyright violation.
+Contact me at vdanh3904@gmail.com if you need any preview images removed due to copyright violation.
