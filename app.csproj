@@ -1,0 +1,6 @@
+<ItemGroup>
+    <ProjectReference Include="..\AudioPlyer\AudioPlyer.csproj">
+    <ProjectReference Include="..\DataStorage\DataStorage.csproj">
+    <ProjectReference Include="..\AudioPlayer\AudioPlayer.csproj">
+    <ProjectReference Include="..\MusicEco\MusicEco.csproj">
+</ItemGroup>
