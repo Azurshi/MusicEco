@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{7E62CB81-FAA4-4C8F-A824-ACFCA995399F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStorage", "DataStorage\DataStorage.csproj", "{A75FDC9F-195B-458B-8953-38D700970948}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioPlayer", "AudioPlayer\AudioPlayer.csproj", "{33A2EE08-1AF7-44D4-8700-0BF24CB444FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicEco", "MusicEco\MusicEco.csproj", "{786B66D9-407D-46B6-B49E-658C80170883}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7E62CB81-FAA4-4C8F-A824-ACFCA995399F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E62CB81-FAA4-4C8F-A824-ACFCA995399F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E62CB81-FAA4-4C8F-A824-ACFCA995399F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E62CB81-FAA4-4C8F-A824-ACFCA995399F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A75FDC9F-195B-458B-8953-38D700970948}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A75FDC9F-195B-458B-8953-38D700970948}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A75FDC9F-195B-458B-8953-38D700970948}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A75FDC9F-195B-458B-8953-38D700970948}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33A2EE08-1AF7-44D4-8700-0BF24CB444FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33A2EE08-1AF7-44D4-8700-0BF24CB444FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33A2EE08-1AF7-44D4-8700-0BF24CB444FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33A2EE08-1AF7-44D4-8700-0BF24CB444FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{786B66D9-407D-46B6-B49E-658C80170883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{786B66D9-407D-46B6-B49E-658C80170883}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{786B66D9-407D-46B6-B49E-658C80170883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{786B66D9-407D-46B6-B49E-658C80170883}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
