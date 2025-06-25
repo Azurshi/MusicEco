@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Label xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:vm="clr-namespace:MusicEco.ViewModels.Items"
+       x:Class="MusicEco.Views.Buttons.BaseButton"
+       x:DataType="vm:BaseItem"
+       CommandParameter="{Binding Key}"
+       HorizontalOptions="Fill"
+       VerticalOptions="Fill"
+       HorizontalTextAlignment="Center"
+       VerticalTextAlignment="Center"
+       BackgroundColor="{StaticResource OptionBackground}"
+       HeightRequest="{StaticResource OptionSize}">
+    <Label.GestureRecognizers>
+        <TapGestureRecognizer Tapped="OnClicked"/>
+        <PointerGestureRecognizer PointerEntered="OnEntered"
+                                  PointerExited="OnExited"/>
+    </Label.GestureRecognizers>
+</Label>

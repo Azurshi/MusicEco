@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Border xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="MusicEco.Views.Edit.ButtonField">
+    <StackLayout Orientation="Horizontal">
+        <Label x:Name="InnerLabel"
+               Style="{StaticResource ItemTextStyle}">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnLabelClicked"/>
+            </Label.GestureRecognizers>
+        </Label>
+        <Entry x:Name="EditField"
+               Style="{StaticResource ItemEntryStyle}"
+               IsVisible="False"/>
+    </StackLayout>
+</Border>

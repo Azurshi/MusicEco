@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:b="clr-namespace:MusicEco.Views.Buttons"
+                xmlns:c="clr-namespace:MusicEco.Views.Components"
+                xmlns:d="clr-namespace:MusicEco.Views.Decorators"
+                xmlns:e="clr-namespace:MusicEco.Views.Edit"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+                xmlns:vm="clr-namespace:MusicEco.ViewModels.Pages"
+                xmlns:item_vm="clr-namespace:MusicEco.ViewModels.Items"
+                xmlns:local="clr-namespace:MusicEco.Views.Pages"
+                x:Class="MusicEco.Views.Pages.PlaylistPage"
+                x:DataType="vm:PlaylistPageModel"
+                Title="PlaylistPage">
+    <local:BasePage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="OptionMenuTemplate"
+                          x:DataType="item_vm:PlaylistItemModel">
+                <c:OptionMenu>
+                    <c:OptionMenu.MainContent>
+                        <StackLayout Orientation="Vertical">
+                            <b:EditButton GetPageEventHandler="GetPageEventHandler"/>
+                            <b:DeleteButton Command="{Binding PlaylistDeleteCommand, Source={RelativeSource AncestorType={x:Type vm:PlaylistPageModel}}}"
+                                            GetPageEventHandler="GetPageEventHandler"/>
+                        </StackLayout>
+                    </c:OptionMenu.MainContent>
+                </c:OptionMenu>
+            </DataTemplate>
+        </ResourceDictionary>
+    </local:BasePage.Resources>
+    <local:BasePage.MainContent>
+        <Grid RowDefinitions="*, Auto"
+              ColumnDefinitions="*">
+            <w:DataList Grid.Row="0" Grid.Column="0"
+                        ItemsSource="{Binding Data}"
+                        PreloadAmount="{Binding ListPreload, Source={StaticResource AppSetting}}"
+                        LoadMoreItemCommand="{Binding LoadMoreItemCommand}">
+                <w:DataList.ItemTemplate>
+                    <DataTemplate x:DataType="item_vm:PlaylistItemModel">
+                        <w:ItemFrame>
+                            <Grid ColumnDefinitions="*, Auto"
+                                  RowDefinitions="*">
+                                <e:ButtonField Grid.Row="0" Grid.Column="0"
+                                               Mode="{Binding Mode}"
+                                               Text="{Binding Title}"
+                                               Command="{Binding PlaylistSelectCommand, Source={RelativeSource AncestorType={x:Type vm:PlaylistPageModel}}}"
+                                               CommandParameter="{Binding Key}"/>
+                                <w:OptionButton Grid.Row="0" Grid.Column="1"
+                                                Clicked="OptionMenu_Clicked"
+                                                IsVisible="{Binding IsViewing}"/>
+                                <w:ConfirmButton Grid.Row="0" Grid.Column="1"
+                                                 WidthRequest="{DynamicResource BigListItemSize}"
+                                                 ConfirmCommand="{Binding ConfirmEditCommand}"
+                                                 CancelCommand="{Binding CancelEditCommand}"
+                                                 IsVisible="{Binding IsEditing}"/>
+                            </Grid>
+                        </w:ItemFrame>
+                    </DataTemplate>
+                </w:DataList.ItemTemplate>
+            </w:DataList>
+            <w:BorderTextButton Grid.Row="1" Grid.Column="0"
+                                Text="+ New playlist"
+                                TextAlign="Center"
+                                Command="{Binding AddPlaylistCommand}"
+                                BackgroundColor="{DynamicResource ItemBackground}"
+                                HeightRequest="{DynamicResource ItemSize}"/>
+        </Grid>
+    </local:BasePage.MainContent>
+</local:BasePage>

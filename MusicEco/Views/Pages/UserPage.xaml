@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:c="clr-namespace:MusicEco.Views.Components"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+                xmlns:local="clr-namespace:MusicEco.Views.Pages"
+                xmlns:vm="clr-namespace:MusicEco.ViewModels.Pages"
+                x:Class="MusicEco.Views.Pages.UserPage"
+                x:DataType="vm:UserPageModel"
+                Title="UserPage">
+    <local:BasePage.MainContent>
+        <c:UserPreview/>
+    </local:BasePage.MainContent>
+</local:BasePage>

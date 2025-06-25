@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:c="clr-namespace:MusicEco.Views.Components"
+             x:Class="MusicEco.Views.Pages.BasePage"
+             Title="BasePage">
+    <Grid RowDefinitions="{OnPlatform WinUI='9*, *', Android='14*, *, *'}"
+          ColumnDefinitions="{OnPlatform WinUI='*, 15*', Android='*'}">
+        <c:NavigationBar x:Name="PageNavigationBar"
+                         Grid.Row="{OnPlatform WinUI='0', Android='2'}" Grid.Column="0"/>
+        <ContentPresenter x:Name="MainContentPresenter"
+                          Grid.Row="0" Grid.Column="{OnPlatform WinUI='1', Android='0'}"
+                          BackgroundColor="{DynamicResource ContainerBackground}"/>
+        <c:ControlBar x:Name="PageControlBar" x:FieldModifier="Protected"
+                      Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="{OnPlatform WinUI='2', Android='1'}"/>
+        <c:Overlay x:Name="PageOverlay" x:FieldModifier="Protected"
+                   Grid.Row="0" Grid.Column="0" 
+                   Grid.RowSpan="{OnPlatform WinUI='2', Android='3'}" Grid.ColumnSpan="{OnPlatform WinUI='2', Android='1'}"
+                   IsVisible="False"/>
+    </Grid>
+</ContentPage>

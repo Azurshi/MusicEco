@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Border xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:d="clr-namespace:MusicEco.Views.Decorators"
+        x:Class="MusicEco.Views.Widgets.ConfirmButton"
+        Stroke="{DynamicResource NormalBorder}">
+    <Border.StrokeShape>
+        <RoundRectangle StrokeThickness="{DynamicResource BorderSize}"
+                        CornerRadius="{DynamicResource BorderRadius}"/>
+    </Border.StrokeShape>
+    <Grid RowDefinitions="*"
+          ColumnDefinitions="*, Auto, *">
+        <Label x:Name="ConfirmLabel"
+               Grid.Row="0" Grid.Column="0"
+               MaxLines="1"
+               LineBreakMode="NoWrap"
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Center"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill"
+               BackgroundColor="Transparent"
+               Text="Confirm">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnConfirm_Clicked"/>
+                <PointerGestureRecognizer PointerEntered="OnConfirm_Entered"
+                                          PointerExited="OnConfirm_Exited"/>
+            </Label.GestureRecognizers>
+        </Label>
+        <d:SVBorder Grid.Row="0" Grid.Column="1"/>
+        <Label x:Name="CancelLabel"
+               Grid.Row="0" Grid.Column="2"
+               MaxLines="1"
+               LineBreakMode="NoWrap"
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Center"
+               HorizontalOptions="FillAndExpand"
+               VerticalOptions="FillAndExpand"
+               BackgroundColor="Transparent"
+               Text="Cancel">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnCancel_Clicked"/>
+                <PointerGestureRecognizer PointerEntered="OnCancel_Entered"
+                                          PointerExited="OnCancel_Exited"/>
+            </Label.GestureRecognizers>
+        </Label>
+    </Grid>
+</Border>

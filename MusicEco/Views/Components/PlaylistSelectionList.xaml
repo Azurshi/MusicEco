@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+             xmlns:vm="clr-namespace:MusicEco.ViewModels.Components"
+             x:Class="MusicEco.Views.Components.PlaylistSelectionList"
+             x:DataType="vm:PlaylistSelectionListModel">
+    <Grid RowDefinitions="Auto, *"
+          ColumnDefinitions="*"
+          BackgroundColor="{DynamicResource ContainerBackground}">
+        <w:SearchBar Grid.Row="0" Grid.Column="0"
+                     Placeholder="Playlist name"/>
+        <w:DataList Grid.Row="1" Grid.Column="0"
+                    ItemsSource="{Binding Data}"
+                    PreloadAmount="{Binding ListPreload, Source={StaticResource AppSetting}}"
+                    LoadMoreItemCommand="{Binding LoadMoreItemCommand}">
+            <w:DataList.ItemTemplate>
+                <DataTemplate>
+                    <Border x:DataType="vm:PlaylistSelectionItemModel">
+                        <Border.StrokeShape>
+                            <RoundRectangle StrokeThickness="{DynamicResource SmallBorderSize}"
+                                            CornerRadius="{DynamicResource SmallBorderRadius}"
+                                            Stroke="{DynamicResource ItemBorder}"/>
+                        </Border.StrokeShape>
+                        <w:AdvancedTextButton HeightRequest="{DynamicResource ListItemSize}"
+                                              IsClickable="{Binding IsEnable}"
+                                              Text="{Binding Title}"
+                                              Command="{Binding ItemSelectCommand, Source={RelativeSource AncestorType={x:Type vm:PlaylistSelectionListModel}}}"
+                                              CommandParameter="{Binding Key}"
+                                              VerticalTextAlignment="Center"
+                                              HorizontalTextAlignment="Center"
+                                              BackgroundColor="{DynamicResource ItemBackground}"/>
+                    </Border>
+                </DataTemplate>
+            </w:DataList.ItemTemplate>
+        </w:DataList>
+    </Grid>
+</ContentView>

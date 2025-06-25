@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+             xmlns:vm="clr-namespace:MusicEco.ViewModels.Components"
+             x:DataType="vm:ControlBarModel"
+             x:Class="MusicEco.Views.Components.ControlBar"
+             BackgroundColor="{DynamicResource MenuBackground}">
+    <Grid RowDefinitions="Auto, *"
+          ColumnDefinitions="*"
+          IsClippedToBounds="False">
+        <w:ProgressSlider Grid.Row="0" Grid.Column="0"
+                       IconRadius="10"
+                       HeightRequest="10"
+                       Orientation="Horizontal"
+                       Percent="{Binding PlayerProgress}"/>
+        <StackLayout x:Name="ButtonContainer"
+                     Grid.Row="1" Grid.Column="0"
+                     Orientation="Horizontal">
+            <w:ImageButton Source="{Binding FavouriteImage}"
+                           Command="{Binding FavouriteChangeCommand}"/>
+            <w:ImageButton x:Name="VolumeButton"
+                           Source="{Binding VolumeImage}"
+                           Command="{Binding VolumeChangeCommand}"
+                           Clicked="VolumeButton_Clicked"/>
+            <w:ImageButton Source="{Binding PreviousImage}"
+                           Command="{Binding PreviousChangeCommand}"
+                           Rotation="180"/>
+            <w:ImageButton Source="{Binding BackwardImage}"
+                           Command="{Binding BackwardChangeCommand}"
+                           Rotation="180"/>
+            <w:ImageButton Source="{Binding PlayImage}"
+                           Command="{Binding PlayChangeCommand}"/>
+            <w:ImageButton Source="{Binding ForwardImage}"
+                           Command="{Binding ForwardChangeCommand}"/>
+            <w:ImageButton Source="{Binding NextImage}"
+                           Command="{Binding NextChangeCommand}"/>
+            <w:ImageButton Source="{Binding RepeatImage}"
+                           Command="{Binding RepeatChangeCommand}"/>
+            <w:ImageButton Source="{Binding ShuffleImage}"
+                           Command="{Binding ShuffleChangeCommand}"/>
+        </StackLayout>
+        <AbsoluteLayout Grid.Row="0" Grid.Column="0"
+                        Grid.RowSpan="2" Grid.ColumnSpan="1"
+                        InputTransparent="True"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill"
+                        CascadeInputTransparent="False"
+                        IsClippedToBounds="False"
+                        IsVisible="False"
+                        x:Name ="VolumeChangerHolder">
+            <w:ProgressSlider x:Name="VolumeChanger"
+                       Rotation="180"
+                       Inverted="True"
+                       HeightRequest="100"
+                       WidthRequest="10"
+                       IconRadius="10"
+                       Orientation="Vertical"
+                       Percent="{Binding PlayerVolume}"/>
+        </AbsoluteLayout>
+    </Grid>
+</ContentView>

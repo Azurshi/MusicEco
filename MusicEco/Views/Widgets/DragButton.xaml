@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Label xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       x:Class="MusicEco.Views.Widgets.DragButton"
+       HorizontalOptions="FillAndExpand"
+       VerticalTextAlignment="Center"
+       HorizontalTextAlignment="Center"
+       BackgroundColor="Transparent"
+       Text="=">
+    <Label.GestureRecognizers>
+        <PointerGestureRecognizer PointerEntered="OnEntered"
+                                  PointerExited="OnExited"/>
+    </Label.GestureRecognizers>
+</Label>

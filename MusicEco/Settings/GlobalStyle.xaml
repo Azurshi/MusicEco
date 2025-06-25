@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:widgets="clr-namespace:MusicEco.Views.Widgets"
+                    x:Class="MusicEco.Settings.GlobalStyle">
+
+    <Color x:Key="ItemBackground">#392669</Color>
+    <Color x:Key="OptionBackground">#493679</Color>
+    <Color x:Key="ContainerBackground">#190649</Color>
+    <Color x:Key="MenuBackground">#291659</Color>
+
+    <Color x:Key="NormalBorder">#A0A0A0</Color>
+    <Color x:Key="HighlightColor">#594689</Color>
+    <Color x:Key="HightlightBoderColor">#8986A9</Color>
+    <Color x:Key="ItemHoverColor">#6966A9</Color>
+    <Color x:Key="HoverColor">#393689</Color>
+    <Color x:Key="ItemText">#F0F0F0</Color>
+    <Color x:Key="InactiveColor">#999999</Color>
+    <Color x:Key="DisabledColor">#555555</Color>
+
+    <Color x:Key="ProgressBackgroundColor">#303055</Color>
+    <Color x:Key="ProgressColor">#090629</Color>
+    <Color x:Key="PlaceholderText">#BBBBBB</Color>
+    <Color x:Key="SeparatorBorder">#CCCCCC</Color>
+    <Color x:Key="InputBacground">#492B69</Color>
+    <Color x:Key="ErrorBackground">#FF4C4C</Color>
+    <Color x:Key="ErrorText">#FFFFFF</Color>
+
+    <x:Double x:Key="TitleFontSize">16</x:Double>
+    <x:Double x:Key="ItemFontSize">14</x:Double>
+    <x:Double x:Key="TinyFontSize">8</x:Double>
+
+    <x:Double x:Key="BorderSize">4</x:Double>
+    <x:Double x:Key="SmallBorderSize">2</x:Double>
+    <x:Double x:Key="BorderRadius">8</x:Double>
+    <x:Double x:Key="AlbumBorderRadius">12</x:Double>
+    <x:Double x:Key="SmallBorderRadus">4</x:Double>
+    <x:Double x:Key="ItemSize">60</x:Double>
+    <x:Double x:Key="OptionSize">40</x:Double>
+    <x:Double x:Key="OptionWidth">150</x:Double>
+    <x:Double x:Key="ListItemSize">50</x:Double>
+    <x:Double x:Key="BigListItemSize">100</x:Double>
+    <x:Double x:Key="SmallListItemSize">25</x:Double>
+    <x:Double x:Key="GridItemSize">200</x:Double>
+    <x:Double x:Key="GridInfoSize">40</x:Double>
+    <x:Double x:Key="SmallGridItemSize">100</x:Double>
+   
+
+    <Style x:Key="TitleTextStyle" TargetType="Label">
+        <Setter Property="VerticalOptions" Value="Fill"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="{DynamicResource TitleFontSize}"/>
+    </Style>
+    <Style x:Key="ItemTextStyle" TargetType="Label">
+        <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
+        <Setter Property="Padding" Value="8, 0, 8, 0"/>
+        <Setter Property="FontSize" Value="{DynamicResource ItemFontSize}"/>
+    </Style>
+    <Style x:Key="ItemEntryStyle" TargetType="Entry">
+        <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
+        <Setter Property="PlaceholderColor" Value="{DynamicResource PlaceholderText}"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="FontSize" Value="{DynamicResource ItemFontSize}"/>
+    </Style>
+</ResourceDictionary>

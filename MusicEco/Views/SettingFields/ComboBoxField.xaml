@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MusicEco.ViewModels.Items"
+             xmlns:local="clr-namespace:MusicEco.Views.SettingFields"
+             HeightRequest="{DynamicResource ListItemSize}"
+             x:Class="MusicEco.Views.SettingFields.ComboBoxField"
+             x:DataType="vm:SettingFieldModel">
+    <w:ItemFrame>
+        <Grid RowDefinitions="*"
+              ColumnDefinitions="*, *">
+            <Label x:Name="Title"
+                   Padding="8"
+                   Text="{Binding Name}"
+                   Grid.Column="0"
+                   BackgroundColor="{DynamicResource ItemBackground}"/>
+            <Picker x:Name="ValuePicker"
+                    ItemsSource="{Binding Domain}"
+                    SelectedItem="{Binding TemporyValue}"
+                    Grid.Column="1"
+                    BackgroundColor="{DynamicResource ItemBackground}"/>
+        </Grid>
+    </w:ItemFrame>
+</ContentView>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BaseDetailPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                      xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+                      xmlns:b="clr-namespace:MusicEco.Views.Buttons"
+                      xmlns:c="clr-namespace:MusicEco.Views.Components"
+                      xmlns:d="clr-namespace:MusicEco.Views.Decorators"
+                      xmlns:local="clr-namespace:MusicEco.Views.DetailPages"
+                      xmlns:vm="clr-namespace:MusicEco.ViewModels.DetailPages"
+                      xmlns:item_vm="clr-namespace:MusicEco.ViewModels.Items"
+                      x:Class="MusicEco.Views.DetailPages.PlaylistDetailPage"
+                      x:DataType="vm:PlaylistDetailPageModel"
+                      Title="PlaylistDetailPage">
+    <local:BaseDetailPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="OptionMenuTemplate"
+                          x:DataType="item_vm:SongItemModel">
+                <c:OptionMenu>
+                    <c:OptionMenu.MainContent>
+                        <StackLayout Orientation="Vertical">
+                            <b:QueueAddButton GetPageEventHandler="GetPageEventHandler"/>
+                            <b:PlaylistAddButton GetPageEventHandler="GetPageEventHandler"/>
+                            <b:FavouriteButton GetPageEventHandler="GetPageEventHandler"/>
+                            <b:DeleteButton Command="{Binding SongRemoveCommand, Source={RelativeSource AncestorType={x:Type vm:PlaylistDetailPageModel}}}"
+                                            GetPageEventHandler="GetPageEventHandler"/>
+                        </StackLayout>
+                    </c:OptionMenu.MainContent>
+                </c:OptionMenu>
+            </DataTemplate>
+        </ResourceDictionary>
+    </local:BaseDetailPage.Resources>
+    <local:BaseDetailPage.MainContent>
+        <w:DataList ItemsSource="{Binding Data}"
+                    PreloadAmount="{Binding ListPreload, Source={StaticResource AppSetting}}"
+                    LoadMoreItemCommand="{Binding LoadMoreItemCommand}">
+            <w:DataList.GestureRecognizers>
+                <DropGestureRecognizer AllowDrop="True"
+                                       Drop="DropGestureRecognizer_Drop"
+                                       DropCommand="{Binding ItemDroppedCommand}"/>
+            </w:DataList.GestureRecognizers>
+            <w:DataList.ItemTemplate>
+                <DataTemplate x:DataType="item_vm:SongItemModel">
+                    <w:ItemFrame>
+                        <w:ItemFrame.GestureRecognizers>
+                            <DragGestureRecognizer DragStarting="DragGestureRecognizer_DragStarting"
+                                                       DragStartingCommand="{Binding ItemDraggedCommand,Source={RelativeSource AncestorType={x:Type vm:PlaylistDetailPageModel}}}"
+                                                       DragStartingCommandParameter="{Binding}"/>
+                            <DropGestureRecognizer DragLeaveCommand="{Binding ItemDragLeaveCommand,Source={RelativeSource AncestorType={x:Type vm:PlaylistDetailPageModel}}}"
+                                                       DragLeaveCommandParameter="{Binding}"
+                                                       DragOverCommand="{Binding ItemDraggedOverCommand,Source={RelativeSource AncestorType={x:Type vm:PlaylistDetailPageModel}}}"
+                                                       DragOverCommandParameter="{Binding}"/>
+                        </w:ItemFrame.GestureRecognizers>
+                        <Grid ColumnDefinitions="Auto, Auto, 6*, Auto"
+                              RowDefinitions="*">
+                            <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="4"
+                                   BackgroundColor="SteelBlue"
+                                   Opacity="0.5"
+                                   IsVisible="{Binding IsDraggedOver}"/>
+                            <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="4"
+                                   BackgroundColor="Gray"
+                                   Opacity="0.5"
+                                   IsVisible="{Binding IsDragged}"/>
+                            <w:DragButton Grid.Row="0" Grid.Column="0"
+                                          WidthRequest="{DynamicResource ListItemSize}"/>
+                            <w:ImageFrame Grid.Row="0" Grid.Column="1"
+                                          Source="{Binding Icon}"
+                                          WidthRequest="{DynamicResource ListItemSize}"/>
+                            <w:TextButton Grid.Row="0" Grid.Column="2"
+                                          Text="{Binding Title}"
+                                          Available="{Binding Available}"
+                                          Command="{Binding SongSelectCommand, Source={RelativeSource AncestorType={x:Type vm:PlaylistDetailPageModel}}}"
+                                          CommandParameter="{Binding Key}"/>
+                            <w:OptionButton Grid.Row="0" Grid.Column="3"
+                                           Clicked="OptionMenu_Clicked"/>
+                        </Grid>
+                    </w:ItemFrame>
+                </DataTemplate>
+            </w:DataList.ItemTemplate>
+        </w:DataList>
+    </local:BaseDetailPage.MainContent>
+</local:BaseDetailPage>
