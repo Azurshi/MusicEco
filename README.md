@@ -62,6 +62,8 @@
 - Play song from cloud.
 - New theme/style.
 - Hide/show/delete missing songs.
+- Extensions (Audio visualization, Youtube downloader, ...)
+- AI intergration.
 - Tag editing support.
 ## 🤝 Contributing
 This project is closed to outside contributions.
