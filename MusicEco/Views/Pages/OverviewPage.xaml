@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:vm="clr-namespace:MusicEco.ViewModels.Pages"
+                xmlns:local="clr-namespace:MusicEco.Views.Pages"
+                x:Class="MusicEco.Views.Pages.OverviewPage"
+                x:DataType="vm:OverviewPageModel"
+                Title="OverviewPage">
+    <local:BasePage.MainContent>
+        <StackLayout Orientation="Vertical">
+            <Image Source="{Binding Image}"
+                   VerticalOptions="FillAndExpand"
+                   HorizontalOptions="FillAndExpand"/>
+            <Label Text="{Binding Title}"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center"
+                   HeightRequest="{DynamicResource ItemSize}"
+                   Style="{StaticResource TitleTextStyle}"/>
+        </StackLayout>
+    </local:BasePage.MainContent>
+</local:BasePage>

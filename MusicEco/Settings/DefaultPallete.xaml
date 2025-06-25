@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MusicEco.Settings.DefaultPallete">
+    <Color x:Key="ButtonBackground">#410BA4</Color>
+    <Color x:Key="ButtonHighlight">#AC99EA</Color>
+    <Color x:Key="ButtonBorder">#CCA9FA</Color>
+    <Color x:Key="ButtonText">#FFFFFF</Color>
+
+    <Color x:Key="ItemBackground">#392669</Color>
+    <Color x:Key="ItemHighlight">#594689</Color>
+    <Color x:Key="ItemBorder">#6966A9</Color>
+    <Color x:Key="ItemText">#F0F0F0</Color>
+
+    <Color x:Key="OptionBackground">#493679</Color>
+    <Color x:Key="OptionHighlight">#695689</Color>
+    <Color x:Key="OptionBorder">#8976A9</Color>
+    <Color x:Key="OptionText">#CCCCCC</Color>
+
+    <Color x:Key="ContainerBackground">#190649</Color>
+    <Color x:Key="ContainerBorder">#392669</Color>
+
+    <Color x:Key="ProgressColor">#492233</Color>
+    <Color x:Key="PlaceholderText">#BBBBBB</Color>
+    <Color x:Key="SeparatorBorder">#CCCCCC</Color>
+    <Color x:Key="InputBacground">#492B69</Color>
+    <Color x:Key="ErrorBackground">#FF4C4C</Color>
+    <Color x:Key="ErrorText">#FFFFFF</Color>
+</ResourceDictionary>

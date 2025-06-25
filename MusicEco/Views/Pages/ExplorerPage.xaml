@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:b="clr-namespace:MusicEco.Views.Buttons"
+                xmlns:c="clr-namespace:MusicEco.Views.Components"
+                xmlns:d="clr-namespace:MusicEco.Views.Decorators"
+                xmlns:e="clr-namespace:MusicEco.Views.Edit"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+                xmlns:vm="clr-namespace:MusicEco.ViewModels.Pages"
+                xmlns:item_vm="clr-namespace:MusicEco.ViewModels.Items"
+                xmlns:local="clr-namespace:MusicEco.Views.Pages"
+                x:Class="MusicEco.Views.Pages.ExplorerPage"
+                x:DataType="vm:ExplorerPageModel"
+                Title="ExplorerPage">
+    <local:BasePage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="OptionMenuTemplate"
+                          x:DataType="item_vm:ExplorerItemModel">
+                <c:OptionMenu>
+                    <c:OptionMenu.MainContent>
+                        <StackLayout Orientation="Vertical">
+                            <b:QueueAddButton GetPageEventHandler="GetPageEventHandler"/>
+                            <b:PlaylistAddButton GetPageEventHandler="GetPageEventHandler"/>
+                        </StackLayout>
+                    </c:OptionMenu.MainContent>
+                </c:OptionMenu>
+            </DataTemplate>
+        </ResourceDictionary>
+    </local:BasePage.Resources>
+    <local:BasePage.MainContent>
+        <Grid RowDefinitions="Auto, *"
+              ColumnDefinitions="*">
+            <StackLayout Grid.Row="0" Grid.Column="0"
+                         Orientation="Horizontal"
+                         HeightRequest="{DynamicResource ItemSize}">
+                <w:BorderTextButton Text="Backward"
+                                    Command="{Binding NavigateBackwardCommand}"
+                                    VerticalOptions="FillAndExpand"
+                                    HorizontalOptions="FillAndExpand"
+                                    TextAlign="Center"
+                                    BackgroundColor="{DynamicResource ItemBackground}"/>
+                <w:BorderTextButton Text="Forward"
+                                    Command="{Binding NavigateForwardCommand}"
+                                    VerticalOptions="FillAndExpand"
+                                    HorizontalOptions="FillAndExpand"
+                                    TextAlign="Center"
+                                    BackgroundColor="{DynamicResource ItemBackground}"/>
+                <w:BorderTextButton Text="Up"
+                                    Command="{Binding NavigateUpCommand}"
+                                    VerticalOptions="FillAndExpand"
+                                    HorizontalOptions="FillAndExpand"
+                                    TextAlign="Center"
+                                    BackgroundColor="{DynamicResource ItemBackground}"/>
+                <w:BorderTextButton Text="Refresh"
+                                    Command="{Binding NavigateRefreshCommand}"
+                                    VerticalOptions="FillAndExpand"
+                                    HorizontalOptions="FillAndExpand"
+                                    TextAlign="Center"
+                                    BackgroundColor="{DynamicResource ItemBackground}"/>
+                <w:BorderTextButton Text="Home"
+                                    Command="{Binding NavigateHomeCommand}"
+                                    VerticalOptions="FillAndExpand"
+                                    HorizontalOptions="FillAndExpand"
+                                    TextAlign="Center"
+                                    BackgroundColor="{DynamicResource ItemBackground}"/>
+            </StackLayout>
+            <w:DataList Grid.Row="1" Grid.Column="0"
+                        ItemsSource="{Binding Data}"
+                        PreloadAmount="{Binding ListPreload, Source={StaticResource AppSetting}}"
+                        LoadMoreItemCommand="{Binding LoadMoreItemCommand}">
+                <w:DataList.ItemTemplate>
+                    <DataTemplate x:DataType="item_vm:ExplorerItemModel">
+                        <w:ItemFrame>
+                            <Grid ColumnDefinitions="*, 7*, Auto"
+                                  RowDefinitions="*">
+                                <Image Grid.Row="0" Grid.Column="0"
+                                       IsVisible="{Binding IsFile}"
+                                       Source="{Binding Icon}"/>
+                                <w:TextButton Grid.Row="0" Grid.Column="1"
+                                              IsVisible="{Binding IsFile}"
+                                              Text="{Binding Title}"
+                                              Available="{Binding Available}"
+                                              Command="{Binding FileSelectCommand, Source={RelativeSource AncestorType={x:Type vm:ExplorerPageModel}}}"
+                                              CommandParameter="{Binding Key}"
+                                              Style="{StaticResource ItemTextStyle}"/>
+                                <w:OptionButton Grid.Row="0" Grid.Column="2"
+                                                IsVisible="{Binding IsFile}"
+                                                Clicked="OptionMenu_Clicked"/>
+                                <w:TextButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                                              IsVisible="{Binding IsFolder}"
+                                              Text="{Binding Title}"
+                                              Available="{Binding Available}"
+                                              Command="{Binding FolderSelectCommand, Source={RelativeSource AncestorType={x:Type vm:ExplorerPageModel}}}"
+                                              CommandParameter="{Binding Key}"/>
+                            </Grid>
+                        </w:ItemFrame>
+                    </DataTemplate>
+                </w:DataList.ItemTemplate>
+            </w:DataList>
+        </Grid>
+    </local:BasePage.MainContent>
+</local:BasePage>

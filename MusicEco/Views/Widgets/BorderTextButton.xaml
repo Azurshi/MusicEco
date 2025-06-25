@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Border xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="MusicEco.Views.Widgets.BorderTextButton"
+        VerticalOptions="Start"
+        HorizontalOptions="FillAndExpand"
+        Stroke="{DynamicResource NormalBorder}"
+        BackgroundColor="{DynamicResource ItemBackground}">
+    <Border.StrokeShape>
+        <RoundRectangle StrokeThickness="{DynamicResource BorderSize}"
+                        CornerRadius="{DynamicResource BorderRadius}"/>
+    </Border.StrokeShape>
+    <Border.GestureRecognizers>
+        <TapGestureRecognizer Tapped="OnClicked"/>
+        <PointerGestureRecognizer PointerEntered="OnEntered"
+                                  PointerExited="OnExited"/>
+    </Border.GestureRecognizers>
+    <Label x:Name="InnerLabel"
+           VerticalTextAlignment="Center">
+
+    </Label>
+</Border>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BaseUserDetailPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                          xmlns:b="clr-namespace:MusicEco.Views.Buttons"
+                          xmlns:c="clr-namespace:MusicEco.Views.Components"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                          xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+                          xmlns:local="clr-namespace:MusicEco.Views.DetailPages"
+                          xmlns:vm="clr-namespace:MusicEco.ViewModels.DetailPages"
+                          xmlns:item_vm="clr-namespace:MusicEco.ViewModels.Items"
+                          x:Class="MusicEco.Views.DetailPages.FavouritePage"
+                          x:DataType="vm:FavouritePageModel"
+                          Title="FavouritePage">
+    <local:BaseUserDetailPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="OptionMenuTemplate"
+                          x:DataType="item_vm:SongItemModel">
+                <c:OptionMenu>
+                    <c:OptionMenu.MainContent>
+                        <StackLayout Orientation="Vertical">
+                            <b:QueueAddButton GetPageEventHandler="GetPageEventHandler"/>
+                            <b:PlaylistAddButton GetPageEventHandler="GetPageEventHandler"/>
+                        </StackLayout>
+                    </c:OptionMenu.MainContent>
+                </c:OptionMenu>
+            </DataTemplate>
+        </ResourceDictionary>
+    </local:BaseUserDetailPage.Resources>
+    <local:BaseUserDetailPage.MainContent>
+        <w:DataList ItemsSource="{Binding Data}"
+                    PreloadAmount="{Binding ListPreload, Source={StaticResource AppSetting}}"
+                    LoadMoreItemCommand="{Binding LoadMoreItemCommand}">
+            <w:DataList.ItemTemplate>
+                <DataTemplate x:DataType="item_vm:SongItemModel">
+                    <w:ItemFrame>
+                        <Grid RowDefinitions="*"
+                              ColumnDefinitions="Auto, Auto, *, Auto">
+                            <w:FavouriteButton Grid.Row="0" Grid.Column="0"
+                                               IsFavourite="{Binding IsFavourite}"
+                                               WidthRequest="{DynamicResource ListItemSize}"/>
+                            <w:ImageFrame Grid.Row="0" Grid.Column="1"
+                                          Source="{Binding Icon}"
+                                          WidthRequest="{DynamicResource ListItemSize}"/>
+                            <w:TextButton Grid.Row="0" Grid.Column="2"
+                                          Text="{Binding Title}"
+                                          Available="{Binding Available}"
+                                          Command="{Binding SongSelectCommand, Source={RelativeSource AncestorType={x:Type vm:FavouritePageModel}}}"
+                                          CommandParameter="{Binding Key}"/>
+                            <w:OptionButton Grid.Row="0" Grid.Column="3"
+                                            Clicked="OptionMenu_Clicked"/>
+                        </Grid>
+                    </w:ItemFrame>
+                </DataTemplate>
+            </w:DataList.ItemTemplate>
+        </w:DataList>
+    </local:BaseUserDetailPage.MainContent>
+</local:BaseUserDetailPage>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+                xmlns:local="clr-namespace:MusicEco.Views.Pages"
+                xmlns:setting_vm="clr-namespace:MusicEco.ViewModels"
+                xmlns:vm="clr-namespace:MusicEco.ViewModels.Pages"
+                xmlns:field="clr-namespace:MusicEco.Views.SettingFields"
+                x:Class="MusicEco.Views.Pages.SettingPage"
+                x:DataType="vm:SettingPageModel"
+                Title="SettingPage">
+    <local:BasePage.MainContent>
+        <Grid RowDefinitions="Auto, *"
+              ColumnDefinitions="*">
+            <StackLayout x:Name="NavigationList"
+                         Grid.Row="0" Grid.Column="0"
+                         Orientation="Vertical">
+                <w:BorderTextButton Text="Application setting"
+                                    TextAlign="Center"
+                                    BackgroundColor="{DynamicResource ItemBackground}"
+                                    HeightRequest="{DynamicResource ItemSize}"
+                                    Clicked="Setting_Clicked"/>
+                <w:BorderTextButton Text="Scan"
+                                    TextAlign="Center"
+                                    BackgroundColor="{DynamicResource ItemBackground}"
+                                    HeightRequest="{DynamicResource ItemSize}"
+                                    Command="{Binding OpenScanPageCommand}"/>
+
+            </StackLayout>
+            <Grid x:Name="ControlTab"
+                  Grid.Row="0" Grid.Column="0"
+                  RowDefinitions="*"
+                  ColumnDefinitions="*, 2*"
+                  HeightRequest="{DynamicResource ItemSize}"
+                  IsVisible="False">
+                <w:BorderTextButton Grid.Row="0" Grid.Column="0"
+                                    Text="Back"
+                                    TextAlign="Center"
+                                    VerticalOptions="Fill"
+                                    BackgroundColor="{DynamicResource ItemBackground}"
+                                    Clicked="BackButton_Clicked"
+                                    Command="{Binding CancelCommand, Source={StaticResource AppSetting}}"/>
+                <w:ConfirmButton Grid.Row="0" Grid.Column="1"
+                                 VerticalOptions="Fill"
+                                 BackgroundColor="{DynamicResource ItemBackground}"
+                                 ConfirmClicked="Confirm_Clicked"
+                                 ConfirmCommand="{Binding ApplyCommand, Source={StaticResource AppSetting}}"
+                                 CancelClicked="Cancel_Clicked"
+                                 CancelCommand="{Binding CancelCommand, Source={StaticResource AppSetting}}"/>
+            </Grid>
+            <StackLayout Grid.Row="1" Grid.Column="0"
+                         x:Name="ApplicationSettingList"
+                         Orientation="Vertical"
+                         BindingContext="{StaticResource AppSetting}"
+                         x:DataType="setting_vm:AppSettingModel"
+                         IsVisible="False">
+                <field:SliderField BindingContext="{Binding ListItemsModel}"/>
+                <field:SliderField BindingContext="{Binding ListPreloadModel}"/>
+                <field:SliderField BindingContext="{Binding GridColumnsModel}"/>
+                <field:SliderField BindingContext="{Binding GridRowsModel}"/>
+                <field:SliderField BindingContext="{Binding GridPreloadModel}"/>
+                <field:ComboBoxField BindingContext="{Binding MusicPlayerUpdateDelayModel}"/>
+                <field:ComboBoxField BindingContext="{Binding ThemeModel}"/>
+            </StackLayout>
+        </Grid>
+    </local:BasePage.MainContent>
+</local:BasePage>       

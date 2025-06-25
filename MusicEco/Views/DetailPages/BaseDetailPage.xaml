@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:c="clr-namespace:MusicEco.Views.Components"
+             xmlns:d="clr-namespace:MusicEco.Views.Decorators"
+             xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+             x:Class="MusicEco.Views.DetailPages.BaseDetailPage"
+             Title="BaseDetailPage">
+    <Grid RowDefinitions="{OnPlatform WinUI='*, 8*, *', Android='*, 13*, *, *'}"
+          ColumnDefinitions="{OnPlatform WinUI='2*, 15*, Auto, 15*', Android='*'}">
+        <w:BorderTextButton Grid.Row="0" Grid.Column="{OnPlatform WinUI='1', Android='0'}"
+                            Grid.ColumnSpan="{OnPlatform WinUI='3', Android='1'}"
+                            Text="Back"
+                            TextAlign="Center"
+                            Clicked="BackButton_Clicked"
+                            VerticalOptions="FillAndExpand"/>
+        <c:InfoPreview x:Name="Preview" x:FieldModifier="Protected"
+                       Grid.Row="1" Grid.Column="1"
+                       IsVisible="{OnPlatform WinUI='True', Android='False'}"/>
+        <d:VBorder Grid.Row="1" Grid.Column="2"
+                   IsVisible="{OnPlatform WinUI='True', Android='False'}"/>
+        <ContentPresenter Grid.Row="1" Grid.Column="{OnPlatform WinUI='3', Android='0'}"
+                          x:Name="MainContentPresenter"
+                          BackgroundColor="{DynamicResource ContainerBackground}"/>
+        <c:NavigationBar x:Name="PageNavigationBar"
+                         Grid.Row="{OnPlatform WinUI='0', Android='3'}" Grid.Column="0" 
+                         Grid.RowSpan="{OnPlatform WinUI='3', Android='1'}"/>
+        <c:ControlBar x:Name="PageControlBar" x:FieldModifier="Protected" 
+                      Grid.Row="2" Grid.Column="0" 
+                      Grid.ColumnSpan="{OnPlatform WinUI='4', Android='1'}"/>
+        <c:Overlay x:Name="PageOverlay" x:FieldModifier="Protected"
+                   Grid.Row="0" Grid.Column="0" 
+                   Grid.RowSpan="{OnPlatform WinUI='3', Android='4'}" 
+                   Grid.ColumnSpan="{OnPlatform WinUI='4', Android='1'}"
+                   IsVisible="False"/>
+    </Grid>
+</ContentPage>

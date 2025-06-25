@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+                xmlns:vm="clr-namespace:MusicEco.ViewModels.DetailPages"
+                xmlns:item_vm="clr-namespace:MusicEco.ViewModels.Items"
+                xmlns:local="clr-namespace:MusicEco.Views.Pages"
+                x:Class="MusicEco.Views.Pages.ScanPage"
+                x:DataType="vm:ScanPageModel"
+                Title="ScanPage">
+    <local:BasePage.MainContent>
+        <Grid RowDefinitions="Auto, Auto, *, Auto"
+              ColumnDefinitions="*">
+            <w:BorderTextButton Grid.Row="0" Grid.Column="0"
+                                Text="Scan"
+                                TextAlign="Center"
+                                Command="{Binding ScanMusicCommand}"
+                                HeightRequest="{DynamicResource ItemSize}"/>
+            <w:BorderTextButton Grid.Row="1" Grid.Column="0"
+                                Text="Delete all data"
+                                TextAlign="Center"
+                                Command="{Binding DeleteAllDataCommand}"
+                                HeightRequest="{DynamicResource ItemSize}"/>
+            <w:ProgressBar Grid.Row="0" Grid.Column="0"
+                           Percent="{Binding Progress}"
+                           IsVisible="{Binding ProgressBarVisible}"
+                           HeightRequest="{DynamicResource ItemSize}"/>
+            <w:DataList Grid.Row="2" Grid.Column="0"
+                        ItemsSource="{Binding Data}"
+                        PreloadAmount="{Binding ListPreload, Source={StaticResource AppSetting}}"
+                        LoadMoreItemCommand="{Binding LoadMoreItemCommand}">
+                <w:DataList.ItemTemplate>
+                    <DataTemplate x:DataType="item_vm:ScanItemModel">
+                        <w:ItemFrame HeightRequest="{DynamicResource ItemSize}">
+                            <Grid ColumnDefinitions="*, Auto"
+                                  RowDefinitions="*, Auto">
+                                <w:TextButton Grid.Row="0" Grid.Column="0"
+                                              Text="{Binding FolderName}"/>
+                                <w:TextButton Grid.Row="1" Grid.Column="0"
+                                              Text="{Binding FolderPath}"
+                                              TextColor="{DynamicResource InactiveColor}"/>
+                                <w:TextButton Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
+                                              Text="X"
+                                              WidthRequest="{DynamicResource ListItemSize}"
+                                              Style="{StaticResource TitleTextStyle}"
+                                              Command="{Binding RemoveFolderCommand, Source={RelativeSource AncestorType={x:Type vm:ScanPageModel}}}"
+                                              CommandParameter="{Binding Key}"/>
+                            </Grid>
+                        </w:ItemFrame>
+                    </DataTemplate>
+                </w:DataList.ItemTemplate>
+            </w:DataList>
+            <w:BorderTextButton Grid.Row="3" Grid.Column="0"
+                                Text=" + Add folder"
+                                TextAlign="Center"
+                                Command="{Binding AddFolderCommand}"
+                                HeightRequest="{DynamicResource ItemSize}"/>
+        </Grid>
+    </local:BasePage.MainContent>
+</local:BasePage>

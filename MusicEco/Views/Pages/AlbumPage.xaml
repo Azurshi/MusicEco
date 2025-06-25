@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:w="clr-namespace:MusicEco.Views.Widgets"
+                xmlns:d="clr-namespace:MusicEco.Views.Decorators"
+                xmlns:local="clr-namespace:MusicEco.Views.Pages"
+                xmlns:vm="clr-namespace:MusicEco.ViewModels.Pages"
+                xmlns:item_vm="clr-namespace:MusicEco.ViewModels.Items"
+                x:Class="MusicEco.Views.Pages.AlbumPage"
+                x:DataType="vm:AlbumPageModel"
+                Title="AlbumPage">
+    <local:BasePage.MainContent>
+        <Grid RowDefinitions="Auto, *"
+              ColumnDefinitions="*">
+            <w:SearchBar Grid.Row="0" Grid.Column="0"
+                         Placeholder="Album name"/>
+            <w:DataGrid x:Name="DataCollection"
+                        Grid.Row="1" Grid.Column="0"
+                        ColumnsCount="{Binding GridColumns, Source={StaticResource AppSetting}}"
+                        RowPreloadAmount="{Binding GridPreload, Source={StaticResource AppSetting}}"
+                        ItemsSource="{Binding Data}"
+                        LoadMoreItemCommand="{Binding LoadMoreItemCommand}">
+                <w:DataGrid.ItemTemplate>
+                    <DataTemplate x:DataType="item_vm:AlbumItemModel">
+                        <w:ItemFrame HeightRequest="{DynamicResource GridItemSize}"
+                                     BackgroundColor="Transparent"
+                                     Stroke="{DynamicResource NormalBorder}">
+                            <w:ItemFrame.StrokeShape>
+                                <RoundRectangle StrokeThickness="{DynamicResource BorderSize}"
+                                                CornerRadius="{DynamicResource AlbumBorderRadius}"/>
+                            </w:ItemFrame.StrokeShape>
+                            <StackLayout Orientation="Vertical">
+                                <Image Source="{Binding Icon}"
+                                       HorizontalOptions="CenterAndExpand"
+                                       VerticalOptions="CenterAndExpand"/>
+                                <w:TextButton Text="{Binding Title}"
+                                              VerticalOptions="End"
+                                              VerticalTextAlignment="Start"
+                                              HorizontalTextAlignment="Center"
+                                              Command="{Binding AlbumSelectCommand, Source={RelativeSource AncestorType={x:Type vm:AlbumPageModel}}}"
+                                              CommandParameter="{Binding Key}"
+                                              BackgroundColor="{DynamicResource ItemBackground}"
+                                              HeightRequest="{DynamicResource GridInfoSize}"/>
+                            </StackLayout>
+                        </w:ItemFrame>
+                    </DataTemplate>
+                </w:DataGrid.ItemTemplate>
+            </w:DataGrid>
+        </Grid>
+    </local:BasePage.MainContent>
+</local:BasePage>
