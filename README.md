@@ -36,12 +36,15 @@
 
 ## ▶️ Usage Instruction
 1. Open the app and go to [Setting](MusicEco/Resources/Images/setting.png) -> Scan
-2. Add your music folder(s) to the scan list.
-3. Tap **Scan** button and wait for processing to complete.
-4. Once scanned, you can:
+     ![Setting](Preview/Setting.png) ![Scan](Preview/Scan.png)
+3. Add your music folder(s) to the scan list.
+4. Tap **Scan** button and wait for processing to complete.
+5. Once scanned, you can:
    - Browse by album or folder.
+     ![Album](Preview/Preview1.png)
    - Create and edit custom playlists.
    - Ad songs to playlists or queues via each song option menu ':'
+     ![Option](Preview/Preview2.png)
    - Play song by click into song title.
 ## 📋 Known issues
 - Sometime, backbutton cause UI to freeze.
@@ -50,6 +53,7 @@
 - Image, song data failed to load in some case.
 - Theme changing is still error
 - Android build have low performance
+- Android scan may freeze with too much folders or folders have too many sub folders.
 - Android album title does not response to missing file when scan
 ## 🗺 Roadmap
 - Performance optimization.
@@ -66,3 +70,5 @@ MusicEco is lincensed under the **GNU GPL v3.0**. See the [Lincense](./LINCENSE)
 ## 🙌 Credits
 - Developed solely by [Azurshi](https://github.com/Azurshi) with [Anh39](https://github.com/Anh39) as school account.
 - Special thanks to open-source community and libraries.
+## Notice
+Contact [me](vda3904@gmail.com) if you need any preview images removed due to copyright violation.
