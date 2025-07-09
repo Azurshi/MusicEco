@@ -5,8 +5,10 @@ namespace MusicEco.ViewModels;
 public class ObservableCollectionController<TItem>(ObservableCollection<BaseItem> target) where TItem : BaseItem, new() {
     public event EventHandler? KeyUpdated;
     public readonly ObservableCollection<BaseItem> Target = target;
-    private bool _isPagingBusy = false;
+    //private bool _isPagingBusy = false;
     private bool _isLoadingBusy = false;
+    private int scheduledIndex;
+    private int loadedIndex = 0;
     public void UpdateKeys(List<string> keys) {
         UpdateKeysAsync(keys).GetAwaiter().GetResult();
     }
@@ -41,18 +43,28 @@ public class ObservableCollectionController<TItem>(ObservableCollection<BaseItem
         KeyUpdated?.Invoke(this, EventArgs.Empty);
         _isLoadingBusy = false;
     }
-    public async Task PageDown(int startIt, int amount) {
-        if (!_isPagingBusy) {
-            _isPagingBusy = true;
-            int endIt = startIt + amount;
-            startIt = Math.Clamp(startIt, 0, Target.Count);
-            endIt = Math.Clamp(endIt, 0, Target.Count);
-            for (int i = startIt; i < Target.Count && i < endIt; i++) {
+    public async Task PageDown(int startIndex, int amount) {
+        int target = startIndex + amount;
+        target = Math.Clamp(target, 0, Target.Count);
+        if (scheduledIndex < target) {
+            scheduledIndex = target;
+            for(int i=loadedIndex; i<scheduledIndex; i++) {
                 if (!Target[i].IsActive) {
                     await Target[i].Active();
                 }
             }
-            _isPagingBusy = false;
         }
+        //if (!_isPagingBusy) {
+        //    _isPagingBusy = true;
+        //    int endIt = startIt + amount;
+        //    startIt = Math.Clamp(startIt, 0, Target.Count);
+        //    endIt = Math.Clamp(endIt, 0, Target.Count);
+        //    for (int i = startIt; i < Target.Count && i < endIt; i++) {
+        //        if (!Target[i].IsActive) {
+        //            await Target[i].Active();
+        //        }
+        //    }
+        //    _isPagingBusy = false;
+        //}
     }
 }
