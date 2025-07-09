@@ -24,7 +24,7 @@
                           BackgroundColor="{DynamicResource ContainerBackground}"/>
         <c:NavigationBar x:Name="PageNavigationBar"
                          Grid.Row="{OnPlatform WinUI='0', Android='3'}" Grid.Column="0" 
-                         Grid.RowSpan="{OnPlatform WinUI='3', Android='1'}"/>
+                         Grid.RowSpan="{OnPlatform WinUI='2', Android='1'}"/>
         <c:ControlBar x:Name="PageControlBar" x:FieldModifier="Protected" 
                       Grid.Row="2" Grid.Column="0" 
                       Grid.ColumnSpan="{OnPlatform WinUI='4', Android='1'}"/>
