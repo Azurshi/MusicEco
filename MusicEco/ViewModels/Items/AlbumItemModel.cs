@@ -9,9 +9,9 @@ public partial class AlbumItemModel : BaseItem, IServiceAccess {
         nameof(Key), nameof(Icon), nameof(Title)
         ];
     public AlbumItemModel() {
-#if WINDOWS // Tempory fix to improve perf on Android
-        RefreshOnKeyChanged = true;
-#endif
+//#if WINDOWS // Tempory fix to improve perf on Android
+//        RefreshOnKeyChanged = true;
+//#endif
     }
     protected override async Task OnActive() {
         if (Key == string.Empty) return;
