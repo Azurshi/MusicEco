@@ -14,12 +14,15 @@ public partial class BasicSongItemModel : BaseItem, IServiceAccess {
         ISongModel? model = IServiceAccess.ModelGetter.Song(long.Parse(Key));
         if (model != null) {
             Available = model.Available;
-            Title = model.Title;
-            Icon = IServiceAccess.DataGetter.Icon(model);
+            if (model.Title != string.Empty) {
+                Title = model.Title;
+            } else {
+                Title = model.File?.Name;
+            }
+            Icon = await IServiceAccess.DataGetter.Icon(model);
             foreach (var propertyName in _propertyNames) {
                 OnPropertyChanged(propertyName);
             }
-            await Task.CompletedTask;
         }
     }
 }

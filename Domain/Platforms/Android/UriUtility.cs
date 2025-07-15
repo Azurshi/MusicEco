@@ -77,7 +77,7 @@ public static class UriUtility {
                         if (file.Name != null && file.Name.Contains(extension)) {
                             isValid = true;
                             break;
-                        }
+                        }   
                     }
                     if (isValid) {
                         fileUris.Add(file.Uri);

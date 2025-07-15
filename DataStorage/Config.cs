@@ -3,11 +3,6 @@ using System.Text.Json.Serialization;
 
 namespace DataStorage; 
 public static class Config {
-    public static readonly List<string> AudioFileExtensions = [
-        ".mp3",
-        ".flac",
-        ".wav"
-    ];
     public static readonly List<string> ImageFileExtensions = [
         ".png",
         ".jpg",

@@ -19,11 +19,10 @@ public partial class AlbumItemModel : BaseItem, IServiceAccess {
         if (albumSongs.Count > 0) {
             ISongModel firstSong = albumSongs[0];
             Title = Key;
-            Icon = IServiceAccess.DataGetter.Icon(firstSong);
+            Icon = await IServiceAccess.DataGetter.Icon(firstSong);
             foreach (var propertyName in _propertyNames) {
                 OnPropertyChanged(propertyName);
             }
-            await Task.CompletedTask;
         }
     }
 }
