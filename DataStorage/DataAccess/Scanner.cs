@@ -14,15 +14,14 @@ public class Scanner : IScanner {
     public async Task ScanAsync(
         System.IProgress<Tuple<int, int>> progress, 
         List<string> inputFolderPaths, 
-        List<string> extensions, 
         bool quickScan,
         ItemSource source) 
     {
         helper = new(quickScan, source);
-        Domain.Events.ScanStartedEventArgs startArgs = new(progress, inputFolderPaths, extensions, quickScan, source);
+        Domain.Events.ScanStartedEventArgs startArgs = new(progress, inputFolderPaths, quickScan, source);
         EventSystem.Publish(this, startArgs);
         await Task.Run(() => {
-            Scan(helper, progress, inputFolderPaths, extensions);
+            Scan(helper, progress, inputFolderPaths);
         });
         Domain.Events.ScanCompletedEventArgs completedArgs = new();
         EventSystem.Publish(this, completedArgs);
@@ -31,8 +30,7 @@ public class Scanner : IScanner {
     private void Scan(
         ScannerDataHelper helper,
         System.IProgress<Tuple<int, int>> progress, 
-        List<string> inputFolderPaths, 
-        List<string> extensions) 
+        List<string> inputFolderPaths) 
     {
         DataException exception = new() {
             Info = "Failed to push first folder",
@@ -66,7 +64,7 @@ public class Scanner : IScanner {
                 }
                 List<string> childFilePaths = CustomFile.GetFiles(folderPath);
                 foreach (var childFilePath in childFilePaths) {
-                    if (extensions.Contains(CustomFile.GetExtension(childFilePath))) {
+                    if (Domain.Config.SupportedExtensions.Contains(CustomFile.GetExtension(childFilePath))) {
                         fileJob.Enqueue(childFilePath);
                     }
                 }
@@ -95,8 +93,7 @@ public class Scanner : IScanner {
     private void Scan(
     ScannerDataHelper helper,
     System.IProgress<Tuple<int, int>> progress,
-    List<string> inputFolderPaths,
-    List<string> extensions) {
+    List<string> inputFolderPaths) {
         DataException exception = new() {
             Info = "Failed to push first folder",
             Affect = "Music has not been scanned, data may be corrupted",
@@ -130,7 +127,7 @@ public class Scanner : IScanner {
                 }
                 foreach (var childFile in childFileUris) {
                     string extension = CustomFile.GetExtension(UriUtility.GetItemPathFromUri(childFile));
-                    if (extensions.Contains(extension)) {
+                    if (Domain.Config.SupportedExtensions.Contains(extension)) {
                         fileJob.Enqueue(childFile.ToString()!);
                     }
                 }

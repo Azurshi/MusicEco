@@ -26,15 +26,19 @@ public partial class SongItemModel : BaseDraggableItem, IServiceAccess {
         if (Key == string.Empty) return;
         ISongModel? model = IServiceAccess.ModelGetter.Song(long.Parse(Key));
         if (model != null) {
-            Title = model.Title;
+            if (model.Title != string.Empty) {
+                Title = model.Title;
+            }
+            else {
+                Title = model.File?.Name;
+            }
             Playcount = model.PlayCount;
             IsFavourite = model.Favourite;
             Available = model.Available;
-            Icon = IServiceAccess.DataGetter.Icon(model);
+            Icon = await IServiceAccess.DataGetter.Icon(model);
             foreach (var propertyName in _propertyNames) {
                 OnPropertyChanged(propertyName);
             }
-            await Task.CompletedTask;
         }
     }
 }
