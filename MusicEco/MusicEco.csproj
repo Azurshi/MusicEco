@@ -19,8 +19,8 @@
 		<ApplicationId>com.companyname.musiceco</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>0.0.1</ApplicationDisplayVersion>
-		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationDisplayVersion>0.0.2</ApplicationDisplayVersion>
+		<ApplicationVersion>2</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
@@ -35,8 +35,20 @@
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<PackageCertificateKeyFile>MusicEco_TemporaryKey.pfx</PackageCertificateKeyFile>
+		<AndroidSigningKeyStore>my-release-key.keystore</AndroidSigningKeyStore>
+		<AndroidSigningKeyPass>123456</AndroidSigningKeyPass>
 	</PropertyGroup>
-
+	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<MauiLinkMode>None</MauiLinkMode>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
+	  <AndroidKeyStore>True</AndroidKeyStore>
+	  <AndroidSigningStorePass>123456</AndroidSigningStorePass>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
+	  <AndroidKeyStore>True</AndroidKeyStore>
+	  <AndroidSigningStorePass>123456</AndroidSigningStorePass>
+	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -60,7 +72,7 @@
 		<PackageReference Include="AudioPlayer" Version="0.1.2" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="DataStorage" Version="0.1.60" />
+		<PackageReference Include="DataStorage" Version="0.1.63" />
 		<PackageReference Include="Domain" Version="0.1.31" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
@@ -101,6 +113,9 @@
 	  </Compile>
 	  <Compile Update="Views\Widgets\ProgressSlider.xaml.cs">
 	    <DependentUpon>ProgressSlider.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Widgets\BackButton.xaml.cs">
+	    <DependentUpon>BackButton.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -280,6 +295,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Widgets\SearchBar.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Widgets\BackButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Widgets\TextButton.xaml">

@@ -63,6 +63,6 @@ public partial class SettingPageModel : PropertyObject, IServiceAccess {
 #endif
     [RelayCommand]
     public async Task OpenScanPage() {
-        await Utility.GoToAsync("scan", false);
+        await Navigator.GoToAsync("scan");
     }
 }

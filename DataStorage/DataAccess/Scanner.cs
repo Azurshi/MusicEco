@@ -80,7 +80,7 @@ public class Scanner : IScanner {
             string filePath = fileJob.Dequeue();
             helper.ScanSong(filePath);
             logCount++;
-            Debug.WriteLine(filePath);
+            //Debug.WriteLine(filePath);
             if (logCount >= this.LogStep) {
                 logCount = 0;
                 progress.Report(Tuple.Create(totalFileJob - fileJob.Count, totalFileJob));
@@ -143,7 +143,7 @@ public class Scanner : IScanner {
             string filePath = fileJob.Dequeue();
             helper.ScanSong(filePath);
             logCount++;
-            Debug.WriteLine(filePath);
+            //Debug.WriteLine(filePath);
             if (logCount >= this.LogStep) {
                 logCount = 0;
                 progress.Report(Tuple.Create(totalFileJob - fileJob.Count, totalFileJob));

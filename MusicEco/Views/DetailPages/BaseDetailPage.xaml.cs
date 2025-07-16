@@ -24,20 +24,23 @@ public partial class BaseDetailPage : ContentPage, IBasePage, IServiceAccess
     private static void OnMainBindingContextPropertyChanged(BindableObject obj, object oldValue, object newValue) {
         BaseDetailPage This = (BaseDetailPage)obj;
         This.MainContentPresenter.Content.BindingContext = (PropertyObject)newValue;
+        
     }
     public PropertyObject MainBindingContext {
         get => (PropertyObject)GetValue(MainBindingContextProperty);
         set => SetValue(MainBindingContextProperty, value);
     }
-
+    public string BackRoute { get; set; } = string.Empty;
     Overlay IBasePage.PageOverlay => PageOverlay;
     #endregion
+    protected VoidEventHandler? BackButtonClicked;
     public BaseDetailPage()
 	{
 		InitializeComponent();
     }
 
     private async void BackButton_Clicked(object sender, EventArgs e) {
-        await MusicEco.ViewModels.Utility.GoToAsync();
+        BackButtonClicked?.Invoke();
+        await Navigator.GoToAsync(BackRoute);
     }
 }

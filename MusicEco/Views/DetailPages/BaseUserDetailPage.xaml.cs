@@ -28,14 +28,20 @@ public partial class BaseUserDetailPage : ContentPage, IBasePage, IServiceAccess
         get => (PropertyObject)GetValue(MainBindingContextProperty);
         set => SetValue(MainBindingContextProperty, value);
     }
-
+    public string BackRoute {
+        get => (string)GetValue(BackRouteProperty);
+        set => SetValue(BackRouteProperty, value);
+    }
+    public static readonly BindableProperty BackRouteProperty = Utility.Create<string>(ThisType);
     Overlay IBasePage.PageOverlay => PageOverlay;
     #endregion
+    protected VoidEventHandler? BackButtonClicked;
     public BaseUserDetailPage()
 	{
 		InitializeComponent();
     }
     private async void BackButton_Clicked(object sender, EventArgs e) {
-        await MusicEco.ViewModels.Utility.GoToAsync();
+        BackButtonClicked?.Invoke();
+        await Navigator.GoToAsync(BackRoute);
     }
 }

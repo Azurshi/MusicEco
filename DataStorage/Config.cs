@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Domain;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace DataStorage; 
@@ -28,7 +29,10 @@ public static class Config {
     internal static string GetSaveFilePath(string className) {
         return CustomFile.Join(Config.DataFolderPath, className + ".json");
     }
-
-
+#if WINDOWS
+    public static Vector2I IconSize = new(256, 256);
+#else
+    public static Vector2I IconSize = new(128, 128);
+#endif
 
 }
