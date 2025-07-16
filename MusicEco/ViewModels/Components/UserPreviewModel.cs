@@ -8,10 +8,10 @@ public partial class UserPreviewModel: PropertyObject {
     }
     [RelayCommand]
     public async Task NavigateFavourite() {
-        await Utility.GoToAsync("favourite", false);
+        await Navigator.GoToAsync("favourite");
     }
     [RelayCommand]
     public async Task NavigatePlaycount() {
-        await Utility.GoToAsync("playcount", false);
+        await Navigator.GoToAsync("playcount");
     }
 }

@@ -8,8 +8,8 @@
 		<Nullable>enable</Nullable>
 
 		<Authors>Azurshi</Authors>
-		<Version>0.1.26</Version>
-		<Description> v0.1.26: SAF Uri storage</Description>
+		<Version>0.1.31</Version>
+		<Description> v0.1.31: Remove extensions from Events</Description>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>

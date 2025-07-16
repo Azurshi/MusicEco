@@ -30,7 +30,6 @@ public partial class BasePage : ContentPage, IBasePage, IServiceAccess
         get => (PropertyObject)GetValue(MainBindingContextProperty);
         set => SetValue(MainBindingContextProperty, value);
     }
-
     #endregion
     Overlay IBasePage.PageOverlay => PageOverlay;
     public BasePage()

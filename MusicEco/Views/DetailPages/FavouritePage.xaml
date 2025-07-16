@@ -9,7 +9,8 @@
                           xmlns:item_vm="clr-namespace:MusicEco.ViewModels.Items"
                           x:Class="MusicEco.Views.DetailPages.FavouritePage"
                           x:DataType="vm:FavouritePageModel"
-                          Title="FavouritePage">
+                          Title="FavouritePage"
+                          BackRoute="user">
     <local:BaseUserDetailPage.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="OptionMenuTemplate"

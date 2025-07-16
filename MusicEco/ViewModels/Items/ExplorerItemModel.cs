@@ -31,12 +31,11 @@ public partial class ExplorerItemModel : BaseItem, IServiceAccess {
                 IsFolder = false;
                 Title = fileModel.Name;
                 Available = fileModel.Available;
-                Icon = IServiceAccess.DataGetter.Icon(fileModel);
+                Icon = await IServiceAccess.DataGetter.Icon(fileModel);
                 foreach (var propertyName in _propertyNames) {
                     OnPropertyChanged(propertyName);
                 }
             }
         }
-        await Task.CompletedTask;
     }
 }

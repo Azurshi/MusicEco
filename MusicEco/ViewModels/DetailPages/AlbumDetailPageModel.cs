@@ -17,11 +17,9 @@ public partial class AlbumDetailPageModel : PropertyObject, IQueryAttributable, 
     public async Task LoadData(string albumName) {
         _albumName = albumName;
         List<ISongModel> albumSongs = IServiceAccess.ModelQuery.Album(albumName, true);
-        if (albumSongs.Count > 0) {
-            List<string> ids = albumSongs.OrderBy(s => s.Track).Select(s => s.Id.ToString()).ToList();
-            await DataController.UpdateKeysAsync(ids);
-            await DataController.PageDown(0, AppSettingModel.Current.ListItems);
-        }
+        List<string> ids = albumSongs.OrderBy(s => s.Track).Select(s => s.Id.ToString()).ToList();
+        await DataController.UpdateKeysAsync(ids);
+        await DataController.PageDown(0, AppSettingModel.Current.ListItems);
     }
     public AlbumDetailPageModel() {
         DataController = new([]);

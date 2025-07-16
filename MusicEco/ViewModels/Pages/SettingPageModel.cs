@@ -27,7 +27,7 @@ public partial class SettingPageModel : PropertyObject, IServiceAccess {
         string? filePath = null;
         var picker = new FileOpenPicker();
         var hwnd = ((MauiWinUIWindow)App.Current!.Windows[0].Handler.PlatformView!).WindowHandle;
-        foreach (string fileType in DataStorage.Config.AudioFileExtensions) {
+        foreach (string fileType in Domain.Config.SupportedExtensions) {
             picker.FileTypeFilter.Add(fileType);
         }
         WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
@@ -63,6 +63,6 @@ public partial class SettingPageModel : PropertyObject, IServiceAccess {
 #endif
     [RelayCommand]
     public async Task OpenScanPage() {
-        await Utility.GoToAsync("scan", false);
+        await Navigator.GoToAsync("scan");
     }
 }

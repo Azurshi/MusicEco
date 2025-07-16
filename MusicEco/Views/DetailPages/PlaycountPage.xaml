@@ -9,7 +9,8 @@
                           xmlns:item_vm="clr-namespace:MusicEco.ViewModels.Items"
                           x:Class="MusicEco.Views.DetailPages.PlaycountPage"
                           x:DataType="vm:PlaycountPageModel"
-                          Title="PlaycountPage">
+                          Title="PlaycountPage"
+                          BackRoute="user">
     <local:BaseUserDetailPage.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="OptionMenuTemplate"

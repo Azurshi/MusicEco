@@ -32,6 +32,7 @@ public static class Utility {
             await Task.Delay(10);
         }
         Busy = true;
+        name = Uri.EscapeDataString(name);
         await Shell.Current.GoToAsync($"{route}?name={name}");
         Busy = false;
     }
