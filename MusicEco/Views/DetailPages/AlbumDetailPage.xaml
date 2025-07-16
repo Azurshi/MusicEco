@@ -10,7 +10,8 @@
                       xmlns:item_vm="clr-namespace:MusicEco.ViewModels.Items"
                       x:Class="MusicEco.Views.DetailPages.AlbumDetailPage"
                       x:DataType="vm:AlbumDetailPageModel"
-                      Title="AlbumDetailPage">
+                      Title="AlbumDetailPage"
+                      BackRoute="album">
     <local:BaseDetailPage.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="OptionMenuTemplate"

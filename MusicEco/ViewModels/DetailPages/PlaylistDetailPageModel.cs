@@ -10,6 +10,7 @@ using System.Diagnostics;
 
 namespace MusicEco.ViewModels.DetailPages;
 public partial class PlaylistDetailPageModel : DragList, IQueryAttributable, IServiceAccess {
+    public string BackRoute { get; set; }
     public void ApplyQueryAttributes(IDictionary<string, object> query) {
         if (query.ContainsKey("id")) {
             long id = Convert.ToInt64(query["id"]);
@@ -21,6 +22,13 @@ public partial class PlaylistDetailPageModel : DragList, IQueryAttributable, ISe
         _playlistId = playlistId;
         IPlaylistModel? playlistModel = IServiceAccess.ModelGetter.Playlist(playlistId);
         if (playlistModel != null) {
+            if (playlistModel.Type == DefaultValue.Playlist) {
+                BackRoute = "playlist";
+            } else {
+                BackRoute = "queue";
+            }
+            Debug.WriteLine(BackRoute);
+            OnPropertyChanged(nameof(BackRoute));
             List<string> ids = playlistModel.Songs.Select(s => s.Id.ToString()).ToList();
             await DataController.UpdateKeysAsync(ids);
             await DataController.PageDown(0, AppSettingModel.Current.ListItems);
@@ -43,6 +51,7 @@ public partial class PlaylistDetailPageModel : DragList, IQueryAttributable, ISe
         }
     }
     public PlaylistDetailPageModel() {
+        BackRoute = "playlist";
         DataController = new([]);
         EventSystem.Connect<MusicPlayer.ShuffledEventArgs>(OnShuffled);
     }

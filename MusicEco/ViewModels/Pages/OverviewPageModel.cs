@@ -20,11 +20,16 @@ public partial class OverviewPageModel: PropertyObject, IQueryAttributable, ISer
         );
         LoadData(GlobalData.PlayingSongId);
     }
-    public void LoadData(long id) {
+    public async void LoadData(long id) {
         ISongModel? model = IServiceAccess.ModelGetter.Song(id);
         if (model != null) {
-            Title = model.Title;
-            Image = IServiceAccess.DataGetter.Image(model);
+            if (model.Title != string.Empty) {
+                Title = model.Title;
+            }
+            else {
+                Title = model.File?.Name;
+            }
+            Image = await IServiceAccess.DataGetter.Image(model);
             foreach (var propertyName in _propertyNames) {
                 OnPropertyChanged(propertyName);
             }

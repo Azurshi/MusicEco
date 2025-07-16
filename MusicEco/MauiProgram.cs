@@ -102,7 +102,9 @@ public static class MauiProgram {
 #if ANDROID
         await UriUtility.RequestPermission();
 #endif
+        Debug.WriteLine("Start scan");
         await model.ScanMusic();
+        Debug.WriteLine("Scan completed");
     }
 
 }

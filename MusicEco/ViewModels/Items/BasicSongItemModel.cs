@@ -7,19 +7,23 @@ public partial class BasicSongItemModel : BaseItem, IServiceAccess {
     public string? Title { get; set; }
     public bool Available { get; set; }
     private static readonly List<string> _propertyNames = [
-        nameof(Key), nameof(Title), nameof(Icon), nameof(Available)
+        nameof(Key), nameof(Title), nameof(Available)
         ];
     protected override async Task OnActive() {
         if (Key == string.Empty) return;
         ISongModel? model = IServiceAccess.ModelGetter.Song(long.Parse(Key));
         if (model != null) {
             Available = model.Available;
-            Title = model.Title;
-            Icon = IServiceAccess.DataGetter.Icon(model);
+            if (model.Title != string.Empty) {
+                Title = model.Title;
+            } else {
+                Title = model.File?.Name;
+            }
             foreach (var propertyName in _propertyNames) {
                 OnPropertyChanged(propertyName);
             }
-            await Task.CompletedTask;
+            Icon = await IServiceAccess.DataGetter.Icon(model);
+            OnPropertyChanged(nameof(Icon));
         }
     }
 }

@@ -71,7 +71,6 @@ public partial class ScanPageModel: PropertyObject {
         await scanner.ScanAsync(
             logProgress,
             GlobalData.ScanFolders,
-            [".mp3"],
             true,
             source
             );

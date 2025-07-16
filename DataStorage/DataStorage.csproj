@@ -9,8 +9,8 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
 		<Authors>Azurshi</Authors>
-		<Version>0.1.47</Version>
-		<Description>v0.1.47: Android porting ...</Description>
+		<Version>0.1.64</Version>
+		<Description>v0.1.64: Fix available</Description>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
@@ -18,7 +18,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Domain" Version="0.1.26" />
+		<PackageReference Include="Domain" Version="0.1.31" />
+		<PackageReference Include="SkiaSharp" Version="3.119.0" />
 		<PackageReference Include="TagLibSharp" Version="2.3.0" />
 	</ItemGroup>
 
