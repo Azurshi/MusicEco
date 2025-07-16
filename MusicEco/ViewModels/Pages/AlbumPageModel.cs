@@ -26,7 +26,7 @@ public partial class AlbumPageModel : PropertyObject, IServiceAccess {
     [RelayCommand]
     public async Task AlbumSelect(object nameObj) {
         string name = (string)nameObj;
-        await Utility.GoToAsync("album_detail", name);
+        await Navigator.GoToAsync("album_detail", name);
     }
     [RelayCommand]
     public async Task LoadMoreItem(DataGrid.LoadMoreItemEventArgs args) {

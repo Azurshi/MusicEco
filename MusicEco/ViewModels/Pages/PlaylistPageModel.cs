@@ -33,7 +33,7 @@ public partial class PlaylistPageModel : PropertyObject, IServiceAccess {
     [RelayCommand]
     public async Task PlaylistSelect(string strId) {
         long id = long.Parse(strId);
-        await Utility.GoToAsync("playlist_detail", id);
+        await Navigator.GoToAsync("playlist_detail", id);
     }
     [RelayCommand]
     public async Task PlaylistDelete(string strId) {

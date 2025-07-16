@@ -20,7 +20,7 @@ public partial class SongItemModel : BaseDraggableItem, IServiceAccess {
     }
     public bool Available { get; set; }
     private static readonly List<string> _propertyNames = [
-        nameof(Key), nameof(Title), nameof(Icon), nameof(Playcount), nameof(IsFavourite), nameof(Available)
+        nameof(Key), nameof(Title), nameof(Playcount), nameof(IsFavourite), nameof(Available)
         ];
     protected override async Task OnActive() {
         if (Key == string.Empty) return;
@@ -35,10 +35,11 @@ public partial class SongItemModel : BaseDraggableItem, IServiceAccess {
             Playcount = model.PlayCount;
             IsFavourite = model.Favourite;
             Available = model.Available;
-            Icon = await IServiceAccess.DataGetter.Icon(model);
             foreach (var propertyName in _propertyNames) {
                 OnPropertyChanged(propertyName);
             }
+            Icon = await IServiceAccess.DataGetter.Icon(model);
+            OnPropertyChanged(nameof(Icon));
         }
     }
 }

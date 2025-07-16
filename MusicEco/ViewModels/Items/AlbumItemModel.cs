@@ -6,7 +6,7 @@ public partial class AlbumItemModel : BaseItem, IServiceAccess {
     public ImageSource? Icon { get; set; }
     public string? Title { get; set; }
     private static readonly List<string> _propertyNames = [
-        nameof(Key), nameof(Icon), nameof(Title)
+        nameof(Key), nameof(Title)
         ];
     public AlbumItemModel() {
 //#if WINDOWS // Tempory fix to improve perf on Android
@@ -19,10 +19,11 @@ public partial class AlbumItemModel : BaseItem, IServiceAccess {
         if (albumSongs.Count > 0) {
             ISongModel firstSong = albumSongs[0];
             Title = Key;
-            Icon = await IServiceAccess.DataGetter.Icon(firstSong);
             foreach (var propertyName in _propertyNames) {
                 OnPropertyChanged(propertyName);
             }
+            Icon = await IServiceAccess.DataGetter.Icon(firstSong);
+            OnPropertyChanged(nameof(Icon));
         }
     }
 }

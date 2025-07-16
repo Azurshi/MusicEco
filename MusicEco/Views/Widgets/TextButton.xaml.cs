@@ -25,16 +25,24 @@ public partial class TextButton : Label {
             TextButton This = (TextButton)b;
             bool value = (bool)v;
             if (value) {
+#if ANDROID
+                This.TextColor = EnabledColor;
+#else
                 This.TextColor = This.PreviousTextColor;
+#endif
             } else {
                 This.TextColor = DisabledColor;
             }
         },
         defaultValue: true
         );
-    #endregion
+#endregion
     public event EventHandler<TappedEventArgs>? Clicked;
     private static readonly Color DisabledColor = (Color)Application.Current!.Resources["DisabledColor"];
+#if ANDROID
+    // Error on Android when PreviousTextColor does not initialize correctly
+    private static readonly Color EnabledColor = (Color)Application.Current!.Resources["ItemText"];
+#endif
     private Color PreviousTextColor;
     public TextButton() {
         InitializeComponent();

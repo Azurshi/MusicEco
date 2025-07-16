@@ -107,7 +107,7 @@ internal class ImageManager {
     }
     private static readonly Dictionary<TagLib.ByteVector, WeakReference<ImageSource>> _cachedIcons = [];
     private static async Task<ImageSource> ConvertIcon(TagLib.ByteVector data) {
-        return await ImageProcessing.ScaleImageToIcon(data, new(256, 256));
+        return await ImageProcessing.ScaleImageToIcon(data, Config.IconSize);
     }
     internal static async Task<ImageSource> ExtractIcon(string filePath) {
         TagLib.ByteVector? data = await GetData(filePath);

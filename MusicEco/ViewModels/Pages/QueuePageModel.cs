@@ -70,7 +70,7 @@ public partial class QueuePageModel : DragList, IServiceAccess {
     public async Task QueueSelect(object idObj) {
         long id = long.Parse((string)idObj);
         Debug.WriteLine(id);
-        await Utility.GoToAsync("playlist_detail", id);
+        await Navigator.GoToAsync("playlist_detail", id);
     }
     [RelayCommand]
     public async Task QueueDelete(object idObj) {
