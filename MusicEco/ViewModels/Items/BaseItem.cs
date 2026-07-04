@@ -41,6 +41,9 @@ public abstract class BaseItem: PropertyObject {
         isActive = true;
         await OnActive();
     }
+    public virtual void DeActive() {
+        isActive = false;
+    }
 }
 
 public partial class BaseModifiableItem : BaseItem {

@@ -1,3 +1,9 @@
+using MusicEco.ViewModels;
+using System.Collections;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace MusicEco.Views.Widgets;
@@ -43,6 +49,19 @@ public partial class DataList : CollectionView
             int lastVisibleRow = (int)((e.VerticalOffset + AppShell.ScreenHeight) / itemHeight);
             LoadMoreItemEventArgs args = new(lastVisibleRow, PreloadAmount);
             LoadMoreItemCommand?.Execute(args);
+        }
+    }
+    public void ToTop() {
+        this.ScrollTo(0, animate: false);
+        this.lastScrolled = 0;
+    }
+    protected override void OnPropertyChanged([CallerMemberName] string propertyName = "") {
+        base.OnPropertyChanged(propertyName);
+        if (propertyName == nameof(this.ItemsSource)) {
+            IEnumerable data = this.ItemsSource;
+            if (data is INotifyUpdated observableData) {
+                observableData.CollectionUpdated += this.ToTop;
+            }
         }
     }
     #endregion

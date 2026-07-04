@@ -13,11 +13,9 @@ public partial class AlbumDetailPage : BaseDetailPage, IQueryAttributable, IOpti
         MainBindingContext = viewModel;
         optionMenuComponent = new(this);
     }
-
     public void ApplyQueryAttributes(IDictionary<string, object> query) {
         ViewModel.ApplyQueryAttributes(query);
     }
-
     #region Interfacce
     public void OptionMenu_Clicked(object sender, TappedEventArgs e) {
         optionMenuComponent.StartOptionMenu(sender, e);

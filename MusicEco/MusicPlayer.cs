@@ -57,10 +57,10 @@ internal static class MusicPlayer {
         _player.PlaybackEnd += Player_PlaybackEnd;
 
         Play();
-        if (_player.IsPlaying) {
-            double totalTime = await _player.GetTotalTime();
-            await _player.Seek(GlobalData.PlayerProgress * totalTime);
-        }
+        //if (_player.IsPlaying) {
+        //    double totalTime = await _player.GetTotalTime();
+        //    await _player.Seek(GlobalData.PlayerProgress * totalTime);
+        //}
         SetVolume(GlobalData.PlayerVolume);
         PauseResume();
 

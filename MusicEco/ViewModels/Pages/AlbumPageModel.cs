@@ -15,18 +15,18 @@ public partial class AlbumPageModel : PropertyObject, IServiceAccess {
     public ObservableCollection<BaseItem> Data => DataController.Target;
 
     private async void OnScanCommited(object? sender, Domain.Events.ScanCommitedEventArgs args) {
-        await LoadData();
+        await LoadData(true);
     }
-    public async Task LoadData() {
+    public async Task LoadData(bool forceUpdate = false) {
         List<string> albumNames = IServiceAccess.DataGetter.AlbumNames().OrderBy(s => s).ToList();
-        await DataController.UpdateKeysAsync(albumNames);
+        await DataController.UpdateKeysAsync(albumNames, forceUpdate);
         await DataController.PageDown(0, AppSettingModel.Current.GridColumns * AppSettingModel.Current.GridRows);
     }
 
     [RelayCommand]
     public async Task AlbumSelect(object nameObj) {
         string name = (string)nameObj;
-        await Utility.GoToAsync("album_detail", name);
+        await Navigator.GoToAsync("album_detail", name);
     }
     [RelayCommand]
     public async Task LoadMoreItem(DataGrid.LoadMoreItemEventArgs args) {

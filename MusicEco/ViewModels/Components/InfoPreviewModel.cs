@@ -14,11 +14,16 @@ public partial class InfoPreviewModel : PropertyObject, IServiceAccess {
         );
         LoadData();
     }
-    public void LoadData() {
+    public async void LoadData() {
         ISongModel? model = IServiceAccess.ModelGetter.Song(GlobalData.PlayingSongId);
         if (model != null) {
-            Title = model.Title;
-            Image = IServiceAccess.DataGetter.Image(model);
+            if (model.Title != string.Empty) {
+                Title = model.Title;
+            }
+            else {
+                Title = model.File?.Name;
+            }
+            Image = await IServiceAccess.DataGetter.Image(model);
             foreach (var propertyName in _propertyNames) {
                 OnPropertyChanged(propertyName);
             }

@@ -41,55 +41,60 @@ public partial class NavigationBarModel : PropertyObject {
     public ImageSource SearchImage => imageStates[nameof(SearchImage)].Source;
     public ImageSource UserImage => imageStates[nameof(UserImage)].Source;
     public ImageSource SettingImage => imageStates[nameof(SettingImage)].Source;
-
+    public void DisplayAsPlaylist() {
+        Switch(nameof(PlaylistImage));
+    }
+    public void DisplayAsQueue() {
+        Switch(nameof(QueueImage));
+    }
     [RelayCommand]
     public async Task NavigateOverview() {
         Switch(nameof(OverviewImage));
         Debug.WriteLine("Navigate to overview");
-        await Utility.GoToAsync("overview", GlobalData.PlayingSongId);
+        await Navigator.GoToAsync("overview", GlobalData.PlayingSongId);
 
     }
     [RelayCommand]
     public async Task NavigateQueue() {
         Switch(nameof(QueueImage));
         Debug.WriteLine("Navigae to queue");
-        await Utility.GoToAsync("queue", false);
+        await Navigator.GoToAsync("queue");
     }
     [RelayCommand]
     public async Task NavigatePlaylist() {
         Switch(nameof(PlaylistImage));
         Debug.WriteLine("Navigate to playlist");
-        await Utility.GoToAsync("playlist", false);
+        await Navigator.GoToAsync("playlist");
     }
     [RelayCommand]
     public async Task NavigateAlbum() {
         Switch(nameof(AlbumImage));
         Debug.WriteLine("Navigate to album");
-        await Utility.GoToAsync("album", false);
+        await Navigator.GoToAsync("album");
     }
     [RelayCommand]
     public async Task NavigateExplorer() {
         Switch(nameof(ExplorerImage));
         Debug.WriteLine("Navigate to explorer");
         long folderId = GlobalData.CurrentFolderId ?? -1;
-        await Utility.GoToAsync("explorer", folderId);
+        await Navigator.GoToAsync("explorer", folderId);
     }
     [RelayCommand]
     public async Task NavigateSearch() {
         Switch(nameof(SearchImage));
         Debug.WriteLine("Navigate to search");
-        await Utility.GoToAsync("search", "");
+        await Navigator.GoToAsync("search", "");
     }
     [RelayCommand]
     public async Task NavigateUser() {
         Switch(nameof(UserImage));
         Debug.WriteLine("Navigate to user");
-        await Utility.GoToAsync("user", false);
+        await Navigator.GoToAsync("user");
     }
     [RelayCommand]
     public async Task NavigateSetting() {
         Switch(nameof(SettingImage));
         Debug.WriteLine("Navigate setting");
-        await Utility.GoToAsync("setting", false);
+        await Navigator.GoToAsync("setting");
     }
 }
