@@ -3,3 +3,10 @@
 bin/
 obj/
 MusicEco/Todo.txt
+*/CSource/*
+
+AudioCodecTest
+
+MusicEco/
+MusicEco.Core/
+SQLiteORM/
