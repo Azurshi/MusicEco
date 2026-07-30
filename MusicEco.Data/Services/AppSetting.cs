@@ -1,0 +1,95 @@
+﻿using MusicEco.Core;
+using MusicEco.Core.Services;
+using MusicEco.Data.Database.Repositories;
+using System.Diagnostics;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace MusicEco.Data.Services;
+
+internal partial class AppSetting: IAppSetting, IDisposable {
+    public event EventHandler<SettingChangedEventArgs>? ItemChanged;
+    private readonly JsonSerializerOptions _options;
+    private readonly DictionaryRepository _dictRepo;
+    private readonly Dictionary<string, object?> _settings;
+    private bool _disposed = false;
+    public AppSetting(DictionaryRepository dictionaryRepository) {
+        this._dictRepo = dictionaryRepository;
+        this._options = new();
+        this._settings = [];
+        var reader = ServiceRegister.GetReader();
+        var rows = reader.Select<string>("SELECT EntryValue FROM DictionaryEntry WHERE EntryKey = ?", nameof(AppSetting)).ToList();
+        if (rows.Count > 0) {
+            string json = rows[0].Item1;
+            var loadedSetting = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json) ?? [];
+            foreach (var (key, value) in loadedSetting) {
+                this._settings[key] = value;
+            }
+        }
+        reader.Dispose(false);
+        SaveLoop().FireAndForgetAsync();
+    }
+    public T Get<T>(string key, T defaultValue) {
+        if (this._settings.TryGetValue(key, out var valueObj)) {
+            if (valueObj is T value) {
+                return value;
+            }
+            else if (valueObj is JsonElement json) {
+                value = JsonSerializer.Deserialize<T>(json, _options) ?? defaultValue;
+                this._settings[key] = value;
+                return value;
+            }
+            else {
+                string foundType = "null";
+                if (valueObj != null) {
+                    foundType = valueObj.GetType().ToString();
+                }
+                throw new InvalidCastException($"Type mismatch. Required type: {typeof(T)}. Found type: {foundType}");
+            }
+        }
+        else {
+            return defaultValue;
+        }
+    }
+    public void Set(string key, object? value) {
+        this._settings[key] = value;
+        ScheduleSave();
+    }
+    public bool Register(Type type, JsonConverter converter) {
+        this._options.Converters.Add(converter);
+        return true;
+    }
+    
+    public bool Register<T>(JsonConverter<T> converter) {
+        this._options.Converters.Add(converter);
+        return true;
+    }
+    #region Scheduler
+    private DateTime _requestTime = DateTime.MaxValue;
+    private static readonly TimeSpan _saveDelay = TimeSpan.FromMilliseconds(Config.SaveDelayMs);
+    private void ScheduleSave() {
+        _requestTime = DateTime.Now;
+    }
+    private async Task SaveLoop() {
+        while(!_disposed) {
+            if (DateTime.Now - _requestTime > _saveDelay) {
+                _requestTime = DateTime.MaxValue;
+                try {
+                    await SaveData();
+                }
+                catch (Exception e) {
+                    Debug.WriteLine($"{e} : {e.Message}");
+                }
+            }
+            await Task.Delay(Config.SaveLoopMs);
+        }
+    }
+    private async Task SaveData() {
+        string json = JsonSerializer.Serialize(this._settings, _options);
+        await _dictRepo.SetValue(nameof(AppSetting), json);
+    }
+    public void Dispose() {
+        this._disposed = true;
+    }
+    #endregion
+}

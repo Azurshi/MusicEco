@@ -5,8 +5,7 @@ obj/
 MusicEco/Todo.txt
 */CSource/*
 
-AudioCodecTest
+AudioCodecTest/
+MusicEco.DataTest/
 
 MusicEco/
-MusicEco.Core/
-SQLiteORM/
