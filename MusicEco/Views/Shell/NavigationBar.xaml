@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             xmlns:top="clr-namespace:MusicEco"
+             x:Class="MusicEco.Views.Shell.NavigationBar">
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0"
+                    Orientation="Vertical">
+            <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto"
+                  RowSpacing="8">
+                <button:NavigationButton Grid.Row="0"
+                                         ActivateImageSource="play_on.png"
+                                         DeactivateImageSource="play.png"
+                                         PageRoute="{x:Static top:PageRoute.Home}" />
+                <button:NavigationButton Grid.Row="1"
+                                         ActivateImageSource="playlist_on.png"
+                                         DeactivateImageSource="playlist.png"
+                                         PageRoute="{x:Static top:PageRoute.Playlist}" />
+                <button:NavigationButton Grid.Row="2"
+                                         ActivateImageSource="album_on.png"
+                                         DeactivateImageSource="album.png"
+                                         PageRoute="{x:Static top:PageRoute.Album}" />
+                <button:NavigationButton Grid.Row="3"
+                                         ActivateImageSource="folder_on.png"
+                                         DeactivateImageSource="folder.png"
+                                         PageRoute="{x:Static top:PageRoute.Explorer}" />
+                <button:NavigationButton Grid.Row="4"
+                                         ActivateImageSource="search_on.png"
+                                         DeactivateImageSource="search.png"
+                                         PageRoute="{x:Static top:PageRoute.Search}" />
+                <button:NavigationButton Grid.Row="5"
+                                         ActivateImageSource="user_on.png"
+                                         DeactivateImageSource="user.png"
+                                         PageRoute="{x:Static top:PageRoute.User}" />
+                <button:NavigationButton Grid.Row="6"
+                                         ActivateImageSource="setting_on.png"
+                                         DeactivateImageSource="setting.png"
+                                         PageRoute="{x:Static top:PageRoute.Setting}" />
+            </Grid>
+        </ScrollView>
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*, *">
+            <button:NavigationBackwardButton Grid.Column="0" />
+            <button:NavigationForwardButton Grid.Column="1"/>
+        </Grid>
+    </Grid>
+
+
+</ContentView>

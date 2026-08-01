@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Window xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MusicEco.Views.Shell.MainWindow"
+             Title="MusicEco">
+    <ContentPage Background="{DynamicResource WindowColor}">
+        <Grid ColumnDefinitions="64, *"
+              RowDefinitions="*, 76"
+              RowSpacing="0"
+              ColumnSpacing="0">
+
+            <ContentView x:Name="NavigationBarHost"
+                         Grid.Column="0"
+                         Grid.Row="0"
+                         Margin="0"/>
+            <ContentView x:Name="ViewHost"
+                         Grid.Column="1"
+                         Grid.Row="0"
+                         Margin="0" />
+            <ContentView x:Name="ControlBarHost"
+                         Grid.Column="0"
+                         Grid.ColumnSpan="2"
+                         Grid.Row="1"
+                         Margin="0" />
+            <ContentView x:Name="OverlayHost"
+                         Grid.ColumnSpan="2"
+                         Grid.RowSpan="3"
+                         Margin="0" />
+        </Grid>
+    </ContentPage>
+</Window>

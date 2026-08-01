@@ -17,8 +17,8 @@ public class AssemblyLocalization {
 }
 public interface ILocalizationService {
     public event EventHandler LanguageChanged;
-    public Task SetLanguage(string cultureCode, object? caller = null);
-    public Task<string> GetCurrentLanguageCode();
+    public void SetLanguage(string cultureCode, object? caller = null);
+    public string GetCurrentLanguageCode();
     public AssemblyLocalization Get(Type type);
     public void RegisterResource(Assembly assembly, ResourceManager resourceManager);
 }

@@ -1,0 +1,94 @@
+using MusicEco.Core;
+using MusicEco.Services;
+using System.Windows.Input;
+
+namespace MusicEco.Views.Buttons;
+
+public partial class NavigationButton: Grid {
+    private static readonly Type ThisType = typeof(NavigationButton);
+    public static readonly BindableProperty PageRouteProperty 
+        = Utility.Create<PageRoute>(ThisType, PageRoute.None,
+            propertyChanged: (b, _, v) => {
+                var This = (NavigationButton)b;
+                var value = (PageRoute)v;
+                This.IsActivate = This._stack.CurrentRoute == value;
+            });
+    public PageRoute PageRoute { 
+        get => (PageRoute)GetValue(PageRouteProperty); 
+        set => SetValue(PageRouteProperty, value); 
+    }
+    public static readonly BindableProperty ActivateImageSourceProperty
+        = Utility.Create<ImageSource?>(ThisType,
+            propertyChanged: (b, _, v) => {
+                var This = (NavigationButton)b;
+                var value = (ImageSource?)v;
+                This.ActivateImage.Source = value;
+            });
+    public ImageSource? ActivateImageSource {
+        get => (ImageSource?)GetValue(ActivateImageSourceProperty);
+        set => SetValue(ActivateImageSourceProperty, value);
+    }
+    public static readonly BindableProperty DeactivateImageSourceProperty
+        = Utility.Create<ImageSource?>(ThisType,
+            propertyChanged: (b, _, v) => {
+                var This = (NavigationButton)b;
+                var value = (ImageSource?)v;
+                This.DeactivateImage.Source = value;
+            });
+    public ImageSource? DeactivateImageSource {
+        get => (ImageSource?)GetValue(DeactivateImageSourceProperty);
+        set => SetValue(DeactivateImageSourceProperty, value);
+    }
+    private bool _isActivate = false;
+    private bool IsActivate {
+        get => _isActivate;
+        set {
+            if (this._isActivate != value) {
+                this._isActivate = value;
+                this.ActivateImage.IsVisible = this._isActivate;
+                this.DeactivateImage.IsVisible = !this._isActivate;
+            }
+        }
+    }
+    private readonly NavigationStack _stack;
+    public NavigationButton() {
+        InitializeComponent();
+        this._stack = AppLifeCycle.Provider.GetRequiredService<NavigationStack>();
+        this._stack.RouteChanged += this.NavigationButton_RouteChanged;
+        this.IsActivate = false;
+    }
+
+    private void NavigationButton_RouteChanged(object? sender, PageRoute e) {
+        this.IsActivate = this.PageRoute == e;
+    }
+
+    private void OnPointerPressed(object? sender, PointerEventArgs e) {
+        if (!this.IsActivate) {
+            Scale = 0.9;
+            BackgroundColor = Colors.Transparent;
+        }
+    }
+
+    private void OnPointerReleased(object? sender, PointerEventArgs e) {
+        Scale = 1.0;
+        BackgroundColor = Utility.GetResource<Color>("ImageButtonHighlightColor");
+    }
+
+    private void OnPointerEntered(object? sender, PointerEventArgs e) {
+        BackgroundColor = Utility.GetResource<Color>("ImageButtonHighlightColor");
+    }
+
+    private void OnPointerExited(object? sender, PointerEventArgs e) {
+        BackgroundColor = Colors.Transparent;
+    }
+
+    private void OnTapped(object sender, TappedEventArgs e) {
+        if (!this.IsActivate) {
+            var currentRoute = this._stack.CurrentRoute;
+            if (currentRoute != null) {
+                var navigateEventArgs = new NavigateEventArgs(this, currentRoute, this.PageRoute);
+                EventSystem.Publish(this, navigateEventArgs);
+            }
+        }
+    }
+}

@@ -120,7 +120,7 @@ internal class AudioRepository {
             var placeholder = Config.GetPlaceholder(batch.Length);
             var rows = await connection.SelectAsync<Hash256, string>($"""
                 SELECT FileHash, DisplayTitle FROM AudioEntity
-                WHERE Hash IN ({placeholder})
+                WHERE FileHash IN ({placeholder})
                 """, batchObjs);
             foreach(var row in rows) {
                 result.Add(new(row.Item1, row.Item2));

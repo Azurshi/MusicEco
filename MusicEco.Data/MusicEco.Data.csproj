@@ -50,9 +50,12 @@
 	<ItemGroup>
 		<PackageReference Include="Blake3" Version="3.0.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="MusicEco.Core" Version="0.0.15-dev" />
 		<PackageReference Include="SQLiteORM" Version="0.0.4-dev" />
 		<PackageReference Include="TagLibSharp" Version="2.3.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\MusicEco.Core\MusicEco.Core.csproj" />
 	</ItemGroup>
 
 </Project>

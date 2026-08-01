@@ -17,7 +17,7 @@ internal class IconRepository {
         this._encoder.Initialize(1);
     }
     public static async Task<Hash256?> GetCoverHash(SQLiteReadConnection connection, Hash256 fileHash) {
-        var rows = await connection.SelectAsync<Hash256>(
+        var rows = await connection.SelectAsync<Hash256?>(
             "SELECT IconHash FROM AudioEntity WHERE FileHash = ?", fileHash);
         if (rows.Count > 0) {
             return rows[0].Item1;

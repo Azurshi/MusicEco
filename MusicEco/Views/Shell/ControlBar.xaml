@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             xmlns:shellVM="clr-namespace:MusicEco.ViewModels.Shell"
+             x:Class="MusicEco.Views.Shell.ControlBar"
+             x:DataType="shellVM:ControlBarViewModel">
+    <Grid RowDefinitions="16, *">
+        <ProgressBar Grid.Row="0" />
+        <Grid Grid.Row="1"
+              x:Name="ButtonContainer"
+              SizeChanged="ButtonContainer_SizeChanged"
+              ColumnDefinitions="*, *, *, *, *, *, *, *, *">
+            <button:ControlButton Grid.Column="0"
+                                  ActivateImageSource="favourite.png"
+                                  DeactivateImageSource="no_favourite.png" 
+                                  Command="{Binding ChangeFavouriteCommand}"/>
+            <button:ControlButton Grid.Column="1"
+                                  ActivateImageSource="volume_on.png"
+                                  DeactivateImageSource="volume.png"
+                                  IsActivate="{Binding VolumeVisible}"
+                                  Command="{Binding ToggleVolumeButtonCommand}"/>
+            <button:ControlButton Grid.Column="2"
+                                  ActivateImageSource="next.png"
+                                  IsActivate="true"
+                                  Command="{Binding PreviousAudioCommand}"
+                                  Rotation="180" />
+            <button:ControlButton Grid.Column="3"
+                                  ActivateImageSource="forward.png"
+                                  IsActivate="true"
+                                  Command="{Binding SeekBackwardCommand}"
+                                  Rotation="180" />
+            <button:ControlButton Grid.Column="4"
+                                  ActivateImageSource="pause.png"
+                                  DeactivateImageSource="play_on.png" 
+                                  Command="{Binding PlayPauseCommand}"/>
+            <button:ControlButton Grid.Column="5"
+                                  ActivateImageSource="forward.png"
+                                  IsActivate="true" 
+                                  Command="{Binding SeekForwardCommand}"/>
+            <button:ControlButton Grid.Column="6"
+                                  ActivateImageSource="next.png"
+                                  IsActivate="true" 
+                                  Command="{Binding NextAudioCommand}"/>
+            <button:ControlButton Grid.Column="7"
+                                  ActivateImageSource="repeat_on.png"
+                                  DeactivateImageSource="repeat.png"
+                                  IsActivate="{Binding IsRepeating}"
+                                  Command="{Binding ChangeRepeatCommand}"/>
+            <button:ControlButton Grid.Column="8"
+                                  ActivateImageSource="shuffle_on.png"
+                                  DeactivateImageSource="shuffle.png"
+                                  IsActivate="{Binding IsShuffling}"
+                                  Command="{Binding ChangeShuffleCommand}"/>
+            <AbsoluteLayout Grid.Row="0"
+                            x:Name="Overlay"
+                            Margin="100, 14, 0, 0 "
+                            InputTransparent="True"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill"
+                            CascadeInputTransparent="False"
+                            IsClippedToBounds="False"
+                            IsVisible="{Binding VolumeVisible}">
+                <Slider x:Name="VolumeSlider"
+                        Minimum="0"
+                        Maximum="1"
+                        HeightRequest="28"
+                        Value="{Binding CurrentVolume, Mode=TwoWay}" />
+            </AbsoluteLayout>
+
+        </Grid>
+    </Grid>
+</ContentView>

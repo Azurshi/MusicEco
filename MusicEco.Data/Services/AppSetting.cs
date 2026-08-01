@@ -29,7 +29,7 @@ internal partial class AppSetting: IAppSetting, IDisposable {
         reader.Dispose(false);
         SaveLoop().FireAndForgetAsync();
     }
-    public T Get<T>(string key, T defaultValue) {
+    public T Get<T>(T defaultValue, string key) {
         if (this._settings.TryGetValue(key, out var valueObj)) {
             if (valueObj is T value) {
                 return value;
@@ -51,7 +51,7 @@ internal partial class AppSetting: IAppSetting, IDisposable {
             return defaultValue;
         }
     }
-    public void Set(string key, object? value) {
+    public void Set(object? value, string key) {
         this._settings[key] = value;
         ScheduleSave();
     }

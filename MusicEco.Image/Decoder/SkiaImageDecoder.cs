@@ -41,8 +41,7 @@ internal class SkiaImageDecoder: BaseImageCodec, IImageDecoder {
         await Semaphore.WaitAsync();
         try {
             var bytes = await Task.Run(() => DecodeInner(data, maxSize, highQuality));
-            var stream = new MemoryStream(bytes);
-            return ImageSource.FromStream(() => stream);
+            return ImageSource.FromStream(() => new MemoryStream(bytes));
         }
         finally {
             Semaphore.Release();

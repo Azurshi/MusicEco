@@ -31,8 +31,7 @@ internal class SkiaIconDecoder: BaseImageCodec, IIconDecoder {
         await Semaphore.WaitAsync();
         try {
             var bytes = await Task.Run(() => DecodeInner(data));
-            var stream = new MemoryStream(bytes);
-            return ImageSource.FromStream(() => stream);
+            return ImageSource.FromStream(() => new MemoryStream(bytes));
         }
         finally {
             Semaphore.Release();
