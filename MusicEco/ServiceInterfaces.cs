@@ -34,7 +34,43 @@ public interface IIconService {
     public Task<ImageSource> GetIcon(Hash256 hash, CoverSize size, CancelSource cancelSource);
 }
 
-public interface IPlaybackService {
+public interface IPlaybackService: IDisposable {
     public Task PlayQueue(string name, List<AudioEntry> audios, AudioEntry current, object? sender);
     public Task PlayQueue(AudioQueue queue, object? sender);
+}
+
+public readonly struct AudioTime {
+    public readonly TimeSpan Position;
+    public readonly TimeSpan Duration;
+    public readonly double Ratio {
+        get {
+            var ratio = Position / Duration;
+            ratio = Math.Clamp(ratio, 0.0, 1.0);
+            return ratio;
+        }
+    }
+    public AudioTime(TimeSpan position, TimeSpan duration) {
+        this.Position = position;
+        this.Duration = duration;
+    }
+}
+
+public enum PlayState {
+    Playing,
+    Stopped
+}
+
+public interface IPlayerController: IDisposable {
+    public event EventHandler<AudioTime>? PositionChanged;
+    public event EventHandler? AudioEnded;
+    public event EventHandler<bool>? RepeatingChanged;
+    public event EventHandler<PlayState>? StateChanged;
+    public bool IsRepeating { get; set; }
+    public Task Play(string path);
+    public void Pause();
+    public void Resume();
+    public void Seek(TimeSpan position);
+    public void SetVolume(float volume);
+    public float GetVolume();
+    public PlayState GetState();
 }

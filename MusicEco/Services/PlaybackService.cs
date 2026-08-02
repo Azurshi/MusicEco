@@ -3,13 +3,13 @@ using MusicEco.Core.Services;
 
 namespace MusicEco.Services;
 
-public class PlaybackService: IPlaybackService {
+internal partial class PlaybackService: IPlaybackService {
     private readonly IQueueService _queueService;
     private readonly IAudioService _audioService;
     private readonly IFileService _fileSerivce;
-    private readonly PlayerController _player;
+    private readonly IPlayerController _player;
     private AudioQueue? _playQueue;
-    public PlaybackService(IQueueService queueService, IAudioService audioService, IFileService fileService, PlayerController playerController) {
+    public PlaybackService(IQueueService queueService, IAudioService audioService, IFileService fileService, IPlayerController playerController) {
         this._queueService = queueService;
         this._audioService = audioService;
         this._fileSerivce = fileService;
@@ -59,5 +59,9 @@ public class PlaybackService: IPlaybackService {
             queue = queue.WithCurrent(queue.Audios[0]);
         }
         await this.PlayQueue(queue.Name, queue.Audios.ToList(), queue.Current!, sender);
+    }
+
+    public void Dispose() {
+        
     }
 }

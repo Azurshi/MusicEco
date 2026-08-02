@@ -33,6 +33,7 @@
             <button:ControlButton Grid.Column="4"
                                   ActivateImageSource="pause.png"
                                   DeactivateImageSource="play_on.png"
+                                  IsActivate="{Binding IsPlaying}"
                                   Command="{Binding PlayPauseCommand}" />
             <button:ControlButton Grid.Column="5"
                                   ActivateImageSource="forward.png"

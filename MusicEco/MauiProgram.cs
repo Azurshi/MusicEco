@@ -76,7 +76,7 @@ public static class MauiProgram {
             db.Dispose(true);
         });
         AppLifeCycle.RegisterAppClose((provider) => {
-            var player = provider.GetRequiredService<PlayerController>();
+            var player = provider.GetRequiredService<IPlayerController>();
             player.Dispose();
         });
     }

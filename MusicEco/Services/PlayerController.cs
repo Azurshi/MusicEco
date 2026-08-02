@@ -3,30 +3,36 @@ using MusicEco.Core.Services;
 using System.Diagnostics;
 
 namespace MusicEco.Services;
-public readonly struct AudioTime {
-    public readonly TimeSpan Position;
-    public readonly TimeSpan Duration;
-    public readonly double Ratio {
-        get {
-            var ratio = Position / Duration;
-            ratio = Math.Clamp(ratio, 0.0, 1.0);
-            return ratio;
-        }
-    }
-    public AudioTime(TimeSpan position, TimeSpan duration) {
-        this.Position = position;
-        this.Duration = duration;
-    }
-}
-public partial class PlayerController: IDisposable {
+internal partial class PlayerController: IPlayerController {
     public event EventHandler<AudioTime>? PositionChanged;
+    public event EventHandler? AudioEnded;
+    public event EventHandler<bool>? RepeatingChanged;
+    public event EventHandler<PlayState>? StateChanged;
+
+    private readonly IAppSetting _setting;
     private readonly AudioPlayer.AudioPlayer _player;
     private FileStream? _stream;
+    private bool _endFlag;
+    private PlayState _lastState = PlayState.Stopped;
     private bool _disposed = false;
+    private float Volume {
+        get => this._setting.Get(0.5f);
+        set => this._setting.Set(value);
+    }
+    public bool IsRepeating {
+        get => _setting.Get(false);
+        set {
+            _setting.Set(value);
+            RepeatingChanged?.Invoke(this, value);
+        }
+    }
     public PlayerController(IAppSetting setting) {
+        this._setting = setting;
         this._player = new();
-        int targetFps = setting.Get(30, SettingFields.AudioPlayerFPS);
+        int targetFps = this._setting.Get(30, SettingFields.AudioPlayerFPS);
         int delayMs = 1000 / targetFps;
+        this._player.SetVolume(Volume);
+        this._endFlag = false;
         WorkerLoop(TimeSpan.FromMilliseconds(delayMs)).FireAndForgetAsync();
     }
     private async Task WorkerLoop(TimeSpan delay) {
@@ -35,13 +41,28 @@ public partial class PlayerController: IDisposable {
         TimeSpan epsilon = TimeSpan.FromMilliseconds(1);
         TimeSpan ceil = TimeSpan.FromMilliseconds(100);
         while (!this._disposed) {
-            var elapsed = sw.Elapsed;
 
             var position = this._player.GetPosition();
             var duration = this._player.GetDuration();
             PositionChanged?.Invoke(this, new(position, duration));
+            if (this._player.GetState() == AudioPlayer.PlaybackState.End) {
+                if (!this._endFlag) {
+                    this._endFlag = true;
+                    AudioEnded?.Invoke(this, EventArgs.Empty);
+                    this._player.Seek(TimeSpan.Zero);
+                }
+            }
+            var state = this.GetState();
+            if (this._lastState != state) {
+                this._lastState = state;
+                StateChanged?.Invoke(this, state);
+            }
 
+            var elapsed = sw.Elapsed;
             TimeSpan delta = elapsed - lastUpdate;
+            if (delta < delay) {
+                delta = delay;
+            }
             if (delta > ceil) {
                 delta = ceil;
             }
@@ -70,5 +91,36 @@ public partial class PlayerController: IDisposable {
             this._player.Play(this._stream);
         }
         oldStream?.Close();
+        this._endFlag = false;
+    }
+
+    public void Pause() {
+        this._player.Pause();
+    }
+
+    public void Resume() {
+        this._player.Resume();
+    }
+
+    public void Seek(TimeSpan position) {
+        this._player.Seek(position);
+    }
+
+    public void SetVolume(float volume) {
+        this.Volume = volume;
+        this._player.SetVolume(volume);
+    }
+
+    public float GetVolume() {
+        return this.Volume;
+    }
+
+    public PlayState GetState() {
+        return this._player.GetState() switch {
+            AudioPlayer.PlaybackState.Playing => PlayState.Playing,
+            AudioPlayer.PlaybackState.Paused => PlayState.Stopped,
+            AudioPlayer.PlaybackState.End => PlayState.Stopped,
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 }

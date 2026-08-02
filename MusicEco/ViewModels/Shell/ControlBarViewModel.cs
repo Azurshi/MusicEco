@@ -6,11 +6,13 @@ namespace MusicEco.ViewModels.Shell;
 
 public partial class ControlBarViewModel: ObservableObject {
     private readonly IAppSetting _setting;
+    private readonly IPlayerController _player;
     public bool IsRepeating {
-        get => _setting.Get(false);
+        get => this._player.IsRepeating;
         set {
-            _setting.Set(value);
-            OnPropertyChanged();
+            if (this._player.IsRepeating != value) {
+                this._player.IsRepeating = value;
+            }
         }
     }
     public bool IsShuffling {
@@ -35,11 +37,11 @@ public partial class ControlBarViewModel: ObservableObject {
             OnPropertyChanged();
         }
     }
-
+    public bool IsPlaying { get; private set; }
     public AsyncCommand PreviousAudioCommand { get; }
     public AsyncCommand NextAudioCommand { get; }
-    public AsyncCommand SeekBackwardCommand { get; }
-    public AsyncCommand SeekForwardCommand { get; }
+    public AsyncCommandExtend SeekBackwardCommand { get; }
+    public AsyncCommandExtend SeekForwardCommand { get; }
     public SyncCommand ChangeRepeatCommand { get; }
     public SyncCommand ChangeShuffleCommand { get; }
     public AsyncCommand ChangeFavouriteCommand { get; }
@@ -50,18 +52,33 @@ public partial class ControlBarViewModel: ObservableObject {
     public string PlaybackPosition => this._playbackPosition.ToString(@"h\:mm\:ss");
     public string PlaybackDuration => this._playbackDuration.ToString(@"h\:mm\:ss");
     public double PlaybackRatio { get; private set; }
-    public ControlBarViewModel(IAppSetting appSetting, PlayerController playerController) {
+    private TimeSpan PerSeekDuration => TimeSpan.FromSeconds(this._setting.Get(15, SettingFields.PerSeekSeconds));
+    public ControlBarViewModel(IAppSetting appSetting, IPlayerController playerController) {
         this._setting = appSetting;
         this.PreviousAudioCommand = new(PreviousAudio);
         this.NextAudioCommand = new(NextAudio);
-        this.SeekBackwardCommand = new(SeekBackward);
-        this.SeekForwardCommand = new(SeekForward);
+        this.SeekBackwardCommand = new(SeekBackward, () => this.IsPlaying);
+        this.SeekForwardCommand = new(SeekForward, () => this.IsPlaying);
         this.ChangeRepeatCommand = new(ChangeRepeat);
         this.ChangeShuffleCommand = new(ChangeShuffle);
         this.ChangeFavouriteCommand = new(ChangeFavourite);
         this.ToggleVolumeButtonCommand = new(ToggleVolumeButton);
         this.PlayPauseCommand = new(PlayPause);
-        playerController.PositionChanged += this.PlayerController_PositionChanged;
+        this._player = playerController;
+        this._player.PositionChanged += this.PlayerController_PositionChanged;
+        this._player.RepeatingChanged += this.Player_RepeatingChanged;
+        this._player.StateChanged += this.Player_StateChanged;
+    }
+
+    private void Player_StateChanged(object? sender, PlayState e) {
+        this.IsPlaying = e == PlayState.Playing;
+        OnPropertyChanged(nameof(IsPlaying));
+        this.SeekBackwardCommand.NotifyCanExecute();
+        this.SeekBackwardCommand.NotifyCanExecute();
+    }
+
+    private void Player_RepeatingChanged(object? sender, bool e) {
+        OnPropertyChanged(nameof(IsRepeating));
     }
 
     private void PlayerController_PositionChanged(object? sender, AudioTime e) {
@@ -87,10 +104,12 @@ public partial class ControlBarViewModel: ObservableObject {
 
     }
     private async Task SeekBackward() {
-
+        var position = this._playbackPosition;
+        this._player.Seek(position - this.PerSeekDuration);
     }
     private async Task SeekForward() {
-
+        var position = this._playbackPosition;
+        this._player.Seek(position + this.PerSeekDuration);
     }
     private void ChangeRepeat() {
         this.IsRepeating = !this.IsRepeating;
@@ -105,6 +124,10 @@ public partial class ControlBarViewModel: ObservableObject {
         this.VolumeVisible = !this.VolumeVisible;
     }
     private async Task PlayPause() {
-
+        if (this.IsPlaying) {
+            this._player.Pause();
+        } else {
+            this._player.Resume();
+        }
     }
 }

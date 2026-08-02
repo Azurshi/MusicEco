@@ -13,7 +13,7 @@ public static class ServiceRegister {
         services.AddSingleton<IPageResolver, PageResolver>();
         services.AddSingleton<IPageRouteRegistry, PageRegistry>();
         services.AddSingleton<IIconService, IconService>();
-        services.AddSingleton<PlayerController>();
+        services.AddSingleton<IPlayerController, PlayerController>();
         services.AddSingleton<IPlaybackService, PlaybackService>();
         return services;
     }
