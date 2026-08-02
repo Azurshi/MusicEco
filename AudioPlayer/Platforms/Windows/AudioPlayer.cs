@@ -6,7 +6,7 @@ namespace AudioPlayer;
 // All the code in this file is only included on Windows.
 #if WINDOWS
 using NAudio.Wave;
-public partial class AudioPlayer {
+public partial class AudioPlayer: IDisposable {
     public readonly AudioFormat Format;
     private readonly BufferedWaveProvider Provider;
     private readonly WaveOut Player;
@@ -14,7 +14,9 @@ public partial class AudioPlayer {
     private readonly Thread Worker;
     private readonly byte[] TransferBuffer;
     private bool _isPlayed = false;
+    private readonly CancellationTokenSource _disposeCts;
     public AudioPlayer() {
+        this._disposeCts = new();
         this.Format = new(64 * 1024, 44_100, 2, AudioCodec.Enum.AVSampleFormat.S16);
         this.Provider = new(new(Format.SampleRate, Format.BitSize, Format.Channels)) {
             DiscardOnBufferOverflow = true
@@ -50,7 +52,13 @@ public partial class AudioPlayer {
             if (readLength > 0) {
                 Provider.AddSamples(TransferBuffer, 0, readLength);
             } else {
-                this.Decoder.Buffer.DataAvailable.Wait();
+                // Manual set when need to dispose instead of wait with timeout
+                try {
+                    this.Decoder.Buffer.DataAvailable.Wait(this._disposeCts.Token);
+                }
+                catch (OperationCanceledException) {
+                    return;
+                }
             }
         }
     }
@@ -93,7 +101,9 @@ public partial class AudioPlayer {
         this.Provider.ClearBuffer();
         this.Player.Dispose();
         this.Decoder.Dispose();
+        this._disposeCts.Cancel();
         this.Worker.Join();
+        this._disposeCts.Dispose();
     }
     public partial float GetVolume() {
         return this.ClampVolume(this.Player.Volume);

@@ -18,7 +18,7 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
 		<!-- Enable XAML source generation for faster build times and improved performance.
 		     This generates C# code from XAML at compile time instead of runtime inflation.
@@ -67,18 +67,41 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AudioPlayer" Version="0.0.2-preview" />
+		<PackageReference Include="AudioPlayer" Version="0.0.6-dev" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
 	</ItemGroup>
-
+	<!--Third party-->
+	<ItemGroup Condition="'$(TargetFramework)'=='net10.0-windows10.0.19041.0'">
+		<None Include="ThirdParty\Windows\*.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>%(FileName)%(Extension)</TargetPath>
+		</None>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)'=='net10.0-android'">
+		<AndroidNativeLibrary Include="ThirdParty\Android\arm64-v8a\*.so">
+			<Abi>arm64-v8a</Abi>
+		</AndroidNativeLibrary>
+	</ItemGroup>
+	<!--End-->
 	<ItemGroup>
 	  <Folder Include="ViewModels\Overlays\" />
 	  <Folder Include="ViewModels\Pages\Stats\" />
 	  <Folder Include="ViewModels\Pages\Settings\" />
-	  <Folder Include="Views\Items\" />
 	  <Folder Include="Views\Overlays\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Services\IconService.Cache.cs">
+	    <DependentUpon>IconService.cs</DependentUpon>
+	  </None>
+	  <None Include="Services\IconService.Default.cs">
+	    <DependentUpon>IconService.cs</DependentUpon>
+	  </None>
+	  <None Include="Services\IconService.Logging.cs">
+	    <DependentUpon>IconService.cs</DependentUpon>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -130,6 +153,9 @@
 	  <MauiXaml Update="Views\Controls\ManagedIcon.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Items\ItemFrame.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\AlbumPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -140,6 +166,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\PlaylistPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\QueueDetailPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\QueuePage.xaml">

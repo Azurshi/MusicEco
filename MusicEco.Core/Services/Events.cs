@@ -3,5 +3,6 @@
 public enum ChangeKind {
     Added,
     Removed,
-    Updated
+    Updated,
+    AllUpdated
 }

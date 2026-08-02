@@ -75,7 +75,7 @@ internal class FileRepository {
     }
     public async Task<List<FileEntry>> GetByHash(Hash256 fileHash) {
         using(var db = await _db.GetReader()) {
-            return await GetByHash(fileHash);
+            return await GetByHash(db.Connection, fileHash);
         }
     }
 }

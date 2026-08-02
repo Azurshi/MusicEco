@@ -23,10 +23,12 @@ public delegate void BufferResetHandler();
 public delegate void DecodeEndEventHandler();
 public delegate void ConsumePacketHandler(PacketData data);
 public sealed class AudioDecoder: IDisposable {
-    public event DecodeEndEventHandler DecodeEnd;
+    public event DecodeEndEventHandler? DecodeEnd;
     private readonly SeekControl _seekControl;
     private readonly StreamControl _streamControl;
     private bool _disposed;
+    private readonly CancellationTokenSource _disposeCts;
+    private readonly ManualResetEvent _disposeEvent;
     private readonly Lock _metadataLock = new();
     private AudioMetadata? _metadata = null;
     public AudioMetadata? Metadata {
@@ -55,6 +57,8 @@ public sealed class AudioDecoder: IDisposable {
         BufferResetHandler bufferReset,
         AudioFormat format,
         int ringBufferCapacity) {
+        this._disposeCts = new();
+        this._disposeEvent = new(false);
         this._worker = new(WorkerLoop);
         this._ringBuffer = new(ringBufferCapacity);
         this._seekControl = new();
@@ -72,7 +76,12 @@ public sealed class AudioDecoder: IDisposable {
                     // Reset signal state
                     _ringBuffer.JustRead.Reset();
                     // Wait when buffer is not full
-                    _ringBuffer.JustRead.Wait();
+                    try {
+                        _ringBuffer.JustRead.Wait(this._disposeCts.Token);
+                    }
+                    catch (OperationCanceledException){
+                        return;
+                    }
                 }
                 else {
                     remaining = remaining.Slice(written);
@@ -112,7 +121,18 @@ public sealed class AudioDecoder: IDisposable {
             } else {
                 // This does not reach since thread is locked at DecodeToPCM
                 // Only use when entry, to wait for start job
-                _streamControl.HaveJobEvent.WaitOne();
+                int index = WaitHandle.WaitAny([_streamControl.HaveJobEvent, _disposeEvent]);
+                if (index == 0) {
+                    // Continue
+                    continue;
+                }
+                else if (index == 1) {
+                    // Dispose
+                    return;
+                }
+                else {
+                    throw new ArgumentOutOfRangeException();
+                }
             }
         }
     }
@@ -126,7 +146,13 @@ public sealed class AudioDecoder: IDisposable {
             _cts.Cancel();
             _cts.Dispose();
         }
+        this._disposeEvent.Set();
+        this._disposeCts.Cancel();
         this._worker.Join();
+        this._disposeCts.Dispose();
+        this._disposeEvent.Dispose();
+        this._seekControl.Dispose();
+        this._streamControl.Dispose();
     }
     private unsafe void DecodeToPCM(Stream input, CancellationToken token) {
         using (var managedFormat = new FormatFromStream(input, this.Format.IoBufferSize)) {
@@ -203,7 +229,7 @@ public sealed class AudioDecoder: IDisposable {
                     result = FFmpeg.Format.av_read_frame(format, packet);
                     if (result == FFmpeg.Flags.AVERR_EOF) {
                         DecodeEnd?.Invoke();
-                        int index = WaitHandle.WaitAny([_streamControl.HaveJobEvent, _seekControl.HaveJobEvent]);
+                        int index = WaitHandle.WaitAny([_streamControl.HaveJobEvent, _seekControl.HaveJobEvent, _disposeEvent]);
                         if (index == 0) {
                             // Move to if(_streamControl.HaveJob())
                             continue;
@@ -211,6 +237,10 @@ public sealed class AudioDecoder: IDisposable {
                         else if (index == 1) {
                             // Move to next cycle
                             continue;
+                        }
+                        else if (index == 2) {
+                            // Dispose
+                            return;
                         }
                         else {
                             throw new ArgumentOutOfRangeException();

@@ -16,7 +16,7 @@
                 <button:NavigationButton Grid.Row="1"
                                          ActivateImageSource="playlist_on.png"
                                          DeactivateImageSource="playlist.png"
-                                         PageRoute="{x:Static top:PageRoute.Playlist}" />
+                                         PageRoute="{x:Static top:PageRoute.Queue}" />
                 <button:NavigationButton Grid.Row="2"
                                          ActivateImageSource="album_on.png"
                                          DeactivateImageSource="album.png"

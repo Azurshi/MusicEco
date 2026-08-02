@@ -1,6 +1,6 @@
 ﻿namespace AudioCodec.Utility;
 
-public sealed class SeekControl {
+public sealed class SeekControl: IDisposable {
     private const long NoSeek = long.MinValue;
     private long _requestedSeekTicks = NoSeek;
     public ManualResetEvent HaveJobEvent = new(false);
@@ -19,9 +19,13 @@ public sealed class SeekControl {
         HaveJobEvent.Reset();
         return true;
     }
+
+    public void Dispose() {
+        this.HaveJobEvent.Dispose();
+    }
 }
 
-public sealed class StreamControl {
+public sealed class StreamControl: IDisposable{
     private Stream? _requestStream = null;
     public ManualResetEvent HaveJobEvent = new(false);
     public void SetJob(Stream requestStream) {
@@ -40,5 +44,8 @@ public sealed class StreamControl {
     }
     public bool HaveJob() {
         return _requestStream != null;
+    }
+    public void Dispose() {
+        this.HaveJobEvent.Dispose();
     }
 }

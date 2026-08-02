@@ -59,7 +59,11 @@ public partial class NavigationButton: Grid {
     }
 
     private void NavigationButton_RouteChanged(object? sender, PageRoute e) {
-        this.IsActivate = this.PageRoute == e;
+        bool isActivate = false;
+        if (e.Route.StartsWith(this.PageRoute.Route)) {
+            isActivate = true;
+        }
+        this.IsActivate = isActivate;
     }
 
     private void OnPointerPressed(object? sender, PointerEventArgs e) {
@@ -71,18 +75,18 @@ public partial class NavigationButton: Grid {
 
     private void OnPointerReleased(object? sender, PointerEventArgs e) {
         Scale = 1.0;
-        BackgroundColor = Utility.GetResource<Color>("ImageButtonHighlightColor");
+        BackgroundColor = Utility.GetResource<Color>("ButtonHighlightColor");
     }
 
     private void OnPointerEntered(object? sender, PointerEventArgs e) {
-        BackgroundColor = Utility.GetResource<Color>("ImageButtonHighlightColor");
+        BackgroundColor = Utility.GetResource<Color>("ButtonHighlightColor");
     }
 
     private void OnPointerExited(object? sender, PointerEventArgs e) {
         BackgroundColor = Colors.Transparent;
     }
 
-    private void OnTapped(object sender, TappedEventArgs e) {
+    private void OnTapped(object? sender, TappedEventArgs e) {
         if (!this.IsActivate) {
             var currentRoute = this._stack.CurrentRoute;
             if (currentRoute != null) {

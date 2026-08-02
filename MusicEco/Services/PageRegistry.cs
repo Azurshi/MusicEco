@@ -7,6 +7,7 @@ public class PageRegistry: IPageRouteRegistry {
     public PageRegistry() {
         RegisterRoute<HomePage>(PageRoute.Home);
         RegisterRoute<QueuePage>(PageRoute.Queue);
+        RegisterRoute<QueueDetailPage>(PageRoute.QueueDetail);
         RegisterRoute<AlbumPage>(PageRoute.Album);
         RegisterRoute<ExplorerPage>(PageRoute.Explorer);
         RegisterRoute<SearchPage>(PageRoute.Search);

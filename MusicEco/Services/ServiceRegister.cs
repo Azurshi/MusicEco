@@ -13,6 +13,8 @@ public static class ServiceRegister {
         services.AddSingleton<IPageResolver, PageResolver>();
         services.AddSingleton<IPageRouteRegistry, PageRegistry>();
         services.AddSingleton<IIconService, IconService>();
+        services.AddSingleton<PlayerController>();
+        services.AddSingleton<IPlaybackService, PlaybackService>();
         return services;
     }
     public static IServiceCollection RegisterShell(this IServiceCollection services) {
@@ -37,6 +39,9 @@ public static class ServiceRegister {
         services.AddSingleton<UserPageViewModel>();
         services.AddTransient<SettingPage>();
         services.AddSingleton<SettingPageViewModel>();
+
+        services.AddSingleton<QueueDetailPage>();
+        services.AddSingleton<QueueDetailPageViewModel>();
 
         services.AddTransient<PlaylistPage>();
         services.AddSingleton<PlaylistPageViewModel>();

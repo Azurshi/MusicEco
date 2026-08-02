@@ -9,7 +9,6 @@ namespace MusicEco.Views.Shell;
 
 public partial class MainWindow: Window {
     public AssemblyLocalization? L { get; private set; }
-    private bool _firstActivate = true;
     public MainWindow() {
         InitializeComponent();
     }

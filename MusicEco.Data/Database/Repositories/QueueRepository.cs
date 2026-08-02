@@ -5,7 +5,7 @@ using SQLiteORM;
 
 namespace MusicEco.Data.Database.Repositories;
 
-internal class QueueRepository {
+internal partial class QueueRepository {
     private readonly DatabaseContextAsync _db;
     public QueueRepository(DatabaseContextAsync dbContext) {
         this._db = dbContext;
@@ -16,16 +16,16 @@ internal class QueueRepository {
         var rows = await connection.SelectAsync<
             DateTime, string, DateTime, DateTime, bool>($"""
             SELECT * FROM QueueEntity
-            WHERE CreationTime IN {Config.GetPlaceholder(creationTimeObjs.Length)}
+            WHERE CreationTime IN ({Config.GetPlaceholder(creationTimeObjs.Length)})
             """, creationTimeObjs);
         List<ValueTuple<DateTime, Hash256, bool>> hashRows = [];
         foreach (var batchObjs in creationTimeObjs.Chunk(Config.MaxParameterCount)) {
             var placeholder = Config.GetPlaceholder(batchObjs.Length);
             var batchResult = await connection.SelectAsync<DateTime, Hash256, bool>($"""
                 SELECT CreationTime, FileHash, IsCurrent
-                FROM PlaylistAudioRelation
-                ORDER BY OrderIndex
+                FROM QueueAudioRelation
                 WHERE CreationTime IN ({placeholder})
+                ORDER BY OrderIndex
                 """, batchObjs);
             hashRows.AddRange(batchResult);
         }
@@ -65,9 +65,19 @@ internal class QueueRepository {
             return null;
         }
     }
+    public static async Task<bool> IsCurrent(SQLiteReadConnection connection, DateTime creationTime) {
+        var rows = await connection.SelectAsync<bool>($"""
+            SELECT EXISTS (
+                SELECT 1
+                FROM QueueEntity 
+                WHERE CreationTime = ? AND IsCurrent = ?
+            )
+            """, creationTime, true);
+        return rows.First().Item1;
+    }
     public static async Task<AudioQueue?> Get(SQLiteReadConnection connection, string name) {
         var rows = await connection.SelectAsync<DateTime>(
-            "SELECT CreationTime FROM QueueEntitye WHERE Name = ?", name);
+            "SELECT CreationTime FROM QueueEntity WHERE Name = ?", name);
         if (rows.Count > 0) {
             return await Get(connection, rows[0].Item1);
         } else {

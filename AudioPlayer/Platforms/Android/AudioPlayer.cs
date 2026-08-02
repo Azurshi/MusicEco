@@ -17,7 +17,9 @@ public partial class AudioPlayer {
     private readonly ManualResetEventSlim CanWriteEvent;
     private float _volume = 1.0f;
     private bool _isPlayed = false;
+    private readonly CancellationTokenSource _disposeCts;
     public AudioPlayer() {
+        this._disposeCts = new();
         this.Format = new(64 * 1024, 44_100, 2, AudioCodec.Enum.AVSampleFormat.S16);
         this.CanWriteEvent = new();
         int minBuffer = AudioTrack.GetMinBufferSize(
@@ -68,11 +70,21 @@ public partial class AudioPlayer {
                 break;
             }
             if (readLength > 0) {
-                CanWriteEvent.Wait();
+                try {
+                    CanWriteEvent.Wait(this._disposeCts.Token);
+                }
+                catch (OperationCanceledException) {
+                    return;
+                }
                 this.Player.Write(TransferBuffer, 0, readLength, WriteMode.Blocking);
             }
             else {
-                this.Decoder.Buffer.DataAvailable.Wait();
+                try {
+                    this.Decoder.Buffer.DataAvailable.Wait(this._disposeCts.Token);
+                }
+                catch (OperationCanceledException) {
+                    return;
+                }
             }
         }
     }
@@ -123,7 +135,10 @@ public partial class AudioPlayer {
         this.Player.Stop();
         this.Player.Release();
         this.Player.Dispose();
+        this._disposeCts.Cancel();
         this.Worker.Join();
+        this._disposeCts.Dispose();
+        this.CanWriteEvent.Dispose();
     }
     public partial float GetVolume() {
         return this.ClampVolume(this._volume);

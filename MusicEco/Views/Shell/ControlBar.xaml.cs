@@ -9,7 +9,7 @@ public partial class ControlBar: ContentView {
     }
     private readonly double _itemScale = 1.5;
     private readonly double _volumeScale = 3;
-    private void ButtonContainer_SizeChanged(object sender, EventArgs e) {
+    private void ButtonContainer_SizeChanged(object? sender, EventArgs e) {
         int childCount = ButtonContainer.Children.Count;
         double itemWidth = ButtonContainer.Height * _itemScale;
         double totalSpacing = ButtonContainer.Width - itemWidth * childCount;

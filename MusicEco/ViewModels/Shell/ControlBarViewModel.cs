@@ -1,5 +1,6 @@
 ﻿using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.Services;
 
 namespace MusicEco.ViewModels.Shell;
 
@@ -44,7 +45,12 @@ public partial class ControlBarViewModel: ObservableObject {
     public AsyncCommand ChangeFavouriteCommand { get; }
     public SyncCommand ToggleVolumeButtonCommand { get; }
     public AsyncCommand PlayPauseCommand { get; }
-    public ControlBarViewModel(IAppSetting appSetting) {
+    private TimeSpan _playbackPosition = TimeSpan.Zero;
+    private TimeSpan _playbackDuration = TimeSpan.Zero;
+    public string PlaybackPosition => this._playbackPosition.ToString(@"h\:mm\:ss");
+    public string PlaybackDuration => this._playbackDuration.ToString(@"h\:mm\:ss");
+    public double PlaybackRatio { get; private set; }
+    public ControlBarViewModel(IAppSetting appSetting, PlayerController playerController) {
         this._setting = appSetting;
         this.PreviousAudioCommand = new(PreviousAudio);
         this.NextAudioCommand = new(NextAudio);
@@ -55,7 +61,25 @@ public partial class ControlBarViewModel: ObservableObject {
         this.ChangeFavouriteCommand = new(ChangeFavourite);
         this.ToggleVolumeButtonCommand = new(ToggleVolumeButton);
         this.PlayPauseCommand = new(PlayPause);
+        playerController.PositionChanged += this.PlayerController_PositionChanged;
     }
+
+    private void PlayerController_PositionChanged(object? sender, AudioTime e) {
+        if(this._playbackPosition != e.Position) {
+            this._playbackPosition = e.Position;
+            OnPropertyChanged(nameof(PlaybackPosition));
+        }
+        if (this._playbackDuration != e.Duration) {
+            this._playbackDuration = e.Duration;
+            OnPropertyChanged(nameof(PlaybackDuration));
+        }
+        double ratio = e.Ratio;
+        if (Math.Abs(this.PlaybackRatio - ratio) > double.Epsilon) {
+            this.PlaybackRatio = ratio;
+            OnPropertyChanged(nameof(PlaybackRatio));
+        }
+    }
+
     private async Task PreviousAudio() {
 
     }

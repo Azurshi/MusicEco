@@ -1,8 +1,9 @@
 ﻿using MusicEco.Core;
 using MusicEco.Core.Data;
 using MusicEco.Core.Services;
+using MusicEco.Core.Types;
+using MusicEco.Services;
 using MusicEco.ViewModels.Items;
-using System.Collections.ObjectModel;
 
 namespace MusicEco.ViewModels.Pages;
 
@@ -22,11 +23,12 @@ public partial class SearchPageViewModel: BasePageViewModel {
             }
         }
     }
-    public ObservableCollection<AudioEntryViewModel> Items { get; init; }
-
+    public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
+    public AsyncCommand<AudioEntryViewModel> SelectItemCommand { get; init; }
     public SearchPageViewModel(ILocalizationService localizationService, IAudioService audioService) : base(localizationService) {
         this._audioService = audioService;
-        this.Items = [];
+        this.Items = new();
+        this.SelectItemCommand = new(SelectItem);
     }
     public override async Task Refresh() {
         if (this._searchText.Trim().Length < 3) {
@@ -34,10 +36,11 @@ public partial class SearchPageViewModel: BasePageViewModel {
         }
         string query = this._searchText;
         var entries = await this._audioService.QueryEntry(query);
-        this.Items.Clear();
+        List<AudioEntryViewModel> items = [];
         foreach(var entry in entries) {
-            this.Items.Add(new(entry.Hash, entry.Title));
+            items.Add(new(entry.Hash, entry.Title));
         }
+        this.Items.Update(items);
     }
     public override async Task OnNavigateTo(NavigateEventArgs e) {
         await base.OnNavigateTo(e);
@@ -45,5 +48,26 @@ public partial class SearchPageViewModel: BasePageViewModel {
     }
     public override Task OnNavigatedFrom(NavigateEventArgs e) {
         return base.OnNavigatedFrom(e);
+    }
+    private async Task SelectItem(AudioEntryViewModel? vm) {
+        if (vm == null) {
+            return;
+        }
+        var queueService = AppLifeCycle.Provider.GetRequiredService<IQueueService>();
+        string queueName = $"Search {_searchText.Trim()}";
+        bool exists = await queueService.Exists(queueName);
+        if (!exists) {
+            AudioEntry? currentEntry = null;
+            List<AudioEntry> entries = [];
+            foreach(var item in this.Items.Items) {
+                AudioEntry entry = new(item.FileHash, item.DisplayTitle);
+                entries.Add(entry);
+                if (item.FileHash == vm.FileHash) {
+                    currentEntry = entry;
+                }
+            }
+            AudioQueue queue = new(DateTime.Now, queueName, DateTime.Now, DateTime.Now, currentEntry, entries);
+            await queueService.Insert(queue, this);
+        }
     }
 }

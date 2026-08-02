@@ -91,7 +91,9 @@ public sealed class AudioRingBuffer: IDisposable {
         return totalReadCount;
     }
     private void ThrowIfDisposed() {
-        ObjectDisposedException.ThrowIf(Volatile.Read(ref _disposed) != 0, typeof(AudioRingBuffer));
+        if (Volatile.Read(ref _disposed) != 0) {
+            throw new ObjectDisposedException(nameof(AudioRingBuffer));
+        }
     }
     public void Dispose() {
         Interlocked.Exchange(ref _disposed, 1);

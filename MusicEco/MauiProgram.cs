@@ -54,8 +54,11 @@ public static class MauiProgram {
         });
         AppLifeCycle.RegisterAppStart(async (provider) => {
             var iconService = provider.GetRequiredService<IIconService>();
+            var setting = provider.GetRequiredService<IAppSetting>();
             await iconService.InitializeDefault(provider);
-            await iconService.Setup(1, 1000);
+            var nWorkers = setting.Get(2, SettingFields.IconDecoderNumWorkers);
+            var capacity = setting.Get(100, SettingFields.IconDecoderCapacity);
+            await iconService.Setup(nWorkers, capacity);
         });
         AppLifeCycle.RegisterAfterUILoaded((provider) => {
             // Initialize stack
@@ -71,6 +74,10 @@ public static class MauiProgram {
         AppLifeCycle.RegisterAppClose((provider) => {
             var db = provider.GetRequiredService<DatabaseContextAsync>();
             db.Dispose(true);
+        });
+        AppLifeCycle.RegisterAppClose((provider) => {
+            var player = provider.GetRequiredService<PlayerController>();
+            player.Dispose();
         });
     }
 }

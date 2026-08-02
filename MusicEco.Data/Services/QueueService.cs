@@ -12,8 +12,12 @@ internal class QueueService: IQueueService {
         this._queueRepo = queueRepository;
     }
 
-    public Task<bool> Delete(AudioQueue model, object? caller = null) {
-        throw new NotImplementedException();
+    public async Task<bool> Delete(AudioQueue model, object? caller = null) {
+        var result = await this._queueRepo.Delete(model);
+        if (result) {
+            ItemsChanged?.Invoke(caller, new(ChangeKind.Removed, model.CreationTime));
+        }
+        return result;
     }
 
     public async Task<bool> Exists(string name) {
@@ -36,19 +40,31 @@ internal class QueueService: IQueueService {
         return await this._queueRepo.GetCurrent();
     }
 
-    public Task<bool> Insert(AudioQueue model, object? caller = null) {
-        throw new NotImplementedException();
+    public async Task<bool> Insert(AudioQueue model, object? caller = null) {
+        var result = await this._queueRepo.Insert(model);
+        if (result) {
+            ItemsChanged?.Invoke(caller, new(ChangeKind.Added, model.CreationTime));
+        }
+        return result;
     }
 
     public async Task<List<AudioQueue>> Query(string nameLike) {
         return await this._queueRepo.Query(nameLike);
     }
 
-    public Task<bool> SetCurrent(AudioQueue? current, object? caller = null) {
-        throw new NotImplementedException();
+    public async Task<bool> SetCurrent(AudioQueue? current, object? caller = null) {
+        var result = await this._queueRepo.SetCurrent(current);
+        if (result) {
+            ItemsChanged?.Invoke(caller, new(ChangeKind.AllUpdated, DateTime.MaxValue));
+        }
+        return result;
     }
 
-    public Task<bool> Update(AudioQueue model, object? caller = null) {
-        throw new NotImplementedException();
+    public async Task<bool> Update(AudioQueue model, object? caller = null) {
+        var result = await this._queueRepo.Update(model);
+        if (result) {
+            ItemsChanged?.Invoke(caller, new(ChangeKind.Updated, model.CreationTime));
+        }
+        return result;
     }
 }

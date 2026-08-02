@@ -1,4 +1,5 @@
-﻿using MusicEco.Core.Services;
+﻿using MusicEco.Core.Data;
+using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 
 namespace MusicEco;
@@ -31,4 +32,9 @@ public interface IIconService {
     public Task InitializeDefault(IServiceProvider provider);
     public Task Setup(int nWorkers, int capacity);
     public Task<ImageSource> GetIcon(Hash256 hash, CoverSize size, CancelSource cancelSource);
+}
+
+public interface IPlaybackService {
+    public Task PlayQueue(string name, List<AudioEntry> audios, AudioEntry current, object? sender);
+    public Task PlayQueue(AudioQueue queue, object? sender);
 }

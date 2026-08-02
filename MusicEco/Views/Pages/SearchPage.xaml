@@ -4,34 +4,48 @@
              xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
              xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
              xmlns:control="clr-namespace:MusicEco.Views.Controls"
+             xmlns:item="clr-namespace:MusicEco.Views.Items"
              x:Class="MusicEco.Views.Pages.SearchPage"
              x:DataType="pageVM:SearchPageViewModel">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="AudioItemTemplate"
+                          x:DataType="itemVM:AudioEntryViewModel">
+                <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
+                                Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type pageVM:SearchPageViewModel}}}">
+                    <item:ItemFrame.ItemContent>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <control:ManagedIcon Grid.Column="0"
+                                                 WidthRequest="{DynamicResource IconItemSize}"
+                                                 FileHash="{Binding FileHash}"
+                                                 Option="Small" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding DisplayTitle}"
+                                   Style="{StaticResource OneLine}" />
+                            <Button Grid.Column="2"
+                                    Text=":" 
+                                    WidthRequest="{DynamicResource IconButtonItemSize}"/>
+                        </Grid>
+                    </item:ItemFrame.ItemContent>
+                </item:ItemFrame>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentView.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Entry Grid.Row="0" 
+               HeightRequest="{DynamicResource HeaderSize}"
                Text="{Binding SearchText, Mode=TwoWay}"/>
-        <CollectionView Grid.Row="1" 
-                        ItemsSource="{Binding Items}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="itemVM:AudioEntryViewModel">
-                    <Grid HeightRequest="{DynamicResource IconItemSize}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <control:ManagedIcon Grid.Column="0"
-                                             WidthRequest="{DynamicResource IconItemSize}"
-                                             FileHash="{Binding FileHash}"
-                                             Option="Small" />
-                        <Label Grid.Column="1"
-                               Text="{Binding DisplayTitle}"/>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Items.Items}"
+                        ItemTemplate="{StaticResource AudioItemTemplate}" />
     </Grid>
 </ContentView>

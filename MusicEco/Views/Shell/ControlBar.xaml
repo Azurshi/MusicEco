@@ -5,21 +5,21 @@
              xmlns:shellVM="clr-namespace:MusicEco.ViewModels.Shell"
              x:Class="MusicEco.Views.Shell.ControlBar"
              x:DataType="shellVM:ControlBarViewModel">
-    <Grid RowDefinitions="16, *">
-        <ProgressBar Grid.Row="0" />
+    <Grid RowDefinitions="24, *"
+          RowSpacing="4">
         <Grid Grid.Row="1"
               x:Name="ButtonContainer"
               SizeChanged="ButtonContainer_SizeChanged"
               ColumnDefinitions="*, *, *, *, *, *, *, *, *">
             <button:ControlButton Grid.Column="0"
                                   ActivateImageSource="favourite.png"
-                                  DeactivateImageSource="no_favourite.png" 
-                                  Command="{Binding ChangeFavouriteCommand}"/>
+                                  DeactivateImageSource="no_favourite.png"
+                                  Command="{Binding ChangeFavouriteCommand}" />
             <button:ControlButton Grid.Column="1"
                                   ActivateImageSource="volume_on.png"
                                   DeactivateImageSource="volume.png"
                                   IsActivate="{Binding VolumeVisible}"
-                                  Command="{Binding ToggleVolumeButtonCommand}"/>
+                                  Command="{Binding ToggleVolumeButtonCommand}" />
             <button:ControlButton Grid.Column="2"
                                   ActivateImageSource="next.png"
                                   IsActivate="true"
@@ -32,26 +32,26 @@
                                   Rotation="180" />
             <button:ControlButton Grid.Column="4"
                                   ActivateImageSource="pause.png"
-                                  DeactivateImageSource="play_on.png" 
-                                  Command="{Binding PlayPauseCommand}"/>
+                                  DeactivateImageSource="play_on.png"
+                                  Command="{Binding PlayPauseCommand}" />
             <button:ControlButton Grid.Column="5"
                                   ActivateImageSource="forward.png"
-                                  IsActivate="true" 
-                                  Command="{Binding SeekForwardCommand}"/>
+                                  IsActivate="true"
+                                  Command="{Binding SeekForwardCommand}" />
             <button:ControlButton Grid.Column="6"
                                   ActivateImageSource="next.png"
-                                  IsActivate="true" 
-                                  Command="{Binding NextAudioCommand}"/>
+                                  IsActivate="true"
+                                  Command="{Binding NextAudioCommand}" />
             <button:ControlButton Grid.Column="7"
                                   ActivateImageSource="repeat_on.png"
                                   DeactivateImageSource="repeat.png"
                                   IsActivate="{Binding IsRepeating}"
-                                  Command="{Binding ChangeRepeatCommand}"/>
+                                  Command="{Binding ChangeRepeatCommand}" />
             <button:ControlButton Grid.Column="8"
                                   ActivateImageSource="shuffle_on.png"
                                   DeactivateImageSource="shuffle.png"
                                   IsActivate="{Binding IsShuffling}"
-                                  Command="{Binding ChangeShuffleCommand}"/>
+                                  Command="{Binding ChangeShuffleCommand}" />
             <AbsoluteLayout Grid.Row="0"
                             x:Name="Overlay"
                             Margin="100, 14, 0, 0 "
@@ -68,6 +68,27 @@
                         Value="{Binding CurrentVolume, Mode=TwoWay}" />
             </AbsoluteLayout>
 
+        </Grid>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   WidthRequest="64"
+                   Text="{Binding PlaybackPosition}"
+                   Style="{StaticResource OneLine}"
+                   HorizontalTextAlignment="Center" />
+            <Slider Grid.Column="1"
+                    Value="{Binding PlaybackRatio}"
+                    Minimum="0"
+                    Maximum="1" />
+            <Label Grid.Column="2"
+                   WidthRequest="64"
+                   Text="{Binding PlaybackDuration}"
+                   Style="{StaticResource OneLine}"
+                   HorizontalTextAlignment="Center" />
         </Grid>
     </Grid>
 </ContentView>

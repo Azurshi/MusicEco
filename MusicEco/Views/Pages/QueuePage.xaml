@@ -1,11 +1,53 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MusicEco.Views.Pages.QueuePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
+             xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
+             xmlns:item="clr-namespace:MusicEco.Views.Items"
+             x:Class="MusicEco.Views.Pages.QueuePage"
+             x:DataType="pageVM:QueuePageViewModel">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="QueueItemTemplate"
+                          x:DataType="itemVM:QueueItemViewModel">
+                <item:ItemFrame HeightRequest="{DynamicResource TextItemSize}"
+                                Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type pageVM:QueuePageViewModel}}}">
+                    <item:ItemFrame.ItemContent>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ImageButton Grid.Column="0"
+                                         Source="play_on.png"
+                                         IsVisible="{Binding Selected}"
+                                         WidthRequest="{DynamicResource TextItemSize}" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding Name}"
+                                   Style="{StaticResource OneLine}" />
+                            <Button Grid.Column="2"
+                                    Text=":"
+                                    WidthRequest="{DynamicResource TextItemSize}" />
+                        </Grid>
+                    </item:ItemFrame.ItemContent>
+                </item:ItemFrame>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"
+              HeightRequest="{DynamicResource HeaderSize}">
+
+        </Grid>
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Items.Items}"
+                        ItemTemplate="{StaticResource QueueItemTemplate}" />
+
+
+    </Grid>
 </ContentView>
