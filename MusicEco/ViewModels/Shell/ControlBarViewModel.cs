@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.Services;
+using System.Diagnostics;
 
 namespace MusicEco.ViewModels.Shell;
 
@@ -30,13 +31,6 @@ public partial class ControlBarViewModel: ObservableObject {
             OnPropertyChanged();
         }
     }
-    public double CurrentVolume {
-        get => _setting.Get(0.5);
-        set {
-            _setting.Set(value);
-            OnPropertyChanged();
-        }
-    }
     public bool IsPlaying { get; private set; }
     public AsyncCommand PreviousAudioCommand { get; }
     public AsyncCommand NextAudioCommand { get; }
@@ -47,12 +41,42 @@ public partial class ControlBarViewModel: ObservableObject {
     public AsyncCommand ChangeFavouriteCommand { get; }
     public SyncCommand ToggleVolumeButtonCommand { get; }
     public AsyncCommand PlayPauseCommand { get; }
-    private TimeSpan _playbackPosition = TimeSpan.Zero;
     private TimeSpan _playbackDuration = TimeSpan.Zero;
-    public string PlaybackPosition => this._playbackPosition.ToString(@"h\:mm\:ss");
+    public string PlaybackPosition => (this._playbackRatio * this._playbackDuration).ToString(@"h\:mm\:ss");
     public string PlaybackDuration => this._playbackDuration.ToString(@"h\:mm\:ss");
-    public double PlaybackRatio { get; private set; }
+    private double _playbackRatio = 0.0;
+    public double PlaybackRatio {
+        get => this._playbackRatio;
+        set {
+            if (this._playbackRatio != value) {
+                this._playbackRatio = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(PlaybackPosition));
+            }
+        }
+    }
+    private bool _positionEventUpdateBlocked = false;
+    public SyncCommandExtend RatioDragStartedCommand { get; init; }
+    public AsyncCommand RatioDragCompletedCommand { get; init; }
     private TimeSpan PerSeekDuration => TimeSpan.FromSeconds(this._setting.Get(15, SettingFields.PerSeekSeconds));
+    private const double _volumeEpsilon = 0.01;
+    public double Volume {
+        get => this._player.GetVolume();
+        set {
+            double volume = this._player.GetVolume();
+            if (value < _volumeEpsilon) {
+                value = 0;
+            }
+            if (value > (1-_volumeEpsilon)) {
+                value = 1.0;
+            }
+            if (Math.Abs(volume - value) > _volumeEpsilon) {
+                float floatValue = (float)value;
+                this._player.SetVolume(floatValue);
+                OnPropertyChanged();
+            }
+        }
+    }
     public ControlBarViewModel(IAppSetting appSetting, IPlayerController playerController) {
         this._setting = appSetting;
         this.PreviousAudioCommand = new(PreviousAudio);
@@ -64,6 +88,8 @@ public partial class ControlBarViewModel: ObservableObject {
         this.ChangeFavouriteCommand = new(ChangeFavourite);
         this.ToggleVolumeButtonCommand = new(ToggleVolumeButton);
         this.PlayPauseCommand = new(PlayPause);
+        this.RatioDragStartedCommand = new(RatioDragStarted, () => !this._positionEventUpdateBlocked);
+        this.RatioDragCompletedCommand = new(RatioDragCompleted);
         this._player = playerController;
         this._player.PositionChanged += this.PlayerController_PositionChanged;
         this._player.RepeatingChanged += this.Player_RepeatingChanged;
@@ -82,18 +108,15 @@ public partial class ControlBarViewModel: ObservableObject {
     }
 
     private void PlayerController_PositionChanged(object? sender, AudioTime e) {
-        if(this._playbackPosition != e.Position) {
-            this._playbackPosition = e.Position;
-            OnPropertyChanged(nameof(PlaybackPosition));
-        }
         if (this._playbackDuration != e.Duration) {
             this._playbackDuration = e.Duration;
             OnPropertyChanged(nameof(PlaybackDuration));
         }
-        double ratio = e.Ratio;
-        if (Math.Abs(this.PlaybackRatio - ratio) > double.Epsilon) {
-            this.PlaybackRatio = ratio;
-            OnPropertyChanged(nameof(PlaybackRatio));
+        if (!this._positionEventUpdateBlocked) {
+            double ratio = e.Ratio;
+            if (Math.Abs(this.PlaybackRatio - ratio) > double.Epsilon) {
+                this.PlaybackRatio = ratio;
+            }
         }
     }
 
@@ -104,11 +127,11 @@ public partial class ControlBarViewModel: ObservableObject {
 
     }
     private async Task SeekBackward() {
-        var position = this._playbackPosition;
+        var position = this._playbackDuration * this._playbackRatio;
         this._player.Seek(position - this.PerSeekDuration);
     }
     private async Task SeekForward() {
-        var position = this._playbackPosition;
+        var position = this._playbackDuration * this._playbackRatio;
         this._player.Seek(position + this.PerSeekDuration);
     }
     private void ChangeRepeat() {
@@ -126,8 +149,17 @@ public partial class ControlBarViewModel: ObservableObject {
     private async Task PlayPause() {
         if (this.IsPlaying) {
             this._player.Pause();
-        } else {
+        }
+        else {
             this._player.Resume();
         }
+    }
+    private void RatioDragStarted() {
+        this._positionEventUpdateBlocked = true;
+    }
+    private async Task RatioDragCompleted() {
+        this._player.Seek(this._playbackRatio * this._playbackDuration);
+        await Task.Delay(500);
+        this._positionEventUpdateBlocked = false;
     }
 }

@@ -7,6 +7,29 @@
              x:DataType="shellVM:ControlBarViewModel">
     <Grid RowDefinitions="24, *"
           RowSpacing="4">
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   WidthRequest="64"
+                   Text="{Binding PlaybackPosition}"
+                   Style="{StaticResource OneLine}"
+                   HorizontalTextAlignment="Center" />
+            <Slider Grid.Column="1"
+                    Value="{Binding PlaybackRatio, Mode=TwoWay}"
+                    DragStartedCommand="{Binding RatioDragStartedCommand}"
+                    DragCompletedCommand="{Binding RatioDragCompletedCommand}"
+                    Minimum="0"
+                    Maximum="1" />
+            <Label Grid.Column="2"
+                   WidthRequest="64"
+                   Text="{Binding PlaybackDuration}"
+                   Style="{StaticResource OneLine}"
+                   HorizontalTextAlignment="Center" />
+        </Grid>
         <Grid Grid.Row="1"
               x:Name="ButtonContainer"
               SizeChanged="ButtonContainer_SizeChanged"
@@ -66,30 +89,9 @@
                         Minimum="0"
                         Maximum="1"
                         HeightRequest="28"
-                        Value="{Binding CurrentVolume, Mode=TwoWay}" />
+                        Value="{Binding Volume, Mode=TwoWay}" />
             </AbsoluteLayout>
 
-        </Grid>
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Label Grid.Column="0"
-                   WidthRequest="64"
-                   Text="{Binding PlaybackPosition}"
-                   Style="{StaticResource OneLine}"
-                   HorizontalTextAlignment="Center" />
-            <Slider Grid.Column="1"
-                    Value="{Binding PlaybackRatio}"
-                    Minimum="0"
-                    Maximum="1" />
-            <Label Grid.Column="2"
-                   WidthRequest="64"
-                   Text="{Binding PlaybackDuration}"
-                   Style="{StaticResource OneLine}"
-                   HorizontalTextAlignment="Center" />
         </Grid>
     </Grid>
 </ContentView>

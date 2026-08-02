@@ -49,7 +49,10 @@ internal partial class PlayerController: IPlayerController {
                 if (!this._endFlag) {
                     this._endFlag = true;
                     AudioEnded?.Invoke(this, EventArgs.Empty);
-                    this._player.Seek(TimeSpan.Zero);
+                    if (this.IsRepeating) {
+                        this._player.Seek(TimeSpan.Zero);
+                        this._endFlag = false;
+                    }
                 }
             }
             var state = this.GetState();

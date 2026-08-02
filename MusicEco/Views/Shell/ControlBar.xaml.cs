@@ -1,4 +1,5 @@
 using MusicEco.ViewModels.Shell;
+using System.Diagnostics;
 
 namespace MusicEco.Views.Shell;
 

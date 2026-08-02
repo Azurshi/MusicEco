@@ -1,5 +1,6 @@
 ﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
+using System.Diagnostics;
 
 namespace MusicEco.Services;
 
@@ -9,14 +10,15 @@ internal partial class PlaybackService: IPlaybackService {
     private readonly IFileService _fileSerivce;
     private readonly IPlayerController _player;
     private AudioQueue? _playQueue;
+    private static readonly TimeSpan _minimumDelay = TimeSpan.FromSeconds(1);
+    private readonly Stopwatch _sw;
     public PlaybackService(IQueueService queueService, IAudioService audioService, IFileService fileService, IPlayerController playerController) {
         this._queueService = queueService;
         this._audioService = audioService;
         this._fileSerivce = fileService;
         this._player = playerController;
-    }
-    private async Task PlayNewFile(string path) {
-        await this._player.Play(path);
+        this._sw = new();
+        this._sw.Start();
     }
     private async Task PlayNew() {
         var current = this._playQueue?.Current;
@@ -30,13 +32,11 @@ internal partial class PlaybackService: IPlaybackService {
                 }
             }
             if (availabeFile != null) {
-                await PlayNewFile(availabeFile.Path);
+                await this._player.Play(availabeFile.Path);
             }
         }
     }
-
-
-    public async Task PlayQueue(string name, List<AudioEntry> audios, AudioEntry current, object? sender) {
+    private async Task PlayQueueInner(string name, List<AudioEntry> audios, AudioEntry current, object? sender) {
         name = name.Trim();
         var now = DateTime.UtcNow;
         var queue = await this._queueService.Get(name);
@@ -51,14 +51,24 @@ internal partial class PlaybackService: IPlaybackService {
         this._playQueue = queue;
         await PlayNew();
     }
-    public async Task PlayQueue(AudioQueue queue, object? sender) {
-        if (queue.Current == null) {
-            if (queue.Audios.Count > 0) {
-                throw new InvalidOperationException();
-            }
-            queue = queue.WithCurrent(queue.Audios[0]);
+
+    public async Task PlayQueue(string name, List<AudioEntry> audios, AudioEntry current, object? sender) {
+        if (this._sw.Elapsed > _minimumDelay) {
+            this._sw.Restart();
+            await this.PlayQueueInner(name, audios, current, sender);
         }
-        await this.PlayQueue(queue.Name, queue.Audios.ToList(), queue.Current!, sender);
+    }
+    public async Task PlayQueue(AudioQueue queue, object? sender) {
+        if (this._sw.Elapsed > _minimumDelay) {
+            this._sw.Restart();
+            if (queue.Current == null) {
+                if (queue.Audios.Count > 0) {
+                    throw new InvalidOperationException();
+                }
+                queue = queue.WithCurrent(queue.Audios[0]);
+            }
+            await this.PlayQueueInner(queue.Name, queue.Audios.ToList(), queue.Current!, sender);
+        }
     }
 
     public void Dispose() {
