@@ -48,6 +48,6 @@ public interface IScanner {
 public interface IScanPathService {
     public event EventHandler ItemChanged;
     public Task<IReadOnlyList<string>> GetPaths();
-    public Task<bool> AddPath(string path, object? caller);
-    public Task<bool> RemovePath(string path, object? caller = null);
+    public Task<bool> AddPath(string path);
+    public Task<bool> RemovePath(string path);
 }

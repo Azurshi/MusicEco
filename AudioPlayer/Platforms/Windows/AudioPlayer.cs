@@ -22,7 +22,8 @@ public partial class AudioPlayer: IDisposable {
             DiscardOnBufferOverflow = true
         };
         this.TransferBuffer = new byte[8 * 1024];
-        this.Player = new();
+        // This capture thread context so we need to use FunctionCallback
+        this.Player = new WaveOut(WaveCallbackInfo.FunctionCallback());
         this.Player.Init(this.Provider);
         this.Decoder = new(SeekCompleted, this.Format, 1 * 1024 * 1024);
         this.Worker = new(WorkerLoop);

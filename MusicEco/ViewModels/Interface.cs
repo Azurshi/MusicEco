@@ -25,3 +25,10 @@ public interface IEditableItem {
 public interface IMoveableItem {
     public bool IsDraggable { get; set; }
 }
+
+public enum CollectionDisplayMode {
+    None,
+    SimpleGrid,
+    SimpleList,
+    DetailList
+}

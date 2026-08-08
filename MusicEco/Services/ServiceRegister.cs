@@ -15,6 +15,7 @@ public static class ServiceRegister {
         services.AddSingleton<IIconService, IconService>();
         services.AddSingleton<IPlayerController, PlayerController>();
         services.AddSingleton<IPlaybackService, PlaybackService>();
+        
         return services;
     }
     public static IServiceCollection RegisterShell(this IServiceCollection services) {
@@ -22,6 +23,7 @@ public static class ServiceRegister {
         services.AddSingleton<NavigationBar>();
         services.AddSingleton<ControlBar>();
         services.AddSingleton<ControlBarViewModel>();
+        services.AddSingleton<AppOverlay>();
         return services;
     }
     public static IServiceCollection RegisterPages(this IServiceCollection services) {
@@ -33,6 +35,8 @@ public static class ServiceRegister {
         services.AddSingleton<AlbumPageViewModel>();
         services.AddSingleton<ExplorerPage>();
         services.AddSingleton<ExplorerPageViewModel>();
+        services.AddSingleton<ExplorerTreePage>();
+        services.AddSingleton<ExplorerTreePageViewModel>();
         services.AddSingleton<SearchPage>();
         services.AddSingleton<SearchPageViewModel>();
         services.AddTransient<UserPage>();
@@ -42,6 +46,8 @@ public static class ServiceRegister {
 
         services.AddSingleton<QueueDetailPage>();
         services.AddSingleton<QueueDetailPageViewModel>();
+        services.AddSingleton<AlbumDetailPage>();
+        services.AddSingleton<AlbumDetailPageViewModel>();
 
         services.AddTransient<PlaylistPage>();
         services.AddSingleton<PlaylistPageViewModel>();

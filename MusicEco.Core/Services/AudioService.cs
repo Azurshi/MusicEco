@@ -33,6 +33,7 @@ public interface IAudioService {
     public event EventHandler ScanStarted;
 
     public abstract Task<AudioEntry?> GetEntry(Hash256 hash);
+    public abstract Task<Dictionary<Hash256, AudioEntry>> GetEntry(IReadOnlyList<Hash256> hashes);
     public abstract Task<AudioModel?> Get(Hash256 hash);
     public abstract Task<List<AudioEntry>> GetAllEntry();
     public abstract Task<List<AudioModel>> GetAll();

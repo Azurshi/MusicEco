@@ -8,10 +8,19 @@ namespace MusicEco.ViewModels.Pages;
 public partial class QueuePageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.Queue;
     private readonly IQueueService _queueService;
+    private readonly IAppSetting _setting;
     public ObservableCollectionExtend<QueueItemViewModel> Items { get; init; }
     public AsyncCommand<QueueItemViewModel> SelectItemCommand { get; init; }
-    public QueuePageViewModel(ILocalizationService localizationService, IQueueService queueService) : base(localizationService) {
+    public CollectionDisplayMode DisplayMode {
+        get => this._setting.Get(CollectionDisplayMode.SimpleList, $"Queue.{nameof(DisplayMode)}");
+        set {
+            this._setting.Set(value, $"Queue.{nameof(DisplayMode)}");
+            OnPropertyChanged(nameof(DisplayMode));
+        }
+    }
+    public QueuePageViewModel(ILocalizationService localizationService, IQueueService queueService, IAppSetting appSetting) : base(localizationService) {
         this._queueService = queueService;
+        this._setting = appSetting;
         this.Items = new();
         this.SelectItemCommand = new(SelectItem);
     }
@@ -20,9 +29,10 @@ public partial class QueuePageViewModel: BasePageViewModel {
         var currentQueue = await _queueService.GetCurrent();
         List<QueueItemViewModel> items = [];
         foreach(var q in queues) {
-            QueueItemViewModel item = new(q.CreationTime, q.ModifiedTime, q.Name);
+            QueueItemViewModel item = new(q.CreationTime, q.ModifiedTime, q.LastPlayTime, q.Name);
             items.Add(item);
         }
+        items = items.OrderBy(q => q.LastPlayTime).ToList();
         this.Items.Update(items, (item) => {
             bool isCurrent = false;
             if (currentQueue != null && currentQueue.CreationTime == item.CreationTime) {

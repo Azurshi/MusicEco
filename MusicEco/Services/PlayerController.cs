@@ -36,12 +36,10 @@ internal partial class PlayerController: IPlayerController {
         WorkerLoop(TimeSpan.FromMilliseconds(delayMs)).FireAndForgetAsync();
     }
     private async Task WorkerLoop(TimeSpan delay) {
-        Stopwatch sw = new();
-        TimeSpan lastUpdate = sw.Elapsed;
+        Stopwatch sw = Stopwatch.StartNew();
         TimeSpan epsilon = TimeSpan.FromMilliseconds(1);
-        TimeSpan ceil = TimeSpan.FromMilliseconds(100);
         while (!this._disposed) {
-
+            sw.Restart();
             var position = this._player.GetPosition();
             var duration = this._player.GetDuration();
             PositionChanged?.Invoke(this, new(position, duration));
@@ -62,18 +60,12 @@ internal partial class PlayerController: IPlayerController {
             }
 
             var elapsed = sw.Elapsed;
-            TimeSpan delta = elapsed - lastUpdate;
-            if (delta < delay) {
-                delta = delay;
+            TimeSpan waitTime = delay - elapsed;
+            if (waitTime < epsilon) {
+                waitTime = epsilon;
             }
-            if (delta > ceil) {
-                delta = ceil;
-            }
-            if (delta < epsilon) {
-                delta = epsilon;
-            }
-            lastUpdate = elapsed;
-            await Task.Delay(delta);
+            //Debug.WriteLine($"Log {waitTime.TotalMilliseconds} ms");
+            await Task.Delay(waitTime);
         }
     }
     public void Dispose() {

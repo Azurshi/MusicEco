@@ -30,6 +30,15 @@ internal class AudioService: IAudioService {
         return this._audioRepo.GetAll();
     }
 
+    public async Task<Dictionary<Hash256, AudioEntry>> GetEntry(IReadOnlyList<Hash256> hashes) {
+        var entries = await this._audioRepo.GetEntry(hashes);
+        Dictionary<Hash256, AudioEntry> result = [];
+        foreach (var entry in entries) {
+            result[entry.Hash] = entry;
+        }
+        return result;
+    }
+
     public Task<List<AudioEntry>> GetAllEntry() {
         return this._audioRepo.GetAllEntry();
     }

@@ -10,4 +10,5 @@
     <Color x:Key="SelectedItemBorderColor">LawnGreen</Color>
     <Color x:Key="SeparatorColor">Gray</Color>
     <Color x:Key="WindowColor">Transparent</Color>
+    <Color x:Key="OverlayBackgroundColor">Black</Color>
 </ResourceDictionary>

@@ -1,11 +1,87 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MusicEco.Views.Pages.ExplorerPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
+             xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
+             xmlns:item="clr-namespace:MusicEco.Views.Items"
+             xmlns:control="clr-namespace:MusicEco.Views.Controls"
+             xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             x:Class="MusicEco.Views.Pages.ExplorerPage"
+             x:DataType="pageVM:ExplorerPageViewModel">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="ScanPathItemTemplate"
+                          x:DataType="itemVM:ScanPathViewModel">
+                <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
+                                Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type pageVM:ExplorerPageViewModel}}}">
+                    <item:ItemFrame.ItemContent>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="{Binding Name}" 
+                                   Style="{StaticResource OneLine}"
+                                   Margin="4, 0, 0, 0"
+                                   FontSize="16" />
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   Text="{Binding Path}" 
+                                   Style="{StaticResource OneLine}"
+                                   Margin="8, 0, 0, 4"
+                                   Opacity="0.75"/>
+                            <Button Grid.Row="0"
+                                    Grid.Column="1"
+                                    Grid.RowSpan="2"
+                                    WidthRequest="{DynamicResource IconButtonItemSize}"
+                                    Text="X" 
+                                    Command="{Binding DeleteItemCommand, Source={RelativeSource AncestorType={x:Type pageVM:ExplorerPageViewModel}}}"
+                                    CommandParameter="{Binding}"/>
+
+                        </Grid>
+                    </item:ItemFrame.ItemContent>
+                </item:ItemFrame>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"
+              HeightRequest="{DynamicResource HeaderSize}"
+              ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" 
+                    Text="Scan" />
+            <Button Grid.Column="1" 
+                    Command="{Binding AddNewPathCommand}"
+                    Text="+ Add new folder" />
+        </Grid>
+        <Grid Grid.Row="1"
+              HeightRequest="{DynamicResource HeaderSize}">
+            <Label Text="Folder to scan"
+                   FontSize="24"
+                   Style="{StaticResource OneLine}" />
+        </Grid>
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding Items.Items}"
+                        ItemTemplate="{StaticResource ScanPathItemTemplate}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical"
+                                   ItemSpacing="8" />
+            </CollectionView.ItemsLayout>
+        </CollectionView>
+    </Grid>
 </ContentView>

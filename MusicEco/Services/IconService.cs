@@ -43,6 +43,23 @@ public partial class IconService: IIconService {
             this._buffers.Add(new(buffer));
         }
     }
+
+    public async Task<ImageSource> GetFirstIcon(IReadOnlyList<Hash256> fileHashes, CoverSize size, CancelSource cancelSource) {
+        Hash256? iconHash = null;
+        foreach(var fileHash in fileHashes) {
+            iconHash = await this._audioService.GetCoverHash(fileHash);
+            if (iconHash != null) {
+                break;
+            }
+        }
+        if (iconHash != null) {
+            IconKey key = new(iconHash.Value, size);
+            return await GetIcon(key, cancelSource) ?? this._default[size];
+        }
+        else {
+            return this._default[size];
+        }
+    }
     public async Task<ImageSource> GetIcon(Hash256 fileHash, CoverSize size, CancelSource cancelSource) {
         // This immutable to Metadata change
         var iconHash = await this._audioService.GetCoverHash(fileHash);

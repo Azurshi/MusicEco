@@ -22,13 +22,14 @@ internal class ScanPathService: IScanPathService {
             _cachedPath = JsonSerializer.Deserialize<List<string>>(json) ?? [];
         }
     }
-    public async Task<bool> AddPath(string path, object? caller) {
+    public async Task<bool> AddPath(string path) {
         await _initTask;
         if (!_cachedPath.Contains(path)) {
             this._cachedPath.Add(path);
             try {
                 string json = JsonSerializer.Serialize(this._cachedPath);
                 await this._dictRepo.SetValue(nameof(ScanPathService), json);
+                this.ItemChanged?.Invoke(this, EventArgs.Empty);
                 return true;
             }
             catch {
@@ -42,15 +43,17 @@ internal class ScanPathService: IScanPathService {
     }
 
     public async Task<IReadOnlyList<string>> GetPaths() {
+        await _initTask;
         return this._cachedPath;
     }
 
-    public async Task<bool> RemovePath(string path, object? caller = null) {
+    public async Task<bool> RemovePath(string path) {
         await _initTask;
         if (this._cachedPath.Remove(path)) {
             try {
                 string json = JsonSerializer.Serialize(this._cachedPath);
                 await this._dictRepo.SetValue(nameof(FavouriteService), json);
+                this.ItemChanged?.Invoke(this, EventArgs.Empty);
                 return true;
             }
             catch {

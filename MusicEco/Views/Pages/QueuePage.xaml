@@ -4,6 +4,7 @@
              xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
              xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
              xmlns:item="clr-namespace:MusicEco.Views.Items"
+             xmlns:button="clr-namespace:MusicEco.Views.Buttons"
              x:Class="MusicEco.Views.Pages.QueuePage"
              x:DataType="pageVM:QueuePageViewModel">
     <ContentView.Resources>
@@ -42,7 +43,15 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
               HeightRequest="{DynamicResource HeaderSize}">
-
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Entry Grid.Column="0"
+                   Placeholder="Queue name" />
+            <button:CollectionDisplayModeButtonSimple Grid.Column="1"
+                                                      DisplayMode="{Binding DisplayMode}"
+                                                      DisplayModeChanged="CollectionView_DisplayModeChanged"/>
         </Grid>
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Items.Items}"

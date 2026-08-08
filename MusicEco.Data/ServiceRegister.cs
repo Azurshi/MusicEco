@@ -21,6 +21,7 @@ public static class ServiceRegister {
         services.AddSingleton<IQueueService, QueueService>();
         services.AddSingleton<IScanner, Scanner>();
         services.AddSingleton<IScanPathService, ScanPathService>();
+        services.AddSingleton<IAudioQueryService, AudioQueryService>();
 
         services.AddSingleton<DatabaseContextAsync>();
         services.AddSingleton<AudioRepository>();
@@ -30,6 +31,7 @@ public static class ServiceRegister {
         services.AddSingleton<PlayEventRepository>();
         services.AddSingleton<PlaylistRepository>();
         services.AddSingleton<QueueRepository>();
+        services.AddSingleton<AudioQueryRepository>();
 
         var result = TypeMapExtend.Register(
             typeof(Hash256),

@@ -31,7 +31,8 @@ public class CancelSource {
 public interface IIconService {
     public Task InitializeDefault(IServiceProvider provider);
     public Task Setup(int nWorkers, int capacity);
-    public Task<ImageSource> GetIcon(Hash256 hash, CoverSize size, CancelSource cancelSource);
+    public Task<ImageSource> GetIcon(Hash256 fileHash, CoverSize size, CancelSource cancelSource);
+    public Task<ImageSource> GetFirstIcon(IReadOnlyList<Hash256> fileHashes, CoverSize size, CancelSource cancelSource);
 }
 
 public interface IPlaybackService: IDisposable {

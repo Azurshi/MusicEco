@@ -28,6 +28,7 @@ public static class AppLifeCycle {
     private static bool _closed = false;
     private static bool _started = false;
     private static bool _ui = false;
+    public static bool Closed => _closed;
     public static IServiceProvider Provider => App.Provider;
     public static async Task StartApp() {
         if (_started) {

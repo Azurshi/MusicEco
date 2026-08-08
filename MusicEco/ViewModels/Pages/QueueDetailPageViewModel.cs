@@ -14,9 +14,9 @@ public partial class QueueDetailPageViewModel: BasePageViewModel {
     }
 
     public override PageRoute Route => PageRoute.QueueDetail;
+    private readonly Query _q;
     private readonly IQueueService _queueService;
     private readonly IPlaybackService _playbackService;
-    private readonly Query _q;
     public string QueueName { get; private set; }
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
     public AsyncCommandExtend<AudioEntryViewModel> SelectItemCommand { get; init; }
@@ -95,7 +95,6 @@ public partial class QueueDetailPageViewModel: BasePageViewModel {
                 }
             }
             audioQueue = audioQueue.WithCurrent(current).WithModifyNow();
-            //await this._queueService.Update(audioQueue, this);
             await this._playbackService.PlayQueue(audioQueue, this);
         }
     }

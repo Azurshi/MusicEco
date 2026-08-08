@@ -30,6 +30,7 @@ public partial class MainWindow: Window {
         // UIContent
         this.NavigationBarHost.Content = provider.GetRequiredService<NavigationBar>();
         this.ControlBarHost.Content = provider.GetRequiredService<ControlBar>();
+        this.OverlayHost.Content = provider.GetRequiredService<AppOverlay>();
         // Landing page
         EventSystem.Connect<NavigateEventArgs>(OnNavigate);
 

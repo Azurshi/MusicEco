@@ -67,7 +67,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AudioPlayer" Version="0.0.6-dev" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
@@ -89,7 +88,6 @@
 	  <Folder Include="ViewModels\Overlays\" />
 	  <Folder Include="ViewModels\Pages\Stats\" />
 	  <Folder Include="ViewModels\Pages\Settings\" />
-	  <Folder Include="Views\Overlays\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -105,6 +103,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\AudioCodec\AudioCodec.csproj" />
+	  <ProjectReference Include="..\AudioPlayer\AudioPlayer.csproj" />
 	  <ProjectReference Include="..\MusicEco.Core\MusicEco.Core.csproj" />
 	  <ProjectReference Include="..\MusicEco.Data\MusicEco.Data.csproj" />
 	  <ProjectReference Include="..\MusicEco.Image\MusicEco.Image.csproj" />
@@ -150,16 +150,28 @@
 	  <MauiXaml Update="Views\Buttons\NavigationForwardButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Buttons\CollectionDisplayModeButtonSimple.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Controls\CollectionViewExtend.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Controls\ManagedIcon.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Items\ItemFrame.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\AlbumDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\AlbumPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\ExplorerPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\ExplorerTreePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\HomePage.xaml">
@@ -181,6 +193,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\UserPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Shell\AppOverlay.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Shell\ControlBar.xaml">

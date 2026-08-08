@@ -58,8 +58,6 @@
         </Grid>
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Items.Items}"
-                        ItemTemplate="{StaticResource AudioItemTemplate}"/>
-
-
+                        ItemTemplate="{StaticResource AudioItemTemplate}" />
     </Grid>
 </ContentView>

@@ -1,11 +1,98 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MusicEco.Views.Pages.AlbumPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
+             xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
+             xmlns:item="clr-namespace:MusicEco.Views.Items"
+             xmlns:control="clr-namespace:MusicEco.Views.Controls"
+             xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             x:Class="MusicEco.Views.Pages.AlbumPage"
+             x:DataType="pageVM:AlbumPageViewModel">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="GridAlbumItemTemplate"
+                          x:DataType="itemVM:AlbumViewModel">
+                <item:ItemFrame HeightRequest="{DynamicResource GridItemSize}"
+                                Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type pageVM:AlbumPageViewModel}}}">
+                    <item:ItemFrame.ItemContent>
+                        <Grid RowSpacing="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <control:ManagedIcon Grid.Row="0"
+                                                 FileHashes="{Binding FileHashes}"
+                                                 Option="Medium" />
+                            <Label Grid.Row="1"
+                                   Text="{Binding Name}"
+                                   HeightRequest="{DynamicResource TextOnlySize}"
+                                   Style="{StaticResource OneLine}" />
+                        </Grid>
+                    </item:ItemFrame.ItemContent>
+                </item:ItemFrame>
+            </DataTemplate>
+            <DataTemplate x:Key="ListAlbumItemTemplate"
+                          x:DataType="itemVM:AlbumViewModel">
+                <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
+                                Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type pageVM:AlbumPageViewModel}}}">
+                    <item:ItemFrame.ItemContent>
+                        <Grid ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <control:ManagedIcon Grid.Column="0"
+                                                 FileHashes="{Binding FileHashes}"
+                                                 WidthRequest="{DynamicResource IconItemSize}"
+                                                 Option="Small" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding Name}"
+                                   Style="{StaticResource OneLine}" />
+                        </Grid>
+                    </item:ItemFrame.ItemContent>
+                </item:ItemFrame>
+            </DataTemplate>
+
+            <GridItemsLayout x:Key="GridLayout"
+                             Orientation="Vertical"
+                             Span="4"
+                             VerticalItemSpacing="2"
+                             HorizontalItemSpacing="2" />
+            <LinearItemsLayout x:Key="ListLayout"
+                               Orientation="Vertical"
+                               ItemSpacing="2" />
+
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"
+              HeightRequest="{DynamicResource HeaderSize}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Entry Grid.Column="0"
+                   Placeholder="Album name" />
+            <button:CollectionDisplayModeButtonSimple Grid.Column="1"
+                                                      DisplayMode="{Binding DisplayMode, Mode=TwoWay}"/>
+        </Grid>     
+        <control:CollectionViewExtend Grid.Row="1"
+                                      x:Name="Collection"
+                                      DisplayMode="{Binding DisplayMode}"
+                                      ItemsSource="{Binding Items.Items}">
+            <control:CollectionViewExtend.ItemPresets>  
+                <control:CollectionViewPreset DisplayMode="SimpleGrid"
+                                              ItemTemplate="{StaticResource GridAlbumItemTemplate}"
+                                              ItemsLayout="{StaticResource GridLayout}" />
+                <control:CollectionViewPreset DisplayMode="SimpleList"
+                                              ItemTemplate="{StaticResource ListAlbumItemTemplate}"
+                                              ItemsLayout="{StaticResource ListLayout}" />
+            </control:CollectionViewExtend.ItemPresets>
+        </control:CollectionViewExtend>
+    </Grid>
 </ContentView>
