@@ -1,7 +1,9 @@
-﻿using MusicEco.Core.Services;
+﻿using Microsoft.VisualBasic;
+using MusicEco.Core.Services;
 using MusicEco.Data.Database.Entities;
 using MusicEco.Data.Database.Relations;
 using SQLiteORM;
+using System.Diagnostics;
 
 namespace MusicEco.Data.Services;
 
@@ -12,7 +14,7 @@ internal partial class Scanner {
     /// <param name="connection"></param>
     /// <param name="dto"></param>
     /// <exception cref="Exception"></exception>
-    private static void PushChange(SQLiteWriteConnection connection, HandleFileDto dto, IProgress<PushChangeProgress> progress) {
+    private static void PushChange(SQLiteWriteConnection connection, HandleFileDto dto, IProgress<PushChangeProgress> progress, TimeSpan updateInterval) {
         int result;
         foreach (var file in dto.TimeChangedFiles) {
             result = connection.Update("""
@@ -35,7 +37,11 @@ internal partial class Scanner {
         _ = connection.Insert(tags, false);
         IconEncoderBuffer buffer = new();
         int totalCount = dto.Icons.Count;
-        for(int i=0; i<totalCount; i++) {
+        int completedCount = 0;
+        Stopwatch throttleSw = Stopwatch.StartNew();
+        TimeSpan lastReport = TimeSpan.Zero;
+        object reportLock = new();
+        for (int i=0; i<totalCount; i++) {
             var icon = dto.Icons[i];
             var iconHash = icon.IconHash;
             int smallLength = (int)icon.SmallFile.ReadAndDispose(buffer.SmallIconBuffer);
@@ -52,7 +58,22 @@ internal partial class Scanner {
                 buffer.GetSmallIcon(smallLength),
                 buffer.GetMediumIcon(mediumLength),
                 buffer.GetLargeIcon(largeLength));
-            progress.Report(new(i+1, totalCount));
+            bool shouldReport;
+            int localCompletedCount;
+            lock (reportLock) {
+                completedCount++;
+                TimeSpan elapsed = throttleSw.Elapsed;
+                localCompletedCount = completedCount;
+                shouldReport = localCompletedCount == 1 || localCompletedCount == totalCount || elapsed - lastReport > updateInterval;
+                if (shouldReport) {
+                    lastReport = elapsed;
+                }
+            }
+            if (shouldReport) {
+                // This may or  may not block thread depend on implementation of IProgress
+                // Progress use non-blocking report
+                progress.Report(new(localCompletedCount, totalCount));
+            }
         }
     }
 }

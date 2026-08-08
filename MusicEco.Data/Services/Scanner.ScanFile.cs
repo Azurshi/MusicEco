@@ -1,4 +1,5 @@
-﻿using MusicEco.Core.Data;
+﻿using Microsoft.VisualBasic;
+using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using System.Diagnostics;
@@ -7,7 +8,14 @@ namespace MusicEco.Data.Services;
 
 internal partial class Scanner {
 #if WINDOWS
-    private static async Task<ScanFileDto> ScanFiles(List<FileEntry> existsFiles, IReadOnlyList<string> paths, HashSet<string> fileExtensions, int nWorkers, IProgress<ScanFileProgress> progress) {
+    private static async Task<ScanFileDto> ScanFiles(
+        List<FileEntry> existsFiles,
+        IReadOnlyList<string> paths,
+        HashSet<string> fileExtensions,
+        int nWorkers, 
+        IProgress<ScanFileProgress> progress,
+        TimeSpan updateInterval
+        ) {
         ScanFileDto result = new();
         Dictionary<string, FileEntry> existsFilesMap = existsFiles.ToDictionary(f => f.Path);
         Queue<string> folderQ = new(paths);
@@ -28,8 +36,12 @@ internal partial class Scanner {
         for(int i=0; i<nWorkers; i++) {
             ioBuffers.Add(new byte[Config.IOBufferSize]);
         }
-        int totalCount = files.Count;
         object resultLock = new();
+        int totalCount = files.Count;
+        int completedCount = 0;
+        Stopwatch throttleSw = Stopwatch.StartNew();
+        TimeSpan lastReport = TimeSpan.Zero;
+        object reportLock = new();
         void Job(int tIndex, int fileIndex, FileInfo file) {
             var ioBuffer = ioBuffers[tIndex];
             if (existsFilesMap.TryGetValue(file.FullName, out var existFile)) {
@@ -54,7 +66,22 @@ internal partial class Scanner {
                     result.NewFiles.Add(fileEntry);
                 }
             }
-            progress.Report(new(fileIndex+1, totalCount));
+            bool shouldReport;
+            int localCompletedCount;
+            lock (reportLock) {
+                completedCount++;
+                TimeSpan elapsed = throttleSw.Elapsed;
+                localCompletedCount = completedCount;
+                shouldReport = localCompletedCount == 1 || localCompletedCount == totalCount || elapsed - lastReport > updateInterval;
+                if (shouldReport) {
+                    lastReport = elapsed;
+                }
+            }
+            if (shouldReport) {
+                // This may or  may not block thread depend on implementation of IProgress
+                // Progress use non-blocking report
+                progress.Report(new(localCompletedCount, totalCount));
+            }
         }
         int nextFile = 0;
         object lockObj = new();
@@ -80,7 +107,7 @@ internal partial class Scanner {
         return result;
     }
 #else
-    private static Task<ScanFileDto> ScanFiles(List<FileEntry> existsFiles, IReadOnlyList<string> paths, HashSet<string> fileExtensions, int nWorkers, IProgress<ScanFileProgress> progress) {
+    private static Task<ScanFileDto> ScanFiles(List<FileEntry> existsFiles, IReadOnlyList<string> paths, HashSet<string> fileExtensions, int nWorkers, IProgress<ScanFileProgress> progress, TimeSpan updateInterval) {
         throw new NotImplementedException();
     }
 #endif

@@ -40,10 +40,11 @@ public class ScanProgress {
     }
 }
 public interface IScanner {
+    public event EventHandler<bool>? RunningChanged;
     // Block delete AudioEntity and modify FileEntity while running
     public bool Running { get; }
     // Scan, compare with exising data and update
-    public Task<bool> ScanAndUpdate(ScanProgress progress, List<string> fileExtensions, int scanWorkers, int processWorkers, object? caller = null);
+    public Task<bool> ScanAndUpdate(ScanProgress progress, List<string> fileExtensions, int scanWorkers, int processWorkers, TimeSpan updateInterval, object? caller = null);
 }
 public interface IScanPathService {
     public event EventHandler ItemChanged;

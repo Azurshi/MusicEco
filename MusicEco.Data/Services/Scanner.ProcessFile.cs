@@ -9,7 +9,7 @@ using System.Diagnostics;
 namespace MusicEco.Data.Services;
 
 internal partial class Scanner {
-    private static async Task<HandleFileDto> ProcessFile(IServiceProvider provider, SQLiteReadConnection connection, ScanFileDto scanFileResult, int nWorkers, IProgress<ProcessFileProgress> progress) {
+    private static async Task<HandleFileDto> ProcessFile(IServiceProvider provider, SQLiteReadConnection connection, ScanFileDto scanFileResult, int nWorkers, IProgress<ProcessFileProgress> progress, TimeSpan updateInterval) {
         var fileHashes = connection.Select<Hash256>(
             "SELECT Hash FROM FileEntity").Select(r => r.Item1).ToHashSet();
         var iconHashes = connection.Select<Hash256>(
@@ -27,6 +27,9 @@ internal partial class Scanner {
         }
         object resultLock = new();
         int totalCount = scanFileResult.NewFiles.Count + scanFileResult.ContentChangedFiles.Count;
+        int completedCount = 0;
+        Stopwatch throttleSw = Stopwatch.StartNew();
+        TimeSpan lastReport = TimeSpan.Zero;
         void Job(int tIndex, int fileIndex, FileEntity file) {
             var iconBuffer = iconBuffers[tIndex];
             var encoderBuffer = encoderBuffers[tIndex];
@@ -72,10 +75,23 @@ internal partial class Scanner {
             }
             // Handle metadata
             var databaseEntryPack = AudioMetadataToDatabaseEntry(fileHash, iconHash, metadata);
-            lock(resultLock) {
+            bool shouldReport;
+            int localCompletedCount;
+            lock (resultLock) {
                 result.Audios.Add(new(databaseEntryPack.Item1, databaseEntryPack.Item2));
+                completedCount++;
+                TimeSpan elapsed = throttleSw.Elapsed;
+                localCompletedCount = completedCount;
+                shouldReport = localCompletedCount == 1 || localCompletedCount == totalCount || elapsed - lastReport > updateInterval;
+                if (shouldReport) {
+                    lastReport = elapsed;
+                }
             }
-            progress.Report(new(fileIndex + 1, totalCount));
+            if (shouldReport) {
+                // This may or  may not block thread depend on implementation of IProgress
+                // Progress use non-blocking report
+                progress.Report(new(localCompletedCount, totalCount));
+            }
         }
         List<FileEntity> files = [];
         // Handle new files

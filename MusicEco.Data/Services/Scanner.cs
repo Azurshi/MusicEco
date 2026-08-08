@@ -15,6 +15,9 @@ internal partial class Scanner: IScanner {
     private readonly DatabaseContextAsync _db;
     private readonly IServiceProvider _provider;
     private readonly IScanPathService _scanPathService;
+
+    public event EventHandler<bool>? RunningChanged;
+
     public Scanner(DatabaseContextAsync databaseContext, IServiceProvider serviceProvider, IScanPathService scanPathService) {
         this._db = databaseContext;
         this._provider = serviceProvider;
@@ -37,8 +40,9 @@ internal partial class Scanner: IScanner {
         return hash;
     }
 
-    public async Task<bool> ScanAndUpdate(ScanProgress progress, List<string> fileExtensions, int scanWorkers, int processWorkers, object? caller = null) {
+    public async Task<bool> ScanAndUpdate(ScanProgress progress, List<string> fileExtensions, int scanWorkers, int processWorkers, TimeSpan updateInterval, object? caller = null) {
         this.Running = true;
+        this.RunningChanged?.Invoke(caller, this.Running);
         try {
             var folderPaths = await this._scanPathService.GetPaths();
             HandleFileDto dto;
@@ -51,11 +55,11 @@ internal partial class Scanner: IScanner {
                 var existsFiles = await FileRepository.GetAll(db.Connection);
                 Dictionary<string, FileEntry> existsFilesMap = existsFiles.ToDictionary(f => f.Path);
                 sw.Start();
-                var scanResult = await ScanFiles(existsFiles, folderPaths, fileExtensions.ToHashSet(), scanWorkers, progress.ScanFile);
+                var scanResult = await ScanFiles(existsFiles, folderPaths, fileExtensions.ToHashSet(), scanWorkers, progress.ScanFile, updateInterval);
                 sw.Stop();
                 scanFilesTime = sw.Elapsed;
                 sw.Restart();
-                dto = await ProcessFile(this._provider, connection, scanResult, processWorkers, progress.ProcessFile);
+                dto = await ProcessFile(this._provider, connection, scanResult, processWorkers, progress.ProcessFile, updateInterval);
                 sw.Stop();
                 handleFileTime = sw.Elapsed;
             }
@@ -63,7 +67,7 @@ internal partial class Scanner: IScanner {
                 await db.Connection.BeginTransactionAsync();
                 try {
                     sw.Restart();
-                    await Task.Run(() => PushChange(db.Connection, dto, progress.PushChange));
+                    await Task.Run(() => PushChange(db.Connection, dto, progress.PushChange, updateInterval));
                     await db.Connection.CommitTransactionAsync();
                     sw.Stop();
                     pushTime = sw.Elapsed;
@@ -81,6 +85,7 @@ internal partial class Scanner: IScanner {
         finally {
             GC.Collect();
             this.Running = false;
+            this.RunningChanged?.Invoke(caller, this.Running);
         }
     }
 }

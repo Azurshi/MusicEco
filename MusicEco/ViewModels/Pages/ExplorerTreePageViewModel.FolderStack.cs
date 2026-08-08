@@ -1,4 +1,6 @@
-﻿namespace MusicEco.ViewModels.Pages;
+﻿using MusicEco.Core.Types;
+
+namespace MusicEco.ViewModels.Pages;
 
 public partial class ExplorerTreePageViewModel {
     private sealed class FolderStack {

@@ -25,6 +25,11 @@ public interface IEditableItem {
 public interface IMoveableItem {
     public bool IsDraggable { get; set; }
 }
+public interface ILockableItem {
+    public bool IsLocked { get; set; }
+    public bool IsUnlocked { get; }
+}
+
 
 public enum CollectionDisplayMode {
     None,

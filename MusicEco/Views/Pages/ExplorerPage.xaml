@@ -26,23 +26,24 @@
                             </Grid.ColumnDefinitions>
                             <Label Grid.Row="0"
                                    Grid.Column="0"
-                                   Text="{Binding Name}" 
+                                   Text="{Binding Name}"
                                    Style="{StaticResource OneLine}"
                                    Margin="4, 0, 0, 0"
                                    FontSize="16" />
                             <Label Grid.Row="1"
                                    Grid.Column="0"
-                                   Text="{Binding Path}" 
+                                   Text="{Binding Path}"
                                    Style="{StaticResource OneLine}"
                                    Margin="8, 0, 0, 4"
-                                   Opacity="0.75"/>
+                                   Opacity="0.75" />
                             <Button Grid.Row="0"
                                     Grid.Column="1"
                                     Grid.RowSpan="2"
                                     WidthRequest="{DynamicResource IconButtonItemSize}"
-                                    Text="X" 
+                                    Text="X"
+                                    IsVisible="{Binding IsUnlocked}"
                                     Command="{Binding DeleteItemCommand, Source={RelativeSource AncestorType={x:Type pageVM:ExplorerPageViewModel}}}"
-                                    CommandParameter="{Binding}"/>
+                                    CommandParameter="{Binding}" />
 
                         </Grid>
                     </item:ItemFrame.ItemContent>
@@ -58,16 +59,66 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
               HeightRequest="{DynamicResource HeaderSize}"
-              ColumnSpacing="8">
+              ColumnSpacing="8"
+              IsVisible="{Binding IsUnLocked}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" 
-                    Text="Scan" />
-            <Button Grid.Column="1" 
+            <Button Grid.Column="0"
+                    Text="Scan" 
+                    Command="{Binding ScanCommand}"/>
+            <Button Grid.Column="1"
                     Command="{Binding AddNewPathCommand}"
                     Text="+ Add new folder" />
+        </Grid>
+        <Grid Grid.Row="0"
+              HeightRequest="{DynamicResource HeaderSize}"
+              ColumnSpacing="8"
+              IsVisible="{Binding IsLocked}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"
+                   Grid.Column="0"
+                   Text="File scan"
+                   Style="{StaticResource OneLine}" />
+            <Label Grid.Row="1"
+                   Grid.Column="0"
+                   Text="File process"
+                   Style="{StaticResource OneLine}" />
+            <Label Grid.Row="2"
+                   Grid.Column="0" 
+                   Text="Saving data"
+                   Style="{StaticResource OneLine}"/>
+            <ProgressBar Grid.Row="0"
+                         Grid.Column="1"
+                         Progress="{Binding ProgressInfo.ScanFileProgress}" />
+            <ProgressBar Grid.Row="1"
+                         Grid.Column="1"
+                         Progress="{Binding ProgressInfo.ProcessFileProgress}" />
+            <ProgressBar Grid.Row="2"
+                         Grid.Column="1"
+                         Progress="{Binding ProgressInfo.SaveDataProgress}" />
+            <Label Grid.Row="0"
+                   Grid.Column="2"
+                   Text="{Binding ProgressInfo.ScanFileProgressText}"
+                   Style="{StaticResource OneLine}" />
+            <Label Grid.Row="1"
+                   Grid.Column="2"
+                   Text="{Binding ProgressInfo.ProcessFileProgressText}"
+                   Style="{StaticResource OneLine}" />
+            <Label Grid.Row="2"
+                   Grid.Column="2"
+                   Text="{Binding ProgressInfo.SaveDataProgressText}"
+                   Style="{StaticResource OneLine}" />
         </Grid>
         <Grid Grid.Row="1"
               HeightRequest="{DynamicResource HeaderSize}">
