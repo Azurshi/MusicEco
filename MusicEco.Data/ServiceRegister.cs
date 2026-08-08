@@ -86,7 +86,7 @@ public static class ServiceRegister {
     }
     private static string SaveDirectory = string.Empty;
     public static async Task Initialize(IServiceProvider provider, string saveDirectory) {
-        SQLitePCL.Batteries_V2.Init();
+        SQLitePCL.Batteries.Init();
         SaveDirectory = saveDirectory;
         DatabaseContextAsync db = provider.GetRequiredService<DatabaseContextAsync>();
         string dbPath = Path.Join(SaveDirectory, Config.DatabaseName);

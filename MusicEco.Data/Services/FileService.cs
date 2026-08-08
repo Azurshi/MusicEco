@@ -24,11 +24,15 @@ internal class FileService: IFileService {
     }
 
     public Task<bool> IsAvailable(FileEntry model) {
+#if WINDOWS
         if (File.Exists(model.Path)) {
             return Task.FromResult(true);
         } else {
             return Task.FromResult(false);
         }
+#else
+        return Task.FromResult(true);
+#endif
     }
 
     public Task<List<FileEntry>> Query(string path) {

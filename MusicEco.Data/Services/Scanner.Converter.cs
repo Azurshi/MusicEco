@@ -41,16 +41,4 @@ internal partial class Scanner {
     private static FileEntity FileEntryToEntity(FileEntry file) {
         return new((file.Path, file.Hash, file.ModifiedTime, file.Name, file.Extension, file.Size));
     }
-
-#if WINDOWS
-    private static FileEntry FileInfoToEntry(FileInfo file, byte[] ioBuffer) {
-        Hash256 hash;
-        using (var fileStream = file.OpenRead()) {
-            hash = ComputeHash(fileStream, ioBuffer);
-        }
-        string fileName = Path.GetFileNameWithoutExtension(file.Name);
-        FileEntry entry = new(file.FullName, hash, file.LastWriteTimeUtc, file.Name, fileName, file.Length);
-        return entry;
-    }
-#endif
 }

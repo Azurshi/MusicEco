@@ -42,7 +42,16 @@
 	  <None Include="Services\Scanner.PushChange.cs">
 	    <DependentUpon>Scanner.cs</DependentUpon>
 	  </None>
-	  <None Include="Services\Scanner.ScanFile.cs">
+	  <None Include="Services\Scanner.ScanFile.Android.cs">
+	    <DependentUpon>Scanner.cs</DependentUpon>
+	  </None>
+	  <None Include="Services\Scanner.ScanFile.IOS.cs">
+	    <DependentUpon>Scanner.cs</DependentUpon>
+	  </None>
+	  <None Include="Services\Scanner.ScanFile.Mac.cs">
+	    <DependentUpon>Scanner.cs</DependentUpon>
+	  </None>
+	  <None Include="Services\Scanner.ScanFile.Windows.cs">
 	    <DependentUpon>Scanner.cs</DependentUpon>
 	  </None>
 	</ItemGroup>
@@ -50,7 +59,7 @@
 	<ItemGroup>
 		<PackageReference Include="Blake3" Version="3.0.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="SQLiteORM" Version="0.0.4-dev" />
+		<PackageReference Include="SQLiteORM" Version="0.0.5-dev" />
 		<PackageReference Include="TagLibSharp" Version="2.3.0" />
 	</ItemGroup>
 

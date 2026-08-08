@@ -1,39 +1,45 @@
-﻿using Microsoft.VisualBasic;
+﻿#if ANDROID
 using MusicEco.Core.Data;
+using MusicEco.Core.Platforms.Android;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.Data.Platforms.Android;
 using System.Diagnostics;
+using FileInfo = MusicEco.Data.Platforms.Android.FileInfo;
+using Uri = Android.Net.Uri;
 
 namespace MusicEco.Data.Services;
 
 internal partial class Scanner {
-#if WINDOWS
-    private static async Task<ScanFileDto> ScanFiles(
-        List<FileEntry> existsFiles,
-        IReadOnlyList<string> paths,
-        HashSet<string> fileExtensions,
-        int nWorkers, 
-        IProgress<ScanFileProgress> progress,
-        TimeSpan updateInterval
-        ) {
+    private static FileEntry FileInfoToEntry(FileInfo file, byte[] ioBuffer) {
+        Hash256 hash;
+        using (var fileStream = UriUtility.OpenFile(file.Uri, ioBuffer.Length, FileAccess.Read)) {
+            hash = ComputeHash(fileStream, ioBuffer);
+        }
+        string fileName = Path.GetFileNameWithoutExtension(file.Name);
+        FileEntry entry = new(file.Path, hash, file.LastWriteTimeUtc, file.Name, fileName, file.Length);
+        return entry;
+    }
+    private static async Task<ScanFileDto> ScanFiles(List<FileEntry> existsFiles, IReadOnlyList<string> paths, HashSet<string> fileExtensions, int nWorkers, IProgress<ScanFileProgress> progress, TimeSpan updateInterval) {
         ScanFileDto result = new();
         Dictionary<string, FileEntry> existsFilesMap = existsFiles.ToDictionary(f => f.Path);
-        Queue<string> folderQ = new(paths);
+        Queue<Uri> folderQ = new(paths.Select(UriUtility.GetUri).OfType<Uri>());
         List<FileInfo> files = [];
         while (folderQ.Count > 0) {
-            string folderPath = folderQ.Dequeue();
-            DirectoryInfo directory = new(folderPath);
-            foreach (var childDirectory in directory.GetDirectories()) {
-                folderQ.Enqueue(childDirectory.FullName);
+            var folderURI = folderQ.Dequeue();
+            foreach (var childDirectory in UriUtility.GetFolders(folderURI)) {
+                folderQ.Enqueue(childDirectory);
+                //Debug.WriteLine(childDirectory.ToString());
             }
-            foreach (var file in directory.GetFiles()) {
-                if (fileExtensions.Contains(file.Extension)) {
+            foreach (var file in UriQuery.GetFilesInfo(folderURI)) {
+                if (fileExtensions.Contains(Path.GetExtension(file.Name))) {
                     files.Add(file);
+                    //Debug.WriteLine(files.Count);
                 }
             }
         }
-        List<byte[]> ioBuffers = new (nWorkers);
-        for(int i=0; i<nWorkers; i++) {
+        List<byte[]> ioBuffers = new(nWorkers);
+        for (int i = 0; i < nWorkers; i++) {
             ioBuffers.Add(new byte[Config.IOBufferSize]);
         }
         object resultLock = new();
@@ -44,16 +50,16 @@ internal partial class Scanner {
         object reportLock = new();
         void Job(int tIndex, int fileIndex, FileInfo file) {
             var ioBuffer = ioBuffers[tIndex];
-            if (existsFilesMap.TryGetValue(file.FullName, out var existFile)) {
+            if (existsFilesMap.TryGetValue(file.Path, out var existFile)) {
                 if (file.LastWriteTimeUtc != existFile.ModifiedTime) {
                     var fileEntry = FileInfoToEntry(file, ioBuffer);
                     if (fileEntry.Hash != existFile.Hash) {
-                        lock(resultLock) {
+                        lock (resultLock) {
                             result.ContentChangedFiles.Add(fileEntry);
                         }
                     }
                     else {
-                        lock(resultLock) {
+                        lock (resultLock) {
                             result.TimeChangeFiles.Add(new(fileEntry.Path, fileEntry.ModifiedTime));
                         }
                     }
@@ -106,9 +112,5 @@ internal partial class Scanner {
         await Task.WhenAll(workers);
         return result;
     }
-#else
-    private static Task<ScanFileDto> ScanFiles(List<FileEntry> existsFiles, IReadOnlyList<string> paths, HashSet<string> fileExtensions, int nWorkers, IProgress<ScanFileProgress> progress, TimeSpan updateInterval) {
-        throw new NotImplementedException();
-    }
-#endif
 }
+#endif

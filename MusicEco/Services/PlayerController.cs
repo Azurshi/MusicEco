@@ -1,7 +1,9 @@
 ﻿using MusicEco.Core;
 using MusicEco.Core.Services;
 using System.Diagnostics;
-
+#if ANDROID
+using MusicEco.Core.Platforms.Android;
+#endif
 namespace MusicEco.Services;
 internal partial class PlayerController: IPlayerController {
     public event EventHandler<AudioTime>? PositionChanged;
@@ -81,6 +83,8 @@ internal partial class PlayerController: IPlayerController {
         var oldStream = this._stream;
 #if WINDOWS
         this._stream = File.OpenRead(path);
+#elif ANDROID
+        this._stream = UriUtility.OpenFile(Android.Net.Uri.Parse(path)!, 64 * 1024, FileAccess.Read);
 #endif
         if (this._stream != null) {
             this._player.Play(this._stream);

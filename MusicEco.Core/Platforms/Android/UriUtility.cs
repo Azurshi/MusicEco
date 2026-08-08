@@ -37,42 +37,52 @@ public static class UriUtility {
     public static List<Uri> GetFiles(Uri folder) {
         return GetItems(folder, true);
     }
-    public static List<Uri> GetFolder(Uri folder) {
+    public static List<Uri> GetFolders(Uri folder) {
         return GetItems(folder, false);
     }
-    private static List<Uri> GetItems(Uri treeUri, bool fileOnly) {
+    private static List<Uri> GetItems(Uri treeUri, bool queryFile) {
         List<Uri> items = [];
         var context = AndroidF.App.Application.Context;
         var resolver = context.ContentResolver!;
-        string documentId = DocumentsContract.GetTreeDocumentId(treeUri)!;
+        string documentId;
+        if (DocumentsContract.IsDocumentUri(context, treeUri)) {
+            documentId = DocumentsContract.GetDocumentId(treeUri)!;
+        } else {
+            documentId = DocumentsContract.GetTreeDocumentId(treeUri)!;
+        }
         var childrenUri = DocumentsContract.BuildChildDocumentsUriUsingTree(treeUri, documentId)!;
         string[] projection = [
             DocumentsContract.Document.ColumnDocumentId,
             DocumentsContract.Document.ColumnMimeType
             ];
-        using (var cursor = resolver.Query(
+        var cursor = resolver.Query(
             childrenUri,
             projection,
             null,
             null,
-            null)) {
-            if (cursor == null) {
-                return items;
-            }
+            null);
+        if (cursor == null) {
+            return items;
+        }
+        try {
             int idIndex = cursor.GetColumnIndex(DocumentsContract.Document.ColumnDocumentId);
             int mimeIndex = cursor.GetColumnIndex(DocumentsContract.Document.ColumnMimeType);
             while (cursor.MoveToNext()) {
                 string childDocumentId = cursor.GetString(idIndex)!;
                 string mimeType = cursor.GetString(mimeIndex)!;
                 bool isFolder = mimeType == FolderMimeType;
-                if (isFolder && fileOnly) {
-                    continue;
+                if ((queryFile && !isFolder)
+                    || (!queryFile && isFolder)) {
+                    var childUri = DocumentsContract.BuildDocumentUriUsingTree(treeUri, childDocumentId);
+                    items.Add(childUri!);
                 }
-                var childUri = DocumentsContract.BuildDocumentUriUsingTree(treeUri, childDocumentId);
-                items.Add(childUri!);
             }
+            return items;
         }
-        return items;
+        finally {
+            cursor.Close();
+            cursor.Dispose();
+        }
     }
     public static FileStream OpenFile(Uri uri, int bufferSize, FileAccess fileAccess) {
         var context = AndroidF.App.Application.Context;
