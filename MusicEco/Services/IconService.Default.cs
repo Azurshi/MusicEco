@@ -10,19 +10,14 @@ public partial class IconService {
             using(var memory = new MemoryStream()) {
                 await file.CopyToAsync(memory);
                 var imageDecoder = provider.GetRequiredService<IImageDecoder>();
-                imageDecoder.Initialize(1);
                 byte[] data = memory.ToArray();
-                var smallIcon = await imageDecoder.Decode(data, Data.Config.SmallIconSize, false);
-                var mediumIcon = await imageDecoder.Decode(data, Data.Config.MediumIconSize, false);
-                var largeIcon = await imageDecoder.Decode(data, Data.Config.LargeIconSize, false);
-                if (smallIcon == null || mediumIcon == null || largeIcon == null) {
-                    throw new System.Exception("IconService initialization failed");
-                }
-                this._default[CoverSize.Small] = smallIcon;
-                this._default[CoverSize.Medium] = mediumIcon;
-                this._default[CoverSize.Large] = largeIcon;
+                var smallData =  imageDecoder.Decode(data, Data.Config.SmallIconSize, false);
+                var mediumData = imageDecoder.Decode(data, Data.Config.MediumIconSize, false);
+                var largeData = imageDecoder.Decode(data, Data.Config.LargeIconSize, false);
+                this._default[CoverSize.Small] = ImageSource.FromStream(() => new MemoryStream(smallData));
+                this._default[CoverSize.Medium] = ImageSource.FromStream(() => new MemoryStream(mediumData));
+                this._default[CoverSize.Large] = ImageSource.FromStream(() => new MemoryStream(largeData));
             }
-
         }
     }
 }

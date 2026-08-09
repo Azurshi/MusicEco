@@ -34,14 +34,19 @@ internal class SkiaImageDecoder: BaseImageCodec, IImageDecoder {
             }
         }
     }
-    public async Task<ImageSource> Decode(Memory<byte> data, Vector2 maxSize, bool highQuality) {
+
+    public byte[] Decode(Memory<byte> data, Vector2 maxSize, bool highQuality) {
+        return DecodeInner(data, maxSize, highQuality);
+    }
+
+    public async Task<byte[]> DecodeAsync(Memory<byte> data, Vector2 maxSize, bool highQuality) {
         if (Semaphore == null) {
             throw new Exception("Object not initalized");
         }
         await Semaphore.WaitAsync();
         try {
             var bytes = await Task.Run(() => DecodeInner(data, maxSize, highQuality));
-            return ImageSource.FromStream(() => new MemoryStream(bytes));
+            return bytes;
         }
         finally {
             Semaphore.Release();

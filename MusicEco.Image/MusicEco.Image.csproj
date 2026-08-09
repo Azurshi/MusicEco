@@ -28,8 +28,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="MusicEco.Core" Version="0.0.14-dev" />
 		<PackageReference Include="SkiaSharp" Version="4.150.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\MusicEco.Core\MusicEco.Core.csproj" />
 	</ItemGroup>
 
 </Project>

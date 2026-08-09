@@ -24,14 +24,17 @@ internal class SkiaIconDecoder: BaseImageCodec, IIconDecoder {
             }
         }
     }
-    public async Task<ImageSource> Decode(Memory<byte> data) {
+    public byte[] Decode(Memory<byte> data) {
+        return DecodeInner(data);
+    }
+    public async Task<byte[]> DecodeAsync(Memory<byte> data) {
         if (Semaphore == null) {
             throw new Exception("Object not initalized");
         }
         await Semaphore.WaitAsync();
         try {
             var bytes = await Task.Run(() => DecodeInner(data));
-            return ImageSource.FromStream(() => new MemoryStream(bytes));
+            return bytes;
         }
         finally {
             Semaphore.Release();

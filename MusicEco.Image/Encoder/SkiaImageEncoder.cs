@@ -19,9 +19,8 @@ internal class SkiaImageEncoder: BaseImageCodec, IImageEncoder {
             }
         }
     }
-    public async Task<int> Encode(Memory<byte> data, string format, int quality, byte[] buffer) {
-        format = format.ToLower().Replace(".", "");
-        var encodedFormat = format switch {
+    private static SKEncodedImageFormat GetFormat(string format) {
+        return format switch {
             "png" => SKEncodedImageFormat.Png,
             "jpeg" => SKEncodedImageFormat.Jpeg,
             "jpg" => SKEncodedImageFormat.Jpeg,
@@ -31,6 +30,15 @@ internal class SkiaImageEncoder: BaseImageCodec, IImageEncoder {
             "ico" => SKEncodedImageFormat.Ico,
             _ => SKEncodedImageFormat.Webp,
         };
+    }
+    public int Encode(Memory<byte> data, string format, int quality, byte[] buffer) {
+        format = format.ToLower().Replace(".", "");
+        var encodedFormat = GetFormat(format);
+        return EncodeInner(data, encodedFormat, quality, buffer);
+    }
+    public async Task<int> EncodeAsync(Memory<byte> data, string format, int quality, byte[] buffer) {
+        format = format.ToLower().Replace(".", "");
+        var encodedFormat = GetFormat(format);
         if (Semaphore == null) {
             throw new Exception("Object not initalized");
         }

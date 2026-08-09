@@ -56,7 +56,7 @@ public static class MauiProgram {
             var iconService = provider.GetRequiredService<IIconService>();
             var setting = provider.GetRequiredService<IAppSetting>();
             await iconService.InitializeDefault(provider);
-            var nWorkers = setting.Get(2, SettingFields.IconDecoderNumWorkers);
+            var nWorkers = setting.Get(1, SettingFields.IconDecoderNumWorkers);
             var capacity = setting.Get(100, SettingFields.IconDecoderCapacity);
             await iconService.Setup(nWorkers, capacity);
         });

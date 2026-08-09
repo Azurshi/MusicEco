@@ -9,7 +9,7 @@ public partial class IconService: IIconService {
     private IconCache? _cache;
     private readonly CacheLog _cacheLog;
     private readonly LoadLog _loadLog;
-    private readonly Dictionary<IconKey, ValueTuple<Task<ImageSource?>, List<CancelSource>>> _tasks;
+    private readonly Dictionary<IconKey, ValueTuple<Task<byte[]?>, List<CancelSource>>> _tasks;
     private bool _workerInitalized = false;
     private sealed class ManagedBuffer(byte[] buffer) {
         public byte[] Buffer { get; init; } = buffer;
@@ -54,7 +54,12 @@ public partial class IconService: IIconService {
         }
         if (iconHash != null) {
             IconKey key = new(iconHash.Value, size);
-            return await GetIcon(key, cancelSource) ?? this._default[size];
+            var imageData = await GetIcon(key, cancelSource);
+            if (imageData != null) {
+                return ImageSource.FromStream(() => new MemoryStream(imageData));
+            } else {
+                return this._default[size];
+            }
         }
         else {
             return this._default[size];
@@ -65,15 +70,23 @@ public partial class IconService: IIconService {
         var iconHash = await this._audioService.GetCoverHash(fileHash);
         if (iconHash != null) {
             IconKey key = new(iconHash.Value, size);
-            return await GetIcon(key, cancelSource) ?? this._default[size];
+            var imageData = await GetIcon(key, cancelSource);
+            if (imageData != null) {
+                return ImageSource.FromStream(() => new MemoryStream(imageData));
+            }
+            else {
+                return this._default[size];
+            }
         } else {
             return this._default[size];
         }
     }
-    private async Task<ImageSource?> GetIcon(IconKey key, CancelSource cancelSource) {
+    private async Task<byte[]?> GetIcon(IconKey key, CancelSource cancelSource) {
         if (this._cache == null) {
             throw new Exception("Not initialized");
         }
+        // ImageSource always decode per UI item
+        // So this cache does not worth much
         if (this._cache.TryGet(key, out var image)) {
 #if DEBUG
             _cacheLog.Hit();
@@ -121,7 +134,7 @@ public partial class IconService: IIconService {
         }
         throw new Exception("Race condition");
     }
-    private async Task<ImageSource?> Loader(IconKey key, List<CancelSource> sources) {
+    private async Task<byte[]?> Loader(IconKey key, List<CancelSource> sources) {
         if (this._bufferLimiter == null || this._cache == null) {
             throw new Exception("Not initialized");
         }
@@ -142,19 +155,15 @@ public partial class IconService: IIconService {
                 return null;
             }
             var data = managedBuffer.GetData(length);
-            var image = await this._iconDecoder.Decode(data);
-            if (image != null) {
+            var imageData = await this._iconDecoder.DecodeAsync(data);
+            this._cache.Add(key, imageData);
 #if DEBUG
-                _cacheLog.Miss();
-                _cacheLog.PeriodLog();
-#endif
-                this._cache.Add(key, image);
-            }
-#if DEBUG
+            _cacheLog.Miss();
+            _cacheLog.PeriodLog();
             _loadLog.Complete();
             _loadLog.PeriodLog();
 #endif
-            return image;
+            return imageData;
         }
         finally {
             managedBuffer.Busy = false;

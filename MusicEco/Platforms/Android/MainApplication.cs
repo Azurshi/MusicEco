@@ -21,7 +21,10 @@ public partial class ExplorerPicker {
             return null;
         }
         else {
-            string path = uri.ToString();
+            string? path = uri.ToString();
+            if (path == null) {
+                return null;
+            }
             UriUtility.Register(path, uri);
             return path;
         }

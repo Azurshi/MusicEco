@@ -17,21 +17,24 @@ public interface IImageCodec {
     public int NumWorkers { get; }
 }
 public interface IIconDecoder: IImageCodec {
-    public Task<ImageSource> Decode(Memory<byte> data); // ImageSource need to keep data alive so no buffer here
+    public byte[] Decode(Memory<byte> data);
+    public Task<byte[]> DecodeAsync(Memory<byte> data); // ImageSource need to keep data alive so no buffer here
 }
 public interface IImageDecoder: IImageCodec {
-    public Task<ImageSource> Decode(Memory<byte> data, Vector2 maxSize, bool highQuality);
+    public byte[] Decode(Memory<byte> data, Vector2 maxSize, bool highQuality);
+    public Task<byte[]> DecodeAsync(Memory<byte> data, Vector2 maxSize, bool highQuality);
 }
 public interface IIconEncoder: IImageCodec {
-    public Task<IconResult> EncodeAsync(
+    public IconResult Encode(
         Memory<byte> data,
         Vector2 smallIconSize, Vector2 mediumIconSize, Vector2 largeIconSize,
         byte[] smallIconBuffer, byte[] mediumIconBuffer, byte[] largeIconBuffer);
-    public IconResult Encode(
+    public Task<IconResult> EncodeAsync(
         Memory<byte> data,
         Vector2 smallIconSize, Vector2 mediumIconSize, Vector2 largeIconSize,
         byte[] smallIconBuffer, byte[] mediumIconBuffer, byte[] largeIconBuffer);
 }
 public interface IImageEncoder: IImageCodec {
-    public Task<int> Encode(Memory<byte> data, string format, int quality, byte[] buffer);
+    public int Encode(Memory<byte> data, string format, int quality, byte[] buffer);
+    public Task<int> EncodeAsync(Memory<byte> data, string format, int quality, byte[] buffer);
 }
