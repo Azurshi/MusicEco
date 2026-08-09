@@ -56,6 +56,7 @@ internal class QueueService: IQueueService {
         var result = await this._queueRepo.SetCurrent(current);
         if (result) {
             ItemsChanged?.Invoke(caller, new(ChangeKind.AllUpdated, DateTime.MaxValue));
+            CurrentChanged?.Invoke(caller, EventArgs.Empty);
         }
         return result;
     }

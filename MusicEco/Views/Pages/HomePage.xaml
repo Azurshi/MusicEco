@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MusicEco.Views.Pages.HomePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
+             xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
+             xmlns:item="clr-namespace:MusicEco.Views.Items"
+             xmlns:control="clr-namespace:MusicEco.Views.Controls"
+             xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             x:Class="MusicEco.Views.Pages.HomePage"
+             x:DataType="pageVM:HomePageViewModel">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <control:ManagedIcon Grid.Row="0"
+                             FileHash="{Binding FileHash}" 
+                             Option="Large"/>
+        <Rectangle Grid.Row="1"
+                   Fill="Gray"
+                   HeightRequest="2" />
+        <Label Grid.Row="2"
+               HeightRequest="{DynamicResource HeaderSize}"
+               Text="{Binding DisplayTitle}" 
+               Style="{StaticResource OneLine}"
+               HorizontalTextAlignment="Center"
+               FontSize="24"/>
+    </Grid>
 </ContentView>

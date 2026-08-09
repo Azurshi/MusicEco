@@ -40,6 +40,7 @@ internal partial class QueueRepository {
                 WHEN CreationTime = ?
                     THEN ?
                     ELSE ?
+            END
             """, model?.CreationTime ?? DateTime.MaxValue, true, false);
     }
     public async Task<bool> Insert(AudioQueue model) {

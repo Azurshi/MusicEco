@@ -30,8 +30,10 @@ public partial class ManagedIcon: Microsoft.Maui.Controls.Image {
         set => SetValue(FileHashesProperty, value);
     }
     public CoverSize Option { get; set; } = CoverSize.Small;
+    private readonly IIconService _iconService;
     public ManagedIcon() {
         InitializeComponent();
+        this._iconService = AppLifeCycle.Provider.GetRequiredService<IIconService>();
     }
     private Hash256 _lastHash = new();
     private CancellationTokenSource? _cts;
@@ -43,21 +45,8 @@ public partial class ManagedIcon: Microsoft.Maui.Controls.Image {
             return;
         }
         this._lastHash = fileHash;
-        if (this._cts != null) {
-            await this._cts.CancelAsync();
-        }
-        this._cts = new();
-        var token = this._cts.Token;
-        var service = AppLifeCycle.Provider.GetRequiredService<IIconService>();
-        Task<ImageSource> task = service.GetIcon(fileHash, this.Option, new(this, token));
-        if (task.IsCompletedSuccessfully) {
-            this.Source = task.Result;
-        } else {
-            this.Source = null;
-            await task;
-            this.Source = task.Result;
-        }
-        this._cts = null;
+        var iconHash = await this._iconService.GetIconHash(fileHash);
+        await this.SetIcon(iconHash);
     }
     private IReadOnlyList<Hash256> _lastHashes = [];
     private void SetImage(IReadOnlyList<Hash256> fileHashes) {
@@ -71,20 +60,40 @@ public partial class ManagedIcon: Microsoft.Maui.Controls.Image {
         if (this._cts != null) {
             await this._cts.CancelAsync();
         }
-        this._cts = new();
-        var token = this._cts.Token;
-        var service = AppLifeCycle.Provider.GetRequiredService<IIconService>();
-        Task<ImageSource> task = service.GetFirstIcon(fileHashes, this.Option, new(this, token));
-        if (task.IsCompletedSuccessfully) {
-            this.Source = task.Result;
+        var iconHash = await this._iconService.GetFirstIconHash(fileHashes);
+        await this.SetIcon(iconHash);
+    }
+
+    private Hash256? _lastIconHash = null;
+    private async Task SetIcon(Hash256? iconHash) {
+        if (iconHash == null) {
+            this._lastIconHash = iconHash;
+            if (this._cts != null) {
+                await this._cts.CancelAsync();
+            }
+            this.Source = this._iconService.GetDefault(this.Option);
+            return;
+        }
+        if (this._lastIconHash == iconHash) {
+            return;
+        }
+        this._lastIconHash = iconHash;
+        if (this._cts != null) {
+            await this._cts.CancelAsync();
         }
         else {
-            this.Source = null;
-            await task;
-            if (!AppLifeCycle.Closed) {
+            this._cts = new();
+            var token = this._cts.Token;
+            Task<ImageSource> task = this._iconService.GetIcon(iconHash.Value, this.Option, new(this, token));
+            if (task.IsCompletedSuccessfully) {
                 this.Source = task.Result;
             }
+            else {
+                this.Source = null;
+                await task;
+                this.Source = task.Result;
+            }
+            this._cts = null;
         }
-        this._cts = null;
     }
 }

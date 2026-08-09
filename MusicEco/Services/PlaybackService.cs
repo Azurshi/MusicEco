@@ -49,6 +49,7 @@ internal partial class PlaybackService: IPlaybackService {
             await this._queueService.Update(queue, sender);
         }
         this._playQueue = queue;
+        await this._queueService.SetCurrent(queue, sender);
         await PlayNew();
     }
 

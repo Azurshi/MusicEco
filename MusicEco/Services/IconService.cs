@@ -43,43 +43,33 @@ public partial class IconService: IIconService {
             this._buffers.Add(new(buffer));
         }
     }
-
-    public async Task<ImageSource> GetFirstIcon(IReadOnlyList<Hash256> fileHashes, CoverSize size, CancelSource cancelSource) {
+    public async Task<Hash256?> GetFirstIconHash(IReadOnlyList<Hash256> fileHashes) {
+        // This immutable to Metadata change
         Hash256? iconHash = null;
-        foreach(var fileHash in fileHashes) {
+        foreach (var fileHash in fileHashes) {
             iconHash = await this._audioService.GetCoverHash(fileHash);
             if (iconHash != null) {
                 break;
             }
         }
-        if (iconHash != null) {
-            IconKey key = new(iconHash.Value, size);
-            var imageData = await GetIcon(key, cancelSource);
-            if (imageData != null) {
-                return ImageSource.FromStream(() => new MemoryStream(imageData));
-            } else {
-                return this._default[size];
-            }
+        return iconHash;
+    }
+    public async Task<Hash256?> GetIconHash(Hash256 fileHash) {
+        // This immutable to Metadata change
+        return await this._audioService.GetCoverHash(fileHash);
+    }
+    public async Task<ImageSource> GetIcon(Hash256 iconHash, CoverSize size, CancelSource cancelSource) {
+        IconKey key = new(iconHash, size);
+        var imageData = await GetIcon(key, cancelSource);
+        if (imageData != null) {
+            return ImageSource.FromStream(() => new MemoryStream(imageData));
         }
         else {
             return this._default[size];
         }
     }
-    public async Task<ImageSource> GetIcon(Hash256 fileHash, CoverSize size, CancelSource cancelSource) {
-        // This immutable to Metadata change
-        var iconHash = await this._audioService.GetCoverHash(fileHash);
-        if (iconHash != null) {
-            IconKey key = new(iconHash.Value, size);
-            var imageData = await GetIcon(key, cancelSource);
-            if (imageData != null) {
-                return ImageSource.FromStream(() => new MemoryStream(imageData));
-            }
-            else {
-                return this._default[size];
-            }
-        } else {
-            return this._default[size];
-        }
+    public ImageSource GetDefault(CoverSize size) {
+        return this._default[size];
     }
     private async Task<byte[]?> GetIcon(IconKey key, CancelSource cancelSource) {
         if (this._cache == null) {
