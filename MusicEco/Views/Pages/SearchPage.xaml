@@ -43,7 +43,8 @@
         </Grid.RowDefinitions>
         <Entry Grid.Row="0" 
                HeightRequest="{DynamicResource HeaderSize}"
-               Text="{Binding SearchText, Mode=TwoWay}"/>
+               Text="{Binding SearchText, Mode=TwoWay}"
+               Placeholder="{Binding L[Search_Title]}"/>
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Items.Items}"
                         ItemTemplate="{StaticResource AudioItemTemplate}" />

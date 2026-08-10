@@ -77,7 +77,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Entry Grid.Column="0"
-                   Placeholder="Album name" />
+                   Placeholder="{Binding L[Album_Search]}" />
             <button:CollectionDisplayModeButtonSimple Grid.Column="1"
                                                       DisplayMode="{Binding DisplayMode, Mode=TwoWay}"/>
         </Grid>     

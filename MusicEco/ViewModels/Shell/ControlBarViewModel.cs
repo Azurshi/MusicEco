@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.Services;
+using MusicEco.ViewModels.Pages;
 using System.Diagnostics;
 
 namespace MusicEco.ViewModels.Shell;
@@ -8,6 +9,8 @@ namespace MusicEco.ViewModels.Shell;
 public partial class ControlBarViewModel: ObservableObject {
     private readonly IAppSetting _setting;
     private readonly IPlayerController _player;
+    public AssemblyLocalization L { get; init; }
+    protected readonly ILocalizationService _localizationService;
     public bool IsRepeating {
         get => this._player.IsRepeating;
         set {
@@ -42,8 +45,12 @@ public partial class ControlBarViewModel: ObservableObject {
     public SyncCommand ToggleVolumeButtonCommand { get; }
     public AsyncCommand PlayPauseCommand { get; }
     private TimeSpan _playbackDuration = TimeSpan.Zero;
-    public string PlaybackPosition => (this._playbackRatio * this._playbackDuration).ToString(@"h\:mm\:ss");
-    public string PlaybackDuration => this._playbackDuration.ToString(@"h\:mm\:ss");
+    public string PlaybackPosition => this.Format(this._playbackRatio * this._playbackDuration);
+    public string PlaybackDuration => this.Format(this._playbackDuration);
+    private string Format(TimeSpan duration) {
+        string format = this.L["Format_Time_HourMinuteSecond"];
+        return string.Format(format, Math.Floor(duration.TotalHours), duration.Minutes.ToString("D2"), duration.Seconds.ToString("D2"));
+    }
     private double _playbackRatio = 0.0;
     public double PlaybackRatio {
         get => this._playbackRatio;
@@ -77,8 +84,11 @@ public partial class ControlBarViewModel: ObservableObject {
             }
         }
     }
-    public ControlBarViewModel(IAppSetting appSetting, IPlayerController playerController) {
+    public ControlBarViewModel(IAppSetting appSetting, IPlayerController playerController, ILocalizationService localizationService) {
         this._setting = appSetting;
+        this._localizationService = localizationService;
+        this.L = this._localizationService.Get(typeof(BasePageViewModel));
+        this._localizationService.LanguageChanged += OnLanguageChanged;
         this.PreviousAudioCommand = new(PreviousAudio);
         this.NextAudioCommand = new(NextAudio);
         this.SeekBackwardCommand = new(SeekBackward, () => this.IsPlaying);
@@ -94,6 +104,12 @@ public partial class ControlBarViewModel: ObservableObject {
         this._player.PositionChanged += this.PlayerController_PositionChanged;
         this._player.RepeatingChanged += this.Player_RepeatingChanged;
         this._player.StateChanged += this.Player_StateChanged;
+    }
+
+    private void OnLanguageChanged(object? sender, EventArgs e) {
+        OnPropertyChanged(nameof(L));
+        OnPropertyChanged(nameof(PlaybackPosition));
+        OnPropertyChanged(nameof(PlaybackDuration));
     }
 
     private void Player_StateChanged(object? sender, PlayState e) {

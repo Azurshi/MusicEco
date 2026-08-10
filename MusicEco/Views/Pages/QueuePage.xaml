@@ -48,7 +48,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Entry Grid.Column="0"
-                   Placeholder="Queue name" />
+                   Placeholder="{Binding L[Queue_Search]}" />
             <button:CollectionDisplayModeButtonSimple Grid.Column="1"
                                                       DisplayMode="{Binding DisplayMode}"
                                                       DisplayModeChanged="CollectionView_DisplayModeChanged"/>

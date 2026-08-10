@@ -1,11 +1,66 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:top="clr-namespace:MusicEco"
+             xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
+             xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
+             xmlns:item="clr-namespace:MusicEco.Views.Items"
+             xmlns:control="clr-namespace:MusicEco.Views.Controls"
+             xmlns:button="clr-namespace:MusicEco.Views.Buttons"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MusicEco.Views.Pages.SettingPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:Class="MusicEco.Views.Pages.SettingPage"
+             x:DataType="pageVM:SettingPageViewModel">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"
+              HeightRequest="{DynamicResource HeaderSize}">
+            <Label Text="{Binding L[Setting_Title]}"
+                   Style="{StaticResource OneLine}" 
+                   Margin="16, 0, 0, 0"/>
+        </Grid>
+        <ScrollView Grid.Row="1"
+                    HorizontalScrollBarVisibility="Never"
+                    VerticalScrollBarVisibility="Default">
+            <Grid RowSpacing="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0"
+                        Text="{Binding L[Setting_Language]}"
+                        HeightRequest="{DynamicResource ButtonSize}"
+                        Command="{Binding SelectSettingCommand}"
+                        CommandParameter="{x:Static top:PageRoute.LanguageSetting}"/>
+                <Button Grid.Row="1"
+                        Text="{Binding L[Setting_Interface]}"
+                        HeightRequest="{DynamicResource ButtonSize}" />
+                <Button Grid.Row="2"
+                        Text="{Binding L[Setting_Audio]}"
+                        HeightRequest="{DynamicResource ButtonSize}" />
+                <Button Grid.Row="3"
+                        Text="{Binding L[Setting_Speaker]}"
+                        HeightRequest="{DynamicResource ButtonSize}" />
+                <Button Grid.Row="4"
+                        Text="{Binding L[Setting_Notify]}"
+                        HeightRequest="{DynamicResource ButtonSize}" />
+                <Button Grid.Row="5"
+                        Text="{Binding L[Setting_Extension]}"
+                        HeightRequest="{DynamicResource ButtonSize}" />
+                <Button Grid.Row="6"
+                        Text="{Binding L[Setting_Advanced]}"
+                        HeightRequest="{DynamicResource ButtonSize}" />
+                <Button Grid.Row="7"
+                        Text="{Binding L[Setting_Backup]}"
+                        HeightRequest="{DynamicResource ButtonSize}" />
+            </Grid>
+        </ScrollView>
+    </Grid>
 </ContentView>

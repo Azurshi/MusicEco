@@ -15,7 +15,7 @@ public interface ILocalizationAware {
 public abstract class BasePageViewModel: ObservableObject, INavigationAware, ILocalizationAware {
     public abstract PageRoute Route { get; }
     public AssemblyLocalization L { get; init; }
-    private readonly ILocalizationService _localizationService;
+    protected readonly ILocalizationService _localizationService;
     private bool _isActive = false;
     public bool IsActive {
         get => this._isActive;

@@ -87,7 +87,7 @@
 	<ItemGroup>
 	  <Folder Include="ViewModels\Overlays\" />
 	  <Folder Include="ViewModels\Pages\Stats\" />
-	  <Folder Include="ViewModels\Pages\Settings\" />
+	  <Folder Include="Views\Pages\Stats\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -120,7 +120,7 @@
 
 	<ItemGroup>
 	  <EmbeddedResource Update="Resources\Localization\Text.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
+	    <Generator>PublicResXFileCodeGenerator</Generator>
 	    <LastGenOutput>Text.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
@@ -190,6 +190,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\SettingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\Settings\LanguageSettingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\UserPage.xaml">

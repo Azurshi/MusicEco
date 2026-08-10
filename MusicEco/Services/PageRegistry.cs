@@ -1,4 +1,5 @@
 ﻿using MusicEco.Views.Pages;
+using MusicEco.Views.Pages.Settings;
 
 namespace MusicEco.Services;
 
@@ -18,6 +19,9 @@ public class PageRegistry: IPageRouteRegistry {
 
         // User
         RegisterRoute<PlaylistPage>(PageRoute.Playlist);
+
+        // Settings
+        RegisterRoute<LanguageSettingPage>(PageRoute.LanguageSetting);
     }
     private void RegisterRoute<T>(PageRoute pageRoute) where T: ContentView {
         this._pageTypes[pageRoute.Route] = typeof(T);

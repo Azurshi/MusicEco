@@ -29,7 +29,9 @@ public interface ILockableItem {
     public bool IsLocked { get; set; }
     public bool IsUnlocked { get; }
 }
-
+public interface IActivableItem {
+    public bool IsActivated { get; set; }
+}
 
 public enum CollectionDisplayMode {
     None,

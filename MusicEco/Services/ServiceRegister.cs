@@ -1,7 +1,9 @@
 ﻿using MusicEco.Core.Services;
 using MusicEco.ViewModels.Pages;
+using MusicEco.ViewModels.Pages.Settings;
 using MusicEco.ViewModels.Shell;
 using MusicEco.Views.Pages;
+using MusicEco.Views.Pages.Settings;
 using MusicEco.Views.Shell;
 
 namespace MusicEco.Services;
@@ -51,6 +53,9 @@ public static class ServiceRegister {
 
         services.AddTransient<PlaylistPage>();
         services.AddSingleton<PlaylistPageViewModel>();
+
+        services.AddTransient<LanguageSettingPage>();
+        services.AddTransient<LanguageSettingPageViewModel>();
         return services;
     }
     public static IServiceCollection RegisterOverlays(this IServiceCollection services) {

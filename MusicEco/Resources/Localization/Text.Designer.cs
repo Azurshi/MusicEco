@@ -22,7 +22,7 @@ namespace MusicEco.Resources.Localization {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Text {
+    public class Text {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace MusicEco.Resources.Localization {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MusicEco.Resources.Localization.Text", typeof(Text).Assembly);
@@ -51,7 +51,7 @@ namespace MusicEco.Resources.Localization {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,20 +61,1028 @@ namespace MusicEco.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Album name.
+        /// </summary>
+        public static string Album_Search {
+            get {
+                return ResourceManager.GetString("Album_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MusicEco [EN].
         /// </summary>
-        internal static string AppTitle {
+        public static string AppTitle {
             get {
                 return ResourceManager.GetString("AppTitle", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accept.
+        /// </summary>
+        public static string Common_Accept {
+            get {
+                return ResourceManager.GetString("Common_Accept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string Common_Add {
+            get {
+                return ResourceManager.GetString("Common_Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
-        internal static string Common_Back {
+        public static string Common_Back {
             get {
                 return ResourceManager.GetString("Common_Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Common_Cancel {
+            get {
+                return ResourceManager.GetString("Common_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        public static string Common_Confirm {
+            get {
+                return ResourceManager.GetString("Common_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        public static string Common_Create {
+            get {
+                return ResourceManager.GetString("Common_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Common_Delete {
+            get {
+                return ResourceManager.GetString("Common_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Info.
+        /// </summary>
+        public static string Common_Info {
+            get {
+                return ResourceManager.GetString("Common_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string Common_Refresh {
+            get {
+                return ResourceManager.GetString("Common_Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add new folder.
+        /// </summary>
+        public static string Explorer_AddFolder {
+            get {
+                return ResourceManager.GetString("Explorer_AddFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folders to scan.
+        /// </summary>
+        public static string Explorer_DisplayText {
+            get {
+                return ResourceManager.GetString("Explorer_DisplayText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process file.
+        /// </summary>
+        public static string Explorer_FileProcess {
+            get {
+                return ResourceManager.GetString("Explorer_FileProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan file.
+        /// </summary>
+        public static string Explorer_FileScan {
+            get {
+                return ResourceManager.GetString("Explorer_FileScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next folder.
+        /// </summary>
+        public static string Explorer_Next {
+            get {
+                return ResourceManager.GetString("Explorer_Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous folder.
+        /// </summary>
+        public static string Explorer_Previous {
+            get {
+                return ResourceManager.GetString("Explorer_Previous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving data.
+        /// </summary>
+        public static string Explorer_SaveData {
+            get {
+                return ResourceManager.GetString("Explorer_SaveData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan.
+        /// </summary>
+        public static string Explorer_Scan {
+            get {
+                return ResourceManager.GetString("Explorer_Scan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Up.
+        /// </summary>
+        public static string Explorer_Up {
+            get {
+                return ResourceManager.GetString("Explorer_Up", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} day.
+        /// </summary>
+        public static string Format_Time_Day {
+            get {
+                return ResourceManager.GetString("Format_Time_Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} days.
+        /// </summary>
+        public static string Format_Time_Days {
+            get {
+                return ResourceManager.GetString("Format_Time_Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} hour.
+        /// </summary>
+        public static string Format_Time_Hour {
+            get {
+                return ResourceManager.GetString("Format_Time_Hour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}:{1}:{2}.
+        /// </summary>
+        public static string Format_Time_HourMinuteSecond {
+            get {
+                return ResourceManager.GetString("Format_Time_HourMinuteSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} hours.
+        /// </summary>
+        public static string Format_Time_Hours {
+            get {
+                return ResourceManager.GetString("Format_Time_Hours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} minute.
+        /// </summary>
+        public static string Format_Time_Minute {
+            get {
+                return ResourceManager.GetString("Format_Time_Minute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} minutes.
+        /// </summary>
+        public static string Format_Time_Minutes {
+            get {
+                return ResourceManager.GetString("Format_Time_Minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}:{1}.
+        /// </summary>
+        public static string Format_Time_MinuteSecond {
+            get {
+                return ResourceManager.GetString("Format_Time_MinuteSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} month.
+        /// </summary>
+        public static string Format_Time_Month {
+            get {
+                return ResourceManager.GetString("Format_Time_Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} months.
+        /// </summary>
+        public static string Format_Time_Months {
+            get {
+                return ResourceManager.GetString("Format_Time_Months", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Just now.
+        /// </summary>
+        public static string Format_Time_Recent {
+            get {
+                return ResourceManager.GetString("Format_Time_Recent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} second.
+        /// </summary>
+        public static string Format_Time_Second {
+            get {
+                return ResourceManager.GetString("Format_Time_Second", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} seconds.
+        /// </summary>
+        public static string Format_Time_Seconds {
+            get {
+                return ResourceManager.GetString("Format_Time_Seconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} year.
+        /// </summary>
+        public static string Format_Time_Year {
+            get {
+                return ResourceManager.GetString("Format_Time_Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} years.
+        /// </summary>
+        public static string Format_Time_Years {
+            get {
+                return ResourceManager.GetString("Format_Time_Years", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Album.
+        /// </summary>
+        public static string Info_Album {
+            get {
+                return ResourceManager.GetString("Info_Album", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Album artist.
+        /// </summary>
+        public static string Info_AlbumArtist {
+            get {
+                return ResourceManager.GetString("Info_AlbumArtist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Artist.
+        /// </summary>
+        public static string Info_Artist {
+            get {
+                return ResourceManager.GetString("Info_Artist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comment.
+        /// </summary>
+        public static string Info_Comment {
+            get {
+                return ResourceManager.GetString("Info_Comment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Composer.
+        /// </summary>
+        public static string Info_Composer {
+            get {
+                return ResourceManager.GetString("Info_Composer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disc.
+        /// </summary>
+        public static string Info_Disc {
+            get {
+                return ResourceManager.GetString("Info_Disc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} / {1}.
+        /// </summary>
+        public static string Info_Disc_Template {
+            get {
+                return ResourceManager.GetString("Info_Disc_Template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration.
+        /// </summary>
+        public static string Info_Duration {
+            get {
+                return ResourceManager.GetString("Info_Duration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string Info_Files {
+            get {
+                return ResourceManager.GetString("Info_Files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genres.
+        /// </summary>
+        public static string Info_Genres {
+            get {
+                return ResourceManager.GetString("Info_Genres", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        public static string Info_Group {
+            get {
+                return ResourceManager.GetString("Info_Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string Info_Title {
+            get {
+                return ResourceManager.GetString("Info_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Track.
+        /// </summary>
+        public static string Info_Track {
+            get {
+                return ResourceManager.GetString("Info_Track", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} / {1}.
+        /// </summary>
+        public static string Info_Track_Template {
+            get {
+                return ResourceManager.GetString("Info_Track_Template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year.
+        /// </summary>
+        public static string Info_Year {
+            get {
+                return ResourceManager.GetString("Info_Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current language.
+        /// </summary>
+        public static string Language_Current {
+            get {
+                return ResourceManager.GetString("Language_Current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add to playlist.
+        /// </summary>
+        public static string Menu_AddToPlaylist {
+            get {
+                return ResourceManager.GetString("Menu_AddToPlaylist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add to queue.
+        /// </summary>
+        public static string Menu_AddToQueue {
+            get {
+                return ResourceManager.GetString("Menu_AddToQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove from playlist.
+        /// </summary>
+        public static string Menu_RemoveFromPlaylist {
+            get {
+                return ResourceManager.GetString("Menu_RemoveFromPlaylist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove from queue.
+        /// </summary>
+        public static string Menu_RemoveFromQueue {
+            get {
+                return ResourceManager.GetString("Menu_RemoveFromQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to + New queue.
+        /// </summary>
+        public static string Queue_Create {
+            get {
+                return ResourceManager.GetString("Queue_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Queue name.
+        /// </summary>
+        public static string Queue_Name {
+            get {
+                return ResourceManager.GetString("Queue_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New queue.
+        /// </summary>
+        public static string Queue_Placeholder {
+            get {
+                return ResourceManager.GetString("Queue_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Queue name.
+        /// </summary>
+        public static string Queue_Search {
+            get {
+                return ResourceManager.GetString("Queue_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select queue.
+        /// </summary>
+        public static string Queue_Select {
+            get {
+                return ResourceManager.GetString("Queue_Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Album {0}.
+        /// </summary>
+        public static string Queue_Template_Album {
+            get {
+                return ResourceManager.GetString("Queue_Template_Album", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All songs.
+        /// </summary>
+        public static string Queue_Template_All {
+            get {
+                return ResourceManager.GetString("Queue_Template_All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Artist {0}.
+        /// </summary>
+        public static string Queue_Template_Artist {
+            get {
+                return ResourceManager.GetString("Queue_Template_Artist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Composer {0}.
+        /// </summary>
+        public static string Queue_Template_Composer {
+            get {
+                return ResourceManager.GetString("Queue_Template_Composer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My favourite.
+        /// </summary>
+        public static string Queue_Template_Favourite {
+            get {
+                return ResourceManager.GetString("Queue_Template_Favourite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folder {0}.
+        /// </summary>
+        public static string Queue_Template_Folder {
+            get {
+                return ResourceManager.GetString("Queue_Template_Folder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genre {0}.
+        /// </summary>
+        public static string Queue_Template_Genre {
+            get {
+                return ResourceManager.GetString("Queue_Template_Genre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Most played {0}.
+        /// </summary>
+        public static string Queue_Template_MostPlayed {
+            get {
+                return ResourceManager.GetString("Queue_Template_MostPlayed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not played.
+        /// </summary>
+        public static string Queue_Template_NotPlayed {
+            get {
+                return ResourceManager.GetString("Queue_Template_NotPlayed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play count {0}.
+        /// </summary>
+        public static string Queue_Template_PlayCount {
+            get {
+                return ResourceManager.GetString("Queue_Template_PlayCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play history.
+        /// </summary>
+        public static string Queue_Template_PlayHistory {
+            get {
+                return ResourceManager.GetString("Queue_Template_PlayHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlist {0}.
+        /// </summary>
+        public static string Queue_Template_Playlist {
+            get {
+                return ResourceManager.GetString("Queue_Template_Playlist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search {0}.
+        /// </summary>
+        public static string Queue_Template_Search {
+            get {
+                return ResourceManager.GetString("Queue_Template_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My queues.
+        /// </summary>
+        public static string Queue_Title {
+            get {
+                return ResourceManager.GetString("Queue_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Album.
+        /// </summary>
+        public static string Search_Album {
+            get {
+                return ResourceManager.GetString("Search_Album", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Artist.
+        /// </summary>
+        public static string Search_Artist {
+            get {
+                return ResourceManager.GetString("Search_Artist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Composer.
+        /// </summary>
+        public static string Search_Composer {
+            get {
+                return ResourceManager.GetString("Search_Composer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genre.
+        /// </summary>
+        public static string Search_Genre {
+            get {
+                return ResourceManager.GetString("Search_Genre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string Search_Search {
+            get {
+                return ResourceManager.GetString("Search_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string Search_Title {
+            get {
+                return ResourceManager.GetString("Search_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced.
+        /// </summary>
+        public static string Setting_Advanced {
+            get {
+                return ResourceManager.GetString("Setting_Advanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audio.
+        /// </summary>
+        public static string Setting_Audio {
+            get {
+                return ResourceManager.GetString("Setting_Audio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Backup.
+        /// </summary>
+        public static string Setting_Backup {
+            get {
+                return ResourceManager.GetString("Setting_Backup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extension.
+        /// </summary>
+        public static string Setting_Extension {
+            get {
+                return ResourceManager.GetString("Setting_Extension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interface.
+        /// </summary>
+        public static string Setting_Interface {
+            get {
+                return ResourceManager.GetString("Setting_Interface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Setting_Language {
+            get {
+                return ResourceManager.GetString("Setting_Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notify.
+        /// </summary>
+        public static string Setting_Notify {
+            get {
+                return ResourceManager.GetString("Setting_Notify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Headset, Bluetooth and speakers.
+        /// </summary>
+        public static string Setting_Speaker {
+            get {
+                return ResourceManager.GetString("Setting_Speaker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting.
+        /// </summary>
+        public static string Setting_Title {
+            get {
+                return ResourceManager.GetString("Setting_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark.
+        /// </summary>
+        public static string Theme_Dark {
+            get {
+                return ResourceManager.GetString("Theme_Dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        public static string Theme_Default {
+            get {
+                return ResourceManager.GetString("Theme_Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light.
+        /// </summary>
+        public static string Theme_Light {
+            get {
+                return ResourceManager.GetString("Theme_Light", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All songs.
+        /// </summary>
+        public static string User_All {
+            get {
+                return ResourceManager.GetString("User_All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All songs.
+        /// </summary>
+        public static string User_All_Title {
+            get {
+                return ResourceManager.GetString("User_All_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Favourites.
+        /// </summary>
+        public static string User_Favourite {
+            get {
+                return ResourceManager.GetString("User_Favourite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Favourites.
+        /// </summary>
+        public static string User_Favourite_Title {
+            get {
+                return ResourceManager.GetString("User_Favourite_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Most played.
+        /// </summary>
+        public static string User_Most {
+            get {
+                return ResourceManager.GetString("User_Most", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last week.
+        /// </summary>
+        public static string User_Most_LastWeek {
+            get {
+                return ResourceManager.GetString("User_Most_LastWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}\n{1}.
+        /// </summary>
+        public static string User_Most_MonthYear {
+            get {
+                return ResourceManager.GetString("User_Most_MonthYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This week.
+        /// </summary>
+        public static string User_Most_ThisWeek {
+            get {
+                return ResourceManager.GetString("User_Most_ThisWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Most played.
+        /// </summary>
+        public static string User_Most_Title {
+            get {
+                return ResourceManager.GetString("User_Most_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year {0}.
+        /// </summary>
+        public static string User_Most_Year {
+            get {
+                return ResourceManager.GetString("User_Most_Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not played.
+        /// </summary>
+        public static string User_Not {
+            get {
+                return ResourceManager.GetString("User_Not", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not played.
+        /// </summary>
+        public static string User_Not_Title {
+            get {
+                return ResourceManager.GetString("User_Not_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlist.
+        /// </summary>
+        public static string User_Playlist {
+            get {
+                return ResourceManager.GetString("User_Playlist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to + New playlist.
+        /// </summary>
+        public static string User_Playlist_Create {
+            get {
+                return ResourceManager.GetString("User_Playlist_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlist name.
+        /// </summary>
+        public static string User_Playlist_Name {
+            get {
+                return ResourceManager.GetString("User_Playlist_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New playlist.
+        /// </summary>
+        public static string User_Playlist_Placeholder {
+            get {
+                return ResourceManager.GetString("User_Playlist_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlist name.
+        /// </summary>
+        public static string User_Playlist_Search {
+            get {
+                return ResourceManager.GetString("User_Playlist_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select playlist.
+        /// </summary>
+        public static string User_Playlist_Select {
+            get {
+                return ResourceManager.GetString("User_Playlist_Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My playlists.
+        /// </summary>
+        public static string User_Playlist_Title {
+            get {
+                return ResourceManager.GetString("User_Playlist_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recently played.
+        /// </summary>
+        public static string User_Recent {
+            get {
+                return ResourceManager.GetString("User_Recent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recently played.
+        /// </summary>
+        public static string User_Recent_Title {
+            get {
+                return ResourceManager.GetString("User_Recent_Title", resourceCulture);
             }
         }
     }
