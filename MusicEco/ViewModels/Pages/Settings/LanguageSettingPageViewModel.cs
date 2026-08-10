@@ -9,7 +9,7 @@ public partial class LanguageSettingPageViewModel: BasePageViewModel {
     private readonly IAppSetting _settings;
     public IReadOnlyList<LanguageViewModel> Languages { get; init; }
     public SyncCommandExtend<LanguageViewModel> SelectLanguageCommand { get; init; }
-    private string _selectedLanguageCode {
+    private string SelectedLanguageCode {
         get => this._settings.Get("en");
         set => this._settings.Set(value);
     }
@@ -23,7 +23,7 @@ public partial class LanguageSettingPageViewModel: BasePageViewModel {
     }
     private void RefreshState() {
         foreach(var item in this.Languages) {
-            if (item.LanguageCode.Equals(this._selectedLanguageCode)) {
+            if (item.LanguageCode.Equals(this.SelectedLanguageCode)) {
                 item.Selected = true;
             } else {
                 item.Selected = false;
@@ -34,14 +34,14 @@ public partial class LanguageSettingPageViewModel: BasePageViewModel {
         if (vm == null) {
             return false;
         }
-        return !vm.LanguageCode.Equals(this._selectedLanguageCode);
+        return !vm.LanguageCode.Equals(this.SelectedLanguageCode);
     }
     private void SelectLanguage(LanguageViewModel? vm) {
         if (vm == null) {
             return;
         }
         this._localizationService.SetLanguage(vm.LanguageCode, this);
-        this._selectedLanguageCode = this._localizationService.GetCurrentLanguageCode();
+        this.SelectedLanguageCode = this._localizationService.GetCurrentLanguageCode();
         SelectLanguageCommand.NotifyCanExecute();
         RefreshState();
     }

@@ -5,6 +5,7 @@ namespace AudioPlayer;
 // All the code in this file is only included on Android.
 #if ANDROID
 using Android.Media;
+using System.Diagnostics;
 
 public partial class AudioPlayer {
     public readonly AudioCodec.AudioFormat Format;
@@ -76,6 +77,10 @@ public partial class AudioPlayer {
                 catch (OperationCanceledException) {
                     return;
                 }
+                catch (ThreadInterruptedException) {
+                    Debug.WriteLine("Force exit");
+                    return;
+                }
                 this.Player.Write(TransferBuffer, 0, readLength, WriteMode.Blocking);
             }
             else {
@@ -83,6 +88,10 @@ public partial class AudioPlayer {
                     this.Decoder.Buffer.DataAvailable.Wait(this._disposeCts.Token);
                 }
                 catch (OperationCanceledException) {
+                    return;
+                }
+                catch (ThreadInterruptedException) {
+                    Debug.WriteLine("Force exit");
                     return;
                 }
             }
@@ -136,7 +145,10 @@ public partial class AudioPlayer {
         this.Player.Release();
         this.Player.Dispose();
         this._disposeCts.Cancel();
-        this.Worker.Join();
+        if (this.Worker.Join(Config.JoinTimeOut)) {
+            this.Worker.Interrupt();
+            this.Worker.Join();
+        }
         this._disposeCts.Dispose();
         this.CanWriteEvent.Dispose();
     }

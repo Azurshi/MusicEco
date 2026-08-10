@@ -6,6 +6,7 @@
              xmlns:item="clr-namespace:MusicEco.Views.Items"
              xmlns:control="clr-namespace:MusicEco.Views.Controls"
              xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             xmlns:commands="clr-namespace:MusicEco.Views.Commands"
              x:Class="MusicEco.Views.Pages.QueueDetailPage"
              x:DataType="pageVM:QueueDetailPageViewModel">
     <ContentView.Resources>
@@ -29,9 +30,19 @@
                             <Label Grid.Column="1"
                                    Text="{Binding DisplayTitle}"
                                    Style="{StaticResource OneLine}" />
-                            <Button Grid.Column="2"
-                                    Text=":"
-                                    WidthRequest="{DynamicResource IconButtonItemSize}" />
+                            <button:MenuButton Grid.Column="2"
+                                               WidthRequest="{DynamicResource IconButtonItemSize}">
+                                <button:MenuButton.MenuTemplate>
+                                    <DataTemplate x:DataType="itemVM:AudioEntryViewModel">
+                                        <VerticalStackLayout>
+                                            <Button Text="Add to queue" 
+                                                    Command="{Static commands:MenuCommands.AddToQueueCommand}"
+                                                    CommandParameter="{Binding}"/>
+                                            <Button Text="Add to playlist" />
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </button:MenuButton.MenuTemplate>
+                                </button:MenuButton>
                         </Grid>
                     </item:ItemFrame.ItemContent>
                 </item:ItemFrame>

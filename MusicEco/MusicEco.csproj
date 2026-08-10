@@ -85,7 +85,6 @@
 	</ItemGroup>
 	<!--End-->
 	<ItemGroup>
-	  <Folder Include="ViewModels\Overlays\" />
 	  <Folder Include="ViewModels\Pages\Stats\" />
 	  <Folder Include="Views\Pages\Stats\" />
 	</ItemGroup>
@@ -141,6 +140,12 @@
 	  <MauiXaml Update="Views\Buttons\ControlButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Buttons\MenuButton.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Buttons\MenuFrame.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Buttons\NavigationBackwardButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -160,6 +165,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Items\ItemFrame.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Overlays\AddToQueueOverlay.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\AlbumDetailPage.xaml">

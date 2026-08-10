@@ -82,6 +82,10 @@ public sealed class AudioDecoder: IDisposable {
                     catch (OperationCanceledException){
                         return;
                     }
+                    catch (ThreadInterruptedException) {
+                        Debug.WriteLine("Force exit");
+                        return;
+                    }
                 }
                 else {
                     remaining = remaining.Slice(written);
@@ -121,17 +125,23 @@ public sealed class AudioDecoder: IDisposable {
             } else {
                 // This does not reach since thread is locked at DecodeToPCM
                 // Only use when entry, to wait for start job
-                int index = WaitHandle.WaitAny([_streamControl.HaveJobEvent, _disposeEvent]);
-                if (index == 0) {
-                    // Continue
-                    continue;
+                try {
+                    int index = WaitHandle.WaitAny([_streamControl.HaveJobEvent, _disposeEvent]);
+                    if (index == 0) {
+                        // Continue
+                        continue;
+                    }
+                    else if (index == 1) {
+                        // Dispose
+                        return;
+                    }
+                    else {
+                        throw new ArgumentOutOfRangeException();
+                    }
                 }
-                else if (index == 1) {
-                    // Dispose
+                catch (ThreadInterruptedException) {
+                    Debug.WriteLine("Force exit");
                     return;
-                }
-                else {
-                    throw new ArgumentOutOfRangeException();
                 }
             }
         }
@@ -148,7 +158,10 @@ public sealed class AudioDecoder: IDisposable {
         }
         this._disposeEvent.Set();
         this._disposeCts.Cancel();
-        this._worker.Join();
+        if (!this._worker.Join(Config.JoinTimeOut)) {
+            this._worker.Interrupt();
+            this._worker.Join();
+        }
         this._disposeCts.Dispose();
         this._disposeEvent.Dispose();
         this._seekControl.Dispose();
@@ -229,21 +242,27 @@ public sealed class AudioDecoder: IDisposable {
                     result = FFmpeg.Format.av_read_frame(format, packet);
                     if (result == FFmpeg.Flags.AVERR_EOF) {
                         DecodeEnd?.Invoke();
-                        int index = WaitHandle.WaitAny([_streamControl.HaveJobEvent, _seekControl.HaveJobEvent, _disposeEvent]);
-                        if (index == 0) {
-                            // Move to if(_streamControl.HaveJob())
-                            continue;
-                        } 
-                        else if (index == 1) {
-                            // Move to next cycle
-                            continue;
+                        try {
+                            int index = WaitHandle.WaitAny([_streamControl.HaveJobEvent, _seekControl.HaveJobEvent, _disposeEvent]);
+                            if (index == 0) {
+                                // Move to if(_streamControl.HaveJob())
+                                continue;
+                            }
+                            else if (index == 1) {
+                                // Move to next cycle
+                                continue;
+                            }
+                            else if (index == 2) {
+                                // Dispose
+                                return;
+                            }
+                            else {
+                                throw new ArgumentOutOfRangeException();
+                            }
                         }
-                        else if (index == 2) {
-                            // Dispose
+                        catch (ThreadInterruptedException) {
+                            Debug.WriteLine("Force exit");
                             return;
-                        }
-                        else {
-                            throw new ArgumentOutOfRangeException();
                         }
                     }
                     else {

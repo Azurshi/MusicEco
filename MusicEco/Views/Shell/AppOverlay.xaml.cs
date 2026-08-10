@@ -3,15 +3,23 @@ using System.Numerics;
 
 namespace MusicEco.Views.Shell;
 
-public partial class AppOverlay: ContentView {
+public partial class AppOverlay: ContentView, IOverlayService {
     private Vector2? _fixedPosition = null;
     private Vector2? _dynamicSize = null;
+
     public AppOverlay() {
         InitializeComponent();
+        this.SizeChanged += this.AppOverlay_SizeChanged;
+    }
+
+    private void AppOverlay_SizeChanged(object? sender, EventArgs e) {
+        if (this.FixedContainer.Content is IOverlay overlay) {
+            overlay.ForceClose();
+        }
     }
 
     private void Grid_Tapped(object sender, TappedEventArgs e) {
-        OnOverlayClosing(null, EventArgs.Empty);
+        OnOverlayClosed(null, EventArgs.Empty);
     }
     private void UpdateDynamicSize() {
         if (this._dynamicSize != null) {
@@ -48,16 +56,17 @@ public partial class AppOverlay: ContentView {
         ForceCloseOverlay();
     }
 
-    private void OnOverlayClosing(object? sender, EventArgs e) {
+    private void OnOverlayClosed(object? sender, EventArgs e) {
         this.IsVisible = false;
         this.DynamicContainer.Content = null;
         this.FixedContainer.Content = null;
     }
+    
 }
 
 public partial class AppOverlay {
     public void ShowDynamic(Vector2 size, IOverlay overlay) {
-        overlay.Closing += this.OnOverlayClosing;
+        overlay.Closed += this.OnOverlayClosed;
         this._dynamicSize = size;
         if (overlay is View overlayView) {
             this.DynamicContainer.Content = overlayView;
@@ -72,7 +81,7 @@ public partial class AppOverlay {
         this.UpdateDynamicSize();
     }
     public void ShowFixed(Vector2 position, IOverlay overlay) {
-        overlay.Closing += this.OnOverlayClosing;
+        overlay.Closed += this.OnOverlayClosed;
         this._fixedPosition = position;
         if (overlay is View overlayView) {
             this.FixedContainer.Content = overlayView;
@@ -82,13 +91,32 @@ public partial class AppOverlay {
             throw new ArgumentException(nameof(overlay));
 #pragma warning restore CA2208
         }
-        Rect layoutBound = new(
-            position.X, position.Y,
-            AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize);
+        Vector2 size = new(0, 0);
+        if (overlay is View view) {
+            size.X = (float)view.Width;
+            size.Y = (float)view.Height;
+            view.SizeChanged += (s, e) => {
+                Vector2 bound = new((float)this.Width, (float)this.Height);
+                Rect layoutBound = new(
+                    position.X, position.Y,
+                    AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize);
+                if (position.X + view.Width > bound.X) {
+                    layoutBound.X = position.X - view.Width;
+                }
+                if (position.Y + view.Height > bound.Y) {
+                    layoutBound.Y = position.Y - view.Height;
+                }
+                AbsoluteLayout.SetLayoutBounds(this.FixedViewContainer, layoutBound);
+            };
+        }
+        else {
+            Rect layoutBound = new(
+                position.X, position.Y,
+                AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize);
+            AbsoluteLayout.SetLayoutBounds(this.FixedViewContainer, layoutBound);
+        }
         this.IsVisible = true;
         this.DynamicOverlay.IsVisible = false;
         this.FixedOverlay.IsVisible = true;
-        AbsoluteLayout.SetLayoutBounds(this.FixedViewContainer, layoutBound);
     }
 }
-

@@ -8,16 +8,4 @@ public partial class QueuePage: ContentView {
         InitializeComponent();
         this.BindingContext = viewModel;
     }
-
-    private void CollectionView_DisplayModeChanged(object? sender, CollectionDisplayMode displayMode) {
-
-    }
-
-    private void Button_Clicked(object sender, EventArgs e) {
-
-    }
-
-    private void Button_Clicked_1(object sender, EventArgs e) {
-
-    }
 }

@@ -27,9 +27,9 @@
                             <Label Grid.Column="1"
                                    Text="{Binding Name}"
                                    Style="{StaticResource OneLine}" />
-                            <Button Grid.Column="2"
-                                    Text=":"
-                                    WidthRequest="{DynamicResource TextItemSize}" />
+                            <button:MenuButton Grid.Column="2"
+                                               WidthRequest="{DynamicResource TextItemSize}">
+                            </button:MenuButton>
                         </Grid>
                     </item:ItemFrame.ItemContent>
                 </item:ItemFrame>
@@ -50,8 +50,7 @@
             <Entry Grid.Column="0"
                    Placeholder="{Binding L[Queue_Search]}" />
             <button:CollectionDisplayModeButtonSimple Grid.Column="1"
-                                                      DisplayMode="{Binding DisplayMode}"
-                                                      DisplayModeChanged="CollectionView_DisplayModeChanged"/>
+                                                      DisplayMode="{Binding DisplayMode}"/>
         </Grid>
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Items.Items}"

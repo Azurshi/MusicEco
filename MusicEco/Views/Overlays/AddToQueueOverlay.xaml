@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
+             xmlns:overlayVM="clr-namespace:MusicEco.ViewModels.Overlays"
+             xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
+             xmlns:item="clr-namespace:MusicEco.Views.Items"
+             xmlns:control="clr-namespace:MusicEco.Views.Controls"
+             xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             x:Class="MusicEco.Views.Overlays.AddToQueueOverlay"
+             x:DataType="overlayVM:AddToQueueOverlayViewModel">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="ItemTemplate"
+                          x:DataType="itemVM:QueueItemViewModel">
+                <item:ItemFrame HeightRequest="{DynamicResource TextItemSize}"
+                                Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type overlayVM:AddToQueueOverlayViewModel}}}">
+                    <item:ItemFrame.ItemContent>
+                        <Label Text="{Binding Name}"
+                               Style="{StaticResource OneLine}"
+                               Margin="8, 0, 0, 0"/>
+                    </item:ItemFrame.ItemContent>
+                </item:ItemFrame>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0"
+               HeightRequest="{DynamicResource HeaderSize}"
+               Text="{Binding L[Queue_Select]}"
+               FontAttributes="Bold"
+               FontSize="20"
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Center"/>
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Items}"
+                        ItemTemplate="{StaticResource ItemTemplate}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical"
+                                   ItemSpacing="8" />
+            </CollectionView.ItemsLayout>
+        </CollectionView>
+    </Grid>
+</ContentView>

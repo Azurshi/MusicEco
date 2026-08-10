@@ -1,7 +1,7 @@
 ﻿namespace AudioCodec;
 
 public static class Config {
-    public static readonly TimeSpan EventTimeOut = TimeSpan.FromSeconds(1);
+    public static readonly TimeSpan JoinTimeOut = TimeSpan.FromSeconds(1);
 #if WINDOWS
     public const string AVFormat = "avformat-63";
     public const string AVCodec = "avcodec-63";

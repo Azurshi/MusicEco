@@ -1,7 +1,9 @@
 ﻿using MusicEco.Core.Services;
+using MusicEco.ViewModels.Overlays;
 using MusicEco.ViewModels.Pages;
 using MusicEco.ViewModels.Pages.Settings;
 using MusicEco.ViewModels.Shell;
+using MusicEco.Views.Overlays;
 using MusicEco.Views.Pages;
 using MusicEco.Views.Pages.Settings;
 using MusicEco.Views.Shell;
@@ -17,7 +19,7 @@ public static class ServiceRegister {
         services.AddSingleton<IIconService, IconService>();
         services.AddSingleton<IPlayerController, PlayerController>();
         services.AddSingleton<IPlaybackService, PlaybackService>();
-        
+        services.AddSingleton<IOverlayService>(provider => provider.GetRequiredService<AppOverlay>());
         return services;
     }
     public static IServiceCollection RegisterShell(this IServiceCollection services) {
@@ -59,6 +61,8 @@ public static class ServiceRegister {
         return services;
     }
     public static IServiceCollection RegisterOverlays(this IServiceCollection services) {
+        services.AddTransient<AddToQueueOverlay>();
+        services.AddTransient<AddToQueueOverlayViewModel>();
         return services;
     }
     public static IServiceCollection RegisterOthers(this IServiceCollection services) {

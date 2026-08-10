@@ -60,6 +60,10 @@ public partial class AudioPlayer: IDisposable {
                 catch (OperationCanceledException) {
                     return;
                 }
+                catch (ThreadInterruptedException) {
+                    Debug.WriteLine("Force exit");
+                    return;
+                }
             }
         }
     }
@@ -103,7 +107,10 @@ public partial class AudioPlayer: IDisposable {
         this.Player.Dispose();
         this.Decoder.Dispose();
         this._disposeCts.Cancel();
-        this.Worker.Join();
+        if (this.Worker.Join(Config.JoinTimeOut)) {
+            this.Worker.Interrupt();
+            this.Worker.Join();
+        }
         this._disposeCts.Dispose();
     }
     public partial float GetVolume() {

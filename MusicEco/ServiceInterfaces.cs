@@ -1,6 +1,8 @@
 ﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.Views.Overlays;
+using System.Numerics;
 
 namespace MusicEco;
 
@@ -76,4 +78,9 @@ public interface IPlayerController: IDisposable {
     public void SetVolume(float volume);
     public float GetVolume();
     public PlayState GetState();
+}
+
+public interface IOverlayService {
+    public void ShowDynamic(Vector2 size, IOverlay overlay);
+    public void ShowFixed(Vector2 position, IOverlay overlay);
 }
