@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:service="clr-namespace:MusicEco.Services"
              xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
              xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
              xmlns:item="clr-namespace:MusicEco.Views.Items"
              xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             xmlns:commands="clr-namespace:MusicEco.Views.Commands"
              x:Class="MusicEco.Views.Pages.QueuePage"
              x:DataType="pageVM:QueuePageViewModel">
     <ContentView.Resources>
         <ResourceDictionary>
+            <DataTemplate x:Key="MenuTemplate"
+                          x:DataType="itemVM:QueueItemViewModel">
+                <VerticalStackLayout>
+                    <button:MenuItemButton Text="{Binding [Common_Play], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.PlayListCommand}"/>
+                    <button:MenuItemButton Text="{Binding [Queue_Remove], Source={Static service:Localization.L}}"
+                                           Tapped="Menu_RemoveButton_Tapped" />
+                </VerticalStackLayout>
+            </DataTemplate>
             <DataTemplate x:Key="QueueItemTemplate"
                           x:DataType="itemVM:QueueItemViewModel">
                 <item:ItemFrame HeightRequest="{DynamicResource TextItemSize}"
@@ -27,9 +38,10 @@
                             <Label Grid.Column="1"
                                    Text="{Binding Name}"
                                    Style="{StaticResource OneLine}" />
-                            <button:MenuButton Grid.Column="2"
-                                               WidthRequest="{DynamicResource TextItemSize}">
-                            </button:MenuButton>
+                            <item:MenuButton Grid.Column="2"
+                                             WidthRequest="{DynamicResource TextItemSize}" 
+                                             MenuTemplate="{StaticResource MenuTemplate}"/>
+
                         </Grid>
                     </item:ItemFrame.ItemContent>
                 </item:ItemFrame>

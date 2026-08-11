@@ -12,6 +12,9 @@ internal partial class QueueRepository {
     }
     public static async Task<List<AudioQueue>> Get(SQLiteReadConnection connection, List<DateTime> creationTimes) {
         List<AudioQueue> queues = [];
+        if (creationTimes.Count == 0) {
+            return queues;
+        }
         var creationTimeObjs = creationTimes.Cast<object>().ToArray();
         var rows = await connection.SelectAsync<
             DateTime, string, DateTime, DateTime, bool>($"""

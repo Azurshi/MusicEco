@@ -8,6 +8,7 @@ namespace MusicEco.Services;
 internal partial class PlayerController: IPlayerController {
     public event EventHandler<AudioTime>? PositionChanged;
     public event EventHandler? AudioEnded;
+    public event EventHandler? NextAudioRequested;
     public event EventHandler<bool>? RepeatingChanged;
     public event EventHandler<PlayState>? StateChanged;
 
@@ -52,6 +53,8 @@ internal partial class PlayerController: IPlayerController {
                     if (this.IsRepeating) {
                         this._player.Seek(TimeSpan.Zero);
                         this._endFlag = false;
+                    } else {
+                        this.NextAudioRequested?.Invoke(this, EventArgs.Empty);
                     }
                 }
             }

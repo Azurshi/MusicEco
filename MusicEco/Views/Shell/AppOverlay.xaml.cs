@@ -1,4 +1,5 @@
 using MusicEco.Views.Overlays;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace MusicEco.Views.Shell;
@@ -15,6 +16,9 @@ public partial class AppOverlay: ContentView, IOverlayService {
     private void AppOverlay_SizeChanged(object? sender, EventArgs e) {
         if (this.FixedContainer.Content is IOverlay overlay) {
             overlay.ForceClose();
+        }
+        else if (this.DynamicContainer.Content is IOverlay) {
+            this.UpdateDynamicSize();
         }
     }
 
@@ -40,14 +44,16 @@ public partial class AppOverlay: ContentView, IOverlayService {
         if (this._dynamicSize != null) {
             if (this.DynamicContainer.Content is IOverlay overlay) {
                 overlay.ForceClose();
-            } else {
+            }
+            else {
                 throw new InvalidOperationException();
             }
         }
         else if (this._fixedPosition != null) {
             if (this.FixedContainer.Content is IOverlay overlay) {
                 overlay.ForceClose();
-            } else {
+            }
+            else {
                 throw new InvalidOperationException();
             }
         }
@@ -60,8 +66,8 @@ public partial class AppOverlay: ContentView, IOverlayService {
         this.IsVisible = false;
         this.DynamicContainer.Content = null;
         this.FixedContainer.Content = null;
+        Debug.WriteLine("Overlay closed");
     }
-    
 }
 
 public partial class AppOverlay {
@@ -70,7 +76,8 @@ public partial class AppOverlay {
         this._dynamicSize = size;
         if (overlay is View overlayView) {
             this.DynamicContainer.Content = overlayView;
-        } else {
+        }
+        else {
 #pragma warning disable CA2208
             throw new ArgumentException(nameof(overlay));
 #pragma warning restore CA2208
@@ -78,7 +85,9 @@ public partial class AppOverlay {
         this.IsVisible = true;
         this.DynamicOverlay.IsVisible = true;
         this.FixedOverlay.IsVisible = false;
+        //this.FixedContainer.Content = null;
         this.UpdateDynamicSize();
+        Debug.WriteLine("Overlay dynamic");
     }
     public void ShowFixed(Vector2 position, IOverlay overlay) {
         overlay.Closed += this.OnOverlayClosed;
@@ -118,5 +127,7 @@ public partial class AppOverlay {
         this.IsVisible = true;
         this.DynamicOverlay.IsVisible = false;
         this.FixedOverlay.IsVisible = true;
+        //this.DynamicContainer.Content = null;
+        Debug.WriteLine("Overlay fixed");
     }
 }

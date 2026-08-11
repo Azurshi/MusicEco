@@ -140,10 +140,13 @@
 	  <MauiXaml Update="Views\Buttons\ControlButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Buttons\MenuButton.xaml">
+	  <MauiXaml Update="Views\Items\MenuButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Buttons\MenuFrame.xaml">
+	  <MauiXaml Update="Views\Items\MenuFrame.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Buttons\MenuItemButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Buttons\NavigationBackwardButton.xaml">
@@ -167,7 +170,13 @@
 	  <MauiXaml Update="Views\Items\ItemFrame.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Overlays\AddToPlaylistOverlay.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Overlays\AddToQueueOverlay.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Overlays\AudioInfoOverlay.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\AlbumDetailPage.xaml">

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
+             xmlns:overlayVM="clr-namespace:MusicEco.ViewModels.Overlays"
+             xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
+             xmlns:item="clr-namespace:MusicEco.Views.Items"
+             xmlns:control="clr-namespace:MusicEco.Views.Controls"
+             xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             x:Class="MusicEco.Views.Overlays.AudioInfoOverlay"
+             x:DataType="overlayVM:AudioInfoOverlayViewModel"
+             SizeChanged="ContentView_SizeChanged"
+             Margin="8, 4">
+    <ScrollView Orientation="Vertical" 
+                HorizontalScrollBarVisibility="Never"
+                VerticalScrollBarVisibility="Default">
+        <Grid RowSpacing="4"
+              ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Style="{StaticResource Title}"
+                   Text="{Binding Title}"
+                   Margin="8" />
+            <control:ManagedIcon Grid.Row="1"
+                                 Grid.ColumnSpan="2"
+                                 x:Name="CoverDisplay"
+                                 FileHash="{Binding FileHash}"
+                                 Option="Large" />
+            <Label Grid.Row="2"
+                   FontAttributes="Bold"
+                   Text="{Binding L[Info_Title]}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="2"
+                   Grid.Column="1"
+                   Text="{Binding Title}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="3"
+                   FontAttributes="Bold"
+                   Text="{Binding L[Info_Album]}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="3"
+                   Grid.Column="1"
+                   Text="{Binding Album}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="4"
+                   FontAttributes="Bold"
+                   Text="{Binding L[Info_Artist]}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="4"
+                   Grid.Column="1"
+                   Text="{Binding Artists}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="5"
+                   FontAttributes="Bold"
+                   Text="{Binding L[Info_AlbumArtist]}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="5"
+                   Grid.Column="1"
+                   Text="{Binding AlbumArtists}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="6"
+                   FontAttributes="Bold"
+                   Text="{Binding L[Info_Composer]}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="6"
+                   Grid.Column="1"
+                   Text="{Binding Composers}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="7"
+                   FontAttributes="Bold"
+                   Text="{Binding L[Info_Genre]}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="7"
+                   Grid.Column="1"
+                   Text="{Binding Genres}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="8"
+                   FontAttributes="Bold"
+                   Text="{Binding L[Info_Group]}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="8"
+                   Grid.Column="1"
+                   Text="{Binding Group}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="9"
+                   FontAttributes="Bold"
+                   Text="{Binding L[Info_Track]}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="9"
+                   Grid.Column="1"
+                   Text="{Binding Track}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="10"
+                   FontAttributes="Bold"
+                   Text="{Binding L[Info_Disc]}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="10"
+                   Grid.Column="1"
+                   Text="{Binding Disc}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="11"
+                   FontAttributes="Bold"
+                   Text="{Binding L[Info_Duration]}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="11"
+                   Grid.Column="1"
+                   Text="{Binding Duration}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="12"
+                   FontAttributes="Bold"
+                   Text="{Binding L[Info_Comment]}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="12"
+                   Grid.Column="1"
+                   Style="{StaticResource MultiLines}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="13"
+                   FontAttributes="Bold"
+                   Text="{Binding L[Info_Lyric]}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="13"
+                   Grid.Column="1"
+                   Style="{StaticResource MultiLines}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <Label Grid.Row="14"
+                   Grid.ColumnSpan="2"
+                   FontAttributes="Bold"
+                   Text="{Binding L[Info_Files]}"
+                   Style="{StaticResource OneLine}"
+                   HeightRequest="{DynamicResource TextItemSize}" />
+            <CollectionView Grid.Row="15"
+                            Grid.ColumnSpan="2"
+                            HorizontalOptions="Fill"
+                            ItemsSource="{Binding Files}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical"
+                                       ItemSpacing="2" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="itemVM:FileEntryViewModel">
+                        <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}">
+                            <item:ItemFrame.ItemContent>
+                                <Grid WidthRequest="{Binding FileWidthRequest, Source={RelativeSource AncestorType={x:Type overlayVM:AudioInfoOverlayViewModel}}}"
+                                      ColumnSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <control:ManagedIcon Grid.Column="0"
+                                                         Grid.RowSpan="2"
+                                                         WidthRequest="{DynamicResource IconItemSize}"
+                                                         FileHash="{Binding FileHash}"
+                                                         Option="Small" />
+                                    <Label Grid.Row="0"
+                                           Grid.Column="1"
+                                           Text="{Binding Name}"
+                                           Style="{StaticResource OneLine}"
+                                           HorizontalOptions="Fill" />
+                                    <Label Grid.Row="1"
+                                           Grid.Column="1"
+                                           Text="{Binding Path}"
+                                           Style="{StaticResource OneLine}"
+                                           HorizontalOptions="Fill"
+                                           Opacity="0.75" />
+                                    <item:MenuButton  Grid.Column="2"
+                                                      Grid.RowSpan="2"
+                                                      WidthRequest="{DynamicResource IconButtonItemSize}" />
+                                </Grid>
+                            </item:ItemFrame.ItemContent>
+                        </item:ItemFrame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+                            
+        </Grid>
+    </ScrollView>
+
+</ContentView>

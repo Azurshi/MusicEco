@@ -7,18 +7,18 @@
              xmlns:item="clr-namespace:MusicEco.Views.Items"
              xmlns:control="clr-namespace:MusicEco.Views.Controls"
              xmlns:button="clr-namespace:MusicEco.Views.Buttons"
-             x:Class="MusicEco.Views.Overlays.AddToQueueOverlay"
-             x:DataType="overlayVM:AddToQueueOverlayViewModel">
+             x:Class="MusicEco.Views.Overlays.AddToPlaylistOverlay"
+             x:DataType="overlayVM:AddToPlaylistOverlayViewModel">
     <ContentView.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="ItemTemplate"
-                          x:DataType="itemVM:QueueItemViewModel">
+                          x:DataType="itemVM:PlaylistItemViewModel">
                 <item:ItemFrame HeightRequest="{DynamicResource TextItemSize}"
-                                Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type overlayVM:AddToQueueOverlayViewModel}}}">
+                                Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type overlayVM:AddToPlaylistOverlayViewModel}}}">
                     <item:ItemFrame.ItemContent>
                         <Label Text="{Binding Name}"
                                Style="{StaticResource OneLine}"
-                               Margin="8, 0, 0, 0"/>
+                               Margin="8, 0, 0, 0" />
                     </item:ItemFrame.ItemContent>
                 </item:ItemFrame>
             </DataTemplate>
@@ -31,11 +31,11 @@
         </Grid.RowDefinitions>
         <Label Grid.Row="0"
                HeightRequest="{DynamicResource HeaderSize}"
-               Text="{Binding L[Queue_Select]}"
+               Text="{Binding L[User_Playlist_Select]}"
                FontAttributes="Bold"
                FontSize="20"
                HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center"/>
+               VerticalTextAlignment="Center" />
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Items}"
                         ItemTemplate="{StaticResource ItemTemplate}">

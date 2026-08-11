@@ -9,8 +9,10 @@ public partial class QueuePageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.Queue;
     private readonly IQueueService _queueService;
     private readonly IAppSetting _setting;
+    private readonly IPlaybackService _playbackService;
     public ObservableCollectionExtend<QueueItemViewModel> Items { get; init; }
     public AsyncCommand<QueueItemViewModel> SelectItemCommand { get; init; }
+    public AsyncCommand<QueueItemViewModel> RemoveItemCommand { get; init; }
     public CollectionDisplayMode DisplayMode {
         get => this._setting.Get(CollectionDisplayMode.SimpleList, $"Queue.{nameof(DisplayMode)}");
         set {
@@ -18,11 +20,13 @@ public partial class QueuePageViewModel: BasePageViewModel {
             OnPropertyChanged(nameof(DisplayMode));
         }
     }
-    public QueuePageViewModel(ILocalizationService localizationService, IQueueService queueService, IAppSetting appSetting) : base(localizationService) {
+    public QueuePageViewModel(ILocalizationService localizationService, IQueueService queueService, IAppSetting appSetting, IPlaybackService playbackService) : base(localizationService) {
         this._queueService = queueService;
         this._setting = appSetting;
+        this._playbackService = playbackService;
         this.Items = new();
         this.SelectItemCommand = new(SelectItem);
+        this.RemoveItemCommand = new(RemoveItem);
     }
     public override async Task Refresh() {
         var queues = await _queueService.GetAll();
@@ -68,5 +72,14 @@ public partial class QueuePageViewModel: BasePageViewModel {
         };
         NavigateEventArgs args = new(this, this.Route, PageRoute.QueueDetail, query);
         EventSystem.Publish(this, args);
+    }
+    private async Task RemoveItem(QueueItemViewModel? vm) {
+        if (vm == null) {
+            return;
+        }
+        var queue = await this._queueService.Get(vm.CreationTime);
+        if (queue != null) {
+            await this._queueService.Delete(queue, this);
+        }
     }
 }

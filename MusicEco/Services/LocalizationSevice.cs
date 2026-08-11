@@ -55,6 +55,7 @@ public static class Localization {
     public  static ILocalizationService Service => _service ?? throw new NullReferenceException();
     private static AssemblyLocalization? _instance;
     public static AssemblyLocalization Instance => _instance ?? throw new NullReferenceException();
+    public static AssemblyLocalization L => Instance;
     public static void Initalize(ILocalizationService service) {
         _service = service;
         _instance = _service.Get(typeof(MainWindow));

@@ -48,6 +48,9 @@ internal class AudioRepository {
     }
     public static async Task<List<AudioModel>> Get(SQLiteReadConnection connection, IReadOnlyList<Hash256> hashes) {
         List<AudioModel> result = [];
+        if (hashes.Count == 0) {
+            return result;
+        }
         foreach(var batch in hashes.Chunk(Config.MaxParameterCount)) {
             var batchObjs = batch.Cast<object>().ToArray();
             var placeholder = Config.GetPlaceholder(batch.Length);

@@ -3,7 +3,7 @@ using MusicEco.Views.Shell;
 using System.Numerics;
 using System.Windows.Input;
 
-namespace MusicEco.Views.Buttons;
+namespace MusicEco.Views.Items;
 
 public partial class MenuButton: ContentView {
     private static readonly Type ThisType = typeof(MenuButton);

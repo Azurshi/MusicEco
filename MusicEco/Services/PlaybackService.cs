@@ -9,7 +9,7 @@ internal partial class PlaybackService: IPlaybackService {
     private readonly IAudioService _audioService;
     private readonly IFileService _fileSerivce;
     private readonly IPlayerController _player;
-    private AudioQueue? _playQueue;
+    private DateTime? _queueKey;
     private static readonly TimeSpan _minimumDelay = TimeSpan.FromSeconds(1);
     private readonly Stopwatch _sw;
     public PlaybackService(IQueueService queueService, IAudioService audioService, IFileService fileService, IPlayerController playerController) {
@@ -17,11 +17,30 @@ internal partial class PlaybackService: IPlaybackService {
         this._audioService = audioService;
         this._fileSerivce = fileService;
         this._player = playerController;
+        this._player.NextAudioRequested += this.Player_NextAudioRequested;
         this._sw = new();
         this._sw.Start();
     }
+
+    private async void Player_NextAudioRequested(object? sender, EventArgs e) {
+        if (this._queueKey == null) {
+            return;
+        }
+        var queue = await this._queueService.Get(this._queueKey.Value);
+        if (queue == null) {
+            return;
+        }
+        queue = queue.Next().WithModifyNow();
+        await this._queueService.Update(queue, this);
+        await PlayNew();
+    }
+
     private async Task PlayNew() {
-        var current = this._playQueue?.Current;
+        if (this._queueKey == null) {
+            return;
+        }
+        var queue = await this._queueService.Get(this._queueKey.Value);
+        var current = queue?.Current;
         if (current != null) {
             var files = await this._fileSerivce.GetByHash(current.Hash);
             FileEntry? availabeFile = null;
@@ -48,7 +67,7 @@ internal partial class PlaybackService: IPlaybackService {
             queue = queue.WithAudios(current, audios).WithModifyNow().WithPlayNow();
             await this._queueService.Update(queue, sender);
         }
-        this._playQueue = queue;
+        this._queueKey = queue.CreationTime;
         await this._queueService.SetCurrent(queue, sender);
         await PlayNew();
     }
@@ -63,7 +82,7 @@ internal partial class PlaybackService: IPlaybackService {
         if (this._sw.Elapsed > _minimumDelay) {
             this._sw.Restart();
             if (queue.Current == null) {
-                if (queue.Audios.Count > 0) {
+                if (queue.Audios.Count == 0) {
                     throw new InvalidOperationException();
                 }
                 queue = queue.WithCurrent(queue.Audios[0]);

@@ -3,8 +3,8 @@ using MusicEco.ViewModels.Overlays;
 
 namespace MusicEco.Views.Overlays;
 
-public partial class AddToQueueOverlay: ContentView, IOverlay {
-    public AddToQueueOverlay(AddToQueueOverlayViewModel viewModel) {
+public partial class AddToPlaylistOverlay: ContentView, IOverlay {
+    public AddToPlaylistOverlay(AddToPlaylistOverlayViewModel viewModel) {
         InitializeComponent();
         this.BindingContext = viewModel;
         this._closeAction = new(Close);
@@ -20,7 +20,7 @@ public partial class AddToQueueOverlay: ContentView, IOverlay {
     // Keep the Action alive in the View while ViewModel hold only a weak reference
     private readonly Action _closeAction;
     public async Task Initialize(Hash256 fileHash) {
-        var vm = (AddToQueueOverlayViewModel)this.BindingContext;
+        var vm = (AddToPlaylistOverlayViewModel)this.BindingContext;
         await vm.Initialize(fileHash, this._closeAction);
     }
 }

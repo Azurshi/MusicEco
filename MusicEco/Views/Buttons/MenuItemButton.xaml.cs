@@ -1,13 +1,14 @@
+
 using System.Windows.Input;
 
-namespace MusicEco.Views.Items;
+namespace MusicEco.Views.Buttons;
 
-public partial class ItemFrame: Border {
-    private static readonly Type ThisType = typeof(ItemFrame);
+public partial class MenuItemButton: ContentView {
+    private static readonly Type ThisType = typeof(MenuItemButton);
     public static readonly BindableProperty CommandProperty
         = Utility.Create<ICommand?>(ThisType,
             propertyChanged: (b, oldValue, newValue) => {
-                var This = (ItemFrame)b;
+                var This = (MenuItemButton)b;
                 var oldCommand = (ICommand?)oldValue;
                 var newCommand = (ICommand?)newValue;
                 oldCommand?.CanExecuteChanged -= This.NewCommand_CanExecuteChanged;
@@ -15,39 +16,22 @@ public partial class ItemFrame: Border {
                 This.RefreshCommandState();
             });
     public ICommand? Command {
-        get => (ICommand)GetValue(CommandProperty);
+        get => (ICommand?)GetValue(CommandProperty);
         set => SetValue(CommandProperty, value);
     }
+    public static readonly BindableProperty TextProperty
+        = Utility.Create<string>(ThisType, string.Empty,
+            propertyChanged: (b, _, v) => {
+                var This = (MenuItemButton)b;
+                var text = (string)v;
+                This.InnerLabel.Text = text;
+            });
+    public string Text {
+        get => (string)GetValue(TextProperty);
+        set => SetValue(TextProperty, value);
+    }
     public event EventHandler? Tapped;
-    public static readonly BindableProperty ItemContentProperty
-        = Utility.Create<View?>(ThisType,
-            propertyChanged: (b, _, v) => {
-                var This = (ItemFrame)b;
-                var value = (View?)v;
-                This.Container.Content = value;
-            });
-    public View? ItemContent {
-        get => (View?)GetValue(ItemContentProperty);
-        set => SetValue(ItemContentProperty, value);
-    }
-    public static readonly BindableProperty IsSelectedProperty
-        = Utility.Create<bool>(ThisType, false,
-            propertyChanged: (b, _, v) => {
-                var This = (ItemFrame)b;
-                var value = (bool)v;
-                Color color;
-                if (value) {
-                    color = Utility.GetResource<Color>("SelectedItemBorderColor");
-                } else {
-                    color = Colors.Transparent;
-                }
-                This.Stroke = new SolidColorBrush(color);
-            });
-    public bool IsSelected {
-        get => (bool)GetValue(IsSelectedProperty);
-        set => SetValue(IsSelectedProperty, value);
-    }
-    public ItemFrame() {
+    public MenuItemButton() {
         InitializeComponent();
     }
 
@@ -57,11 +41,11 @@ public partial class ItemFrame: Border {
     }
 
     private void PointerGestureRecognizer_PointerEntered(object? sender, PointerEventArgs e) {
-        Container.BackgroundColor = Utility.GetResource<Color>("ItemHighlightColor");
+        this.BackgroundColor = Utility.GetResource<Color>("ButtonHighlightColor");
     }
 
     private void PointerGestureRecognizer_PointerExited(object? sender, PointerEventArgs e) {
-        Container.BackgroundColor = Colors.Transparent;
+        this.BackgroundColor = Colors.Transparent;
     }
     protected override void OnHandlerChanged() {
         base.OnHandlerChanged();

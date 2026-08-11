@@ -63,6 +63,10 @@ public static class ServiceRegister {
     public static IServiceCollection RegisterOverlays(this IServiceCollection services) {
         services.AddTransient<AddToQueueOverlay>();
         services.AddTransient<AddToQueueOverlayViewModel>();
+        services.AddTransient<AddToPlaylistOverlay>();
+        services.AddTransient<AddToPlaylistOverlayViewModel>();
+        services.AddTransient<AudioInfoOverlay>();
+        services.AddTransient<AudioInfoOverlayViewModel>();
         return services;
     }
     public static IServiceCollection RegisterOthers(this IServiceCollection services) {

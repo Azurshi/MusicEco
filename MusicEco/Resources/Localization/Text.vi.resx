@@ -408,14 +408,11 @@
   <data name="Info_Disc" xml:space="preserve">
     <value>Đĩa</value>
   </data>
-  <data name="Info_Disc_Template" xml:space="preserve">
+  <data name="Info_Template_CurrentTotal" xml:space="preserve">
     <value>{0} / {1}</value>
   </data>
   <data name="Info_Track" xml:space="preserve">
     <value>Bài nhạc</value>
-  </data>
-  <data name="Info_Track_Template" xml:space="preserve">
-    <value>{0} / {1}</value>
   </data>
   <data name="Info_Duration" xml:space="preserve">
     <value>Thời lượng</value>
@@ -423,7 +420,7 @@
   <data name="Info_Files" xml:space="preserve">
     <value>Tệp</value>
   </data>
-  <data name="Info_Genres" xml:space="preserve">
+  <data name="Info_Genre" xml:space="preserve">
     <value>Thể loại</value>
   </data>
   <data name="Info_Group" xml:space="preserve">
@@ -458,5 +455,17 @@
   </data>
   <data name="Explorer_SaveData" xml:space="preserve">
     <value>Lưu dữ liệu</value>
+  </data>
+  <data name="Menu_Info" xml:space="preserve">
+    <value>Xem thông tin</value>
+  </data>
+  <data name="Info_Lyric" xml:space="preserve">
+    <value>Lời bài hát</value>
+  </data>
+  <data name="Queue_Remove" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="Common_Play" xml:space="preserve">
+    <value>Phát</value>
   </data>
 </root>

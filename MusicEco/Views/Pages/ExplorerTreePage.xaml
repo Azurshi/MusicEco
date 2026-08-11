@@ -1,24 +1,54 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:service="clr-namespace:MusicEco.Services"
              xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
              xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
              xmlns:item="clr-namespace:MusicEco.Views.Items"
              xmlns:control="clr-namespace:MusicEco.Views.Controls"
              xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             xmlns:commands="clr-namespace:MusicEco.Views.Commands"
              xmlns:selector="clr-namespace:MusicEco.Views.TemplateSelector"
              x:Class="MusicEco.Views.Pages.ExplorerTreePage"
              x:DataType="pageVM:ExplorerTreePageViewModel">
     <ContentView.Resources>
         <ResourceDictionary>
+            <DataTemplate x:Key="FolderMenuTemplate"
+                          x:DataType="itemVM:FolderEntryViewModel">
+                <VerticalStackLayout>
+                    <VerticalStackLayout>
+                        <button:MenuItemButton Text="{Binding [Common_Play], Source={Static service:Localization.L}}"
+                                               Command="{Static commands:MenuCommands.PlayListCommand}" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </DataTemplate>
+            <DataTemplate x:Key="FileMenuTemplate"
+                          x:DataType="itemVM:FileEntryViewModel">
+                <VerticalStackLayout>
+                    <button:MenuItemButton Text="{Binding [Menu_AddToQueue], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.AddToQueueCommand}" />
+                    <button:MenuItemButton Text="{Binding [Menu_AddToPlaylist], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.AddToPlaylistCommand}" />
+                    <button:MenuItemButton Text="{Binding [Menu_Info], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.ShowAudioInfoCommand}" />
+                </VerticalStackLayout>
+            </DataTemplate>
             <DataTemplate x:Key="ListFolderItemTemplate"
                           x:DataType="itemVM:FolderEntryViewModel">
                 <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
                                 Command="{Binding SelectFolderCommand, Source={RelativeSource AncestorType={x:Type pageVM:ExplorerTreePageViewModel}}}">
                     <item:ItemFrame.ItemContent>
                         <Grid>
-                            <Label Text="{Binding Name}"
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" 
+                                   Text="{Binding Name}"
                                    Style="{StaticResource OneLine}" />
+                            <item:MenuButton Grid.Column="1"
+                                             WidthRequest="{DynamicResource IconButtonItemSize}"
+                                             MenuTemplate="{StaticResource FolderMenuTemplate}" />
                         </Grid>
                     </item:ItemFrame.ItemContent>
                 </item:ItemFrame>
@@ -40,9 +70,9 @@
                             <Label Grid.Column="1"
                                    Text="{Binding Name}"
                                    Style="{StaticResource OneLine}" />
-                            <Button Grid.Column="2"
-                                    Text=":"
-                                    WidthRequest="{DynamicResource IconButtonItemSize}" />
+                            <item:MenuButton Grid.Column="2"
+                                             WidthRequest="{DynamicResource IconButtonItemSize}"
+                                             MenuTemplate="{StaticResource FileMenuTemplate}" />
                         </Grid>
                     </item:ItemFrame.ItemContent>
                 </item:ItemFrame>

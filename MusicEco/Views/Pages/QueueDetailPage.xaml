@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:service="clr-namespace:MusicEco.Services"
              xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
              xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
              xmlns:item="clr-namespace:MusicEco.Views.Items"
@@ -11,6 +12,19 @@
              x:DataType="pageVM:QueueDetailPageViewModel">
     <ContentView.Resources>
         <ResourceDictionary>
+            <DataTemplate x:Key="MenuTemplate"
+                          x:DataType="itemVM:AudioEntryViewModel">
+                <VerticalStackLayout>
+                    <button:MenuItemButton Text="{Binding [Menu_RemoveFromQueue], Source={Static service:Localization.L}}"
+                                           Tapped="MenuItemButton_Tapped" />
+                    <button:MenuItemButton Text="{Binding [Menu_AddToQueue], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.AddToQueueCommand}" />
+                    <button:MenuItemButton Text="{Binding [Menu_AddToPlaylist], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.AddToPlaylistCommand}" />
+                    <button:MenuItemButton Text="{Binding [Menu_Info], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.ShowAudioInfoCommand}" />
+                </VerticalStackLayout>
+            </DataTemplate>
             <DataTemplate x:Key="AudioItemTemplate"
                           x:DataType="itemVM:AudioEntryViewModel">
                 <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
@@ -30,19 +44,9 @@
                             <Label Grid.Column="1"
                                    Text="{Binding DisplayTitle}"
                                    Style="{StaticResource OneLine}" />
-                            <button:MenuButton Grid.Column="2"
-                                               WidthRequest="{DynamicResource IconButtonItemSize}">
-                                <button:MenuButton.MenuTemplate>
-                                    <DataTemplate x:DataType="itemVM:AudioEntryViewModel">
-                                        <VerticalStackLayout>
-                                            <Button Text="Add to queue" 
-                                                    Command="{Static commands:MenuCommands.AddToQueueCommand}"
-                                                    CommandParameter="{Binding}"/>
-                                            <Button Text="Add to playlist" />
-                                        </VerticalStackLayout>
-                                    </DataTemplate>
-                                </button:MenuButton.MenuTemplate>
-                                </button:MenuButton>
+                            <item:MenuButton Grid.Column="2"
+                                               WidthRequest="{DynamicResource IconButtonItemSize}"
+                                               MenuTemplate="{StaticResource MenuTemplate}" />
                         </Grid>
                     </item:ItemFrame.ItemContent>
                 </item:ItemFrame>
@@ -63,8 +67,9 @@
             </Grid.ColumnDefinitions>
             <button:NavigationBackwardButton Grid.Column="0"
                                              WidthRequest="{DynamicResource HeaderSize}"
-                                             Margin="4, 8"/>
-            <Label Grid.Column="1" Text="{Binding QueueName}"
+                                             Margin="4, 8" />
+            <Label Grid.Column="1"
+                   Text="{Binding QueueName}"
                    Style="{StaticResource OneLine}" />
         </Grid>
         <CollectionView Grid.Row="1"

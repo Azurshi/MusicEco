@@ -1,6 +1,8 @@
+using MusicEco.Views.Buttons;
 using MusicEco.Views.Overlays;
+using System.Diagnostics;
 
-namespace MusicEco.Views.Buttons;
+namespace MusicEco.Views.Items;
 
 public partial class MenuFrame: ContentView, IOverlay {
     public event EventHandler? Closed;
@@ -17,11 +19,15 @@ public partial class MenuFrame: ContentView, IOverlay {
         while(q.Count > 0) {
             layout = q.Dequeue();
             foreach (var item in layout.Children) {
+                Debug.WriteLine(item.ToString());
                 if (item is Layout childLayout) {
                     q.Enqueue(childLayout);
                 }
                 else if (item is Button button) {
                     button.Clicked += this.Button_Clicked;
+                }
+                else if (item is MenuItemButton itemButton) {
+                    itemButton.Tapped += this.Button_Clicked;
                 }
             }
         }

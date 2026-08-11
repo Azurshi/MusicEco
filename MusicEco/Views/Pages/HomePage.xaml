@@ -23,8 +23,6 @@
         <Label Grid.Row="2"
                HeightRequest="{DynamicResource HeaderSize}"
                Text="{Binding DisplayTitle}" 
-               Style="{StaticResource OneLine}"
-               HorizontalTextAlignment="Center"
-               FontSize="24"/>
+               Style="{StaticResource Title}"/>
     </Grid>
 </ContentView>

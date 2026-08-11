@@ -20,6 +20,7 @@ public partial class QueueDetailPageViewModel: BasePageViewModel {
     public string QueueName { get; private set; }
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
     public AsyncCommandExtend<AudioEntryViewModel> SelectItemCommand { get; init; }
+    public AsyncCommand<AudioEntryViewModel> RemoveItemCommand { get; init; }
     public QueueDetailPageViewModel(ILocalizationService localizationService, IQueueService queueService, IPlaybackService playbackService) : base(localizationService) {
         this._queueService = queueService;
         this._playbackService = playbackService;
@@ -27,6 +28,7 @@ public partial class QueueDetailPageViewModel: BasePageViewModel {
         this.Items = new();
         this.QueueName = string.Empty;
         this.SelectItemCommand = new(SelectItem, CanSelectItem);
+        this.RemoveItemCommand = new(RemoveItem);
     }
     public override async Task Refresh() {
         var audioQueue = await this._queueService.Get(_q.CreationTime);
@@ -96,6 +98,32 @@ public partial class QueueDetailPageViewModel: BasePageViewModel {
             }
             audioQueue = audioQueue.WithCurrent(current).WithModifyNow();
             await this._playbackService.PlayQueue(audioQueue, this);
+        }
+    }
+    private async Task RemoveItem(AudioEntryViewModel? vm) {
+        if (vm == null) {
+            return;
+        }
+        var audioQueue = await this._queueService.Get(_q.CreationTime);
+        if (audioQueue != null) {
+            int targetIndex = -1;
+            for(int i=0; i<audioQueue.Audios.Count; i++) {
+                var audio = audioQueue.Audios[i];
+                if (audio.Hash == vm.FileHash) {
+                    targetIndex = i;
+                    break;
+                }
+            }
+            var audios = audioQueue.Audios.ToList();
+            audios.RemoveAt(targetIndex);
+            AudioEntry? current;
+            if (audioQueue.Current?.Hash == vm.FileHash) {
+                current = null;
+            } else {
+                current = audioQueue.Current;
+            }
+            audioQueue = audioQueue.WithAudios(current, audios).WithModifyNow();
+            await this._queueService.Update(audioQueue, this);
         }
     }
 }

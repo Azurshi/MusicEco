@@ -68,6 +68,7 @@ public enum PlayState {
 public interface IPlayerController: IDisposable {
     public event EventHandler<AudioTime>? PositionChanged;
     public event EventHandler? AudioEnded;
+    public event EventHandler? NextAudioRequested;
     public event EventHandler<bool>? RepeatingChanged;
     public event EventHandler<PlayState>? StateChanged;
     public bool IsRepeating { get; set; }

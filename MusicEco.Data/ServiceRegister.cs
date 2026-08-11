@@ -19,6 +19,7 @@ public static class ServiceRegister {
         services.AddSingleton<IFileService, FileService>();
         services.AddSingleton<IPlayEventService, PlayEventService>();
         services.AddSingleton<IQueueService, QueueService>();
+        services.AddSingleton<IPlaylistService, PlaylistService>();
         services.AddSingleton<IScanner, Scanner>();
         services.AddSingleton<IScanPathService, ScanPathService>();
         services.AddSingleton<IAudioQueryService, AudioQueryService>();

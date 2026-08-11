@@ -12,6 +12,9 @@ internal class PlaylistRepository {
     }
     public static async Task<List<AudioPlaylist>> Get(SQLiteReadConnection connection, List<DateTime> creationTimes) {
         List<AudioPlaylist> playlists = [];
+        if (creationTimes.Count == 0) {
+            return playlists;
+        }
         var creationTimeObjs = creationTimes.Cast<object>().ToArray();
         var rows = await connection.SelectAsync<
             DateTime, string, DateTime, DateTime>($"""

@@ -151,6 +151,15 @@ namespace MusicEco.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Play.
+        /// </summary>
+        public static string Common_Play {
+            get {
+                return ResourceManager.GetString("Common_Play", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refresh.
         /// </summary>
         public static string Common_Refresh {
@@ -430,15 +439,6 @@ namespace MusicEco.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} / {1}.
-        /// </summary>
-        public static string Info_Disc_Template {
-            get {
-                return ResourceManager.GetString("Info_Disc_Template", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Duration.
         /// </summary>
         public static string Info_Duration {
@@ -459,9 +459,9 @@ namespace MusicEco.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Genres.
         /// </summary>
-        public static string Info_Genres {
+        public static string Info_Genre {
             get {
-                return ResourceManager.GetString("Info_Genres", resourceCulture);
+                return ResourceManager.GetString("Info_Genre", resourceCulture);
             }
         }
         
@@ -471,6 +471,24 @@ namespace MusicEco.Resources.Localization {
         public static string Info_Group {
             get {
                 return ResourceManager.GetString("Info_Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lyric.
+        /// </summary>
+        public static string Info_Lyric {
+            get {
+                return ResourceManager.GetString("Info_Lyric", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} / {1}.
+        /// </summary>
+        public static string Info_Template_CurrentTotal {
+            get {
+                return ResourceManager.GetString("Info_Template_CurrentTotal", resourceCulture);
             }
         }
         
@@ -489,15 +507,6 @@ namespace MusicEco.Resources.Localization {
         public static string Info_Track {
             get {
                 return ResourceManager.GetString("Info_Track", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} / {1}.
-        /// </summary>
-        public static string Info_Track_Template {
-            get {
-                return ResourceManager.GetString("Info_Track_Template", resourceCulture);
             }
         }
         
@@ -547,6 +556,15 @@ namespace MusicEco.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View info.
+        /// </summary>
+        public static string Menu_Info {
+            get {
+                return ResourceManager.GetString("Menu_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove from playlist.
         /// </summary>
         public static string Menu_RemoveFromPlaylist {
@@ -588,6 +606,15 @@ namespace MusicEco.Resources.Localization {
         public static string Queue_Placeholder {
             get {
                 return ResourceManager.GetString("Queue_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Queue_Remove {
+            get {
+                return ResourceManager.GetString("Queue_Remove", resourceCulture);
             }
         }
         

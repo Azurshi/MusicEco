@@ -1,5 +1,6 @@
 using MusicEco.ViewModels.Items;
 using MusicEco.ViewModels.Pages;
+using MusicEco.Views.Buttons;
 using System.Diagnostics;
 
 namespace MusicEco.Views.Pages;
@@ -10,15 +11,10 @@ public partial class QueueDetailPage: ContentView {
         this.BindingContext = viewModel;
     }
 
-    private void Button_Clicked(object sender, EventArgs e) {
-        if (sender is View view) {
-            Debug.WriteLine(view.BindingContext);
-            if (view is Button button) {
-                Debug.WriteLine(button.CommandParameter);
-            }
-            if (view.BindingContext is AudioEntryViewModel vm) {
-                Debug.WriteLine($"{vm.FileHash} : {vm.DisplayTitle}");
-            }
+    private void MenuItemButton_Tapped(object sender, EventArgs e) {
+        if (sender is MenuItemButton button) {
+            var vm = (QueueDetailPageViewModel)this.BindingContext;
+            vm.RemoveItemCommand.Execute(button.BindingContext);
         }
     }
 }
