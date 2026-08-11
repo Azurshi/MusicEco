@@ -3,6 +3,7 @@ using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.Services;
 using MusicEco.ViewModels.Items;
+using MusicEco.ViewModels.Pages;
 using MusicEco.Views.Overlays;
 using System.Diagnostics.CodeAnalysis;
 
@@ -16,6 +17,10 @@ public static class MenuCommands {
         }
         else if (vm is FileEntryViewModel fileEntry) {
             hash = fileEntry.FileHash;
+            return true;
+        }
+        else if (vm is HomePageViewModel homeVM) {
+            hash = homeVM.FileHash;
             return true;
         }
         else {
