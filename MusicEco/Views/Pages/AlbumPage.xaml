@@ -54,7 +54,7 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <control:ManagedIcon Grid.Row="0"
+                            <control:ManagedSKIcon Grid.Row="0"
                                                  FileHashes="{Binding FileHashes}"
                                                  Option="Medium" />
                             <Label Grid.Row="1"

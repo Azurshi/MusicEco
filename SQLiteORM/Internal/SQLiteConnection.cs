@@ -14,7 +14,7 @@ public class SQLiteConnection {
         else {
             throw new System.Exception($"Failed to open database: {filePath} {flags}");
         }
-    }
+    }   
     protected sqlite3_stmt Preprate(string sql) {
         int rc = raw.sqlite3_prepare_v2(this._database, sql, out sqlite3_stmt stmt);
         if (rc != raw.SQLITE_OK) {

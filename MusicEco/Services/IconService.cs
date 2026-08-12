@@ -1,15 +1,17 @@
 ﻿using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using SkiaSharp;
+using SkiaSharp.Views.Maui.Controls;
 
 namespace MusicEco.Services;
 
 public partial class IconService: IIconService {
     private readonly IIconDecoder _iconDecoder;
     private readonly IAudioService _audioService;
-    private IconCache? _cache;
+    private IconCache<IDecodeResult>? _cache;
     private readonly CacheLog _cacheLog;
     private readonly LoadLog _loadLog;
-    private readonly Dictionary<IconKey, ValueTuple<Task<byte[]?>, List<CancelSource>>> _tasks;
+    private readonly Dictionary<IconKey, ValueTuple<Task<IDecodeResult?>, List<CancelSource>>> _tasks;
     private bool _workerInitalized = false;
     private sealed class ManagedBuffer(byte[] buffer) {
         public byte[] Buffer { get; init; } = buffer;
@@ -58,20 +60,20 @@ public partial class IconService: IIconService {
         // This immutable to Metadata change
         return await this._audioService.GetCoverHash(fileHash);
     }
-    public async Task<ImageSource> GetIcon(Hash256 iconHash, CoverSize size, CancelSource cancelSource) {
+    public async Task<IDecodeResult> GetIcon(Hash256 iconHash, CoverSize size, CancelSource cancelSource) {
         IconKey key = new(iconHash, size);
         var imageData = await GetIcon(key, cancelSource);
         if (imageData != null) {
-            return ImageSource.FromStream(() => new MemoryStream(imageData));
+            return imageData;
         }
         else {
             return this._default[size];
         }
     }
-    public ImageSource GetDefault(CoverSize size) {
+    public IDecodeResult GetDefault(CoverSize size) {
         return this._default[size];
     }
-    private async Task<byte[]?> GetIcon(IconKey key, CancelSource cancelSource) {
+    private async Task<IDecodeResult?> GetIcon(IconKey key, CancelSource cancelSource) {
         if (this._cache == null) {
             throw new Exception("Not initialized");
         }
@@ -124,7 +126,7 @@ public partial class IconService: IIconService {
         }
         throw new Exception("Race condition");
     }
-    private async Task<byte[]?> Loader(IconKey key, List<CancelSource> sources) {
+    private async Task<IDecodeResult?> Loader(IconKey key, List<CancelSource> sources) {
         if (this._bufferLimiter == null || this._cache == null) {
             throw new Exception("Not initialized");
         }
@@ -145,15 +147,15 @@ public partial class IconService: IIconService {
                 return null;
             }
             var data = managedBuffer.GetData(length);
-            var imageData = await this._iconDecoder.DecodeAsync(data);
-            this._cache.Add(key, imageData);
+            var decodeResult = await this._iconDecoder.DecodeAsync(data);
+            this._cache.Add(key, decodeResult);
 #if DEBUG
             _cacheLog.Miss();
             _cacheLog.PeriodLog();
             _loadLog.Complete();
             _loadLog.PeriodLog();
 #endif
-            return imageData;
+            return decodeResult;
         }
         finally {
             managedBuffer.Busy = false;

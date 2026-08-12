@@ -1,12 +1,13 @@
 ﻿using MusicEco.Core.Services;
 using SkiaSharp;
+using System.Buffers.Binary;
 using System.Runtime.InteropServices;
+using SkiaSharp.Views.Maui.Controls;
 
 namespace MusicEco.Image.Decoder;
 
 internal class SkiaIconDecoder: BaseImageCodec, IIconDecoder {
-    public static byte[] DecodeInner(Memory<byte> data) {
-        // Need testing
+    public static SKImage DecodeInner(Memory<byte> data) {
         if (!MemoryMarshal.TryGetArray(data, out ArraySegment<byte> segment)) {
             throw new InvalidOperationException();
         }
@@ -15,26 +16,31 @@ internal class SkiaIconDecoder: BaseImageCodec, IIconDecoder {
                 var info = codec.Info.WithColorType(SKColorType.Bgra8888);
                 using (var bitmap = new SKBitmap(info)) {
                     codec.GetPixels(info, bitmap.GetPixels());
-                    using (var image = SKImage.FromBitmap(bitmap)) {
-                        using (var imageData = image.Encode(SKEncodedImageFormat.Webp, 90)) {
-                            return imageData.ToArray();
-                        }
-                    }
+                    return SKImage.FromBitmap(bitmap);
                 }
-            }
+            }   
         }
     }
-    public byte[] Decode(Memory<byte> data) {
-        return DecodeInner(data);
+    public IDecodeResult Decode(Memory<byte> data) {
+        try {
+            var image = DecodeInner(data);
+            return new SkiaDecodeResult(image);
+        } 
+        catch {
+            return new FailedDecodeResult();
+        }
     }
-    public async Task<byte[]> DecodeAsync(Memory<byte> data) {
+    public async Task<IDecodeResult> DecodeAsync(Memory<byte> data) {
         if (Semaphore == null) {
             throw new Exception("Object not initalized");
         }
         await Semaphore.WaitAsync();
         try {
-            var bytes = await Task.Run(() => DecodeInner(data));
-            return bytes;
+            var image = await Task.Run(() => DecodeInner(data));
+            return new SkiaDecodeResult(image);
+        }
+        catch {
+            return new FailedDecodeResult();
         }
         finally {
             Semaphore.Release();

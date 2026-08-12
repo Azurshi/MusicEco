@@ -16,13 +16,16 @@ public interface IImageCodec {
     public void Initialize(int nWorkers);
     public int NumWorkers { get; }
 }
+public interface IDecodeResult {
+    public bool Success { get; }
+}
 public interface IIconDecoder: IImageCodec {
-    public byte[] Decode(Memory<byte> data);
-    public Task<byte[]> DecodeAsync(Memory<byte> data); // ImageSource need to keep data alive so no buffer here
+    public IDecodeResult Decode(Memory<byte> data);
+    public Task<IDecodeResult> DecodeAsync(Memory<byte> data); // ImageSource need to keep data alive so no buffer here
 }
 public interface IImageDecoder: IImageCodec {
-    public byte[] Decode(Memory<byte> data, Vector2 maxSize, bool highQuality);
-    public Task<byte[]> DecodeAsync(Memory<byte> data, Vector2 maxSize, bool highQuality);
+    public IDecodeResult Decode(Memory<byte> data, Vector2 maxSize, bool highQuality);
+    public Task<IDecodeResult> DecodeAsync(Memory<byte> data, Vector2 maxSize, bool highQuality);
 }
 public interface IIconEncoder: IImageCodec {
     public IconResult Encode(

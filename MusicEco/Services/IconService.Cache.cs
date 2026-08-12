@@ -101,14 +101,38 @@ public partial class IconService {
             }
         }
     }
-    private sealed record IconKey(Hash256 Hash, CoverSize Size);
-    private class IconCache {
-        private readonly CustomMemoryCache<IconKey, byte[]> _cache;
+    private readonly struct IconKey: IEquatable<IconKey> {
+        public readonly Hash256 Hash;
+        public readonly CoverSize Size;
+        public IconKey(Hash256 hash, CoverSize size) {
+            this.Hash = hash;
+            this.Size = size;
+        }
+
+        public bool Equals(IconKey other) {
+            return this.Size == other.Size && this.Hash == other.Hash;
+        }
+
+        public override bool Equals(object? obj) {
+            if (obj is IconKey other) {
+                return this.Size == other.Size && this.Hash == other.Hash;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public override int GetHashCode() {
+            return this.Hash.GetHashCode() + (int)this.Size;
+        }
+    }
+    private class IconCache<TItem> {
+        private readonly CustomMemoryCache<IconKey, TItem> _cache;
         public IconCache(int capacity) {
             CustomMemoryCacheOptions options = new(capacity, 0.1f, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(5));
             this._cache = new(options);
         }
-        public void Add(IconKey key, byte[] image) {
+        public void Add(IconKey key, TItem image) {
             int size = key.Size switch {
                 CoverSize.Small => 1,
                 CoverSize.Medium => 4,
@@ -117,12 +141,12 @@ public partial class IconService {
             };
             this._cache.Set(key, image, size);
         }
-        public bool TryGet(IconKey key, [MaybeNullWhen(false)] out byte[] image) {
+        public bool TryGet(IconKey key, [MaybeNullWhen(false)] out TItem image) {
             if (this._cache.TryGetValue(key, out var imageSource)) {
                 image = imageSource;
                 return true;
             }
-            image = null;
+            image = default;
             return false;
         }
     }

@@ -5,12 +5,12 @@ namespace MusicEco.Data;
 public static class Config {
     public const int MaxIconSize = 4096;
     public const int MaxParameterCount = 32766;
-    public const int SmallIconDimension = 128 * 128;
-    public const int MediumIconDimension = 515 * 512;
+    public const int SmallIconDimension = 64 * 64;
+    public const int MediumIconDimension = 256 * 256;
     public const int LargeIconDimension = 1024 * 768;
     public static readonly Vector2 LargeIconSize = new(1024, LargeIconDimension / 1024);
-    public static readonly Vector2 MediumIconSize = new(512, MediumIconDimension / 512);
-    public static readonly Vector2 SmallIconSize = new(128, SmallIconDimension / 128);
+    public static readonly Vector2 MediumIconSize = new(256, MediumIconDimension / 256);
+    public static readonly Vector2 SmallIconSize = new(64, SmallIconDimension / 64);
     public const int SmallIconBufferSize = SmallIconDimension * 4;
     public const int MediumIconBufferSize = MediumIconDimension * 4;
     public const int LargeIconBufferSize = LargeIconDimension * 4;

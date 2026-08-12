@@ -29,14 +29,13 @@ internal partial class Scanner: IScanner {
             while((read = stream.Read(ioBuffer, 0, ioBuffer.Length)) > 0) {
                 harsher.Update(ioBuffer.AsSpan()[..read]);
             }
-            Hash256 hash = new();
-            harsher.Finalize().AsSpan().CopyTo(hash.AsSpan());
+            Hash256 hash = new(harsher.Finalize().AsSpan());
             return hash;
         }
     }
     private static Hash256 ComputeHash(Memory<byte> data) {
-        Hash256 hash = new();
-        Hasher.Hash(data.Span, hash.AsSpan());
+        var blake = Hasher.Hash(data.Span);
+        Hash256 hash = new(blake.AsSpan());
         return hash;
     }
 

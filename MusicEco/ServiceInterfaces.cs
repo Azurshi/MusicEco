@@ -2,6 +2,7 @@
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.Views.Overlays;
+using SkiaSharp;
 using System.Numerics;
 
 namespace MusicEco;
@@ -35,8 +36,8 @@ public interface IIconService {
     public Task Setup(int nWorkers, int capacity);
     public Task<Hash256?> GetFirstIconHash(IReadOnlyList<Hash256> fileHashes);
     public Task<Hash256?> GetIconHash(Hash256 fileHash);
-    public Task<ImageSource> GetIcon(Hash256 iconHash, CoverSize size, CancelSource cancelSource);
-    public ImageSource GetDefault(CoverSize size);
+    public Task<IDecodeResult> GetIcon(Hash256 iconHash, CoverSize size, CancelSource cancelSource);
+    public IDecodeResult GetDefault(CoverSize size);
 }
 
 public interface IPlaybackService: IDisposable {

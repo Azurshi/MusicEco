@@ -66,34 +66,34 @@ public partial class ManagedIcon: Microsoft.Maui.Controls.Image {
 
     private Hash256? _lastIconHash = null;
     private async Task SetIcon(Hash256? iconHash) {
-        if (iconHash == null) {
-            this._lastIconHash = iconHash;
-            if (this._cts != null) {
-                await this._cts.CancelAsync();
-            }
-            this.Source = this._iconService.GetDefault(this.Option);
-            return;
-        }
-        if (this._lastIconHash == iconHash) {
-            return;
-        }
-        this._lastIconHash = iconHash;
-        if (this._cts != null) {
-            await this._cts.CancelAsync();
-        }
-        else {
-            this._cts = new();
-            var token = this._cts.Token;
-            Task<ImageSource> task = this._iconService.GetIcon(iconHash.Value, this.Option, new(this, token));
-            if (task.IsCompletedSuccessfully) {
-                this.Source = task.Result;
-            }
-            else {
-                this.Source = null;
-                await task;
-                this.Source = task.Result;
-            }
-            this._cts = null;
-        }
+        //if (iconHash == null) {
+        //    this._lastIconHash = iconHash;
+        //    if (this._cts != null) {
+        //        await this._cts.CancelAsync();
+        //    }
+        //    this.Source = this._iconService.GetDefault(this.Option);
+        //    return;
+        //}
+        //if (this._lastIconHash == iconHash) {
+        //    return;
+        //}
+        //this._lastIconHash = iconHash;
+        //if (this._cts != null) {
+        //    await this._cts.CancelAsync();
+        //}
+        //else {
+        //    this._cts = new();
+        //    var token = this._cts.Token;
+        //    Task<ImageSource> task = this._iconService.GetIcon(iconHash.Value, this.Option, new(this, token));
+        //    if (task.IsCompletedSuccessfully) {
+        //        this.Source = task.Result;
+        //    }
+        //    else {
+        //        this.Source = null;
+        //        await task;
+        //        this.Source = task.Result;
+        //    }
+        //    this._cts = null;
+        //}
     }
 }

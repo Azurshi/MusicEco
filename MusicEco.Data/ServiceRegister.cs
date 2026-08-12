@@ -63,8 +63,7 @@ public static class ServiceRegister {
     }
     private static object Hash256Reader(sqlite3_stmt stmt, int index) {
         ReadOnlySpan<byte> span = raw.sqlite3_column_blob(stmt, index);
-        Hash256 hash = new();
-        span.CopyTo(hash.AsSpan());
+        Hash256 hash = new(span);
         return hash;
     }
     private static readonly Memory<byte> MemoryBuffer = new byte[Config.LargeIconBufferSize];

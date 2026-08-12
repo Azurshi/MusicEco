@@ -5,6 +5,7 @@ using MusicEco.Data;
 using MusicEco.Image;
 using MusicEco.Services;
 using MusicEco.Views.Shell;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 using SQLiteORM;
 
 namespace MusicEco;
@@ -14,6 +15,7 @@ public static class MauiProgram {
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseSkiaSharp()
             .ConfigureFonts(fonts => {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
