@@ -114,6 +114,7 @@ public partial class AudioPlayer: IDisposable {
         this._isPlayed = true;
         this.Provider.ClearBuffer();
         this.Decoder.SetStream(stream);
+        Volatile.Write(ref this._firstPackRead, 0); // Guardd
         this.Player.Play();
     }
     public partial void Seek(TimeSpan position) {
@@ -143,7 +144,7 @@ public partial class AudioPlayer: IDisposable {
         this.Decoder.Dispose();
         this._disposeCts.Cancel();
         this._disposeEvent.Set();
-        if (this.Worker.Join(Config.JoinTimeOut)) {
+        if (this.Worker.Join(LocalConfig.JoinTimeOut)) {
             this.Worker.Interrupt();
             this.Worker.Join();
         }

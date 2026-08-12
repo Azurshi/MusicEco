@@ -3,27 +3,32 @@
 // All the code in this file is only included on Android.
 #if ANDROID
 using Android.Media;
+using AudioCodec;
 using AudioCodec.Old;
 using System.Diagnostics;
 
 public partial class AudioPlayer {
-    public readonly AudioCodec.Old.AudioFormat Format;
+    public readonly DecoderConfig Config;
 
     private readonly AudioTrack Player;
-    private readonly AudioDecoderV1 Decoder;
+    private readonly AudioDecoder Decoder;
     private readonly Thread Worker;
     private readonly byte[] TransferBuffer;
     private readonly int AudioTrackBufferSize = 8 * 1024; // Around 100ms
+    private readonly int PollMs = 10; // Must less than buffer duration
     private readonly ManualResetEventSlim CanWriteEvent;
     private float _volume = 1.0f;
     private bool _isPlayed = false;
+    private readonly ManualResetEvent _disposeEvent;
     private readonly CancellationTokenSource _disposeCts;
+    private int _firstPackRead = 0;
     public AudioPlayer() {
+        this.Config = new(2, 44_100, AudioCodec.Enum.AVSampleFormat.S16, 64 * 1024);
         this._disposeCts = new();
-        this.Format = new(64 * 1024, 44_100, 2, AudioCodec.Enum.AVSampleFormat.S16);
         this.CanWriteEvent = new();
+        this._disposeEvent = new(false);
         int minBuffer = AudioTrack.GetMinBufferSize(
-            Format.SampleRate,
+            this.Config.OutputSampleRate,
             ChannelOut.Stereo,
             Encoding.Pcm16bit);
         var attributes = new AudioAttributes.Builder()
@@ -31,7 +36,7 @@ public partial class AudioPlayer {
             .SetContentType(AudioContentType.Music)!
             .Build();
         var audioFormat = new Android.Media.AudioFormat.Builder()
-            .SetSampleRate(Format.SampleRate)!
+            .SetSampleRate(this.Config.OutputSampleRate)!
             .SetEncoding(Encoding.Pcm16bit)!
             .SetChannelMask(ChannelOut.Stereo)
             .Build();
@@ -44,21 +49,27 @@ public partial class AudioPlayer {
 #else
         this.Player = new AudioTrack(
             Stream.Music,
-            Format.SampleRate,
+            this.Config.OutputSampleRate,
             ChannelOut.Stereo,
             Encoding.Pcm16bit,
-            Math.Max(minBuffer, Format.IoBufferSize),
+            Math.Max(minBuffer, this.Config.IOBufferSize),
             AudioTrackMode.Stream);
 #endif
         this.AudioTrackBufferSize = this.Player.BufferSizeInFrames;
         this.TransferBuffer = new byte[8 * 1024];
-        this.Decoder = new AudioDecoderV1(SeekCompleted, Format, 1 * 1024 * 1024);
+        this.Decoder = new AudioDecoder(this.Config, 1 * 1024 * 1024);
         this.Worker = new Thread(WorkerLoop);
         this.Player.SetVolume(_volume);
         this.Worker.Start();
     }
-    private void SeekCompleted() {
+    private void ResetSynchronize() {
+        Debug.WriteLine("Player: Reset synchronize started");
         this.Player.Flush();
+        this.Decoder.Buffer.Flush();
+        this.Decoder.ResetCompleted.Set();
+        this.Decoder.ResetRequested.Reset();
+        Volatile.Write(ref this._firstPackRead, 0);
+        Debug.WriteLine("Player: Reset synchronize completed");
     }
     private void WorkerLoop() {
         while (true) {
@@ -80,12 +91,45 @@ public partial class AudioPlayer {
                     Debug.WriteLine("Force exit");
                     return;
                 }
-                this.Player.Write(TransferBuffer, 0, readLength, WriteMode.Blocking);
+                int offset = 0;
+                int remaining = readLength;
+                while(remaining > 0) {
+                    int written = this.Player.Write(TransferBuffer, offset, remaining, WriteMode.NonBlocking);
+                    if (written > 0) {
+                        // This will work unless Player starve it's buffer before decoder can fill it
+                        if (Volatile.Read(ref this._firstPackRead) <= 0) {
+                            Volatile.Write(ref this._firstPackRead, 1);
+                        }
+                        offset += written;
+                        remaining -= written;
+                    }
+                    else {
+                        if (this.Decoder.ResetRequested.WaitOne(TimeSpan.FromMilliseconds(this.PollMs))) {
+                            Debug.WriteLine("Player: wait Player to write empty then reset");
+                            ResetSynchronize();
+                        }
+                    }
+                    if (this._disposeCts.IsCancellationRequested) {
+                        return;
+                    }
+                }
             }
             else {
                 try {
-                    throw new NotImplementedException();
-                    //this.Decoder.Buffer.DataAvailable.WaitOne(this._disposeCts.Token);
+                    int index = WaitHandle.WaitAny([
+                        this.Decoder.Buffer.DataAvailable,
+                        this.Decoder.ResetRequested,
+                        this._disposeEvent
+                        ]);
+                    if (index == 0) {
+                        continue;
+                    }
+                    else if (index == 1) {
+                        this.ResetSynchronize();
+                    }
+                    else if (index == 2) {
+                        return;
+                    }
                 }
                 catch (OperationCanceledException) {
                     return;
@@ -102,6 +146,7 @@ public partial class AudioPlayer {
         this.CanWriteEvent.Set();
         this.Player.Flush();
         this.Decoder.SetStream(stream);
+        Volatile.Write(ref this._firstPackRead, 0); // Guardd
         this.Player.Play();
     }
     public partial void Seek(TimeSpan position) {
@@ -118,18 +163,12 @@ public partial class AudioPlayer {
         this.Player.Play();
     }
     public partial TimeSpan GetDuration() {
-        var metadata = this.Decoder.Metadata;
-        if (metadata != null) {
-            return metadata.Value.Duration;
-        }
-        else {
-            return TimeSpan.Zero;
-        }
+        return TimeSpan.FromTicks(Volatile.Read(ref this.Decoder.DurationTicks));
     }
     [Obsolete]
     private TimeSpan GetTotalPosition() {
         int frames = this.Player.PlaybackHeadPosition;
-        TimeSpan position = TimeSpan.FromSeconds((double)frames / Format.SampleRate);
+        TimeSpan position = TimeSpan.FromSeconds((double)frames / this.Config.OutputSampleRate);
         return position;
     }
     public partial TimeSpan GetPosition() {
@@ -145,12 +184,14 @@ public partial class AudioPlayer {
         this.Player.Release();
         this.Player.Dispose();
         this._disposeCts.Cancel();
-        if (this.Worker.Join(Config.JoinTimeOut)) {
+        this._disposeEvent.Set();
+        if (this.Worker.Join(LocalConfig.JoinTimeOut)) {
             this.Worker.Interrupt();
             this.Worker.Join();
         }
         this._disposeCts.Dispose();
         this.CanWriteEvent.Dispose();
+        this._disposeEvent.Dispose();
     }
     public partial float GetVolume() {
         return this.ClampVolume(this._volume);
@@ -166,6 +207,11 @@ public partial class AudioPlayer {
     /// <returns></returns>
     public partial PlaybackState GetState() {
         if (this._isPlayed) {
+            // Still loading
+            if (Volatile.Read(ref this._firstPackRead) <= 0) {
+                Debug.WriteLine("Player: Loading");
+                return PlaybackState.Playing;
+            }
             // Should work unless thread is blocked or CPU can't keep up
             // Add a guard by check position
             if (this.Decoder.Buffer.LengthUpper == 0
