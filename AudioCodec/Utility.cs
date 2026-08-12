@@ -1,11 +1,9 @@
 ﻿using AudioCodec.Enum;
 using AudioCodec.Types;
-using System.Runtime.InteropServices;
 
 namespace AudioCodec;
 
-public static partial class CodecManaged {
-
+internal static class FFmpegUtility {
     internal static void CheckResult(int result) {
         if (result < 0) {
             throw new Exception($"FFmpeg error: {result}");

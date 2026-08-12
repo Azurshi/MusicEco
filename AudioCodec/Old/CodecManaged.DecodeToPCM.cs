@@ -76,7 +76,7 @@ public static partial class CodecManaged {
                             packet,
                             frame,
                             audioStreamIndex,
-                            timeBase,
+                            timeBase,   
                             target);
                         seekCallback();
                     }
@@ -89,7 +89,7 @@ public static partial class CodecManaged {
                             codecContext,
                             packet);
                         CheckResult(result);
-                        ReceiveFrames(
+                        ReceiveFrames(  
                             codecContext,
                             resampler,
                             frame,

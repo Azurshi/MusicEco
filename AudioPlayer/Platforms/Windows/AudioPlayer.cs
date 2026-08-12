@@ -3,11 +3,12 @@ using System.Diagnostics;
 
 namespace AudioPlayer;
 
+using AudioCodec.Enum;
+
 // All the code in this file is only included on Windows.
 #if WINDOWS
 using NAudio.Wave;
 public partial class AudioPlayer: IDisposable {
-    public readonly AudioFormat Format;
     private readonly BufferedWaveProvider Provider;
     private readonly WaveOut Player;
     private readonly AudioDecoder Decoder;
@@ -15,21 +16,34 @@ public partial class AudioPlayer: IDisposable {
     private readonly byte[] TransferBuffer;
     private bool _isPlayed = false;
     private readonly CancellationTokenSource _disposeCts;
+    private readonly ManualResetEvent _disposeEvent;
+    private int _firstPackRead = 0;
     public AudioPlayer() {
         this._disposeCts = new();
-        this.Format = new(64 * 1024, 44_100, 2, AudioCodec.Enum.AVSampleFormat.S16);
-        this.Provider = new(new(Format.SampleRate, Format.BitSize, Format.Channels)) {
+        DecoderConfig config = new(2, 44_100, AVSampleFormat.S16, 64 * 1024);
+        this.Provider = new(new(config.OutputSampleRate, config.BitsPerSample, config.OutputChannels)) {
             DiscardOnBufferOverflow = true
         };
         this.TransferBuffer = new byte[8 * 1024];
         // This capture thread context so we need to use FunctionCallback
         this.Player = new WaveOut(WaveCallbackInfo.FunctionCallback());
         this.Player.Init(this.Provider);
-        this.Decoder = new(SeekCompleted, this.Format, 1 * 1024 * 1024);
-        this.Worker = new(WorkerLoop);
+        this.Decoder = new(config, 1 * 1024 * 1024);
+        this._disposeEvent = new(false);
+        this.Worker = new(WorkerLoop) {
+            Name = nameof(AudioPlayer)
+        };
         this.Worker.Start();
     }
-
+    private void ResetSynchronize() {
+        Debug.WriteLine("Player: Reset synchronize started");
+        this.Provider.ClearBuffer();
+        this.Decoder.Buffer.Flush();
+        this.Decoder.ResetCompleted.Set();
+        this.Decoder.ResetRequested.Reset();
+        Volatile.Write(ref this._firstPackRead, 0);
+        Debug.WriteLine("Player: Reset synchronize completed");
+    }
     private void WorkerLoop() {
         int providerBufferLength = this.Provider.BufferLength;
         int pad = 1024;
@@ -40,7 +54,13 @@ public partial class AudioPlayer: IDisposable {
                 Debug.WriteLine($"WARNING: Buffered length: {bufferedBytes}");
             }
             while(freeSpace < TransferBuffer.Length) {
-                Thread.Sleep(100);  
+                if (this.Decoder.ResetRequested.WaitOne(TimeSpan.FromMilliseconds(100))) {
+                    Debug.WriteLine("Player: wait Provider to consumer then reset");
+                    ResetSynchronize();
+                }
+                if (this._disposeCts.IsCancellationRequested) {
+                    return;
+                }
                 freeSpace = providerBufferLength - this.Provider.BufferedBytes - pad;
             }
             int readLength;
@@ -52,10 +72,33 @@ public partial class AudioPlayer: IDisposable {
             }
             if (readLength > 0) {
                 Provider.AddSamples(TransferBuffer, 0, readLength);
+                // This will work unless Provider starve it's buffer before decoder can fill it
+                if (Volatile.Read(ref this._firstPackRead) <= 0) {
+                    Volatile.Write(ref this._firstPackRead, 1);
+                }
             } else {
-                // Manual set when need to dispose instead of wait with timeout
                 try {
-                    this.Decoder.Buffer.DataAvailable.Wait(this._disposeCts.Token);
+                    int index = WaitHandle.WaitAny([
+                        this.Decoder.Buffer.DataAvailable,
+                        this.Decoder.ResetRequested,
+                        this._disposeEvent
+                        ]);
+                    if (index == 0) {
+                        // When switch to new Audio or seek, it need to ramp up to fill buffer
+                        // So repeated reach this during new Audio or seek is not an error
+                        //Debug.WriteLine("Player: read 0 then Data available");
+                        continue;
+                    }
+                    else if (index == 1) {
+                        Debug.WriteLine("Player: read 0 then Reset");
+                        ResetSynchronize();
+                    }
+                    else if (index == 2) {
+                        return;
+                    }
+                    else {
+                        throw new ArgumentOutOfRangeException();
+                    }
                 }
                 catch (OperationCanceledException) {
                     return;
@@ -66,9 +109,6 @@ public partial class AudioPlayer: IDisposable {
                 }
             }
         }
-    }
-    private void SeekCompleted() {
-        this.Provider.ClearBuffer();
     }
     public partial void Play(Stream stream) {
         this._isPlayed = true;
@@ -88,12 +128,7 @@ public partial class AudioPlayer: IDisposable {
         this.Player.Play();
     }
     public partial TimeSpan GetDuration() {
-        var metadata = this.Decoder.Metadata;
-        if (metadata != null) {
-            return metadata.Value.Duration;
-        } else {
-            return TimeSpan.Zero;
-        }
+        return TimeSpan.FromTicks(Volatile.Read(ref this.Decoder.DurationTicks));
     }
     public partial TimeSpan GetPosition() {
         var position = this.Decoder.GetPlayingPosition(this.Provider.BufferedBytes);
@@ -107,11 +142,13 @@ public partial class AudioPlayer: IDisposable {
         this.Player.Dispose();
         this.Decoder.Dispose();
         this._disposeCts.Cancel();
+        this._disposeEvent.Set();
         if (this.Worker.Join(Config.JoinTimeOut)) {
             this.Worker.Interrupt();
             this.Worker.Join();
         }
         this._disposeCts.Dispose();
+        this._disposeEvent.Dispose();
     }
     public partial float GetVolume() {
         return this.ClampVolume(this.Player.Volume);
@@ -122,6 +159,11 @@ public partial class AudioPlayer: IDisposable {
     }
     public partial PlaybackState GetState() {
         if (this._isPlayed) {
+            // Still loading
+            if (Volatile.Read(ref this._firstPackRead) <= 0) {
+                Debug.WriteLine("Player: Loading");
+                return PlaybackState.Playing;
+            }
             // Should work unless thread is blocked or CPU can't keep up
             // Add a guard by check position
             if (this.Decoder.Buffer.LengthUpper == 0 

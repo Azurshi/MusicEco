@@ -5,6 +5,7 @@ using AudioCodec.Types;
 
 namespace AudioCodec;
 
+[Obsolete]
 public static partial class CodecManaged {
     public static void DecodeToPCMTest(Stream input, Stream output) {
         unsafe {

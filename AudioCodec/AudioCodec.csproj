@@ -26,4 +26,28 @@
 		<Description> v0.0: Codec for decode audio.</Description>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <None Include="AudioDecoder.Convert.cs">
+	    <DependentUpon>AudioDecoder.cs</DependentUpon>
+	  </None>
+	  <None Include="AudioDecoder.Decode.cs">
+	    <DependentUpon>AudioDecoder.cs</DependentUpon>
+	  </None>
+	  <None Include="AudioDecoder.DecodeLoop.cs">
+	    <DependentUpon>AudioDecoder.cs</DependentUpon>
+	  </None>
+	  <None Include="AudioDecoder.Receive.cs">
+	    <DependentUpon>AudioDecoder.cs</DependentUpon>
+	  </None>
+	  <None Include="AudioDecoder.Seek.cs">
+	    <DependentUpon>AudioDecoder.cs</DependentUpon>
+	  </None>
+	  <None Include="AudioDecoder.Types.cs">
+	    <DependentUpon>AudioDecoder.cs</DependentUpon>
+	  </None>
+	  <None Include="AudioDecoder.WorkerLoop.cs">
+	    <DependentUpon>AudioDecoder.cs</DependentUpon>
+	  </None>
+	</ItemGroup>
+
 </Project>

@@ -1,17 +1,16 @@
-﻿using AudioCodec;
-
-namespace AudioPlayer;
+﻿namespace AudioPlayer;
 
 // All the code in this file is only included on Android.
 #if ANDROID
 using Android.Media;
+using AudioCodec.Old;
 using System.Diagnostics;
 
 public partial class AudioPlayer {
-    public readonly AudioCodec.AudioFormat Format;
+    public readonly AudioCodec.Old.AudioFormat Format;
 
     private readonly AudioTrack Player;
-    private readonly AudioDecoder Decoder;
+    private readonly AudioDecoderV1 Decoder;
     private readonly Thread Worker;
     private readonly byte[] TransferBuffer;
     private readonly int AudioTrackBufferSize = 8 * 1024; // Around 100ms
@@ -31,7 +30,7 @@ public partial class AudioPlayer {
             .SetUsage(AudioUsageKind.Media)!
             .SetContentType(AudioContentType.Music)!
             .Build();
-        var audioFormat = new AudioFormat.Builder()
+        var audioFormat = new Android.Media.AudioFormat.Builder()
             .SetSampleRate(Format.SampleRate)!
             .SetEncoding(Encoding.Pcm16bit)!
             .SetChannelMask(ChannelOut.Stereo)
@@ -53,7 +52,7 @@ public partial class AudioPlayer {
 #endif
         this.AudioTrackBufferSize = this.Player.BufferSizeInFrames;
         this.TransferBuffer = new byte[8 * 1024];
-        this.Decoder = new AudioDecoder(SeekCompleted, Format, 1 * 1024 * 1024);
+        this.Decoder = new AudioDecoderV1(SeekCompleted, Format, 1 * 1024 * 1024);
         this.Worker = new Thread(WorkerLoop);
         this.Player.SetVolume(_volume);
         this.Worker.Start();
@@ -85,7 +84,8 @@ public partial class AudioPlayer {
             }
             else {
                 try {
-                    this.Decoder.Buffer.DataAvailable.Wait(this._disposeCts.Token);
+                    throw new NotImplementedException();
+                    //this.Decoder.Buffer.DataAvailable.WaitOne(this._disposeCts.Token);
                 }
                 catch (OperationCanceledException) {
                     return;
