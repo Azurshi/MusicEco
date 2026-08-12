@@ -4,7 +4,6 @@
 #if ANDROID
 using Android.Media;
 using AudioCodec;
-using AudioCodec.Old;
 using System.Diagnostics;
 
 public partial class AudioPlayer {
