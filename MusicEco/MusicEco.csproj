@@ -11,7 +11,7 @@
 		The Mac App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
 		either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
 		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
-
+		<UseMaui>10.0.90</UseMaui>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>MusicEco</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -92,6 +92,9 @@
 
 	<ItemGroup>
 	  <None Include="Services\IconService.Cache.cs">
+	    <DependentUpon>IconService.cs</DependentUpon>
+	  </None>
+	  <None Include="Services\IconService.Cache.Types.cs">
 	    <DependentUpon>IconService.cs</DependentUpon>
 	  </None>
 	  <None Include="Services\IconService.Default.cs">

@@ -6,7 +6,7 @@ namespace MusicEco.Image.Decoder;
 public class SkiaDecodeResult: IDecodeResult {
     public bool Success => true;
     public SKImage Image { get; init; }
-    internal SkiaDecodeResult(SKImage image) {
+    public SkiaDecodeResult(SKImage image) {
         this.Image = image;
     }
 }

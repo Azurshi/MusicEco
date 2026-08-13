@@ -39,8 +39,9 @@ public partial class MainWindow: Window {
     }
     protected override async void OnActivated() {
         base.OnActivated();
-        Debug.WriteLine("Acitvated");
+        Debug.WriteLine("Activated");
     }
+
     protected override void OnDestroying() {
         base.OnDestroying();
         AppLifeCycle.CloseApp();

@@ -34,7 +34,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <control:ManagedIcon Grid.Column="0"
+                            <control:ManagedSKIcon Grid.Column="0"
                                                  WidthRequest="{DynamicResource IconItemSize}"
                                                  FileHash="{Binding FileHash}"
                                                  Option="Small" />
@@ -58,7 +58,7 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <control:ManagedIcon Grid.Row="0"
+                            <control:ManagedSKIcon Grid.Row="0"
                                                  FileHash="{Binding FileHash}"
                                                  Option="Medium" />
                             <Label Grid.Row="1"

@@ -16,6 +16,10 @@ public interface IImageCodec {
     public void Initialize(int nWorkers);
     public int NumWorkers { get; }
 }
+/// <summary>
+/// Must own strong reference to result else it may get disposed.
+/// Must not own it's fields/properties since it managed by cache
+/// </summary>
 public interface IDecodeResult {
     public bool Success { get; }
 }

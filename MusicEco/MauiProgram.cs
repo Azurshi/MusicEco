@@ -74,6 +74,10 @@ public static class MauiProgram {
     }
     private static void RegisterCleanup() {
         AppLifeCycle.RegisterAppClose((provider) => {
+            var icon = provider.GetRequiredService<IIconService>();
+            icon.Dispose();
+        });
+        AppLifeCycle.RegisterAppClose((provider) => {
             var db = provider.GetRequiredService<DatabaseContextAsync>();
             db.Dispose(true);
         });

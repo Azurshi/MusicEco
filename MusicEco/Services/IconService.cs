@@ -8,7 +8,7 @@ namespace MusicEco.Services;
 public partial class IconService: IIconService {
     private readonly IIconDecoder _iconDecoder;
     private readonly IAudioService _audioService;
-    private IconCache<IDecodeResult>? _cache;
+    private IconCache? _cache;
     private readonly CacheLog _cacheLog;
     private readonly LoadLog _loadLog;
     private readonly Dictionary<IconKey, ValueTuple<Task<IDecodeResult?>, List<CancelSource>>> _tasks;
@@ -60,15 +60,9 @@ public partial class IconService: IIconService {
         // This immutable to Metadata change
         return await this._audioService.GetCoverHash(fileHash);
     }
-    public async Task<IDecodeResult> GetIcon(Hash256 iconHash, CoverSize size, CancelSource cancelSource) {
+    public async Task<IDecodeResult?> GetIcon(Hash256 iconHash, CoverSize size, CancelSource cancelSource) {
         IconKey key = new(iconHash, size);
-        var imageData = await GetIcon(key, cancelSource);
-        if (imageData != null) {
-            return imageData;
-        }
-        else {
-            return this._default[size];
-        }
+        return await GetIcon(key, cancelSource);
     }
     public IDecodeResult GetDefault(CoverSize size) {
         return this._default[size];
@@ -161,5 +155,13 @@ public partial class IconService: IIconService {
             managedBuffer.Busy = false;
             this._bufferLimiter.Release();
         }
+    }
+
+    public void Compact() {
+        this._cache?.Compact();
+    }
+
+    public void Dispose() {
+        this._cache?.Dispose();
     }
 }

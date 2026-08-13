@@ -31,13 +31,14 @@ public class CancelSource {
     }
 }
 
-public interface IIconService {
+public interface IIconService: IDisposable {
     public Task InitializeDefault(IServiceProvider provider);
     public Task Setup(int nWorkers, int capacity);
     public Task<Hash256?> GetFirstIconHash(IReadOnlyList<Hash256> fileHashes);
     public Task<Hash256?> GetIconHash(Hash256 fileHash);
-    public Task<IDecodeResult> GetIcon(Hash256 iconHash, CoverSize size, CancelSource cancelSource);
+    public Task<IDecodeResult?> GetIcon(Hash256 iconHash, CoverSize size, CancelSource cancelSource);
     public IDecodeResult GetDefault(CoverSize size);
+    public void Compact();
 }
 
 public interface IPlaybackService: IDisposable {

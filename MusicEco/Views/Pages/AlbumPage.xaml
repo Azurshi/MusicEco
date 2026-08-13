@@ -30,7 +30,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <control:ManagedIcon Grid.Column="0"
+                            <control:ManagedSKIcon Grid.Column="0"
                                                  FileHashes="{Binding FileHashes}"
                                                  WidthRequest="{DynamicResource IconItemSize}"
                                                  Option="Small" />

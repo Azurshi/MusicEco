@@ -11,6 +11,11 @@ using System.Numerics;
 namespace MusicEco.Views.Controls;
 
 public partial class ManagedSKIcon: SKCanvasView {
+    private enum IconViewState {
+        Empty,
+        Default,
+        HasImage
+    }
     private static readonly Type ThisType = typeof(ManagedSKIcon);
     public static readonly BindableProperty FileHashProperty
         = Utility.Create<Hash256>(ThisType, new Hash256(),
@@ -74,30 +79,92 @@ public partial class ManagedSKIcon: SKCanvasView {
         var iconHash = await this._iconService.GetFirstIconHash(fileHashes);
         await this.SetIcon(iconHash);
     }
-    private SKImage? _image;
+    private IDecodeResult? _decodeResult;
     public CoverSize Option { get; set; } = CoverSize.Small;
     private readonly IIconService _iconService;
+    private IconViewState _state = IconViewState.Empty;
     public ManagedSKIcon() {
         InitializeComponent();
+        this.IgnorePixelScaling = true;
+        this.EnableTouchEvents = false;
         this._iconService = AppLifeCycle.Provider.GetRequiredService<IIconService>();
-        var result = this._iconService.GetDefault(CoverSize.Small);
-        if (result is SkiaDecodeResult skiaResult) {
-            this._image = skiaResult.Image;
-        }
+        //InstanceCount++;
+        //Debug.WriteLine($"Instance count: {InstanceCount}");
     }
     private Hash256? _lastIconHash = null;
+    private void SetEmpty() {
+        this._decodeResult = null;
+    }
+    private void SetDefault() {
+        this._decodeResult = this._iconService.GetDefault(this.Option);
+    }
+    private void SetIcon(IDecodeResult result) {
+        this._decodeResult = result;
+    }
+    private bool HandleResult(IDecodeResult? result) {
+        bool needRedraw;
+        // If result is null
+        if (result == null) {
+            // Switch to default mode
+            if (this._state == IconViewState.Default) {
+                // Already default icon
+                needRedraw = false;
+                // Skip and return control
+            }
+            else {
+                // Switch to default icon
+                this.SetDefault();
+                // Request redraw since state and image changed
+                needRedraw = true;
+                // Return control
+            }
+            this._state = IconViewState.Default;
+        }
+        // If has result and success
+        else if (result.Success) {
+            // Switch to new icon
+            // All case handle with same operation
+            this.SetIcon(result);
+            this._state = IconViewState.HasImage;
+            // Request redraw since state and image changed
+            needRedraw = true;
+            // Return control
+        }
+        // Result is not success
+        else {
+            // Switch to empty mode
+            if (this._state == IconViewState.Empty) {
+                needRedraw = false;
+            }
+            else {
+                this.SetEmpty();
+                needRedraw = true;
+            }
+            this._state = IconViewState.Empty;
+        }
+        return needRedraw;
+    }
     private async Task SetIcon(Hash256? iconHash) {
         if (iconHash == null) {
             this._lastIconHash = iconHash;
             if (this._cts != null) {
                 await this._cts.CancelAsync();
             }
-            var result = this._iconService.GetDefault(this.Option);
-            if (result is SkiaDecodeResult skiaResult) {
-                var oldImage = this._image;
-                this._image = skiaResult.Image;
-                if (this._image != oldImage) {
-                    this.InvalidateMeasure();
+            // Handle case where no IconHash is found
+            // Switch to default mode if available else empty mode
+            if (this._state != IconViewState.Default) {
+                var result = this._iconService.GetDefault(this.Option);
+                // If success, switch to default mode
+                if (result.Success) {
+                    this.SetIcon(result);
+                    this._state = IconViewState.HasImage;
+                    this.InvalidateSurface();
+                }
+                // Else when fail, switch to empty mode
+                else {
+                    this.SetEmpty();
+                    this._state = IconViewState.Empty;
+                    this.InvalidateSurface();
                 }
             }
             return;
@@ -112,63 +179,63 @@ public partial class ManagedSKIcon: SKCanvasView {
         else {
             this._cts = new();
             var token = this._cts.Token;
-            Task<IDecodeResult> task = this._iconService.GetIcon(iconHash.Value, this.Option, new(this, token));
+            bool needRedraw;
+            Task<IDecodeResult?> task = this._iconService.GetIcon(iconHash.Value, this.Option, new(this, token));
+            // Already have result
             if (task.IsCompletedSuccessfully) {
-                bool needRedraw = false;
-                if (this._image == null) {
-                    needRedraw = true;
-                }
-                if (task.Result.Success && task.Result is SkiaDecodeResult skiaResult) {
-                    this._image = skiaResult.Image;
-                    needRedraw = true;
-                } else {
-                    this._image = null;
-                }
-                if (needRedraw) {
-                    this.InvalidateSurface();
-                }
+                needRedraw = HandleResult(task.Result);
             }
+            // Need to wait for result
             else {
-                if (this._image != null) {
-                    this._image = null;
+                // Clear canvas to prepare for result
+                if (this._state != IconViewState.Empty) {
+                    this._state = IconViewState.Empty;
                     this.InvalidateSurface();
                 }
-                bool needRedraw = false;
                 await task;
-                if (task.Result.Success && task.Result is SkiaDecodeResult skiaResult) {
-                    this._image = skiaResult.Image;
-                    needRedraw = true;
-                }
-                else {
-                    this._image = null;
-                }
-                if (needRedraw) {
-                    this.InvalidateSurface();
-                }
+                needRedraw = HandleResult(task.Result);
+            }
+            if (needRedraw) {
+                this.InvalidateSurface();
             }
             this._cts = null;
         }
     }
+    private static long DrawCount = 0;
+    private static long ClearCount = 0;
+    private static long InstanceCount = 0;
     private void SKCanvasView_PaintSurface(object sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e) {
-        //var canvas = e.Surface.Canvas;
-        //canvas.Clear(SKColors.Transparent);
-        //if(this._image != null) {
-        //    //Debug.WriteLine("Redraw");
-        //    float imageWidth = this._image.Width;
-        //    float imageHeight = this._image.Height;
-        //    float surfaceWidth = e.Info.Width;
-        //    float surfaceHeight = e.Info.Height;
-        //    float scale = Math.Min(surfaceWidth / imageWidth, surfaceHeight / imageHeight);
-        //    float width = imageWidth * scale;
-        //    float height = imageHeight * scale;
-        //    float offsetX = (surfaceWidth - width) / 2;
-        //    float offsetY = (surfaceHeight - height) / 2;
-        //    var rect = new SKRect(
-        //        offsetX,
-        //        offsetY, 
-        //        offsetX + width,
-        //        offsetY + height);
-        //    //canvas.DrawImage(this._image, rect, SKSamplingOptions.Default);
-        //}
+        var canvas = e.Surface.Canvas;
+        canvas.Clear(SKColors.Transparent);
+        //ClearCount++;
+        if (this._decodeResult != null && this._decodeResult is SkiaDecodeResult skiaResult) {
+            try {
+                var image = skiaResult.Image;
+                //Thread.Sleep(100);
+                //DrawCount++;
+                //Debug.WriteLine($"Draw count: {DrawCount} / {ClearCount}");
+                //Debug.WriteLine("Redraw");
+                float imageWidth = image.Width;
+                float imageHeight = image.Height;
+                float surfaceWidth = e.Info.Width;
+                float surfaceHeight = e.Info.Height;
+                float scale = Math.Min(surfaceWidth / imageWidth, surfaceHeight / imageHeight);
+                float width = imageWidth * scale;
+                float height = imageHeight * scale;
+                float offsetX = (surfaceWidth - width) / 2;
+                float offsetY = (surfaceHeight - height) / 2;
+                var rect = new SKRect(
+                    offsetX,
+                    offsetY,
+                    offsetX + width,
+                    offsetY + height);
+                canvas.DrawImage(image, rect, SKSamplingOptions.Default);
+            }
+            catch (ObjectDisposedException) {
+                this._decodeResult = null;
+                this._state = IconViewState.Empty;
+                canvas.Clear(SKColors.Transparent);
+            }
+        }
     }
 }
