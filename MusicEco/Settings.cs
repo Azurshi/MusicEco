@@ -9,4 +9,5 @@ public static class SettingFields {
 
 public static class Config {
     public const int MinNameLength = 3;
+    public const float MinPlayedRatio = 0.1f;
 }

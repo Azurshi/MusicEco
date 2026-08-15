@@ -62,6 +62,8 @@ public static class ServiceRegister {
         services.AddSingleton<PlaylistDetailPageViewModel>();
         services.AddTransient<FavouritePage>();
         services.AddSingleton<FavouritePageViewModel>();
+        services.AddSingleton<PlayCountPage>();
+        services.AddSingleton<PlayCountPageViewModel>();
 
         services.AddTransient<LanguageSettingPage>();
         services.AddTransient<LanguageSettingPageViewModel>();

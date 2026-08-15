@@ -37,7 +37,9 @@
                         HeightRequest="{DynamicResource ButtonSize}" />
                 <Button Grid.Row="3"
                         Text="{Binding L[User_Most]}"
-                        HeightRequest="{DynamicResource ButtonSize}" />
+                        HeightRequest="{DynamicResource ButtonSize}"
+                        Command="{Binding NagivateCommand}"
+                        CommandParameter="{Static top:PageRoute.PlayCount}" />
                 <Button Grid.Row="4"
                         Text="{Binding L[User_Not]}"
                         HeightRequest="{DynamicResource ButtonSize}" />
