@@ -31,13 +31,14 @@ internal class PlayEventService: IPlayEventService {
         return await this._eventRepo.GetPlaycount(hash, playedThreshold);
     }
 
-    public Task<bool> Insert(PlayEvent e, object? caller = null) {
-        throw new NotImplementedException();
+    public async Task<bool> Insert(PlayEvent e, object? caller = null) {
+        var success = await this._eventRepo.Insert(e);
+        if (success) {
+            ItemsChanged?.Invoke(this, new(ChangeKind.Added, e.RecordTime));
+            return true;
+        }
+        else {
+            return false;
+        }
     }
-
-    public Task<bool> UpdatePlayedDuration(PlayEvent e, object? caller = null) {
-        throw new NotImplementedException();
-    }
-
-
 }

@@ -1,5 +1,6 @@
 ﻿using MusicEco.Core;
 using MusicEco.Core.Services;
+using MusicEco.Core.Types;
 using MusicEco.Data.Database.Repositories;
 using System.Diagnostics;
 using System.Text.Json;
@@ -13,10 +14,13 @@ internal partial class AppSetting: IAppSetting, IDisposable {
     private readonly DictionaryRepository _dictRepo;
     private readonly Dictionary<string, object?> _settings;
     private bool _disposed = false;
+    private readonly Stopwatch _sw;
     public AppSetting(DictionaryRepository dictionaryRepository) {
         this._dictRepo = dictionaryRepository;
         this._options = new();
+        this.Register(new Hash256JsonConverter());
         this._settings = [];
+        this._sw = Stopwatch.StartNew();
         var reader = ServiceRegister.GetReader();
         var rows = reader.Select<string>("SELECT EntryValue FROM DictionaryEntry WHERE EntryKey = ?", nameof(AppSetting)).ToList();
         if (rows.Count > 0) {
@@ -40,11 +44,13 @@ internal partial class AppSetting: IAppSetting, IDisposable {
                 return value;
             }
             else {
-                string foundType = "null";
                 if (valueObj != null) {
-                    foundType = valueObj.GetType().ToString();
+                    string foundType = valueObj.GetType().ToString();
+                    throw new InvalidCastException($"Type mismatch. Required type: {typeof(T)}. Found type: {foundType}");
                 }
-                throw new InvalidCastException($"Type mismatch. Required type: {typeof(T)}. Found type: {foundType}");
+                else {
+                    return (T)valueObj!;
+                }
             }
         }
         else {
@@ -65,15 +71,20 @@ internal partial class AppSetting: IAppSetting, IDisposable {
         return true;
     }
     #region Scheduler
-    private DateTime _requestTime = DateTime.MaxValue;
+    private TimeSpan _requestTime = TimeSpan.Zero;
+    private bool _needSave = false;
     private static readonly TimeSpan _saveDelay = TimeSpan.FromMilliseconds(Config.SaveDelayMs);
     private void ScheduleSave() {
-        _requestTime = DateTime.Now;
+        if (!this._needSave) {
+            this._needSave = true;
+            this._requestTime = this._sw.Elapsed;
+        }
     }
     private async Task SaveLoop() {
         while(!_disposed) {
-            if (DateTime.Now - _requestTime > _saveDelay) {
-                _requestTime = DateTime.MaxValue;
+            var elapsed = this._sw.Elapsed;
+            if (this._needSave && elapsed - this._requestTime > _saveDelay) {
+                this._needSave = false;
                 try {
                     await SaveData();
                 }

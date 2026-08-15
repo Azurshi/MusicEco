@@ -5,7 +5,7 @@ using SQLiteORM;
 
 namespace MusicEco.Data.Database.Repositories;
 
-internal class PlayEventRepository {
+internal partial class PlayEventRepository {
     private readonly DatabaseContextAsync _db;
     public PlayEventRepository(DatabaseContextAsync dbContext) {
         this._db = dbContext;

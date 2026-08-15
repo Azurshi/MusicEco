@@ -63,13 +63,16 @@ public static class MauiProgram {
             await iconService.Setup(nWorkers, capacity);
         });
         AppLifeCycle.RegisterAfterUILoaded((provider) => {
-            // Initialize stack
-            var stack = provider.GetRequiredService<NavigationStack>();
-        });
-        AppLifeCycle.RegisterAfterUILoaded((provider) => {
             // Localization
             NavigateEventArgs args = new(null, PageRoute.None, PageRoute.Home);
             EventSystem.Publish(null, args);
+        });
+
+        AppLifeCycle.RegisterAfterUILoaded((provider) => {
+            // Initialize stack
+            var stack = provider.GetRequiredService<NavigationStack>();
+            // Initialize PlaybackService
+            var playbackService = provider.GetRequiredService<IPlaybackService>();
         });
     }
     private static void RegisterCleanup() {

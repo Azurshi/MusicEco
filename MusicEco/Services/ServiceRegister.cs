@@ -21,6 +21,7 @@ public static class ServiceRegister {
         services.AddSingleton<IIconService, IconService>();
         services.AddSingleton<IPlayerController, PlayerController>();
         services.AddSingleton<IPlaybackService, PlaybackService>();
+        services.AddSingleton<IPlaybackTrackingService, PlaybackTrackingService>();
         services.AddSingleton<IOverlayService>(provider => provider.GetRequiredService<AppOverlay>());
         return services;
     }

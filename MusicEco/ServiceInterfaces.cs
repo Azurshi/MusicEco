@@ -46,6 +46,11 @@ public interface IPlaybackService: IDisposable {
     public Task PlayQueue(AudioQueue queue, object? sender);
 }
 
+public interface IPlaybackTrackingService {
+    public void Start(Hash256 fileHash);
+    public Task Record(TimeSpan position, TimeSpan duration);
+}
+
 public readonly struct AudioTime {
     public readonly TimeSpan Position;
     public readonly TimeSpan Duration;
@@ -74,7 +79,8 @@ public interface IPlayerController: IDisposable {
     public event EventHandler<bool>? RepeatingChanged;
     public event EventHandler<PlayState>? StateChanged;
     public bool IsRepeating { get; set; }
-    public Task Play(string path);
+    public Task Play(string path, Hash256 fileHash);
+    public Task LoadAndPause(string path, Hash256 fileHash);
     public void Pause();
     public void Resume();
     public void Seek(TimeSpan position);

@@ -15,8 +15,8 @@ public static class Config {
     public const int MediumIconBufferSize = MediumIconDimension * 4;
     public const int LargeIconBufferSize = LargeIconDimension * 4;
 
-    public const int SaveDelayMs = 1000 * 5;
-    public const int SaveLoopMs = 1000;
+    public const int SaveDelayMs = 1000 * 1;
+    public const int SaveLoopMs = 100;
 
     public const int IOBufferSize = 1 * 1024 * 1024;
 #if ANDROID

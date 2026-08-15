@@ -1,11 +1,14 @@
 ﻿using MusicEco.Core;
 using MusicEco.Core.Services;
 using System.Diagnostics;
+using MusicEco.Core.Types;
+
 #if ANDROID
 using MusicEco.Core.Platforms.Android;
 #endif
 namespace MusicEco.Services;
 internal partial class PlayerController: IPlayerController {
+    private readonly IPlaybackTrackingService _trackingService;
     public event EventHandler<AudioTime>? PositionChanged;
     public event EventHandler? AudioEnded;
     public event EventHandler? NextAudioRequested;
@@ -29,8 +32,15 @@ internal partial class PlayerController: IPlayerController {
             RepeatingChanged?.Invoke(this, value);
         }
     }
-    public PlayerController(IAppSetting setting) {
+    private Hash256 _playing;
+    private bool _hasAudio = false;
+    private bool IsFirstAudio {
+        get => this._setting.Get(true, $"{nameof(PlayerController)}.IsFirstAudio");
+        set => this._setting.Set(value, $"{nameof(PlayerController)}.IsFirstAudio");
+    }
+    public PlayerController(IAppSetting setting, IPlaybackTrackingService playbackTrackingService) {
         this._setting = setting;
+        this._trackingService = playbackTrackingService;
         this._player = new();
         int targetFps = this._setting.Get(30, SettingFields.AudioPlayerFPS);
         int delayMs = 1000 / targetFps;
@@ -46,12 +56,20 @@ internal partial class PlayerController: IPlayerController {
             var position = this._player.GetPosition();
             var duration = this._player.GetDuration();
             PositionChanged?.Invoke(this, new(position, duration));
-            if (this._player.GetState() == AudioPlayer.PlaybackState.End) {
+            var playerState = this._player.GetState();
+            if (this._pauseFlags && playerState == AudioPlayer.PlaybackState.Playing) {
+                this._pauseFlags = false;
+                this.Pause();
+                Debug.WriteLine("PlayerController: Pause on load");
+            }
+            if (playerState == AudioPlayer.PlaybackState.End) {
                 if (!this._endFlag) {
                     this._endFlag = true;
+                    await this._trackingService.Record(position, duration);
                     AudioEnded?.Invoke(this, EventArgs.Empty);
                     if (this.IsRepeating) {
                         this._player.Seek(TimeSpan.Zero);
+                        this._trackingService.Start(this._playing);
                         this._endFlag = false;
                     } else {
                         this.NextAudioRequested?.Invoke(this, EventArgs.Empty);
@@ -82,7 +100,8 @@ internal partial class PlayerController: IPlayerController {
         this._stream?.Close();
     }
 
-    public async Task Play(string path) {
+    public async Task Play(string path, Hash256 fileHash) {
+        this._playing = fileHash;
         var oldStream = this._stream;
 #if WINDOWS
         this._stream = File.OpenRead(path);
@@ -90,6 +109,20 @@ internal partial class PlayerController: IPlayerController {
         this._stream = UriUtility.OpenFile(Android.Net.Uri.Parse(path)!, 64 * 1024, FileAccess.Read);
 #endif
         if (this._stream != null) {
+            if (this.IsFirstAudio) {
+                this.IsFirstAudio = false;
+                this._hasAudio = true;
+                this._trackingService.Start(fileHash);
+            }
+            else if (!this._hasAudio) {
+                this._hasAudio = true;
+                this._trackingService.Start(fileHash);
+            }
+            else {
+                // Hash audio and not first audio
+                await this._trackingService.Record(this._player.GetPosition(), this._player.GetDuration());
+                this._trackingService.Start(fileHash);
+            }
             this._player.Play(this._stream);
         }
         oldStream?.Close();
@@ -124,5 +157,11 @@ internal partial class PlayerController: IPlayerController {
             AudioPlayer.PlaybackState.End => PlayState.Stopped,
             _ => throw new ArgumentOutOfRangeException()
         };
+    }
+
+    private bool _pauseFlags = false;
+    public async Task LoadAndPause(string path, Hash256 fileHash) {
+        this._pauseFlags = true;
+        await this.Play(path, fileHash);
     }
 }

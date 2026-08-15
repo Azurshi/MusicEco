@@ -8,20 +8,28 @@ internal partial class PlaybackService: IPlaybackService {
     private readonly IQueueService _queueService;
     private readonly IAudioService _audioService;
     private readonly IFileService _fileSerivce;
+    private readonly IPlaybackTrackingService _trackingService;
     private readonly IPlayerController _player;
     private DateTime? _queueKey;
     private static readonly TimeSpan _minimumDelay = TimeSpan.FromSeconds(1);
     private readonly Stopwatch _sw;
-    public PlaybackService(IQueueService queueService, IAudioService audioService, IFileService fileService, IPlayerController playerController) {
+    public PlaybackService(IQueueService queueService, IAudioService audioService, IFileService fileService, IPlaybackTrackingService trackingService, IPlayerController playerController) {
         this._queueService = queueService;
         this._audioService = audioService;
         this._fileSerivce = fileService;
+        this._trackingService = trackingService;
         this._player = playerController;
         this._player.NextAudioRequested += this.Player_NextAudioRequested;
         this._sw = new();
         this._sw.Start();
-    }
+        this.StartLastSession();
 
+    }
+    private async void StartLastSession() {
+        var currentQueue = await this._queueService.GetCurrent();
+        this._queueKey = currentQueue?.CreationTime;
+        await PlayNew(true);
+    }
     private async void Player_NextAudioRequested(object? sender, EventArgs e) {
         if (this._queueKey == null) {
             return;
@@ -32,10 +40,10 @@ internal partial class PlaybackService: IPlaybackService {
         }
         queue = queue.Next().WithModifyNow();
         await this._queueService.Update(queue, this);
-        await PlayNew();
+        await PlayNew(false);
     }
 
-    private async Task PlayNew() {
+    private async Task PlayNew(bool pause) {
         if (this._queueKey == null) {
             return;
         }
@@ -51,7 +59,11 @@ internal partial class PlaybackService: IPlaybackService {
                 }
             }
             if (availabeFile != null) {
-                await this._player.Play(availabeFile.Path);
+                if (pause) {
+                    await this._player.LoadAndPause(availabeFile.Path, availabeFile.Hash);
+                } else {
+                    await this._player.Play(availabeFile.Path, availabeFile.Hash);
+                }
             }
         }
     }
@@ -69,7 +81,7 @@ internal partial class PlaybackService: IPlaybackService {
         }
         this._queueKey = queue.CreationTime;
         await this._queueService.SetCurrent(queue, sender);
-        await PlayNew();
+        await PlayNew(false);
     }
 
     public async Task PlayQueue(string name, List<AudioEntry> audios, AudioEntry current, object? sender) {

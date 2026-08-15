@@ -15,5 +15,5 @@ public interface IPlayEventService {
     public abstract Task<PlayEvent?> GetLatest(Hash256 hash, float playedThreshold);
     public abstract Task<Dictionary<Hash256, int>> GetPlaycount(IReadOnlyList<Hash256> hashes, float playedThreshold);
     public abstract Task<int> GetPlaycount(Hash256 hash, float playedThreshold);
-    public abstract Task<bool> UpdatePlayedDuration(PlayEvent e, object? caller = null);
+    //public abstract Task<bool> UpdatePlayedDuration(PlayEvent e, object? caller = null);
 }
