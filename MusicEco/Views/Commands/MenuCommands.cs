@@ -1,4 +1,5 @@
-﻿using MusicEco.Core.Data;
+﻿using Blake3;
+using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.Services;
@@ -10,7 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace MusicEco.Views.Commands;
 
 public static class MenuCommands {
-    private static bool TryGetHash(object? vm, [MaybeNullWhen(false)] out Hash256 hash) {
+    public static bool TryGetHash(object? vm, [MaybeNullWhen(false)] out Hash256 hash) {
         if (vm is AudioEntryViewModel audioEntry) {
             hash = audioEntry.FileHash;
             return true;
@@ -111,5 +112,13 @@ public static class MenuCommands {
                 }
             }
         }
+    }
+    public static AsyncCommand CreateNewPlaylistCommand { get; } = new(CreateNewPlaylist);
+    private static async Task CreateNewPlaylist() {
+        var provider = AppLifeCycle.Provider;
+        var overlay = provider.GetRequiredService<IOverlayService>();
+        var view = provider.GetRequiredService<CreateNewPlaylistOverlay>();
+        overlay.ShowDynamic(new(0.5f, 0.5f), view);
+        await view.Initialize();
     }
 }

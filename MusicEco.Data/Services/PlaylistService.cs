@@ -10,8 +10,15 @@ internal class PlaylistService: IPlaylistService {
     public PlaylistService(PlaylistRepository playlistRepository) {
         this._playlistRepo = playlistRepository;
     }
-    public Task<bool> Delete(DateTime creationTime, object? caller = null) {
-        throw new NotImplementedException();
+    public async Task<bool> Delete(DateTime creationTime) {
+        var success = await this._playlistRepo.Delete(creationTime);
+        if (success) {
+            ItemsChanged?.Invoke(this, new(ChangeKind.Removed, creationTime));
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public async Task<AudioPlaylist?> Get(DateTime creationTime) {
@@ -22,15 +29,29 @@ internal class PlaylistService: IPlaylistService {
         return await this._playlistRepo.GetAll();
     }
 
-    public Task<bool> Insert(AudioPlaylist model, object? caller = null) {
-        throw new NotImplementedException();
+    public async Task<bool> Insert(AudioPlaylist model) {
+        var success = await this._playlistRepo.Insert(model);
+        if (success) {
+            ItemsChanged?.Invoke(this, new(ChangeKind.Added, model.CreationTime));
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public async Task<List<AudioPlaylist>> Query(string nameLike) {
         return await this._playlistRepo.Query(nameLike);
     }
 
-    public Task<bool> Update(AudioPlaylist model, object? caller = null) {
-        throw new NotImplementedException();
+    public async Task<bool> Update(AudioPlaylist model) {
+        var success = await this._playlistRepo.Update(model);
+        if (success) {
+            ItemsChanged?.Invoke(this, new(ChangeKind.Updated, model.CreationTime));
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

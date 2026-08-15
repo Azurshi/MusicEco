@@ -468,4 +468,13 @@
   <data name="Common_Play" xml:space="preserve">
     <value>Phát</value>
   </data>
+  <data name="Menu_AddToFavourite" xml:space="preserve">
+    <value>Thêm vào danh sách yêu thích</value>
+  </data>
+  <data name="Menu_RemoveFromFavourite" xml:space="preserve">
+    <value>Xóa khỏi danh sách yêu thích</value>
+  </data>
+  <data name="User_Playlist_Info" xml:space="preserve">
+    <value>Thông tin danh sách phát</value>
+  </data>
 </root>

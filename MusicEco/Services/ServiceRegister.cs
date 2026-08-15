@@ -2,10 +2,12 @@
 using MusicEco.ViewModels.Overlays;
 using MusicEco.ViewModels.Pages;
 using MusicEco.ViewModels.Pages.Settings;
+using MusicEco.ViewModels.Pages.Users;
 using MusicEco.ViewModels.Shell;
 using MusicEco.Views.Overlays;
 using MusicEco.Views.Pages;
 using MusicEco.Views.Pages.Settings;
+using MusicEco.Views.Pages.Users;
 using MusicEco.Views.Shell;
 
 namespace MusicEco.Services;
@@ -53,8 +55,12 @@ public static class ServiceRegister {
         services.AddSingleton<AlbumDetailPage>();
         services.AddSingleton<AlbumDetailPageViewModel>();
 
-        services.AddTransient<PlaylistPage>();
+        services.AddSingleton<PlaylistPage>();
         services.AddSingleton<PlaylistPageViewModel>();
+        services.AddSingleton<PlaylistDetailPage>();
+        services.AddSingleton<PlaylistDetailPageViewModel>();
+        services.AddTransient<FavouritePage>();
+        services.AddSingleton<FavouritePageViewModel>();
 
         services.AddTransient<LanguageSettingPage>();
         services.AddTransient<LanguageSettingPageViewModel>();
@@ -67,6 +73,8 @@ public static class ServiceRegister {
         services.AddTransient<AddToPlaylistOverlayViewModel>();
         services.AddTransient<AudioInfoOverlay>();
         services.AddTransient<AudioInfoOverlayViewModel>();
+        services.AddTransient<CreateNewPlaylistOverlay>();
+        services.AddTransient<CreateNewPlaylistOverlayViewModel>();
         return services;
     }
     public static IServiceCollection RegisterOthers(this IServiceCollection services) {

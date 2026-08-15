@@ -52,7 +52,7 @@ public partial class AddToPlaylistOverlayViewModel: ObservableObject {
         if (playlist != null) {
             var audios = playlist.Audios.Append(new(this._selectedHash.Value, string.Empty)).ToList();
             playlist = playlist.WithAudios(audios).WithModifyNow();
-            await this._playlistService.Update(playlist, this);
+            await this._playlistService.Update(playlist);
             if (this._closeRef!.TryGetTarget(out var target)) {
                 target.Invoke();
             }

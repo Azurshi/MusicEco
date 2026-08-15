@@ -12,10 +12,13 @@ internal class FavouriteService: IFavouriteService {
     private readonly AudioRepository _audioRepo;
     private List<Hash256> _cachedHash;
     private readonly Task _initTask;
+    private readonly JsonSerializerOptions _options;
     public FavouriteService(DictionaryRepository dictionaryRepository, AudioRepository audioRepository) {
         this._dictRepo = dictionaryRepository;
         this._audioRepo = audioRepository;
         this._cachedHash = [];
+        this._options = new();
+        this._options.Converters.Add(new Hash256JsonConverter());
         this._initTask = LoadHash();
     }
     public async Task<bool> AddFavourite(Hash256 hash, object? caller = null) {
@@ -23,8 +26,9 @@ internal class FavouriteService: IFavouriteService {
         if (!_cachedHash.Contains(hash)) {
             this._cachedHash.Add(hash);
             try {
-                string json = JsonSerializer.Serialize(this._cachedHash);
+                string json = JsonSerializer.Serialize(this._cachedHash, this._options);
                 await this._dictRepo.SetValue(nameof(FavouriteService), json);
+                this.ItemsChanged?.Invoke(caller, EventArgs.Empty);
                 return true;
             }
             catch {
@@ -38,7 +42,8 @@ internal class FavouriteService: IFavouriteService {
     private async Task LoadHash() {
         var json = await this._dictRepo.GetValue(nameof(FavouriteService));
         if (json != null) {
-            _cachedHash = JsonSerializer.Deserialize<List<Hash256>>(json) ?? [];
+            _cachedHash = JsonSerializer.Deserialize<List<Hash256>>(json, this._options) ?? [];
+            this.ItemsChanged?.Invoke(this, EventArgs.Empty);
         }
     }
     public async Task<List<AudioEntry>> GetFavourites() {
@@ -55,8 +60,9 @@ internal class FavouriteService: IFavouriteService {
         await _initTask;
         if (_cachedHash.Remove(hash)) {
             try {
-                string json = JsonSerializer.Serialize(this._cachedHash);
+                string json = JsonSerializer.Serialize(this._cachedHash, this._options);
                 await this._dictRepo.SetValue(nameof(FavouriteService), json);
+                this.ItemsChanged?.Invoke(caller, EventArgs.Empty);
                 return true;
             }
             catch {

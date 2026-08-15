@@ -5,7 +5,7 @@ using SQLiteORM;
 
 namespace MusicEco.Data.Database.Repositories;
 
-internal class PlaylistRepository {
+internal partial class PlaylistRepository {
     private readonly DatabaseContextAsync _db;
     public PlaylistRepository(DatabaseContextAsync dbContext) {
         this._db = dbContext;
@@ -19,7 +19,7 @@ internal class PlaylistRepository {
         var rows = await connection.SelectAsync<
             DateTime, string, DateTime, DateTime>($"""
             SELECT * FROM PlaylistEntity 
-            WHERE CreationTime IN {Config.GetPlaceholder(creationTimeObjs.Length)}
+            WHERE CreationTime IN ({Config.GetPlaceholder(creationTimeObjs.Length)})
             """, creationTimeObjs);
         List<ValueTuple<DateTime, Hash256>> hashRows = [];
         foreach (var batchObjs in creationTimeObjs.Chunk(Config.MaxParameterCount)) {
@@ -27,8 +27,8 @@ internal class PlaylistRepository {
             var batchResult = await connection.SelectAsync<DateTime, Hash256>($"""
                 SELECT CreationTime, FileHash
                 FROM PlaylistAudioRelation
-                ORDER BY OrderIndex
                 WHERE CreationTime IN ({placeholder})
+                ORDER BY OrderIndex
                 """, batchObjs);
             hashRows.AddRange(batchResult);
         }
@@ -45,7 +45,8 @@ internal class PlaylistRepository {
         }
         foreach (var row in rows) {
             PlaylistEntity entity = new(row);
-            AudioPlaylist playlist = new(entity.Name, entity.CreationTime, entity.ModifiedTime, entity.LastPlayTime, entriesMap[entity.CreationTime]);
+            var playlistAudios = entriesMap.GetValueOrDefault(entity.CreationTime, []);
+            AudioPlaylist playlist = new(entity.Name, entity.CreationTime, entity.ModifiedTime, entity.LastPlayTime, playlistAudios);
             playlists.Add(playlist);
         }
         return playlists;

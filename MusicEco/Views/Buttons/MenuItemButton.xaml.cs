@@ -1,9 +1,10 @@
 
+using MusicEco.Views.Items;
 using System.Windows.Input;
 
 namespace MusicEco.Views.Buttons;
 
-public partial class MenuItemButton: ContentView {
+public partial class MenuItemButton: ContentView, IMenuItemButton {
     private static readonly Type ThisType = typeof(MenuItemButton);
     public static readonly BindableProperty CommandProperty
         = Utility.Create<ICommand?>(ThisType,

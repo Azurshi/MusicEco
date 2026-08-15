@@ -27,11 +27,11 @@ internal partial class QueueRepository {
         }
         await connection.InsertAsync(relations, false);
     }
-    private static async Task Delete(SQLiteWriteConnection connection, AudioQueue model) {
+    private static async Task Delete(SQLiteWriteConnection connection, DateTime creationTime) {
         await connection.DeleteAsync(
-            "DELETE FROM QueueEntity WHERE CreationTime = ?", model.CreationTime);
+            "DELETE FROM QueueEntity WHERE CreationTime = ?", creationTime);
         await connection.DeleteAsync(
-            "DELETE From QueueAudioRelation WHERE CreationTime = ?", model.CreationTime);
+            "DELETE From QueueAudioRelation WHERE CreationTime = ?", creationTime);
     }
     private static async Task SetCurrent(SQLiteWriteConnection connection, AudioQueue? model) {
         await connection.UpdateAsync($"""
@@ -58,12 +58,12 @@ internal partial class QueueRepository {
             }
         }
     }
-    public async Task<bool> Delete(AudioQueue model) {
+    public async Task<bool> Delete(DateTime creationTime) {
         using (var db = await this._db.GetWriter()) {
             var connection = db.Connection;
             await connection.BeginTransactionAsync();
             try {
-                await Delete(connection, model);
+                await Delete(connection, creationTime);
                 await connection.CommitTransactionAsync();
                 return true;
             }
@@ -79,7 +79,7 @@ internal partial class QueueRepository {
             await connection.BeginTransactionAsync();
             try {
                 bool isCurrent = await IsCurrent(connection, model.CreationTime);
-                await Delete(connection, model);
+                await Delete(connection, model.CreationTime);
                 await Insert(connection, model, isCurrent);
                 await connection.CommitTransactionAsync();
                 return true;

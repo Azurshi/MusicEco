@@ -85,10 +85,6 @@
 		</AndroidNativeLibrary>
 	</ItemGroup>
 	<!--End-->
-	<ItemGroup>
-	  <Folder Include="ViewModels\Pages\Stats\" />
-	  <Folder Include="Views\Pages\Stats\" />
-	</ItemGroup>
 
 	<ItemGroup>
 	  <None Include="Services\IconService.Cache.cs">
@@ -144,6 +140,12 @@
 	  <MauiXaml Update="Views\Buttons\ControlButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Buttons\FavouriteControlButton.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Buttons\FavouriteMenuItemButton.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Controls\ManagedSKIcon.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -186,6 +188,9 @@
 	  <MauiXaml Update="Views\Overlays\AudioInfoOverlay.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Overlays\CreateNewPlaylistOverlay.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\AlbumDetailPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -201,7 +206,10 @@
 	  <MauiXaml Update="Views\Pages\HomePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Pages\PlaylistPage.xaml">
+	  <MauiXaml Update="Views\Pages\Users\PlaylistDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\Users\PlaylistPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\QueueDetailPage.xaml">
@@ -217,6 +225,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\Settings\LanguageSettingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\Users\FavouritePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\UserPage.xaml">

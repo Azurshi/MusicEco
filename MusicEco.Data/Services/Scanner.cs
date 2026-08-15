@@ -29,14 +29,15 @@ internal partial class Scanner: IScanner {
             while((read = stream.Read(ioBuffer, 0, ioBuffer.Length)) > 0) {
                 harsher.Update(ioBuffer.AsSpan()[..read]);
             }
-            Hash256 hash = new(harsher.Finalize().AsSpan());
-            return hash;
+            Span<byte> output = stackalloc byte[32];
+            harsher.Finalize(output);
+            return new(output);
         }
     }
     private static Hash256 ComputeHash(Memory<byte> data) {
-        var blake = Hasher.Hash(data.Span);
-        Hash256 hash = new(blake.AsSpan());
-        return hash;
+        Span<byte> output = stackalloc byte[32];
+        Hasher.Hash(data.Span, output);
+        return new(output);
     }
 
     public async Task<bool> ScanAndUpdate(ScanProgress progress, List<string> fileExtensions, int scanWorkers, int processWorkers, TimeSpan updateInterval, object? caller = null) {

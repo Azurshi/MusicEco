@@ -4,6 +4,10 @@ using System.Diagnostics;
 
 namespace MusicEco.Views.Items;
 
+public interface IMenuItemButton {
+    public event EventHandler? Tapped;
+}
+
 public partial class MenuFrame: ContentView, IOverlay {
     public event EventHandler? Closed;
     public MenuFrame() {
@@ -19,14 +23,13 @@ public partial class MenuFrame: ContentView, IOverlay {
         while(q.Count > 0) {
             layout = q.Dequeue();
             foreach (var item in layout.Children) {
-                Debug.WriteLine(item.ToString());
                 if (item is Layout childLayout) {
                     q.Enqueue(childLayout);
                 }
                 else if (item is Button button) {
                     button.Clicked += this.Button_Clicked;
                 }
-                else if (item is MenuItemButton itemButton) {
+                else if (item is IMenuItemButton itemButton) {
                     itemButton.Tapped += this.Button_Clicked;
                 }
             }

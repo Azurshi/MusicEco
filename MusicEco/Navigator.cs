@@ -5,21 +5,21 @@ public record PageRoute(string Route) {
     public static readonly PageRoute Home = new("home");
     public static readonly PageRoute Queue = new("queue");
     public static readonly PageRoute QueueDetail = new("queue/detail");
-    public static readonly PageRoute Playlist = new("playlist");
-    public static readonly PageRoute PlaylistDetail = new("playlist/detail");
     public static readonly PageRoute Album = new("album");
     public static readonly PageRoute AlbumDetail = new("album/detail");
     public static readonly PageRoute Explorer = new("explorer");
     public static readonly PageRoute ExplorerTree = new("explorer/tree");
     public static readonly PageRoute Search = new("search");
-    public static readonly PageRoute Favourite = new("favourite");
     public static readonly PageRoute User = new("user");
     public static readonly PageRoute Setting = new("setting");
 
-    public static readonly PageRoute PlayCount = new("stats/playCount");
-    public static readonly PageRoute PlayHistory = new("stats/playHistory");
-    public static readonly PageRoute NotPlay = new("stats/notplay");
-    public static readonly PageRoute AllSong = new("stats/all");
+    public static readonly PageRoute Playlist = new("user/playlist");
+    public static readonly PageRoute PlaylistDetail = new("user/playlist/detail");
+    public static readonly PageRoute Favourite = new("user/favourite");
+    public static readonly PageRoute PlayCount = new("user/playCount");
+    public static readonly PageRoute PlayHistory = new("user/playHistory");
+    public static readonly PageRoute NotPlay = new("user/notplay");
+    public static readonly PageRoute AllSong = new("user/all");
 
     public static readonly PageRoute LanguageSetting = new("setting/language");
     public static readonly PageRoute ThemeSetting = new("setting/theme");

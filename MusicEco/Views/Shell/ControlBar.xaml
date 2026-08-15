@@ -34,10 +34,9 @@
               x:Name="ButtonContainer"
               SizeChanged="ButtonContainer_SizeChanged"
               ColumnDefinitions="*, *, *, *, *, *, *, *, *">
-            <button:ControlButton Grid.Column="0"
-                                  ActivateImageSource="favourite.png"
-                                  DeactivateImageSource="no_favourite.png"
-                                  Command="{Binding ChangeFavouriteCommand}" />
+            <button:FavouriteControlButton Grid.Column="0"
+                                           ActivateImageSource="favourite.png"
+                                           DeactivateImageSource="no_favourite.png" />
             <button:ControlButton Grid.Column="1"
                                   ActivateImageSource="volume_on.png"
                                   DeactivateImageSource="volume.png"

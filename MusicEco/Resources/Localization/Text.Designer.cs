@@ -538,6 +538,15 @@ namespace MusicEco.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add to favourite.
+        /// </summary>
+        public static string Menu_AddToFavourite {
+            get {
+                return ResourceManager.GetString("Menu_AddToFavourite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add to playlist.
         /// </summary>
         public static string Menu_AddToPlaylist {
@@ -561,6 +570,15 @@ namespace MusicEco.Resources.Localization {
         public static string Menu_Info {
             get {
                 return ResourceManager.GetString("Menu_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove from favourite.
+        /// </summary>
+        public static string Menu_RemoveFromFavourite {
+            get {
+                return ResourceManager.GetString("Menu_RemoveFromFavourite", resourceCulture);
             }
         }
         
@@ -1047,6 +1065,15 @@ namespace MusicEco.Resources.Localization {
         public static string User_Playlist_Create {
             get {
                 return ResourceManager.GetString("User_Playlist_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlist info.
+        /// </summary>
+        public static string User_Playlist_Info {
+            get {
+                return ResourceManager.GetString("User_Playlist_Info", resourceCulture);
             }
         }
         

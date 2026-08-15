@@ -1,6 +1,9 @@
 ﻿using System.Buffers;
+using System.Buffers.Text;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MusicEco.Core.Types;
 
@@ -44,19 +47,27 @@ public readonly struct Hash256: IEquatable<Hash256> {
 
     public bool Equals(Hash256 other) {
         return A == other.A && B == other.B && C == other.C && D == other.D;
+    }   
+}
+
+public class Hash256JsonConverter: JsonConverter<Hash256> {
+    public override Hash256 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
+        if (reader.TokenType == JsonTokenType.Null) {
+            return default;
+        }
+        Span<byte> buffer = stackalloc byte[44];
+        int encodedLength = reader.CopyString(buffer);
+        if (encodedLength != 44) {
+            throw new JsonException("Invalid encoded length");
+        }
+        OperationStatus status = Base64.DecodeFromUtf8InPlace(buffer, out int bytesWritten);
+        if (status != OperationStatus.Done || bytesWritten != 32) {
+            throw new JsonException("Invalid Base64 data");
+        }
+        return new Hash256(buffer.Slice(0, 32));
     }
 
-    //public int Compare(Hash256 x, Hash256 y) {
-    //    int result = x.A.CompareTo(y.A);
-    //    if (result != 0) {
-    //        result = x.B.CompareTo(y.B);
-    //        if (result != 0) {
-    //            result = x.C.CompareTo(y.C);
-    //            if (result != 0) {
-    //                result = x.D.CompareTo(y.D);
-    //            }
-    //        }
-    //    }
-    //    return result;
-    //}
+    public override void Write(Utf8JsonWriter writer, Hash256 value, JsonSerializerOptions options) {
+        writer.WriteBase64StringValue(value.AsReadOnlySpan());
+    }
 }

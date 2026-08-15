@@ -13,7 +13,7 @@ internal class QueueService: IQueueService {
     }
 
     public async Task<bool> Delete(AudioQueue model, object? caller = null) {
-        var result = await this._queueRepo.Delete(model);
+        var result = await this._queueRepo.Delete(model.CreationTime);
         if (result) {
             ItemsChanged?.Invoke(caller, new(ChangeKind.Removed, model.CreationTime));
         }

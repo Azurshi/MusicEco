@@ -19,6 +19,7 @@
                                            Command="{Static commands:MenuCommands.AddToQueueCommand}" />
                     <button:MenuItemButton Text="{Binding [Menu_AddToPlaylist], Source={Static service:Localization.L}}"
                                            Command="{Static commands:MenuCommands.AddToPlaylistCommand}" />
+                    <button:FavouriteMenuItemButton />
                     <button:MenuItemButton Text="{Binding [Menu_Info], Source={Static service:Localization.L}}"
                                            Command="{Static commands:MenuCommands.ShowAudioInfoCommand}" />
                 </VerticalStackLayout>

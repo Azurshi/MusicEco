@@ -9,9 +9,9 @@ public class PlaylistChangedEventArgs(ChangeKind kind, DateTime creationTime): E
 public interface IPlaylistService {
     public event EventHandler<PlaylistChangedEventArgs> ItemsChanged;
     public abstract Task<AudioPlaylist?> Get(DateTime creationTime);
-    public abstract Task<bool> Delete(DateTime creationTime, object? caller = null);
-    public abstract Task<bool> Update(AudioPlaylist model, object? caller = null);
-    public abstract Task<bool> Insert(AudioPlaylist model, object? caller = null);
+    public abstract Task<bool> Delete(DateTime creationTime);
+    public abstract Task<bool> Update(AudioPlaylist model);
+    public abstract Task<bool> Insert(AudioPlaylist model);
     public abstract Task<List<AudioPlaylist>> GetAll();
     public abstract Task<List<AudioPlaylist>> Query(string nameLike);
 }

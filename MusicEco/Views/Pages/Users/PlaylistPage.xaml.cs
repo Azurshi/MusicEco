@@ -1,6 +1,6 @@
-using MusicEco.ViewModels.Pages;
+using MusicEco.ViewModels.Pages.Users;
 
-namespace MusicEco.Views.Pages;
+namespace MusicEco.Views.Pages.Users;
 
 public partial class PlaylistPage: ContentView {
     public PlaylistPage(PlaylistPageViewModel viewModel) {

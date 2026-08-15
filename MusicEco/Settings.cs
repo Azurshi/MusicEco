@@ -6,3 +6,7 @@ public static class SettingFields {
     public const string AudioPlayerFPS = nameof(AudioPlayerFPS);
     public const string PerSeekSeconds = nameof(PerSeekSeconds);
 }
+
+public static class Config {
+    public const int MinNameLength = 3;
+}
