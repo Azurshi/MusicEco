@@ -71,16 +71,30 @@ public enum PlayState {
     Playing,
     Stopped
 }
-
+public enum TrackChangeReason {
+    Initialize,
+    User,
+    AutoNext,
+    Loop
+}
+public sealed class TrackChangedEventArgs: EventArgs {
+    public Hash256 FileHash { get; init; }
+    public TrackChangeReason Reason { get; init; }
+    public TrackChangedEventArgs(Hash256 fileHash, TrackChangeReason reason) {
+        this.FileHash = fileHash;
+        this.Reason = reason;
+    }
+}
 public interface IPlayerController: IDisposable {
     public event EventHandler<AudioTime>? PositionChanged;
     public event EventHandler? AudioEnded;
     public event EventHandler? NextAudioRequested;
     public event EventHandler<bool>? RepeatingChanged;
     public event EventHandler<PlayState>? StateChanged;
+    public event EventHandler<TrackChangedEventArgs>? TrackChanged;
     public bool IsRepeating { get; set; }
-    public Task Play(string path, Hash256 fileHash);
-    public Task LoadAndPause(string path, Hash256 fileHash);
+    public Task Play(string path, Hash256 fileHash, TrackChangeReason? forwardedReason);
+    public Task LoadAndPause(string path, Hash256 fileHash, TrackChangeReason? forwardedReason);
     public void Pause();
     public void Resume();
     public void Seek(TimeSpan position);

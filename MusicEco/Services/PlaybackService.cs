@@ -28,7 +28,7 @@ internal partial class PlaybackService: IPlaybackService {
     private async void StartLastSession() {
         var currentQueue = await this._queueService.GetCurrent();
         this._queueKey = currentQueue?.CreationTime;
-        await PlayNew(true);
+        await PlayNew(true, TrackChangeReason.Initialize);
     }
     private async void Player_NextAudioRequested(object? sender, EventArgs e) {
         if (this._queueKey == null) {
@@ -40,10 +40,10 @@ internal partial class PlaybackService: IPlaybackService {
         }
         queue = queue.Next().WithModifyNow();
         await this._queueService.Update(queue, this);
-        await PlayNew(false);
+        await PlayNew(false, TrackChangeReason.AutoNext);
     }
 
-    private async Task PlayNew(bool pause) {
+    private async Task PlayNew(bool pause, TrackChangeReason? reason) {
         if (this._queueKey == null) {
             return;
         }
@@ -60,14 +60,14 @@ internal partial class PlaybackService: IPlaybackService {
             }
             if (availabeFile != null) {
                 if (pause) {
-                    await this._player.LoadAndPause(availabeFile.Path, availabeFile.Hash);
+                    await this._player.LoadAndPause(availabeFile.Path, availabeFile.Hash, reason);
                 } else {
-                    await this._player.Play(availabeFile.Path, availabeFile.Hash);
+                    await this._player.Play(availabeFile.Path, availabeFile.Hash, reason);
                 }
             }
         }
     }
-    private async Task PlayQueueInner(string name, List<AudioEntry> audios, AudioEntry current, object? sender) {
+    private async Task PlayQueueInner(string name, List<AudioEntry> audios, AudioEntry current, object? sender, TrackChangeReason? reason) {
         name = name.Trim();
         var now = DateTime.UtcNow;
         var queue = await this._queueService.Get(name);
@@ -81,13 +81,13 @@ internal partial class PlaybackService: IPlaybackService {
         }
         this._queueKey = queue.CreationTime;
         await this._queueService.SetCurrent(queue, sender);
-        await PlayNew(false);
+        await PlayNew(false, reason);
     }
 
     public async Task PlayQueue(string name, List<AudioEntry> audios, AudioEntry current, object? sender) {
         if (this._sw.Elapsed > _minimumDelay) {
             this._sw.Restart();
-            await this.PlayQueueInner(name, audios, current, sender);
+            await this.PlayQueueInner(name, audios, current, sender, TrackChangeReason.User);
         }
     }
     public async Task PlayQueue(AudioQueue queue, object? sender) {
@@ -99,7 +99,7 @@ internal partial class PlaybackService: IPlaybackService {
                 }
                 queue = queue.WithCurrent(queue.Audios[0]);
             }
-            await this.PlayQueueInner(queue.Name, queue.Audios.ToList(), queue.Current!, sender);
+            await this.PlayQueueInner(queue.Name, queue.Audios.ToList(), queue.Current!, sender, TrackChangeReason.User);
         }
     }
 

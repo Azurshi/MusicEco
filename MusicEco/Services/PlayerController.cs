@@ -14,6 +14,7 @@ internal partial class PlayerController: IPlayerController {
     public event EventHandler? NextAudioRequested;
     public event EventHandler<bool>? RepeatingChanged;
     public event EventHandler<PlayState>? StateChanged;
+    public event EventHandler<TrackChangedEventArgs>? TrackChanged;
 
     private readonly IAppSetting _setting;
     private readonly AudioPlayer.AudioPlayer _player;
@@ -71,6 +72,7 @@ internal partial class PlayerController: IPlayerController {
                         this._player.Seek(TimeSpan.Zero);
                         this._trackingService.Start(this._playing);
                         this._endFlag = false;
+                        this.TrackChanged?.Invoke(this, new(this._playing, TrackChangeReason.Loop));
                     } else {
                         this.NextAudioRequested?.Invoke(this, EventArgs.Empty);
                     }
@@ -100,7 +102,7 @@ internal partial class PlayerController: IPlayerController {
         this._stream?.Close();
     }
 
-    public async Task Play(string path, Hash256 fileHash) {
+    public async Task Play(string path, Hash256 fileHash, TrackChangeReason? forwardedReason) {
         this._playing = fileHash;
         var oldStream = this._stream;
 #if WINDOWS
@@ -124,6 +126,11 @@ internal partial class PlayerController: IPlayerController {
                 this._trackingService.Start(fileHash);
             }
             this._player.Play(this._stream);
+            if (forwardedReason != null) {
+                this.TrackChanged?.Invoke(this, new(this._playing, forwardedReason.Value));
+            } else {
+                Debug.WriteLine("WARNING: Play with no reason");
+            }
         }
         oldStream?.Close();
         this._endFlag = false;
@@ -160,8 +167,8 @@ internal partial class PlayerController: IPlayerController {
     }
 
     private bool _pauseFlags = false;
-    public async Task LoadAndPause(string path, Hash256 fileHash) {
+    public async Task LoadAndPause(string path, Hash256 fileHash, TrackChangeReason? forwardedReason) {
         this._pauseFlags = true;
-        await this.Play(path, fileHash);
+        await this.Play(path, fileHash, forwardedReason);
     }
 }

@@ -7,6 +7,7 @@ using MusicEco.Services;
 using MusicEco.Views.Shell;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using SQLiteORM;
+using System.Diagnostics;
 
 namespace MusicEco;
 
@@ -27,6 +28,7 @@ public static class MauiProgram {
         RegisterDependency(builder);
         RegisterStartup();
         RegisterCleanup();
+        RegisterLoop();
         return builder.Build();
     }
     private static void RegisterDependency(MauiAppBuilder builder) {
@@ -41,20 +43,20 @@ public static class MauiProgram {
         services.RegisterData();
     }
     private static void RegisterStartup() {
+        AppLifeCycle.RegisterAppStart(static async (provider) => {
 #if WINDOWS
-        string savePath = "D:\\Workstation\\Storage\\MusicEco\\Data";
+            string savePath = "D:\\Workstation\\Storage\\MusicEco\\Data";
 #else
-        string savePath = FileSystem.Current.AppDataDirectory;
+            string savePath = FileSystem.Current.AppDataDirectory;
 #endif
-        AppLifeCycle.RegisterAppStart(async (provider) => {
             await MusicEco.Data.ServiceRegister.Initialize(provider, savePath);
         });
-        AppLifeCycle.RegisterAppStart((provider) => {
+        AppLifeCycle.RegisterAppStart(static (provider) => {
             var localization = provider.GetRequiredService<ILocalizationService>();
             localization.RegisterMain();
             Localization.Initalize(localization);
         });
-        AppLifeCycle.RegisterAppStart(async (provider) => {
+        AppLifeCycle.RegisterAppStart(static async (provider) => {
             var iconService = provider.GetRequiredService<IIconService>();
             var setting = provider.GetRequiredService<IAppSetting>();
             await iconService.InitializeDefault(provider);
@@ -62,13 +64,13 @@ public static class MauiProgram {
             var capacity = setting.Get(100, SettingFields.IconDecoderCapacity);
             await iconService.Setup(nWorkers, capacity);
         });
-        AppLifeCycle.RegisterAfterUILoaded((provider) => {
+        AppLifeCycle.RegisterAfterUILoaded(static (provider) => {
             // Localization
             NavigateEventArgs args = new(null, PageRoute.None, PageRoute.Home);
             EventSystem.Publish(null, args);
         });
 
-        AppLifeCycle.RegisterAfterUILoaded((provider) => {
+        AppLifeCycle.RegisterAfterUILoaded(static (provider) => {
             // Initialize stack
             var stack = provider.GetRequiredService<NavigationStack>();
             // Initialize PlaybackService
@@ -76,17 +78,24 @@ public static class MauiProgram {
         });
     }
     private static void RegisterCleanup() {
-        AppLifeCycle.RegisterAppClose((provider) => {
+        AppLifeCycle.RegisterAppClose(static (provider) => {
             var icon = provider.GetRequiredService<IIconService>();
             icon.Dispose();
         });
-        AppLifeCycle.RegisterAppClose((provider) => {
+        AppLifeCycle.RegisterAppClose(static (provider) => {
             var db = provider.GetRequiredService<DatabaseContextAsync>();
             db.Dispose(true);
         });
-        AppLifeCycle.RegisterAppClose((provider) => {
+        AppLifeCycle.RegisterAppClose(static (provider) => {
             var player = provider.GetRequiredService<IPlayerController>();
             player.Dispose();
         });
+    }
+    private static void RegisterLoop() {
+        AppLifeCycle.RegisterLoop("IconCache", static (provider) => {
+            var cache = provider.GetRequiredService<IIconService>();
+            //Debug.WriteLine("Loop: Try compact cache");
+            cache.Compact();
+        }, TimeSpan.FromSeconds(1));
     }
 }

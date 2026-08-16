@@ -23,6 +23,8 @@ public static class ServiceRegister {
         services.AddSingleton<IPlaybackService, PlaybackService>();
         services.AddSingleton<IPlaybackTrackingService, PlaybackTrackingService>();
         services.AddSingleton<IOverlayService>(provider => provider.GetRequiredService<AppOverlay>());
+        services.AddSingleton<TimeFormatter>();
+        services.AddSingleton<BasicFormatter>();
         return services;
     }
     public static IServiceCollection RegisterShell(this IServiceCollection services) {
@@ -64,6 +66,8 @@ public static class ServiceRegister {
         services.AddSingleton<FavouritePageViewModel>();
         services.AddSingleton<PlayCountPage>();
         services.AddSingleton<PlayCountPageViewModel>();
+        services.AddSingleton<PlayHistoryPage>();
+        services.AddSingleton<PlayHistoryPageViewModel>();
 
         services.AddTransient<LanguageSettingPage>();
         services.AddTransient<LanguageSettingPageViewModel>();

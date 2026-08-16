@@ -3,7 +3,7 @@
 namespace MusicEco.ViewModels.Items;
 
 public partial class AudioEntryViewModel: ObservableObject, IUpdateble, ISelectableItem {
-    public object Identify => FileHash;
+    public virtual object Identify => FileHash;
 
     public Hash256 FileHash { get; init; }
     public string DisplayTitle { get; init; }

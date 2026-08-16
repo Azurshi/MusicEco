@@ -23,6 +23,7 @@ public class PageRegistry: IPageRouteRegistry {
         RegisterRoute<PlaylistDetailPage>(PageRoute.PlaylistDetail);
         RegisterRoute<FavouritePage>(PageRoute.Favourite);
         RegisterRoute<PlayCountPage>(PageRoute.PlayCount);
+        RegisterRoute<PlayHistoryPage>(PageRoute.PlayHistory);
 
         // Settings
         RegisterRoute<LanguageSettingPage>(PageRoute.LanguageSetting);

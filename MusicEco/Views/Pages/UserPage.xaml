@@ -34,7 +34,9 @@
                         CommandParameter="{Static top:PageRoute.Favourite}" />
                 <Button Grid.Row="2"
                         Text="{Binding L[User_Recent]}"
-                        HeightRequest="{DynamicResource ButtonSize}" />
+                        HeightRequest="{DynamicResource ButtonSize}"
+                        Command="{Binding NagivateCommand}"
+                        CommandParameter="{Static top:PageRoute.PlayHistory}" />
                 <Button Grid.Row="3"
                         Text="{Binding L[User_Most]}"
                         HeightRequest="{DynamicResource ButtonSize}"

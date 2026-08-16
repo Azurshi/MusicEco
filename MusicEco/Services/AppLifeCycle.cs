@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace MusicEco.Services;
 
-public static class AppLifeCycle {
+public static partial class AppLifeCycle {
     private class Handler {
         private readonly Action<IServiceProvider>? _syncHandler;
         private readonly Func<IServiceProvider, Task>? _asyncHandler;
@@ -62,8 +62,7 @@ public static class AppLifeCycle {
         sw.Stop();
         _uiHandlers.Clear();
         Debug.WriteLine($"!!!---UI started---!!! {sw.ElapsedMilliseconds} ms");
-        CleanupLoop();
-
+        WorkerLoop(Config.AppLoopDelta);
     }
     private static async void CleanupLoop() {
         var iconService = AppLifeCycle.Provider.GetRequiredService<IIconService>();

@@ -19,7 +19,7 @@ public abstract class BasePageViewModel: ObservableObject, INavigationAware, ILo
     private bool _isActive = false;
     public bool IsActive {
         get => this._isActive;
-        set {
+        private set {
             if (this._isActive != value) {
                 this._isActive = value;
                 OnPropertyChanged();
@@ -44,11 +44,13 @@ public abstract class BasePageViewModel: ObservableObject, INavigationAware, ILo
     public abstract Task Refresh();
     public virtual async Task OnNavigatedFrom(NavigateEventArgs e) {
         this._localizationService.LanguageChanged -= OnLanguageChanged;
+        this.IsActive = false;
     }
 
     public virtual async Task OnNavigateTo(NavigateEventArgs e) {
         this._localizationService.LanguageChanged += OnLanguageChanged;
         OnPropertyChanged(nameof(L));
+        this.IsActive = true;
     }
     protected void FireNavigated(NavigateEventArgs e) {
         NavigatedEventArgs args = new(e);
