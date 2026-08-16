@@ -62,12 +62,16 @@ public static class ServiceRegister {
         services.AddSingleton<PlaylistPageViewModel>();
         services.AddSingleton<PlaylistDetailPage>();
         services.AddSingleton<PlaylistDetailPageViewModel>();
-        services.AddTransient<FavouritePage>();
+        services.AddSingleton<FavouritePage>();
         services.AddSingleton<FavouritePageViewModel>();
         services.AddSingleton<PlayCountPage>();
         services.AddSingleton<PlayCountPageViewModel>();
         services.AddSingleton<PlayHistoryPage>();
         services.AddSingleton<PlayHistoryPageViewModel>();
+        services.AddSingleton<NotPlayPage>();
+        services.AddSingleton<NotPlayPageViewModel>();
+        services.AddSingleton<AllSongPage>();
+        services.AddSingleton<AllSongPageViewModel>();
 
         services.AddTransient<LanguageSettingPage>();
         services.AddTransient<LanguageSettingPageViewModel>();

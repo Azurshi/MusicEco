@@ -31,7 +31,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <control:ManagedIcon Grid.Row="0"
+        <control:ManagedSKIcon Grid.Row="0"
                              FileHash="{Binding FileHash}" 
                              Option="Large"/>
         <Rectangle Grid.Row="1"

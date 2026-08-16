@@ -24,6 +24,8 @@ public class PageRegistry: IPageRouteRegistry {
         RegisterRoute<FavouritePage>(PageRoute.Favourite);
         RegisterRoute<PlayCountPage>(PageRoute.PlayCount);
         RegisterRoute<PlayHistoryPage>(PageRoute.PlayHistory);
+        RegisterRoute<NotPlayPage>(PageRoute.NotPlay);
+        RegisterRoute<AllSongPage>(PageRoute.AllSong);
 
         // Settings
         RegisterRoute<LanguageSettingPage>(PageRoute.LanguageSetting);

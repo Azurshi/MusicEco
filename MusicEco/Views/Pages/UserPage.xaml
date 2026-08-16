@@ -44,10 +44,14 @@
                         CommandParameter="{Static top:PageRoute.PlayCount}" />
                 <Button Grid.Row="4"
                         Text="{Binding L[User_Not]}"
-                        HeightRequest="{DynamicResource ButtonSize}" />
+                        HeightRequest="{DynamicResource ButtonSize}"
+                        Command="{Binding NagivateCommand}"
+                        CommandParameter="{Static top:PageRoute.NotPlay}" />
                 <Button Grid.Row="5"
                         Text="{Binding L[User_All]}"
-                        HeightRequest="{DynamicResource ButtonSize}" />
+                        HeightRequest="{DynamicResource ButtonSize}"
+                        Command="{Binding NagivateCommand}"
+                        CommandParameter="{Static top:PageRoute.AllSong}" />
             </Grid>
         </ScrollView>
     </Grid>
