@@ -25,6 +25,7 @@ public static class ServiceRegister {
         services.AddSingleton<IOverlayService>(provider => provider.GetRequiredService<AppOverlay>());
         services.AddSingleton<TimeFormatter>();
         services.AddSingleton<BasicFormatter>();
+        services.AddSingleton<IStyleService, StyleService>();
         return services;
     }
     public static IServiceCollection RegisterShell(this IServiceCollection services) {
@@ -75,6 +76,8 @@ public static class ServiceRegister {
 
         services.AddTransient<LanguageSettingPage>();
         services.AddTransient<LanguageSettingPageViewModel>();
+        services.AddTransient<InterfaceSettingPage>();
+        services.AddTransient<InterfaceSettingPageViewModel>();
         return services;
     }
     public static IServiceCollection RegisterOverlays(this IServiceCollection services) {

@@ -29,6 +29,7 @@ public class PageRegistry: IPageRouteRegistry {
 
         // Settings
         RegisterRoute<LanguageSettingPage>(PageRoute.LanguageSetting);
+        RegisterRoute<InterfaceSettingPage>(PageRoute.InterfaceSetting);
     }
     private void RegisterRoute<T>(PageRoute pageRoute) where T: ContentView {
         this._pageTypes[pageRoute.Route] = typeof(T);

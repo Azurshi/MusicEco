@@ -880,6 +880,15 @@ namespace MusicEco.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current theme.
+        /// </summary>
+        public static string Setting_Interface_CurrentTheme {
+            get {
+                return ResourceManager.GetString("Setting_Interface_CurrentTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Setting_Language {

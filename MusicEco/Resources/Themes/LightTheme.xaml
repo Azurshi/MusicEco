@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MusicEco.Resources.Themes.LightTheme">
+    <Color x:Key="HoverBackgroundColor">#ADD8E6</Color>
+    <Color x:Key="MenuBackgroundColor">#555555</Color>
+    <Color x:Key="BorderColor">#CCCCCC</Color>
+    <Color x:Key="ItemHighlightColor">#9DC8D6</Color>
+    <Color x:Key="ButtonHighlightColor">#ADD8E6</Color>
+    <Color x:Key="SelectedItemBorderColor">Black</Color>
+    <Color x:Key="SeparatorColor">#CCCCCC</Color>
+    <Color x:Key="WindowColor">White</Color>
+    <Color x:Key="OverlayBackgroundColor">#555555</Color>
+</ResourceDictionary>

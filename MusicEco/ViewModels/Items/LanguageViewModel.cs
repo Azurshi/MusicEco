@@ -2,7 +2,7 @@
 
 namespace MusicEco.ViewModels.Items;
 
-public class LanguageViewModel: ObservableObject, IUpdateble, ISelectableItem {
+public partial class LanguageViewModel: ObservableObject, IUpdateble, ISelectableItem {
     public object Identify => this.LanguageCode;
 
     public string LanguageCode { get; set; }

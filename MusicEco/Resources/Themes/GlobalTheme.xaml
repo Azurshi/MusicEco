@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MusicEco.Resources.Themes.DefaultTheme">
+             x:Class="MusicEco.Resources.Themes.GlobalTheme">
     <Color x:Key="HoverBackgroundColor">#594689</Color>
     <Color x:Key="MenuBackgroundColor">#190649</Color>
     <Color x:Key="BorderColor">#CCCCCC</Color>
@@ -9,6 +9,6 @@
     <Color x:Key="ButtonHighlightColor">#AC99EA</Color>
     <Color x:Key="SelectedItemBorderColor">Violet</Color>
     <Color x:Key="SeparatorColor">#CCCCCC</Color>
-    <Color x:Key="WindowColor">Transparent</Color>
+    <Color x:Key="WindowColor">#190649</Color>
     <Color x:Key="OverlayBackgroundColor">#190649</Color>
 </ResourceDictionary>

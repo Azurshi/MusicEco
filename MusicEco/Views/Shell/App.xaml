@@ -9,7 +9,8 @@
                 <ResourceDictionary Source="../../Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="../../Resources/Styles/Styles.xaml" />
                 <ResourceDictionary Source="../../Resources/Themes/WidgetSize.xaml" />
-                <ResourceDictionary Source="../../Resources/Themes/DefaultTheme.xaml" />
+                <!--Theme must always at last-->
+                <ResourceDictionary Source="../../Resources/Themes/GlobalTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

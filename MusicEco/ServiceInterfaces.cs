@@ -107,3 +107,20 @@ public interface IOverlayService {
     public void ShowDynamic(Vector2 size, IOverlay overlay);
     public void ShowFixed(Vector2 position, IOverlay overlay);
 }
+
+public interface ITheme {
+    public string Id { get; }
+    public string Name { get; }
+    public ResourceDictionary GetResources();
+}
+
+
+public interface IStyleService {
+    public event EventHandler? ThemeChanged;
+    public string GetCurrentThemeId();
+    public string GetCurrentThemeName();
+    public void SetTheme(string themeId);
+    public void LoadLastTheme();
+    public List<ITheme> GetAll();
+    public void Register(ITheme theme);
+}

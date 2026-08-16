@@ -3,6 +3,7 @@ using MusicEco.Core;
 using MusicEco.Core.Services;
 using MusicEco.Data;
 using MusicEco.Image;
+using MusicEco.Resources.Themes;
 using MusicEco.Services;
 using MusicEco.Views.Shell;
 using SkiaSharp.Views.Maui.Controls.Hosting;
@@ -75,6 +76,13 @@ public static class MauiProgram {
             var stack = provider.GetRequiredService<NavigationStack>();
             // Initialize PlaybackService
             var playbackService = provider.GetRequiredService<IPlaybackService>();
+        });
+        AppLifeCycle.RegisterAfterUILoaded(static (provider) => {
+            var styleService = provider.GetRequiredService<IStyleService>();
+            styleService.Register(new DefaultTheme());
+            styleService.Register(new LightTheme());
+            styleService.Register(new DarkTheme());
+            styleService.LoadLastTheme();
         });
     }
     private static void RegisterCleanup() {

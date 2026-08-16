@@ -22,7 +22,7 @@ public record PageRoute(string Route) {
     public static readonly PageRoute AllSong = new("user/all");
 
     public static readonly PageRoute LanguageSetting = new("setting/language");
-    public static readonly PageRoute ThemeSetting = new("setting/theme");
+    public static readonly PageRoute InterfaceSetting = new("setting/interface");
 }
 
 public class NavigateEventArgs: EventArgs {
