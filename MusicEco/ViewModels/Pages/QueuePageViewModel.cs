@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages;
@@ -12,13 +13,8 @@ public partial class QueuePageViewModel: BasePageViewModel {
     public ObservableCollectionExtend<QueueItemViewModel> Items { get; init; }
     public AsyncCommand<QueueItemViewModel> SelectItemCommand { get; init; }
     public AsyncCommand<QueueItemViewModel> RemoveItemCommand { get; init; }
-    public CollectionDisplayMode DisplayMode {
-        get => this._setting.Get(CollectionDisplayMode.SimpleList, $"Queue.{nameof(DisplayMode)}");
-        set {
-            this._setting.Set(value, $"Queue.{nameof(DisplayMode)}");
-            OnPropertyChanged(nameof(DisplayMode));
-        }
-    }
+    [AppSettingProperty(CollectionDisplayMode.SimpleList)]
+    public partial CollectionDisplayMode DisplayMode { get; set; }
     public QueuePageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IQueueService queueService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._queueService = queueService;
         this._playbackService = playbackService;

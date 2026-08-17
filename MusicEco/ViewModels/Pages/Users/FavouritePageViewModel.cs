@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages.Users;
@@ -11,13 +12,8 @@ public partial class FavouritePageViewModel: BasePageViewModel {
     private readonly IPlaybackService _playbackService;
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
     public AsyncCommand<AudioEntryViewModel> SelectItemCommand { get; init; }
-    public CollectionDisplayMode DisplayMode {
-        get => this._setting.Get(CollectionDisplayMode.SimpleList, $"Favourite.{nameof(DisplayMode)}");
-        set {
-            this._setting.Set(value, $"Favourite.{nameof(DisplayMode)}");
-            OnPropertyChanged();
-        }
-    }
+    [AppSettingProperty(CollectionDisplayMode.SimpleList)]
+    public partial CollectionDisplayMode DisplayMode { get; set; }
     public FavouritePageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IFavouriteService favouriteService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._favouriteService = favouriteService;
         this._playbackService = playbackService;

@@ -1,9 +1,11 @@
+using MusicEco.SourceGeneration;
 using System.Windows.Input;
 
 namespace MusicEco.Views.Items;
 
 public partial class ItemFrame: Border {
     private static readonly Type ThisType = typeof(ItemFrame);
+    [BindableAutoGen<ICommand>(IsNullable = true)]
     public static readonly BindableProperty CommandProperty
         = Utility.Create<ICommand?>(ThisType,
             propertyChanged: (b, oldValue, newValue) => {
@@ -14,11 +16,6 @@ public partial class ItemFrame: Border {
                 newCommand?.CanExecuteChanged += This.NewCommand_CanExecuteChanged;
                 This.RefreshCommandState();
             });
-    public ICommand? Command {
-        get => (ICommand)GetValue(CommandProperty);
-        set => SetValue(CommandProperty, value);
-    }
-    public event EventHandler? Tapped;
     public static readonly BindableProperty ItemContentProperty
         = Utility.Create<View?>(ThisType,
             propertyChanged: (b, _, v) => {
@@ -30,6 +27,7 @@ public partial class ItemFrame: Border {
         get => (View?)GetValue(ItemContentProperty);
         set => SetValue(ItemContentProperty, value);
     }
+    public event EventHandler? Tapped;
     public static readonly BindableProperty IsSelectedProperty
         = Utility.Create<bool>(ThisType, false,
             propertyChanged: (b, _, v) => {

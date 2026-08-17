@@ -7,7 +7,7 @@ internal class AppSettingProperty: ISourceGenProperty {
     public string AttributeMetadataName => AttributeName;
     public string AttributeClassDefinition => $$"""
         [global::System.AttributeUsage(global::System.AttributeTargets.Property)]
-        internal sealed class AppSettingPropertyAttribute: global::System.Attribute {
+        public sealed class AppSettingPropertyAttribute: global::System.Attribute {
             public object? DefaultValue;
             public string? StorageFieldName;
             public AppSettingPropertyAttribute(object? defaultValue) {

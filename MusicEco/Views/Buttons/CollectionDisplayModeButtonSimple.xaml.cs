@@ -1,9 +1,11 @@
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels;
 
 namespace MusicEco.Views.Buttons;
 
 public partial class CollectionDisplayModeButtonSimple: ContentView {
     private static readonly Type ThisType = typeof(CollectionDisplayModeButtonSimple);
+    [BindableAutoGen<CollectionDisplayMode>]
     public static readonly BindableProperty DisplayModeProperty
         = Utility.Create<CollectionDisplayMode>(ThisType, CollectionDisplayMode.SimpleList,
             propertyChanged: (b, _, v) => {
@@ -12,10 +14,6 @@ public partial class CollectionDisplayModeButtonSimple: ContentView {
                 This.SetDisplayMode(displayMode);
             },
             bindingMode: BindingMode.TwoWay);
-    public CollectionDisplayMode DisplayMode {
-        get => (CollectionDisplayMode)GetValue(DisplayModeProperty);
-        set => SetValue(DisplayModeProperty, value);
-    }
     public event EventHandler<CollectionDisplayMode>? DisplayModeChanged;
     public CollectionDisplayModeButtonSimple() {
         InitializeComponent();

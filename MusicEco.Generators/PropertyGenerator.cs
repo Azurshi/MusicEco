@@ -111,8 +111,7 @@ public sealed class PropertyGenerator: IIncrementalGenerator {
                 ;
                 contents.Add(generatedSource.Content);
             }
-            string lineSeparator = "\n";
-            var totalHeader = string.Join(lineSeparator, headers);
+            var totalHeader = string.Join(LineSeparator, headers);
             string source;
             string typeAccess = Utility.GetAccessibility(type.DeclaredAccessibility);
             if (totalHeader.Trim().Length > 0) {
@@ -120,7 +119,7 @@ public sealed class PropertyGenerator: IIncrementalGenerator {
                     {{totalHeader}}
                     namespace {{type.ContainingNamespace}};
                     {{typeAccess}} partial class {{className}} {
-                    {{string.Join(lineSeparator, contents)}}
+                    {{string.Join(LineSeparator, contents)}}
                     }
                     """;
             }
@@ -128,7 +127,7 @@ public sealed class PropertyGenerator: IIncrementalGenerator {
                 source = $$"""
                     namespace {{type.ContainingNamespace}};
                     {{typeAccess}} partial class {{className}} {
-                    {{string.Join(lineSeparator, contents)}}
+                    {{string.Join(LineSeparator, contents)}}
                     }
                     """;
             }

@@ -5,12 +5,12 @@ namespace MusicEco.Views.Items;
 
 public partial class DragItemFrame: ItemFrame {
     private static readonly Type ThisType = typeof(DragItemFrame);
-    [BindableAutoGen<ICommand>(IsNullable = true)]
+    [BindableAutoGen<ICommand>]
     public static readonly BindableProperty DragStartCommandProperty
-        = Utility.Create<ICommand?>(ThisType, null,
+        = Utility.Create<ICommand>(ThisType, null,
             propertyChanged: (b, _, v) => {
                 var This = (DragItemFrame)b;
-                var value = (ICommand?)v;
+                var value = (ICommand)v;
                 This.DragGR.DragStartingCommand = value;
             });
     [BindableAutoGen<ICommand>(IsNullable = true)]

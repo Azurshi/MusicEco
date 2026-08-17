@@ -8,7 +8,7 @@ internal class BindableAutoGenField: ISourceGenField {
     public string AttributeMetadataName => "BindableAutoGenAttribute`1";
     public string AttributeClassDefinition => $$"""
         [global::System.AttributeUsage(global::System.AttributeTargets.Field)]
-        internal sealed class BindableAutoGenAttribute<T>: global::System.Attribute {
+        public sealed class BindableAutoGenAttribute<T>: global::System.Attribute {
             public bool IsNullable {get; set;} = false;
         }
         """;

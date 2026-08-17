@@ -7,7 +7,7 @@ internal class ObservableProperty: ISourceGenProperty {
     public string AttributeMetadataName => AttributeName;
     public string AttributeClassDefinition => $"""
         [global::System.AttributeUsage(global::System.AttributeTargets.Property)]
-        internal sealed class {AttributeName}: global::System.Attribute;
+        public sealed class {AttributeName}: global::System.Attribute;
         """;
     public GeneratedSource? GetSource(string className, GeneratorAttributeSyntaxContext context, IPropertySymbol property) {
         var propertyType = property.Type.ToDisplayString(

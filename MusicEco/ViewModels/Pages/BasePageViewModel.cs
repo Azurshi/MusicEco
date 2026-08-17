@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 
 namespace MusicEco.ViewModels.Pages;
 
@@ -12,21 +13,13 @@ public interface ILocalizationAware {
     public AssemblyLocalization L { get; }
 }
 
-public abstract class BasePageViewModel: ObservableObject, INavigationAware, ILocalizationAware {
+public abstract partial class BasePageViewModel: ObservableObject, INavigationAware, ILocalizationAware {
     public abstract PageRoute Route { get; }
     public AssemblyLocalization L { get; init; }
     protected readonly ILocalizationService _localizationService;
     protected readonly IAppSetting _setting;
-    private bool _isActive = false;
-    public bool IsActive {
-        get => this._isActive;
-        private set {
-            if (this._isActive != value) {
-                this._isActive = value;
-                OnPropertyChanged();
-            }
-        }
-    }
+    [ObservableProperty]
+    public partial bool IsActive { get; set; }
     public BasePageViewModel(ILocalizationService localizationService, IAppSetting setting) {
         EventSystem.Connect<RefreshEventArgs>(OnRefreshEvent);
         this._localizationService = localizationService;
@@ -39,7 +32,7 @@ public abstract class BasePageViewModel: ObservableObject, INavigationAware, ILo
     }
 
     private async void OnRefreshEvent(object? sender, RefreshEventArgs e) {
-        if (this._isActive) {
+        if (this.IsActive) {
             await Refresh();
         }
     }

@@ -1,13 +1,12 @@
+using MusicEco.SourceGeneration;
+
 namespace MusicEco.Views.Buttons;
 
 public partial class MoveButton: Label {
     private static readonly Type ThisType = typeof(MoveButton);
+    [BindableAutoGen<bool>]
     public static readonly BindableProperty IsDraggableProperty
         = Utility.Create<bool>(ThisType, false, bindingMode: BindingMode.TwoWay);
-    public bool IsDraggable {
-        get => (bool)GetValue(IsDraggableProperty);
-        set => SetValue(IsDraggableProperty, value);
-    }
     public MoveButton() {
         InitializeComponent();
     }

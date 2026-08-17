@@ -1,5 +1,6 @@
 using MusicEco.Core.Services;
 using MusicEco.Services;
+using MusicEco.SourceGeneration;
 using MusicEco.Views.Commands;
 using System.Windows.Input;
 
@@ -7,12 +8,9 @@ namespace MusicEco.Views.Buttons;
 
 public partial class FavouriteControlButton: ContentView {
     private static readonly Type ThisType = typeof(FavouriteControlButton);
+    [BindableAutoGen<ICommand>(IsNullable = true)]
     public static readonly BindableProperty CommandProperty
         = Utility.Create<ICommand?>(ThisType);
-    public ICommand? Command {
-        get => (ICommand)GetValue(CommandProperty);
-        set => SetValue(CommandProperty, value);
-    }
     public static readonly BindableProperty ActivateImageSourceProperty
         = Utility.Create<ImageSource?>(ThisType,
             propertyChanged: (b, _, v) => {

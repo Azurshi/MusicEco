@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages.Users;
@@ -10,13 +11,8 @@ public partial class PlaylistPageViewModel: BasePageViewModel {
     private readonly IPlaylistService _playlistService;
     public ObservableCollectionExtend<PlaylistItemViewModel> Items { get; init; }
     public AsyncCommand<PlaylistItemViewModel> SelectItemCommad { get; init; }
-    public CollectionDisplayMode DisplayMode {
-        get => this._setting.Get(CollectionDisplayMode.SimpleList, $"Playlist.{nameof(DisplayMode)}");
-        set {
-            this._setting.Set(value, $"Playlist.{nameof(DisplayMode)}");
-            OnPropertyChanged();
-        }
-    }
+    [AppSettingProperty(CollectionDisplayMode.SimpleList)]
+    public partial CollectionDisplayMode DisplayMode { get; set; }
     public PlaylistPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IPlaylistService playlistService) : base(localizationService, appSetting) {
         this._playlistService = playlistService;
         this.Items = new();

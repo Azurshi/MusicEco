@@ -3,6 +3,7 @@ using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.Image.Decoder;
 using MusicEco.Services;
+using MusicEco.SourceGeneration;
 using SkiaSharp;
 using SkiaSharp.Views.Maui.Controls;
 using System.Diagnostics;
@@ -17,6 +18,7 @@ public partial class ManagedSKIcon: SKCanvasView {
         HasImage
     }
     private static readonly Type ThisType = typeof(ManagedSKIcon);
+    [BindableAutoGen<Hash256>]
     public static readonly BindableProperty FileHashProperty
         = Utility.Create<Hash256>(ThisType, new Hash256(),
             propertyChanged: (b, _, v) => {
@@ -24,10 +26,7 @@ public partial class ManagedSKIcon: SKCanvasView {
                 var hash = (Hash256)v;
                 This.SetImage(hash);
             });
-    public Hash256 FileHash {
-        get => (Hash256)GetValue(FileHashProperty);
-        set => SetValue(FileHashProperty, value);
-    }
+    [BindableAutoGen<IReadOnlyList<Hash256>>]
     public static readonly BindableProperty FileHashesProperty
     = Utility.Create<IReadOnlyList<Hash256>>(ThisType, new List<Hash256>(),
         propertyChanged: (b, _, v) => {
@@ -35,10 +34,6 @@ public partial class ManagedSKIcon: SKCanvasView {
             var hashes = (IReadOnlyList<Hash256>)v;
             This.SetImage(hashes);
         });
-    public IReadOnlyList<Hash256> FileHashes {
-        get => (IReadOnlyList<Hash256>)GetValue(FileHashesProperty);
-        set => SetValue(FileHashesProperty, value);
-    }
     private Hash256 _lastHash = new();
     private CancellationTokenSource? _cts;
     private void SetImage(Hash256 fileHash) {

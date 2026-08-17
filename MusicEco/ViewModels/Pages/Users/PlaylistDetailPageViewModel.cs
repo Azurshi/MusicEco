@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 using MusicEco.Views.Pages;
 using System.Diagnostics;
@@ -24,13 +25,8 @@ public partial class PlaylistDetailPageViewModel: BasePageViewModel {
     public AsyncCommand<AudioEntryViewModel> RemoveItemCommand { get; init; }
     public SyncCommandExtend<AudioEntryViewModel> DragCommand { get; init; }
     public AsyncCommand<AudioEntryViewModel> DropCommand { get; init; }
-    public CollectionDisplayMode DisplayMode {
-        get => this._setting.Get(CollectionDisplayMode.SimpleList, $"PlaylistDetail.{nameof(DisplayMode)}");
-        set {
-            this._setting.Set(value, $"PlaylistDetail.{nameof(DisplayMode)}");
-            OnPropertyChanged();
-        }
-    }
+    [AppSettingProperty(CollectionDisplayMode.SimpleList)]
+    public partial CollectionDisplayMode DisplayMode { get; set; }
     public PlaylistDetailPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IPlaylistService playlistService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._q = new(DateTime.MaxValue);
         this._playlistService = playlistService;

@@ -1,5 +1,6 @@
 namespace MusicEco.Views.Controls;
 
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels;
 using IEnumerable = System.Collections.IEnumerable;
 /// <summary>
@@ -7,6 +8,7 @@ using IEnumerable = System.Collections.IEnumerable;
 /// </summary>
 public partial class CollectionViewExtend: ContentView {
     private static readonly Type ThisType = typeof(CollectionViewExtend);
+    [BindableAutoGen<IEnumerable>(IsNullable = true)]
     public static readonly BindableProperty ItemsSourceProperty
         = Utility.Create<IEnumerable?>(ThisType, null,
             propertyChanged: (b, oldValue, newValue) => {
@@ -15,10 +17,7 @@ public partial class CollectionViewExtend: ContentView {
                 var newCollection = (IEnumerable?)newValue;
                 This.SetCollection(oldCollection, newCollection);
             });
-    public IEnumerable? ItemsSource {
-        get => (IEnumerable?)GetValue(ItemsSourceProperty);
-        set => SetValue(ItemsSourceProperty, value);
-    }
+    [BindableAutoGen<CollectionDisplayMode>]
     public static readonly BindableProperty DisplayModeProperty
         = Utility.Create<CollectionDisplayMode>(ThisType, CollectionDisplayMode.None,
             propertyChanged: (b, _, v) => {
@@ -26,10 +25,6 @@ public partial class CollectionViewExtend: ContentView {
                 var value = (CollectionDisplayMode)v;
                 This.ChangeDisplayMode(value);
             });
-    public CollectionDisplayMode DisplayMode {
-        get => (CollectionDisplayMode)GetValue(DisplayModeProperty);
-        set => SetValue(DisplayModeProperty, value);
-    }
     public IList<CollectionViewPreset> ItemPresets { get; init; }
     public CollectionViewExtend() {
         InitializeComponent();

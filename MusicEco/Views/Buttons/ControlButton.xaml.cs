@@ -1,14 +1,22 @@
+using MusicEco.SourceGeneration;
 using System.Windows.Input;
 
 namespace MusicEco.Views.Buttons;
 
 public partial class ControlButton: Grid {
     private static readonly Type ThisType = typeof(ControlButton);
+    [BindableAutoGen<ICommand>(IsNullable = true)]
     public static readonly BindableProperty CommandProperty
         = Utility.Create<ICommand?>(ThisType);
-    public ICommand? Command {
-        get => (ICommand)GetValue(CommandProperty);
-        set => SetValue(CommandProperty, value);
+    public static readonly BindableProperty IsActivateProperty
+        = Utility.Create<bool>(ThisType, false,
+            propertyChanged: (b, _, v) => {
+                var This = (ControlButton)b;
+                This.RefreshState();
+            });
+    public bool IsActivate {
+        get => (bool)GetValue(IsActivateProperty);
+        set => SetValue(IsActivateProperty, value);
     }
     public static readonly BindableProperty ActivateImageSourceProperty
         = Utility.Create<ImageSource?>(ThisType,
@@ -31,16 +39,6 @@ public partial class ControlButton: Grid {
     public ImageSource? DeactivateImageSource {
         get => (ImageSource?)GetValue(DeactivateImageSourceProperty);
         set => SetValue(DeactivateImageSourceProperty, value);
-    }
-    public static readonly BindableProperty IsActivateProperty
-        = Utility.Create<bool>(ThisType, false,
-            propertyChanged: (b, _, v) => {
-                var This = (ControlButton)b;
-                This.RefreshState();
-            });
-    public bool IsActivate {
-        get => (bool)GetValue(IsActivateProperty);
-        set => SetValue(IsActivateProperty, value);
     }
     private void RefreshState() {
         this.ActivateImage.IsVisible = this.IsActivate;

@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages.Users;
@@ -18,13 +19,8 @@ public partial class AllSongPageViewModel: BasePageViewModel {
     private readonly IPlaybackService _playbackService;
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
     public AsyncCommand<AudioEntryViewModel> SelectItemCommand { get; init; }
-    public CollectionDisplayMode DisplayMode {
-        get => this._setting.Get(CollectionDisplayMode.SimpleList, $"{nameof(PageRoute.AllSong)}.{nameof(DisplayMode)}");
-        set {
-            this._setting.Set(value, $"{nameof(PageRoute.AllSong)}.{nameof(DisplayMode)}");
-            OnPropertyChanged();
-        }
-    }
+    [AppSettingProperty(CollectionDisplayMode.SimpleList)]
+    public partial CollectionDisplayMode DisplayMode { get; set; }
     public AllSongPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioService audioService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._audioService = audioService;
         this._playbackService = playbackService;
