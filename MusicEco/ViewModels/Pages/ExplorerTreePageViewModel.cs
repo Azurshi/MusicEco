@@ -30,7 +30,7 @@ public partial class ExplorerTreePageViewModel: BasePageViewModel {
     public AsyncCommandExtend NextFolderCommand { get; init; }
     public AsyncCommandExtend UpFolderCommand { get; init; }
     public AsyncCommand RefreshFolderCommand { get; init; }
-    public ExplorerTreePageViewModel(ILocalizationService localizationService, IFileService fileService, IAudioService audioService, IPlaybackService playbackService) : base(localizationService) {
+    public ExplorerTreePageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IFileService fileService, IAudioService audioService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._q = new();
         this._fileService = fileService;
         this._audioService = audioService;

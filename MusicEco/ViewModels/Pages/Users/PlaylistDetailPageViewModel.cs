@@ -16,7 +16,6 @@ public partial class PlaylistDetailPageViewModel: BasePageViewModel {
     }
     public override PageRoute Route => PageRoute.PlaylistDetail;
     private readonly Query _q;
-    private readonly IAppSetting _setting;
     private readonly IPlaylistService _playlistService;
     private readonly IPlaybackService _playbackService;
     public string PlaylistName { get; private set; }
@@ -32,9 +31,8 @@ public partial class PlaylistDetailPageViewModel: BasePageViewModel {
             OnPropertyChanged();
         }
     }
-    public PlaylistDetailPageViewModel(ILocalizationService localizationService, IAppSetting setting, IPlaylistService playlistService, IPlaybackService playbackService) : base(localizationService) {
+    public PlaylistDetailPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IPlaylistService playlistService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._q = new(DateTime.MaxValue);
-        this._setting = setting;
         this._playlistService = playlistService;
         this._playbackService = playbackService;
         this.PlaylistName = string.Empty;

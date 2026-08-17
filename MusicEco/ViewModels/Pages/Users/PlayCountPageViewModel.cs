@@ -7,13 +7,11 @@ namespace MusicEco.ViewModels.Pages.Users;
 
 public partial class PlayCountPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.PlayCount;
-    private readonly IAppSetting _setting;
     private readonly IAudioQueryService _queryService;
     private readonly IPlaybackService _playbackService;
     public ObservableCollectionExtend<PlayCountViewModel> Items { get; init; }
     public AsyncCommand<PlayCountViewModel> SelectItemCommand { get; init; }
-    public PlayCountPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioQueryService audioQueryService, IPlaybackService playbackService) : base(localizationService) {
-        this._setting = appSetting;
+    public PlayCountPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioQueryService audioQueryService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._queryService = audioQueryService;
         this._playbackService = playbackService;
         this.Items = new();

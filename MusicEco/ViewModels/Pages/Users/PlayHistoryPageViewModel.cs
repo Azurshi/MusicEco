@@ -8,14 +8,12 @@ namespace MusicEco.ViewModels.Pages.Users;
 
 public partial class PlayHistoryPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.PlayHistory;
-    private readonly IAppSetting _setting;
     private readonly IAudioQueryService _queryService;
     private readonly IPlaybackService _playbackService;
     private readonly IPlayerController _playerController;
     public ObservableCollectionExtend<PlayHistoryViewModel> Items { get; init; }
     public AsyncCommand<PlayHistoryViewModel> SelectItemCommand { get; init; }
-    public PlayHistoryPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioQueryService audioQueryService, IPlaybackService playbackService, IPlayerController playerController) : base(localizationService) {
-        this._setting = appSetting;
+    public PlayHistoryPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioQueryService audioQueryService, IPlaybackService playbackService, IPlayerController playerController) : base(localizationService, appSetting) {
         this._queryService = audioQueryService;
         this._playbackService = playbackService;
         this._playerController = playerController;

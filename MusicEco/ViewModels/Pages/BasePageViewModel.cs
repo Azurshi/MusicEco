@@ -16,6 +16,7 @@ public abstract class BasePageViewModel: ObservableObject, INavigationAware, ILo
     public abstract PageRoute Route { get; }
     public AssemblyLocalization L { get; init; }
     protected readonly ILocalizationService _localizationService;
+    protected readonly IAppSetting _setting;
     private bool _isActive = false;
     public bool IsActive {
         get => this._isActive;
@@ -26,10 +27,11 @@ public abstract class BasePageViewModel: ObservableObject, INavigationAware, ILo
             }
         }
     }
-    public BasePageViewModel(ILocalizationService localizationService) {
+    public BasePageViewModel(ILocalizationService localizationService, IAppSetting setting) {
         EventSystem.Connect<RefreshEventArgs>(OnRefreshEvent);
         this._localizationService = localizationService;
         this.L = this._localizationService.Get(typeof(BasePageViewModel));
+        this._setting = setting;
     }
 
     private void OnLanguageChanged(object? sender, EventArgs e) {

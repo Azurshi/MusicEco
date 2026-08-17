@@ -14,7 +14,6 @@ public partial class AllSongPageViewModel: BasePageViewModel {
     }
     public override PageRoute Route => PageRoute.AllSong;
     private readonly Query _q;
-    private readonly IAppSetting _setting;
     private readonly IAudioService _audioService;
     private readonly IPlaybackService _playbackService;
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
@@ -26,8 +25,7 @@ public partial class AllSongPageViewModel: BasePageViewModel {
             OnPropertyChanged();
         }
     }
-    public AllSongPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioService audioService, IPlaybackService playbackService) : base(localizationService) {
-        this._setting = appSetting;
+    public AllSongPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioService audioService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._audioService = audioService;
         this._playbackService = playbackService;
         this._q = new(string.Empty);

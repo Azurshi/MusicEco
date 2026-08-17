@@ -7,7 +7,7 @@ namespace MusicEco.ViewModels.Pages;
 public partial class UserPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.User;
     public SyncCommand<PageRoute> NagivateCommand { get; init; }
-    public UserPageViewModel(ILocalizationService localizationService) : base(localizationService) {
+    public UserPageViewModel(ILocalizationService localizationService, IAppSetting appSetting) : base(localizationService, appSetting) {
         this.NagivateCommand = new(Navigate);
     }
     public override async Task Refresh() {

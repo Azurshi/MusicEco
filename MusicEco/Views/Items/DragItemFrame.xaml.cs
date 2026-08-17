@@ -1,9 +1,11 @@
+using MusicEco.SourceGeneration;
 using System.Windows.Input;
 
 namespace MusicEco.Views.Items;
 
 public partial class DragItemFrame: ItemFrame {
     private static readonly Type ThisType = typeof(DragItemFrame);
+    [BindableAutoGen<ICommand>(IsNullable = true)]
     public static readonly BindableProperty DragStartCommandProperty
         = Utility.Create<ICommand?>(ThisType, null,
             propertyChanged: (b, _, v) => {
@@ -11,10 +13,7 @@ public partial class DragItemFrame: ItemFrame {
                 var value = (ICommand?)v;
                 This.DragGR.DragStartingCommand = value;
             });
-    public ICommand? DragStartCommand {
-        get => (ICommand?)GetValue(DragStartCommandProperty);
-        set => SetValue(DragStartCommandProperty, value);
-    }
+    [BindableAutoGen<ICommand>(IsNullable = true)]
     public static readonly BindableProperty DragOverCommandProperty
         = Utility.Create<ICommand?>(ThisType, null,
             propertyChanged: (b, _, v) => {
@@ -22,10 +21,7 @@ public partial class DragItemFrame: ItemFrame {
                 var value = (ICommand?)v;
                 This.DropGR.DragOverCommand = value;
             });
-    public ICommand? DragOverCommand {
-        get => (ICommand?)GetValue(DragOverCommandProperty);
-        set => SetValue(DragOverCommandProperty, value);
-    }
+    [BindableAutoGen<ICommand>(IsNullable = true)]
     public static readonly BindableProperty DropCommandProperty
         = Utility.Create<ICommand?>(ThisType, null,
             propertyChanged: (b, _, v) => {
@@ -33,10 +29,6 @@ public partial class DragItemFrame: ItemFrame {
                 var value = (ICommand?)v;
                 This.DropGR.DropCommand = value;
             });
-    public ICommand? DropCommand {
-        get => (ICommand?)GetValue(DropCommandProperty);
-        set => SetValue(DropCommandProperty, value);
-    }
     public DragItemFrame() {
         InitializeComponent();
     }

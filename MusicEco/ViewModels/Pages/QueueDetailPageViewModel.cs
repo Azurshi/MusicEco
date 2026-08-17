@@ -21,7 +21,7 @@ public partial class QueueDetailPageViewModel: BasePageViewModel {
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
     public AsyncCommandExtend<AudioEntryViewModel> SelectItemCommand { get; init; }
     public AsyncCommand<AudioEntryViewModel> RemoveItemCommand { get; init; }
-    public QueueDetailPageViewModel(ILocalizationService localizationService, IQueueService queueService, IPlaybackService playbackService) : base(localizationService) {
+    public QueueDetailPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IQueueService queueService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._queueService = queueService;
         this._playbackService = playbackService;
         this._q = new(DateTime.MaxValue);

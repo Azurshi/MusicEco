@@ -9,7 +9,6 @@ public partial class AlbumPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.Album;
     private readonly string _nameQuery;
     private readonly IAudioQueryService _queryService;
-    private readonly IAppSetting _setting;
     public ObservableCollectionExtend<AlbumViewModel> Items { get; init; }
     public SyncCommand<AlbumViewModel> SelectItemCommand { get; init; }
     public CollectionDisplayMode DisplayMode {
@@ -19,11 +18,10 @@ public partial class AlbumPageViewModel: BasePageViewModel {
             OnPropertyChanged();
         }
     }
-    public AlbumPageViewModel(ILocalizationService localizationService, IAudioQueryService audioQueryService, IAppSetting appSetting) : base(localizationService) {
+    public AlbumPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioQueryService audioQueryService) : base(localizationService, appSetting) {
         this.Items = new();
         this._nameQuery = string.Empty;
         this._queryService = audioQueryService;
-        this._setting = appSetting;
         this.SelectItemCommand = new(SelectItem);
     }
     public override async Task Refresh() {

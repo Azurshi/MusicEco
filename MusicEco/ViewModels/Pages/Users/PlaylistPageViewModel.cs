@@ -7,7 +7,6 @@ namespace MusicEco.ViewModels.Pages.Users;
 
 public partial class PlaylistPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.Playlist;
-    private readonly IAppSetting _setting;
     private readonly IPlaylistService _playlistService;
     public ObservableCollectionExtend<PlaylistItemViewModel> Items { get; init; }
     public AsyncCommand<PlaylistItemViewModel> SelectItemCommad { get; init; }
@@ -18,8 +17,7 @@ public partial class PlaylistPageViewModel: BasePageViewModel {
             OnPropertyChanged();
         }
     }
-    public PlaylistPageViewModel(ILocalizationService localizationService, IAppSetting setting, IPlaylistService playlistService) : base(localizationService) {
-        this._setting = setting;
+    public PlaylistPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IPlaylistService playlistService) : base(localizationService, appSetting) {
         this._playlistService = playlistService;
         this.Items = new();
         this.SelectItemCommad = new(SelectItem);

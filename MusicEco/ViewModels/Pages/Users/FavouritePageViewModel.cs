@@ -7,7 +7,6 @@ namespace MusicEco.ViewModels.Pages.Users;
 
 public partial class FavouritePageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.Favourite;
-    private readonly IAppSetting _setting;
     private readonly IFavouriteService _favouriteService;
     private readonly IPlaybackService _playbackService;
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
@@ -19,8 +18,7 @@ public partial class FavouritePageViewModel: BasePageViewModel {
             OnPropertyChanged();
         }
     }
-    public FavouritePageViewModel(ILocalizationService localizationService, IAppSetting setting, IFavouriteService favouriteService, IPlaybackService playbackService) : base(localizationService) {
-        this._setting = setting;
+    public FavouritePageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IFavouriteService favouriteService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._favouriteService = favouriteService;
         this._playbackService = playbackService;
         this.Items = new();

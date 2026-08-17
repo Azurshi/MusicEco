@@ -14,13 +14,11 @@ public partial class NotPlayPageViewModel: BasePageViewModel {
     }
     public override PageRoute Route => PageRoute.NotPlay;
     private readonly Query _q;
-    private readonly IAppSetting _setting;
     private readonly IAudioQueryService _queryService;
     private readonly IPlaybackService _playbackService;
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
     public AsyncCommand<AudioEntryViewModel> SelectItemCommand { get; init; }
-    public NotPlayPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioQueryService audioQueryService, IPlaybackService playbackService) : base(localizationService) {
-        this._setting = appSetting;
+    public NotPlayPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioQueryService audioQueryService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._queryService = audioQueryService;
         this._playbackService = playbackService;
         this._q = new(string.Empty);

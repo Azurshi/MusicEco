@@ -25,7 +25,7 @@ public partial class SearchPageViewModel: BasePageViewModel {
     }
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
     public AsyncCommand<AudioEntryViewModel> SelectItemCommand { get; init; }
-    public SearchPageViewModel(ILocalizationService localizationService, IAudioService audioService) : base(localizationService) {
+    public SearchPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioService audioService) : base(localizationService, appSetting) {
         this._audioService = audioService;
         this.Items = new();
         this.SelectItemCommand = new(SelectItem);

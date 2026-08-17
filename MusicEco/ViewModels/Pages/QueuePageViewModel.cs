@@ -8,7 +8,6 @@ namespace MusicEco.ViewModels.Pages;
 public partial class QueuePageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.Queue;
     private readonly IQueueService _queueService;
-    private readonly IAppSetting _setting;
     private readonly IPlaybackService _playbackService;
     public ObservableCollectionExtend<QueueItemViewModel> Items { get; init; }
     public AsyncCommand<QueueItemViewModel> SelectItemCommand { get; init; }
@@ -20,9 +19,8 @@ public partial class QueuePageViewModel: BasePageViewModel {
             OnPropertyChanged(nameof(DisplayMode));
         }
     }
-    public QueuePageViewModel(ILocalizationService localizationService, IQueueService queueService, IAppSetting appSetting, IPlaybackService playbackService) : base(localizationService) {
+    public QueuePageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IQueueService queueService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._queueService = queueService;
-        this._setting = appSetting;
         this._playbackService = playbackService;
         this.Items = new();
         this.SelectItemCommand = new(SelectItem);

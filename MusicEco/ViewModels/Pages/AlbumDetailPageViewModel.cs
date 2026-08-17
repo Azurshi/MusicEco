@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages;
@@ -15,22 +16,15 @@ public partial class AlbumDetailPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.AlbumDetail;
     private readonly Query _q;
     private readonly IAudioQueryService _queryService;
-    private readonly IAppSetting _setting;
     private readonly IPlaybackService _playbackService;
     public string AlbumName => _q.AlbumName;
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
     public AsyncCommand<AudioEntryViewModel> SelectItemCommand { get; init; }
-    public CollectionDisplayMode DisplayMode {
-        get => this._setting.Get(CollectionDisplayMode.SimpleList, $"AlbumDetail.{nameof(DisplayMode)}");
-        set {
-            this._setting.Set(value, $"AlbumDetail.{nameof(DisplayMode)}");
-            OnPropertyChanged();
-        }
-    }
-    public AlbumDetailPageViewModel(ILocalizationService localizationService, IAudioQueryService audioQueryService, IAppSetting appSetting, IPlaybackService playbackService) : base(localizationService) {
+    [AppSettingProperty(CollectionDisplayMode.SimpleList)]
+    public partial CollectionDisplayMode DisplayMode { get; set; }
+    public AlbumDetailPageViewModel(ILocalizationService localizationService, IAudioQueryService audioQueryService, IAppSetting appSetting, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._q = new();
         this._queryService = audioQueryService;
-        this._setting = appSetting;
         this._playbackService = playbackService;
         this.Items = new();
         this.SelectItemCommand = new(SelectItem);

@@ -18,7 +18,7 @@ public partial class ExplorerPageViewModel: BasePageViewModel {
     public AsyncCommandExtend ScanCommand { get; init; }
     public bool IsLocked => this._scanner.Running;
     public bool IsUnLocked => !this._scanner.Running;
-    public ExplorerPageViewModel(ILocalizationService localizationService, IScanner scanner, IScanPathService scanPathService) : base(localizationService) {
+    public ExplorerPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IScanner scanner, IScanPathService scanPathService) : base(localizationService, appSetting) {
         this._scanner = scanner;
         this._scanPathService = scanPathService;
         this.Items = new();

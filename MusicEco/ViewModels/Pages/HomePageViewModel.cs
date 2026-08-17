@@ -9,7 +9,7 @@ public partial class HomePageViewModel: BasePageViewModel {
     private readonly IQueueService _queueService;
     public Hash256 FileHash { get; private set; }
     public string DisplayTitle { get; private set; }
-    public HomePageViewModel(ILocalizationService localizationService, IQueueService queueService) : base(localizationService) {
+    public HomePageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IQueueService queueService) : base(localizationService, appSetting) {
         this._queueService = queueService;
         this._queueService.CurrentChanged += this.QueueService_CurrentChanged;
         this.FileHash = new();

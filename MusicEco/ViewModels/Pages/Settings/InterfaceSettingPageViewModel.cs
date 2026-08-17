@@ -10,7 +10,7 @@ public partial class InterfaceSettingPageViewModel: BasePageViewModel {
     public IReadOnlyList<ThemeViewModel> Themes { get; private set; }
     public SyncCommandExtend<ThemeViewModel> SelectThemeCommand { get; init; }
     public string CurrentThemeName { get; private set; }
-    public InterfaceSettingPageViewModel(ILocalizationService localizationService, IStyleService styleService) : base(localizationService) {
+    public InterfaceSettingPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IStyleService styleService) : base(localizationService, appSetting) {
         this._styleService = styleService;
         this.Themes = [];
         this.CurrentThemeName = string.Empty;

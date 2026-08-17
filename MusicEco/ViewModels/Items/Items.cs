@@ -18,7 +18,7 @@ public partial class ListItem: ObservableObject, IListItem {
     }
     public Brush Background {
         get => _background;
-        set {
+        set {   
             _background = value;
             OnPropertyChanged();
         }

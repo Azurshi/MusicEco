@@ -7,7 +7,7 @@ namespace MusicEco.ViewModels.Pages;
 public partial class SettingPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.Setting;
     public SyncCommand<PageRoute> SelectSettingCommand { get; init; }
-    public SettingPageViewModel(ILocalizationService localizationService) : base(localizationService) {
+    public SettingPageViewModel(ILocalizationService localizationService, IAppSetting appSetting) : base(localizationService, appSetting) {
         this.SelectSettingCommand = new(SelectSetting);
     }
     public override async Task Refresh() {
