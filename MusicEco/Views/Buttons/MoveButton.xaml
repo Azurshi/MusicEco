@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Label xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       x:Class="MusicEco.Views.Buttons.MoveButton"
+       Style="{StaticResource OneLine}"
+       VerticalTextAlignment="Center"
+       HorizontalTextAlignment="Center"
+       VerticalOptions="Fill"
+       HorizontalOptions="Fill"
+       Text="=">
+    <Label.GestureRecognizers>
+        <PointerGestureRecognizer PointerEntered="PointerGestureRecognizer_PointerEntered"
+                                  PointerExited="PointerGestureRecognizer_PointerExited"/>
+    </Label.GestureRecognizers>
+</Label>

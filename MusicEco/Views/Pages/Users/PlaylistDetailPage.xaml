@@ -28,29 +28,35 @@
             </DataTemplate>
             <DataTemplate x:Key="AudioItemTemplate"
                           x:DataType="itemVM:AudioEntryViewModel">
-                <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
-                                Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type userVM:PlaylistDetailPageViewModel}}}"
-                                IsSelected="{Binding Selected}">
-                    <item:ItemFrame.ItemContent>
+                <item:DragItemFrame HeightRequest="{DynamicResource IconItemSize}"
+                                    Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type userVM:PlaylistDetailPageViewModel}}}"
+                                    DragStartCommand="{Binding DragCommand, Source={RelativeSource AncestorType={x:Type userVM:PlaylistDetailPageViewModel}}}"
+                                    DropCommand="{Binding DropCommand, Source={RelativeSource AncestorType={x:Type userVM:PlaylistDetailPageViewModel}}}"
+                                    IsSelected="{Binding Selected}">
+                    <item:DragItemFrame.ItemContent>
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <control:ManagedIcon Grid.Column="0"
+                            <button:MoveButton Grid.Column="0"
+                                               WidthRequest="{DynamicResource IconButtonItemSize}"
+                                               IsDraggable="{Binding IsDraggable}" />
+                            <control:ManagedSKIcon Grid.Column="1"
                                                  WidthRequest="{DynamicResource IconItemSize}"
                                                  FileHash="{Binding FileHash}"
                                                  Option="Small" />
-                            <Label Grid.Column="1"
+                            <Label Grid.Column="2"
                                    Text="{Binding DisplayTitle}"
                                    Style="{StaticResource OneLine}" />
-                            <item:MenuButton Grid.Column="2"
+                            <item:MenuButton Grid.Column="3"
                                              WidthRequest="{DynamicResource IconButtonItemSize}"
                                              MenuTemplate="{StaticResource MenuTemplate}" />
                         </Grid>
-                    </item:ItemFrame.ItemContent>
-                </item:ItemFrame>
+                    </item:DragItemFrame.ItemContent>
+                </item:DragItemFrame>
             </DataTemplate>
         </ResourceDictionary>
     </ContentView.Resources>
@@ -75,6 +81,10 @@
         </Grid>
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Items.Items}"
-                        ItemTemplate="{StaticResource AudioItemTemplate}" />
+                        ItemTemplate="{StaticResource AudioItemTemplate}">
+            <CollectionView.GestureRecognizers>
+                <DropGestureRecognizer Drop="DropGestureRecognizer_Drop" />
+            </CollectionView.GestureRecognizers>
+        </CollectionView>
     </Grid>
 </ContentView>
