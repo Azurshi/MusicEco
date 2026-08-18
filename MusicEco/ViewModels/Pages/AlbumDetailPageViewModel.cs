@@ -19,7 +19,6 @@ public partial class AlbumDetailPageViewModel: BasePageViewModel {
     private readonly IPlaybackService _playbackService;
     public string AlbumName => _q.AlbumName;
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
-    public AsyncCommand<AudioEntryViewModel> SelectItemCommand { get; init; }
     [AppSettingProperty(CollectionDisplayMode.SimpleList)]
     public partial CollectionDisplayMode DisplayMode { get; set; }
     public AlbumDetailPageViewModel(ILocalizationService localizationService, IAudioQueryService audioQueryService, IAppSetting appSetting, IPlaybackService playbackService) : base(localizationService, appSetting) {
@@ -27,8 +26,6 @@ public partial class AlbumDetailPageViewModel: BasePageViewModel {
         this._queryService = audioQueryService;
         this._playbackService = playbackService;
         this.Items = new();
-        this.SelectItemCommand = new(SelectItem);
-
     }
     public override async Task Refresh() {
         OnPropertyChanged(nameof(AlbumName));
@@ -55,6 +52,7 @@ public partial class AlbumDetailPageViewModel: BasePageViewModel {
     public override Task OnNavigatedFrom(NavigateEventArgs e) {
         return base.OnNavigatedFrom(e);
     }
+    [RelayCommand]
     private async Task SelectItem(AudioEntryViewModel? vm) {
         if (vm == null) {
             return;

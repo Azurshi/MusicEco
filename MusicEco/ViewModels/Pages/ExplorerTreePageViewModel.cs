@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages;
@@ -24,12 +25,6 @@ public partial class ExplorerTreePageViewModel: BasePageViewModel {
     public string FolderPath => _q.CurrentFolder; 
     public override PageRoute Route => PageRoute.ExplorerTree;
     public ObservableCollectionExtend<IUpdateble> Items { get; init; }
-    public AsyncCommand<FolderEntryViewModel> SelectFolderCommand { get; init; }
-    public AsyncCommand<FileEntryViewModel> SelectFileCommand { get; init; }
-    public AsyncCommandExtend PreviousFolderCommand { get; init; }
-    public AsyncCommandExtend NextFolderCommand { get; init; }
-    public AsyncCommandExtend UpFolderCommand { get; init; }
-    public AsyncCommand RefreshFolderCommand { get; init; }
     public ExplorerTreePageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IFileService fileService, IAudioService audioService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._q = new();
         this._fileService = fileService;
@@ -37,12 +32,6 @@ public partial class ExplorerTreePageViewModel: BasePageViewModel {
         this._playbackService = playbackService;
         this._stack = new();
         this.Items = new();
-        this.SelectFolderCommand = new(SelectFolder);
-        this.SelectFileCommand = new(SelectFile);
-        this.PreviousFolderCommand = new(PreviousFolder, this._stack.CanPrevious);
-        this.NextFolderCommand = new(NextFolder, this._stack.CanNext);
-        this.UpFolderCommand = new(UpFolder, this.CanUp);
-        this.RefreshFolderCommand = new(Refresh);
     }
     public override async Task Refresh() {
         if (PathSeparator.Length == 0) {
@@ -93,6 +82,7 @@ public partial class ExplorerTreePageViewModel: BasePageViewModel {
     public override Task OnNavigatedFrom(NavigateEventArgs e) {
         return base.OnNavigatedFrom(e);
     }
+    [RelayCommand]
     private async Task SelectFolder(FolderEntryViewModel? vm) {
         if (vm == null) {
             return;
@@ -101,6 +91,7 @@ public partial class ExplorerTreePageViewModel: BasePageViewModel {
         this._stack.ToFolder(vm.Path);
         await Refresh();
     }
+    [RelayCommand]
     private async Task SelectFile(FileEntryViewModel? vm) {
         if (vm == null) {
             return;
@@ -128,11 +119,19 @@ public partial class ExplorerTreePageViewModel: BasePageViewModel {
         this.NextFolderCommand.NotifyCanExecute();
         this.UpFolderCommand.NotifyCanExecute();
     }
+    private bool CanPrevious() {
+        return this._stack.CanPrevious();
+    }
+    [RelayCommand(CanExecute = nameof(CanPrevious))]
     private async Task PreviousFolder() {
         string path = this._stack.PreviousFolder();
         this._q.CurrentFolder = path;
         await Refresh();
     }
+    private bool CanNext() {
+        return this._stack.CanNext();
+    }
+    [RelayCommand(CanExecute = nameof(CanNext))]
     private async Task NextFolder() {
         string path = this._stack.NextFolder();
         this._q.CurrentFolder = path;
@@ -143,6 +142,7 @@ public partial class ExplorerTreePageViewModel: BasePageViewModel {
         string currentPath = this._q.CurrentFolder;
         return rootPath != currentPath && currentPath.Contains(rootPath);
     }
+    [RelayCommand(CanExecute = nameof(CanUp))]
     private async Task UpFolder() {
         string currentPath = this._q.CurrentFolder;
         string upPath = System.IO.Path.GetDirectoryName(currentPath)!;

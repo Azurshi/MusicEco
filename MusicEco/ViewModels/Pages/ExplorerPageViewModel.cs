@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 using System.Diagnostics;
 
@@ -12,20 +13,12 @@ public partial class ExplorerPageViewModel: BasePageViewModel {
     public readonly IScanPathService _scanPathService;
     public ScanProgressInfo ProgressInfo { get; init; }
     public ObservableCollectionExtend<ScanPathViewModel> Items { get; init; }
-    public AsyncCommandExtend AddNewPathCommand { get; init; }
-    public AsyncCommand<ScanPathViewModel> DeleteItemCommand { get; init; }
-    public SyncCommand<ScanPathViewModel> SelectItemCommand { get; init; }
-    public AsyncCommandExtend ScanCommand { get; init; }
     public bool IsLocked => this._scanner.Running;
     public bool IsUnLocked => !this._scanner.Running;
     public ExplorerPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IScanner scanner, IScanPathService scanPathService) : base(localizationService, appSetting) {
         this._scanner = scanner;
         this._scanPathService = scanPathService;
         this.Items = new();
-        this.AddNewPathCommand = new(AddNewPath, () => !this._scanner.Running);
-        this.DeleteItemCommand = new(DeleteItem);
-        this.SelectItemCommand = new(SelectItem);
-        this.ScanCommand = new(Scan, () => !this._scanner.Running);
         this.ProgressInfo = new();
         this._scanPathService.ItemChanged += this.ScanPathService_ItemChanged;
         this._scanner.RunningChanged += this.Scanner_RunningChanged;
@@ -65,6 +58,7 @@ public partial class ExplorerPageViewModel: BasePageViewModel {
     public override Task OnNavigatedFrom(NavigateEventArgs e) {
         return base.OnNavigatedFrom(e);
     }
+    [RelayCommand(CanExecute = nameof(IsNotScanning))]
     private async Task AddNewPath() {
 #if WINDOWS || ANDROID
         var path = await ExplorerPicker.PickFolder();
@@ -73,12 +67,17 @@ public partial class ExplorerPageViewModel: BasePageViewModel {
         }
 #endif
     }
+    private bool IsNotScanning() {
+        return !this._scanner.Running;
+    }
+    [RelayCommand]
     private async Task DeleteItem(ScanPathViewModel? vm) {
         if (vm == null) {
             return;
         }
         await this._scanPathService.RemovePath(vm.Path);
     }
+    [RelayCommand]
     private void SelectItem(ScanPathViewModel? vm) {
         if (vm == null) {
             return;
@@ -89,6 +88,7 @@ public partial class ExplorerPageViewModel: BasePageViewModel {
         NavigateEventArgs args = new(this, this.Route, PageRoute.ExplorerTree, query);
         EventSystem.Publish(this, args);
     }
+    [RelayCommand(CanExecute = nameof(IsNotScanning))]
     private async Task Scan() {
         var info = this.ProgressInfo;
         info.Reset();

@@ -54,10 +54,4 @@ public partial class AlbumPageViewModel: BasePageViewModel {
         NavigateEventArgs args = new(this, this.Route, PageRoute.AlbumDetail, query);
         EventSystem.Publish(this, args);
     }
-    private bool CanTest(AlbumViewModel? vm) {
-        return true;
-    }
-    [RelayCommand(CanExecute = nameof(CanTest))]
-    private async void Test(AlbumViewModel? vm) {
-    }
 }
