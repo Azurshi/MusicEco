@@ -11,14 +11,12 @@ public partial class FavouritePageViewModel: BasePageViewModel {
     private readonly IFavouriteService _favouriteService;
     private readonly IPlaybackService _playbackService;
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
-    public AsyncCommand<AudioEntryViewModel> SelectItemCommand { get; init; }
     [AppSettingProperty(CollectionDisplayMode.SimpleList)]
     public partial CollectionDisplayMode DisplayMode { get; set; }
     public FavouritePageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IFavouriteService favouriteService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._favouriteService = favouriteService;
         this._playbackService = playbackService;
         this.Items = new();
-        this.SelectItemCommand = new(SelectItem);
         this._favouriteService.ItemsChanged += this.FavouriteService_ItemsChanged;
     }
 
@@ -44,6 +42,7 @@ public partial class FavouritePageViewModel: BasePageViewModel {
         await base.OnNavigatedFrom(e);
         this._favouriteService.ItemsChanged -= FavouriteService_ItemsChanged;
     }
+    [RelayCommand]
     private async Task SelectItem(AudioEntryViewModel? vm) {
         if (vm == null) {
             return;

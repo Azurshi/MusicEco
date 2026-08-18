@@ -11,16 +11,12 @@ public partial class QueuePageViewModel: BasePageViewModel {
     private readonly IQueueService _queueService;
     private readonly IPlaybackService _playbackService;
     public ObservableCollectionExtend<QueueItemViewModel> Items { get; init; }
-    public AsyncCommand<QueueItemViewModel> SelectItemCommand { get; init; }
-    public AsyncCommand<QueueItemViewModel> RemoveItemCommand { get; init; }
     [AppSettingProperty(CollectionDisplayMode.SimpleList)]
     public partial CollectionDisplayMode DisplayMode { get; set; }
     public QueuePageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IQueueService queueService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._queueService = queueService;
         this._playbackService = playbackService;
         this.Items = new();
-        this.SelectItemCommand = new(SelectItem);
-        this.RemoveItemCommand = new(RemoveItem);
     }
     public override async Task Refresh() {
         var queues = await _queueService.GetAll();
@@ -56,7 +52,7 @@ public partial class QueuePageViewModel: BasePageViewModel {
         await base.OnNavigatedFrom(e);
         this._queueService.ItemsChanged -= this.QueueService_ItemsChanged;
     }
-
+    [RelayCommand]
     private async Task SelectItem(QueueItemViewModel? vm) {
         if (vm == null) {
             return;
@@ -67,6 +63,7 @@ public partial class QueuePageViewModel: BasePageViewModel {
         NavigateEventArgs args = new(this, this.Route, PageRoute.QueueDetail, query);
         EventSystem.Publish(this, args);
     }
+    [RelayCommand]
     private async Task RemoveItem(QueueItemViewModel? vm) {
         if (vm == null) {
             return;

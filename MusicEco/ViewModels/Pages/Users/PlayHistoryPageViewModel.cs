@@ -2,6 +2,7 @@
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.Services;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages.Users;
@@ -12,13 +13,11 @@ public partial class PlayHistoryPageViewModel: BasePageViewModel {
     private readonly IPlaybackService _playbackService;
     private readonly IPlayerController _playerController;
     public ObservableCollectionExtend<PlayHistoryViewModel> Items { get; init; }
-    public AsyncCommand<PlayHistoryViewModel> SelectItemCommand { get; init; }
     public PlayHistoryPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioQueryService audioQueryService, IPlaybackService playbackService, IPlayerController playerController) : base(localizationService, appSetting) {
         this._queryService = audioQueryService;
         this._playbackService = playbackService;
         this._playerController = playerController;
         this.Items = new();
-        this.SelectItemCommand = new(SelectItem);
         AppLifeCycle.RegisterLoop("PlayHistory", (provider) => {
             if (this.IsActive) {
                 foreach (var item in this.Items.Items) {
@@ -57,6 +56,7 @@ public partial class PlayHistoryPageViewModel: BasePageViewModel {
     public override Task OnNavigatedFrom(NavigateEventArgs e) {
         return base.OnNavigatedFrom(e);
     }
+    [RelayCommand]
     private async Task SelectItem(PlayHistoryViewModel? vm) {
         if (vm == null) {
             return;

@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages;
@@ -19,16 +20,12 @@ public partial class QueueDetailPageViewModel: BasePageViewModel {
     private readonly IPlaybackService _playbackService;
     public string QueueName { get; private set; }
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
-    public AsyncCommandExtend<AudioEntryViewModel> SelectItemCommand { get; init; }
-    public AsyncCommand<AudioEntryViewModel> RemoveItemCommand { get; init; }
     public QueueDetailPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IQueueService queueService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._queueService = queueService;
         this._playbackService = playbackService;
         this._q = new(DateTime.MaxValue);
         this.Items = new();
         this.QueueName = string.Empty;
-        this.SelectItemCommand = new(SelectItem, CanSelectItem);
-        this.RemoveItemCommand = new(RemoveItem);
     }
     public override async Task Refresh() {
         var audioQueue = await this._queueService.Get(_q.CreationTime);
@@ -84,6 +81,7 @@ public partial class QueueDetailPageViewModel: BasePageViewModel {
         }
         return true;
     }
+    [RelayCommand(CanExecute = nameof(CanSelectItem))]
     private async Task SelectItem(AudioEntryViewModel? vm) {
         if (vm == null) {
             return;
@@ -100,6 +98,7 @@ public partial class QueueDetailPageViewModel: BasePageViewModel {
             await this._playbackService.PlayQueue(audioQueue, this);
         }
     }
+    [RelayCommand]
     private async Task RemoveItem(AudioEntryViewModel? vm) {
         if (vm == null) {
             return;

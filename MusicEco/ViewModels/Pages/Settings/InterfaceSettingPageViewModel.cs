@@ -1,5 +1,6 @@
 ﻿using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages.Settings;
@@ -8,13 +9,11 @@ public partial class InterfaceSettingPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.InterfaceSetting;
     private readonly IStyleService _styleService;
     public IReadOnlyList<ThemeViewModel> Themes { get; private set; }
-    public SyncCommandExtend<ThemeViewModel> SelectThemeCommand { get; init; }
     public string CurrentThemeName { get; private set; }
     public InterfaceSettingPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IStyleService styleService) : base(localizationService, appSetting) {
         this._styleService = styleService;
         this.Themes = [];
         this.CurrentThemeName = string.Empty;
-        this.SelectThemeCommand = new(SelectTheme, CanSelectTheme);
     }
     public override async Task Refresh() {
         var selectedThemeId = this._styleService.GetCurrentThemeId();
@@ -52,6 +51,7 @@ public partial class InterfaceSettingPageViewModel: BasePageViewModel {
         }
         return this._styleService.GetCurrentThemeId() != vm.ThemeId;
     }
+    [RelayCommand(CanExecute = nameof(CanSelectTheme))]
     private void SelectTheme(ThemeViewModel? vm) {
         if (vm == null) {
             return;

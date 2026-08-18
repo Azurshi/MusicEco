@@ -3,6 +3,7 @@ using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.Services;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages;
@@ -24,11 +25,9 @@ public partial class SearchPageViewModel: BasePageViewModel {
         }
     }
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
-    public AsyncCommand<AudioEntryViewModel> SelectItemCommand { get; init; }
     public SearchPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioService audioService) : base(localizationService, appSetting) {
         this._audioService = audioService;
         this.Items = new();
-        this.SelectItemCommand = new(SelectItem);
     }
     public override async Task Refresh() {
         if (this._searchText.Trim().Length < 3) {
@@ -49,6 +48,7 @@ public partial class SearchPageViewModel: BasePageViewModel {
     public override Task OnNavigatedFrom(NavigateEventArgs e) {
         return base.OnNavigatedFrom(e);
     }
+    [RelayCommand]
     private async Task SelectItem(AudioEntryViewModel? vm) {
         if (vm == null) {
             return;

@@ -8,13 +8,11 @@ namespace MusicEco.ViewModels.Pages.Settings;
 public partial class LanguageSettingPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.LanguageSetting;
     public IReadOnlyList<LanguageViewModel> Languages { get; init; }
-    public SyncCommandExtend<LanguageViewModel> SelectLanguageCommand { get; init; }
     public LanguageSettingPageViewModel(ILocalizationService localizationService, IAppSetting appSetting) : base(localizationService, appSetting) {
         this.Languages = [
             new("en", "English"),
             new("vi", "Tiếng Việt")
             ];
-        this.SelectLanguageCommand = new(SelectLanguage, CanSelectLanguage);
     }
     private void RefreshState() {
         foreach(var item in this.Languages) {
@@ -31,6 +29,7 @@ public partial class LanguageSettingPageViewModel: BasePageViewModel {
         }
         return !vm.LanguageCode.Equals(this._localizationService.GetCurrentLanguageCode());
     }
+    [RelayCommand(CanExecute = nameof(CanSelectLanguage))]
     private void SelectLanguage(LanguageViewModel? vm) {
         if (vm == null) {
             return;

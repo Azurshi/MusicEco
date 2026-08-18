@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages.Users;
@@ -10,12 +11,10 @@ public partial class PlayCountPageViewModel: BasePageViewModel {
     private readonly IAudioQueryService _queryService;
     private readonly IPlaybackService _playbackService;
     public ObservableCollectionExtend<PlayCountViewModel> Items { get; init; }
-    public AsyncCommand<PlayCountViewModel> SelectItemCommand { get; init; }
     public PlayCountPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioQueryService audioQueryService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._queryService = audioQueryService;
         this._playbackService = playbackService;
         this.Items = new();
-        this.SelectItemCommand = new(SelectItem);
         
     }
     public override async Task Refresh() {
@@ -35,6 +34,7 @@ public partial class PlayCountPageViewModel: BasePageViewModel {
     public override Task OnNavigatedFrom(NavigateEventArgs e) {
         return base.OnNavigatedFrom(e);
     }
+    [RelayCommand]
     private async Task SelectItem(PlayCountViewModel? vm) {
         if (vm == null) {
             return;

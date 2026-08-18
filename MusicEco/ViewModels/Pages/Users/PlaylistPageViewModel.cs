@@ -10,13 +10,11 @@ public partial class PlaylistPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.Playlist;
     private readonly IPlaylistService _playlistService;
     public ObservableCollectionExtend<PlaylistItemViewModel> Items { get; init; }
-    public AsyncCommand<PlaylistItemViewModel> SelectItemCommad { get; init; }
     [AppSettingProperty(CollectionDisplayMode.SimpleList)]
     public partial CollectionDisplayMode DisplayMode { get; set; }
     public PlaylistPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IPlaylistService playlistService) : base(localizationService, appSetting) {
         this._playlistService = playlistService;
         this.Items = new();
-        this.SelectItemCommad = new(SelectItem);
     }
 
     private async void PlaylistService_ItemsChanged(object? sender, PlaylistChangedEventArgs e) {
@@ -42,6 +40,7 @@ public partial class PlaylistPageViewModel: BasePageViewModel {
         await base.OnNavigatedFrom(e);
         this._playlistService.ItemsChanged -= this.PlaylistService_ItemsChanged;
     }
+    [RelayCommand]
     private async Task SelectItem(PlaylistItemViewModel? vm) {
         if (vm == null) {
             return;

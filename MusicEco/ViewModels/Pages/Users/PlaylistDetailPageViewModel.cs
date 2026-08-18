@@ -21,10 +21,6 @@ public partial class PlaylistDetailPageViewModel: BasePageViewModel {
     private readonly IPlaybackService _playbackService;
     public string PlaylistName { get; private set; }
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
-    public AsyncCommand<AudioEntryViewModel> SelectItemCommand { get; init; }
-    public AsyncCommand<AudioEntryViewModel> RemoveItemCommand { get; init; }
-    public SyncCommandExtend<AudioEntryViewModel> DragCommand { get; init; }
-    public AsyncCommand<AudioEntryViewModel> DropCommand { get; init; }
     [AppSettingProperty(CollectionDisplayMode.SimpleList)]
     public partial CollectionDisplayMode DisplayMode { get; set; }
     public PlaylistDetailPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IPlaylistService playlistService, IPlaybackService playbackService) : base(localizationService, appSetting) {
@@ -33,10 +29,6 @@ public partial class PlaylistDetailPageViewModel: BasePageViewModel {
         this._playbackService = playbackService;
         this.PlaylistName = string.Empty;
         this.Items = new();
-        this.SelectItemCommand = new(SelectItem);
-        this.RemoveItemCommand = new(RemoveItem);
-        this.DragCommand = new(OnItemDrag, IsDraggable);
-        this.DropCommand = new(OnItemDrop);
     }
 
     private async void PlaylistService_ItemsChanged(object? sender, PlaylistChangedEventArgs e) {
@@ -76,6 +68,7 @@ public partial class PlaylistDetailPageViewModel: BasePageViewModel {
         await base.OnNavigatedFrom(e);
         this._playlistService.ItemsChanged -= this.PlaylistService_ItemsChanged;
     }
+    [RelayCommand]
     private async Task SelectItem(AudioEntryViewModel? vm) {
         if (vm == null) {
             return;
@@ -100,6 +93,7 @@ public partial class PlaylistDetailPageViewModel: BasePageViewModel {
             }
         }
     }
+    [RelayCommand]
     private async Task RemoveItem(AudioEntryViewModel? vm) {
         if (vm == null) {
             return;
@@ -119,12 +113,14 @@ public partial class PlaylistDetailPageViewModel: BasePageViewModel {
     }
     #region Drag&Drop
     private AudioEntryViewModel? _movingItem;
+    [RelayCommand(CanExecute = nameof(IsDraggable))]
     private void OnItemDrag(AudioEntryViewModel? vm) {
         if (vm == null) {
             return;
         }
         this._movingItem = vm;
     }
+    [RelayCommand]
     private async Task OnItemDrop(AudioEntryViewModel? vm) {
         if (vm == null || this._movingItem == null) {
             return;

@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages.Users;
@@ -17,13 +18,11 @@ public partial class NotPlayPageViewModel: BasePageViewModel {
     private readonly IAudioQueryService _queryService;
     private readonly IPlaybackService _playbackService;
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
-    public AsyncCommand<AudioEntryViewModel> SelectItemCommand { get; init; }
     public NotPlayPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioQueryService audioQueryService, IPlaybackService playbackService) : base(localizationService, appSetting) {
         this._queryService = audioQueryService;
         this._playbackService = playbackService;
         this._q = new(string.Empty);
         this.Items = new();
-        this.SelectItemCommand = new(SelectItem);
     }
     public override async Task Refresh() {
         var audios = await this._queryService.GetNotPlay(Config.MinPlayedRatio, this._q.Name);
@@ -42,6 +41,7 @@ public partial class NotPlayPageViewModel: BasePageViewModel {
     public override Task OnNavigatedFrom(NavigateEventArgs e) {
         return base.OnNavigatedFrom(e);
     }
+    [RelayCommand]
     private async Task SelectItem(AudioEntryViewModel? vm) {
         if (vm == null) {
             return;

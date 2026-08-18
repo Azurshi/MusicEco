@@ -1,14 +1,13 @@
 ﻿using MusicEco.Core;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 
 namespace MusicEco.ViewModels.Pages;
 
 public partial class SettingPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.Setting;
-    public SyncCommand<PageRoute> SelectSettingCommand { get; init; }
     public SettingPageViewModel(ILocalizationService localizationService, IAppSetting appSetting) : base(localizationService, appSetting) {
-        this.SelectSettingCommand = new(SelectSetting);
     }
     public override async Task Refresh() {
     }
@@ -19,6 +18,7 @@ public partial class SettingPageViewModel: BasePageViewModel {
     public override Task OnNavigatedFrom(NavigateEventArgs e) {
         return base.OnNavigatedFrom(e);
     }
+    [RelayCommand]
     private void SelectSetting(PageRoute? pageRoute) {
         if (pageRoute == null) {
             return;
