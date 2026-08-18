@@ -8,9 +8,11 @@ namespace MusicEco.Views.Buttons;
 
 public partial class FavouriteControlButton: ContentView {
     private static readonly Type ThisType = typeof(FavouriteControlButton);
-    [BindableAutoGen<ICommand>(IsNullable = true)]
+    [BindableAutoGen]
     public static readonly BindableProperty CommandProperty
         = Utility.Create<ICommand?>(ThisType);
+    [BindedProperty]
+    public partial ImageSource? ActivateImageSource { get; set; }
     public static readonly BindableProperty ActivateImageSourceProperty
         = Utility.Create<ImageSource?>(ThisType,
             propertyChanged: (b, _, v) => {
@@ -18,10 +20,8 @@ public partial class FavouriteControlButton: ContentView {
                 var value = (ImageSource?)v;
                 This.ActivateImage.Source = value;
             });
-    public ImageSource? ActivateImageSource {
-        get => (ImageSource?)GetValue(ActivateImageSourceProperty);
-        set => SetValue(ActivateImageSourceProperty, value);
-    }
+    [BindedProperty]
+    public partial ImageSource? DeactivateImageSource { get; set; }
     public static readonly BindableProperty DeactivateImageSourceProperty
         = Utility.Create<ImageSource?>(ThisType,
             propertyChanged: (b, _, v) => {
@@ -29,10 +29,6 @@ public partial class FavouriteControlButton: ContentView {
                 var value = (ImageSource?)v;
                 This.DeactivateImage.Source = value;
             });
-    public ImageSource? DeactivateImageSource {
-        get => (ImageSource?)GetValue(DeactivateImageSourceProperty);
-        set => SetValue(DeactivateImageSourceProperty, value);
-    }
     private bool _isFavourite = false;
     private readonly IFavouriteService _favouriteService;
     private readonly IQueueService _queueServce;

@@ -1,11 +1,14 @@
 using MusicEco.Core;
 using MusicEco.Services;
+using MusicEco.SourceGeneration;
 using System.Windows.Input;
 
 namespace MusicEco.Views.Buttons;
 
 public partial class NavigationButton: Grid {
     private static readonly Type ThisType = typeof(NavigationButton);
+    [BindedProperty]
+    public partial PageRoute PageRoute { get; set; }
     public static readonly BindableProperty PageRouteProperty 
         = Utility.Create<PageRoute>(ThisType, PageRoute.None,
             propertyChanged: (b, _, v) => {
@@ -13,10 +16,8 @@ public partial class NavigationButton: Grid {
                 var value = (PageRoute)v;
                 This.IsActivate = This._stack.CurrentRoute == value;
             });
-    public PageRoute PageRoute { 
-        get => (PageRoute)GetValue(PageRouteProperty); 
-        set => SetValue(PageRouteProperty, value); 
-    }
+    [BindedProperty]
+    public partial ImageSource? ActivateImageSource { get; set; }
     public static readonly BindableProperty ActivateImageSourceProperty
         = Utility.Create<ImageSource?>(ThisType,
             propertyChanged: (b, _, v) => {
@@ -24,10 +25,8 @@ public partial class NavigationButton: Grid {
                 var value = (ImageSource?)v;
                 This.ActivateImage.Source = value;
             });
-    public ImageSource? ActivateImageSource {
-        get => (ImageSource?)GetValue(ActivateImageSourceProperty);
-        set => SetValue(ActivateImageSourceProperty, value);
-    }
+    [BindedProperty]
+    public partial ImageSource? DeactivateImageSource { get; set; }
     public static readonly BindableProperty DeactivateImageSourceProperty
         = Utility.Create<ImageSource?>(ThisType,
             propertyChanged: (b, _, v) => {
@@ -35,10 +34,6 @@ public partial class NavigationButton: Grid {
                 var value = (ImageSource?)v;
                 This.DeactivateImage.Source = value;
             });
-    public ImageSource? DeactivateImageSource {
-        get => (ImageSource?)GetValue(DeactivateImageSourceProperty);
-        set => SetValue(DeactivateImageSourceProperty, value);
-    }
     private bool _isActivate = false;
     private bool IsActivate {
         get => _isActivate;

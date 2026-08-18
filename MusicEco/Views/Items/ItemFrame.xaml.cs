@@ -5,7 +5,7 @@ namespace MusicEco.Views.Items;
 
 public partial class ItemFrame: Border {
     private static readonly Type ThisType = typeof(ItemFrame);
-    [BindableAutoGen<ICommand>(IsNullable = true)]
+    [BindableAutoGen]
     public static readonly BindableProperty CommandProperty
         = Utility.Create<ICommand?>(ThisType,
             propertyChanged: (b, oldValue, newValue) => {
@@ -16,6 +16,8 @@ public partial class ItemFrame: Border {
                 newCommand?.CanExecuteChanged += This.NewCommand_CanExecuteChanged;
                 This.RefreshCommandState();
             });
+    [BindedProperty]
+    public partial View? ItemContent { get; set; }
     public static readonly BindableProperty ItemContentProperty
         = Utility.Create<View?>(ThisType,
             propertyChanged: (b, _, v) => {
@@ -23,10 +25,6 @@ public partial class ItemFrame: Border {
                 var value = (View?)v;
                 This.Container.Content = value;
             });
-    public View? ItemContent {
-        get => (View?)GetValue(ItemContentProperty);
-        set => SetValue(ItemContentProperty, value);
-    }
     public event EventHandler? Tapped;
     public static readonly BindableProperty IsSelectedProperty
         = Utility.Create<bool>(ThisType, false,

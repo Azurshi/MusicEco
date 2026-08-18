@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages;
@@ -10,7 +11,7 @@ public partial class AlbumPageViewModel: BasePageViewModel {
     private readonly string _nameQuery;
     private readonly IAudioQueryService _queryService;
     public ObservableCollectionExtend<AlbumViewModel> Items { get; init; }
-    public SyncCommand<AlbumViewModel> SelectItemCommand { get; init; }
+    //public SyncCommand<AlbumViewModel> SelectItemCommand { get; init; }
     public CollectionDisplayMode DisplayMode {
         get => this._setting.Get(CollectionDisplayMode.SimpleGrid, $"Album.{nameof(DisplayMode)}");
         set {
@@ -22,7 +23,8 @@ public partial class AlbumPageViewModel: BasePageViewModel {
         this.Items = new();
         this._nameQuery = string.Empty;
         this._queryService = audioQueryService;
-        this.SelectItemCommand = new(SelectItem);
+        //this.SelectItemCommand = new(SelectItem);
+        //this.SelectItemCommand
     }
     public override async Task Refresh() {
         string query = this._nameQuery;
@@ -41,6 +43,7 @@ public partial class AlbumPageViewModel: BasePageViewModel {
     public override Task OnNavigatedFrom(NavigateEventArgs e) {
         return base.OnNavigatedFrom(e);
     }
+    [RelayCommand]
     private void SelectItem(AlbumViewModel? vm) {
         if (vm == null) {
             return;
@@ -50,5 +53,11 @@ public partial class AlbumPageViewModel: BasePageViewModel {
         };
         NavigateEventArgs args = new(this, this.Route, PageRoute.AlbumDetail, query);
         EventSystem.Publish(this, args);
+    }
+    private bool CanTest(AlbumViewModel? vm) {
+        return true;
+    }
+    [RelayCommand(CanExecute = nameof(CanTest))]
+    private async void Test(AlbumViewModel? vm) {
     }
 }

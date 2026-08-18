@@ -8,7 +8,7 @@ using IEnumerable = System.Collections.IEnumerable;
 /// </summary>
 public partial class CollectionViewExtend: ContentView {
     private static readonly Type ThisType = typeof(CollectionViewExtend);
-    [BindableAutoGen<IEnumerable>(IsNullable = true)]
+    [BindableAutoGen]
     public static readonly BindableProperty ItemsSourceProperty
         = Utility.Create<IEnumerable?>(ThisType, null,
             propertyChanged: (b, oldValue, newValue) => {
@@ -17,7 +17,7 @@ public partial class CollectionViewExtend: ContentView {
                 var newCollection = (IEnumerable?)newValue;
                 This.SetCollection(oldCollection, newCollection);
             });
-    [BindableAutoGen<CollectionDisplayMode>]
+    [BindableAutoGen]
     public static readonly BindableProperty DisplayModeProperty
         = Utility.Create<CollectionDisplayMode>(ThisType, CollectionDisplayMode.None,
             propertyChanged: (b, _, v) => {

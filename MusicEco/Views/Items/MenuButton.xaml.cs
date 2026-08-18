@@ -1,4 +1,5 @@
 using MusicEco.Services;
+using MusicEco.SourceGeneration;
 using MusicEco.Views.Shell;
 using System.Numerics;
 using System.Windows.Input;
@@ -7,11 +8,9 @@ namespace MusicEco.Views.Items;
 
 public partial class MenuButton: ContentView {
     private static readonly Type ThisType = typeof(MenuButton);
+    [BindedProperty]
+    public partial DataTemplate? MenuTemplate { get; set; }
     public BindableProperty MenuTemplateProperty = Utility.Create<DataTemplate?>(ThisType);
-    public DataTemplate? MenuTemplate {
-        get => (DataTemplate?)GetValue(MenuTemplateProperty);
-        set => SetValue(MenuTemplateProperty, value);
-    }
     private readonly IOverlayService _overlayService;
     public MenuButton() {
         InitializeComponent();

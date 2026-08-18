@@ -2,11 +2,13 @@ using MusicEco.Core;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.Services;
+using MusicEco.SourceGeneration;
 
 namespace MusicEco.Views.Controls;
 
 public partial class ManagedIcon: Microsoft.Maui.Controls.Image {
     private static readonly Type ThisType = typeof(ManagedIcon);
+    [BindableAutoGen]
     public static readonly BindableProperty FileHashProperty
         = Utility.Create<Hash256>(ThisType, new Hash256(),
             propertyChanged: (b, _, v) => {
@@ -14,10 +16,7 @@ public partial class ManagedIcon: Microsoft.Maui.Controls.Image {
                 var hash = (Hash256)v;
                 This.SetImage(hash);
             });
-    public Hash256 FileHash {
-        get => (Hash256)GetValue(FileHashProperty);
-        set => SetValue(FileHashProperty, value);
-    }
+    [BindableAutoGen]
     public static readonly BindableProperty FileHashesProperty
         = Utility.Create<IReadOnlyList<Hash256>>(ThisType, new List<Hash256>(),
             propertyChanged: (b, _, v) => {
@@ -25,10 +24,6 @@ public partial class ManagedIcon: Microsoft.Maui.Controls.Image {
                 var hashes = (IReadOnlyList<Hash256>)v;
                 This.SetImage(hashes);
             });
-    public IReadOnlyList<Hash256> FileHashes {
-        get => (IReadOnlyList<Hash256>)GetValue(FileHashesProperty);
-        set => SetValue(FileHashesProperty, value);
-    }
     public CoverSize Option { get; set; } = CoverSize.Small;
     private readonly IIconService _iconService;
     public ManagedIcon() {

@@ -4,7 +4,7 @@ namespace MusicEco.Views.Buttons;
 
 public partial class MoveButton: Label {
     private static readonly Type ThisType = typeof(MoveButton);
-    [BindableAutoGen<bool>]
+    [BindableAutoGen]
     public static readonly BindableProperty IsDraggableProperty
         = Utility.Create<bool>(ThisType, false, bindingMode: BindingMode.TwoWay);
     public MoveButton() {

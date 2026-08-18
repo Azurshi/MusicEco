@@ -5,19 +5,19 @@ namespace MusicEco.Views.Buttons;
 
 public partial class ControlButton: Grid {
     private static readonly Type ThisType = typeof(ControlButton);
-    [BindableAutoGen<ICommand>(IsNullable = true)]
+    [BindableAutoGen]
     public static readonly BindableProperty CommandProperty
         = Utility.Create<ICommand?>(ThisType);
+    [BindedProperty]
+    public partial bool IsActivate { get; set; }
     public static readonly BindableProperty IsActivateProperty
         = Utility.Create<bool>(ThisType, false,
             propertyChanged: (b, _, v) => {
                 var This = (ControlButton)b;
                 This.RefreshState();
             });
-    public bool IsActivate {
-        get => (bool)GetValue(IsActivateProperty);
-        set => SetValue(IsActivateProperty, value);
-    }
+    [BindedProperty]
+    public partial ImageSource? ActivateImageSource { get; set; }
     public static readonly BindableProperty ActivateImageSourceProperty
         = Utility.Create<ImageSource?>(ThisType,
             propertyChanged: (b, _, v) => {
@@ -25,10 +25,8 @@ public partial class ControlButton: Grid {
                 var value = (ImageSource?)v;
                 This.ActivateImage.Source = value;
             });
-    public ImageSource? ActivateImageSource {
-        get => (ImageSource?)GetValue(ActivateImageSourceProperty);
-        set => SetValue(ActivateImageSourceProperty, value);
-    }
+    [BindedProperty]
+    public partial ImageSource? DeactivateImageSource { get; set; }
     public static readonly BindableProperty DeactivateImageSourceProperty
         = Utility.Create<ImageSource?>(ThisType,
             propertyChanged: (b, _, v) => {
@@ -36,10 +34,6 @@ public partial class ControlButton: Grid {
                 var value = (ImageSource?)v;
                 This.DeactivateImage.Source = value;
             });
-    public ImageSource? DeactivateImageSource {
-        get => (ImageSource?)GetValue(DeactivateImageSourceProperty);
-        set => SetValue(DeactivateImageSourceProperty, value);
-    }
     private void RefreshState() {
         this.ActivateImage.IsVisible = this.IsActivate;
         this.DeactivateImage.IsVisible = !this.IsActivate;

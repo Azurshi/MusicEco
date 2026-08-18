@@ -5,7 +5,7 @@ namespace MusicEco.Views.Buttons;
 
 public partial class CollectionDisplayModeButtonSimple: ContentView {
     private static readonly Type ThisType = typeof(CollectionDisplayModeButtonSimple);
-    [BindableAutoGen<CollectionDisplayMode>]
+    [BindableAutoGen]
     public static readonly BindableProperty DisplayModeProperty
         = Utility.Create<CollectionDisplayMode>(ThisType, CollectionDisplayMode.SimpleList,
             propertyChanged: (b, _, v) => {

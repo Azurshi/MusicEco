@@ -1,11 +1,10 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace MusicEco.Generators.AutoGens;
+namespace MusicEco.Generators.SourceGenerators;
 
-internal class AppSettingProperty: ISourceGenProperty {
-    public string AttributeName => "AppSettingPropertyAttribute";
-    public string AttributeMetadataName => AttributeName;
-    public string AttributeClassDefinition => $$"""
+internal class AppSettingPropertyGenerator: IPropertyBasedGenerator {
+    public string AttributeMetadataName => "AppSettingPropertyAttribute";
+    public string AttributeClassDefinition => """
         [global::System.AttributeUsage(global::System.AttributeTargets.Property)]
         public sealed class AppSettingPropertyAttribute: global::System.Attribute {
             public object? DefaultValue;
@@ -20,21 +19,18 @@ internal class AppSettingProperty: ISourceGenProperty {
             }
         }
         """;
-    public GeneratedSource? GetSource(string className, GeneratorAttributeSyntaxContext context, IPropertySymbol property) {
-        var propertyType = property.Type.ToDisplayString(
-            SymbolDisplayFormat.FullyQualifiedFormat
-            .WithMiscellaneousOptions(
-                SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier
-                | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers));
+    public GeneratedSource? GetSource(ISymbol classSymbol, GeneratorAttributeSyntaxContext context, IPropertySymbol property) {
+        var propertyType = Utility.ToDisplayString(property.Type);
+        string access = Utility.GetAccessibility(property.DeclaredAccessibility);
         var attribute = context.Attributes[0];
         var defaultValue = ToSource(attribute.ConstructorArguments[0]);
         string storageFieldName;
         if (attribute.ConstructorArguments.Length > 1) {
             storageFieldName = (string)attribute.ConstructorArguments[1].Value!;
-        } else {
-            storageFieldName = $"{className}.{property.Name}";
         }
-        string access = Utility.GetAccessibility(property.DeclaredAccessibility);
+        else {
+            storageFieldName = $"{classSymbol.Name}.{property.Name}";
+        }
         string header = "";
         string content = $$"""
                 {{access}} partial {{propertyType}} {{property.Name}} {
@@ -49,6 +45,7 @@ internal class AppSettingProperty: ISourceGenProperty {
             """;
         return new(header, content);
     }
+
     private static string ToSource(TypedConstant value) {
         if (value.Kind == TypedConstantKind.Enum
             && value.Type is INamedTypeSymbol enumType) {
@@ -68,6 +65,5 @@ internal class AppSettingProperty: ISourceGenProperty {
             bool boolean => boolean ? "true" : "false",
             _ => Convert.ToString(value.Value, System.Globalization.CultureInfo.InvariantCulture)
         };
-
     }
 }

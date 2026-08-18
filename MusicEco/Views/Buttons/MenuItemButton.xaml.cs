@@ -1,4 +1,5 @@
 
+using MusicEco.SourceGeneration;
 using MusicEco.Views.Items;
 using System.Windows.Input;
 
@@ -6,6 +7,8 @@ namespace MusicEco.Views.Buttons;
 
 public partial class MenuItemButton: ContentView, IMenuItemButton {
     private static readonly Type ThisType = typeof(MenuItemButton);
+    [BindedProperty]
+    public partial ICommand? Command { get; set; }
     public static readonly BindableProperty CommandProperty
         = Utility.Create<ICommand?>(ThisType,
             propertyChanged: (b, oldValue, newValue) => {
@@ -16,10 +19,8 @@ public partial class MenuItemButton: ContentView, IMenuItemButton {
                 newCommand?.CanExecuteChanged += This.NewCommand_CanExecuteChanged;
                 This.RefreshCommandState();
             });
-    public ICommand? Command {
-        get => (ICommand?)GetValue(CommandProperty);
-        set => SetValue(CommandProperty, value);
-    }
+    [BindedProperty]
+    public partial string Text { get; set; }
     public static readonly BindableProperty TextProperty
         = Utility.Create<string>(ThisType, string.Empty,
             propertyChanged: (b, _, v) => {
@@ -27,10 +28,6 @@ public partial class MenuItemButton: ContentView, IMenuItemButton {
                 var text = (string)v;
                 This.InnerLabel.Text = text;
             });
-    public string Text {
-        get => (string)GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
-    }
     public event EventHandler? Tapped;
     public MenuItemButton() {
         InitializeComponent();

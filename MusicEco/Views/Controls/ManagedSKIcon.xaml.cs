@@ -18,7 +18,7 @@ public partial class ManagedSKIcon: SKCanvasView {
         HasImage
     }
     private static readonly Type ThisType = typeof(ManagedSKIcon);
-    [BindableAutoGen<Hash256>]
+    [BindableAutoGen]
     public static readonly BindableProperty FileHashProperty
         = Utility.Create<Hash256>(ThisType, new Hash256(),
             propertyChanged: (b, _, v) => {
@@ -26,7 +26,7 @@ public partial class ManagedSKIcon: SKCanvasView {
                 var hash = (Hash256)v;
                 This.SetImage(hash);
             });
-    [BindableAutoGen<IReadOnlyList<Hash256>>]
+    [BindableAutoGen]
     public static readonly BindableProperty FileHashesProperty
     = Utility.Create<IReadOnlyList<Hash256>>(ThisType, new List<Hash256>(),
         propertyChanged: (b, _, v) => {
