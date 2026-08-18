@@ -16,6 +16,7 @@
             <DataTemplate x:Key="MenuTemplate"
                           x:DataType="itemVM:AudioEntryViewModel">
                 <VerticalStackLayout>
+                    <button:FavouriteMenuItemButton />
                     <button:MenuItemButton Text="{Binding [Menu_AddToQueue], Source={Static service:Localization.L}}"
                                            Command="{Static commands:MenuCommands.AddToQueueCommand}" />
                     <button:MenuItemButton Text="{Binding [Menu_AddToPlaylist], Source={Static service:Localization.L}}"
@@ -67,6 +68,9 @@
             <button:NavigationBackwardButton Grid.Column="0"
                                              WidthRequest="{DynamicResource HeaderSize}"
                                              Margin="4, 8" />
+            <Label Grid.Column="1"
+                   Text="{Binding L[User_Not_Title]}"
+                   Style="{StaticResource OneLine}" />
         </Grid>
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Items.Items}"

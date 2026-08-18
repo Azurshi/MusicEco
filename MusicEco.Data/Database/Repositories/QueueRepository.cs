@@ -45,7 +45,7 @@ internal partial class QueueRepository {
         }
         foreach (var row in rows) {
             QueueEntity entity = new(row);
-            var entriesData = entriesDataMap[entity.CreationTime];
+            var entriesData = entriesDataMap.GetValueOrDefault(entity.CreationTime, []);
             List<AudioEntry> entries = [];
             AudioEntry? current = null;
             foreach(var (entry, isCurrent) in entriesData) {

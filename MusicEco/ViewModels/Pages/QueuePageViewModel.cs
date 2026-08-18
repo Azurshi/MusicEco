@@ -5,19 +5,57 @@ using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages;
+public sealed partial class QueuePageQuery: ObservableObject {
+    [ObservableProperty]
+    public partial string Name { get; set; }
+    public QueuePageQuery() {
+        this.Name = string.Empty;
+    }
+}
 
 public partial class QueuePageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.Queue;
     private readonly IQueueService _queueService;
-    private readonly IPlaybackService _playbackService;
-    public ObservableCollectionExtend<QueueItemViewModel> Items { get; init; }
+    public QueuePageQuery Query { get; init; }
+    private readonly DelayedDispatcher _queryDispatcher;
+    public ManagedCollection<QueueItemViewModel> Items { get; init; }
     [AppSettingProperty(CollectionDisplayMode.SimpleList)]
     public partial CollectionDisplayMode DisplayMode { get; set; }
-    public QueuePageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IQueueService queueService, IPlaybackService playbackService) : base(localizationService, appSetting) {
+    public QueuePageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IQueueService queueService) : base(localizationService, appSetting) {
+        this.Query = new();
+        this._queryDispatcher = new(Config.UserInputDelay);
         this._queueService = queueService;
-        this._playbackService = playbackService;
-        this.Items = new();
+        this.Items = new(this.Filter);
+        this.Query.PropertyChanged += this.Query_PropertyChanged;
     }
+    private IReadOnlyList<QueueItemViewModel> Filter(IReadOnlyList<QueueItemViewModel> items) {
+        string nameQuery = this.Query.Name.Trim();
+        if (nameQuery.Length >= Config.MinNameLength) {
+            List<QueueItemViewModel> result = [];
+            foreach (var item in items) {
+                if (item.Name.Contains(nameQuery, StringComparison.InvariantCultureIgnoreCase)) {
+                    result.Add(item);
+                }
+            }
+            return result;
+        }
+        else {
+            return items;
+        }
+    }
+    private async void Query_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {
+        var currentQueue = await _queueService.GetCurrent();
+        await this._queryDispatcher.Dispatch(() => {
+            this.Items.Refresh((item) => {
+                bool isCurrent = false;
+                if (currentQueue != null && currentQueue.CreationTime == item.CreationTime) {
+                    isCurrent = true;
+                }
+                item.Selected = isCurrent;
+            });
+        });
+    }
+
     public override async Task Refresh() {
         var queues = await _queueService.GetAll();
         var currentQueue = await _queueService.GetCurrent();

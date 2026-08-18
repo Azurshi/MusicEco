@@ -25,7 +25,7 @@
 		<Version Condition="'$(Configuration)' == 'Release'">0.0.1</Version>
 		<Description> v0.0: Data module.</Description>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
 	  <None Include="Services\Scanner.Converter.cs">
 	    <DependentUpon>Scanner.cs</DependentUpon>
@@ -34,6 +34,9 @@
 	    <DependentUpon>Scanner.cs</DependentUpon>
 	  </None>
 	  <None Include="Services\Scanner.Metadata.cs">
+	    <DependentUpon>Scanner.cs</DependentUpon>
+	  </None>
+	  <None Include="Services\Scanner.PostScanCache.cs">
 	    <DependentUpon>Scanner.cs</DependentUpon>
 	  </None>
 	  <None Include="Services\Scanner.ProcessFile.cs">

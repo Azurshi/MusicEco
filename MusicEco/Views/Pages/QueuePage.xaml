@@ -60,8 +60,10 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Entry Grid.Column="0"
-                   Placeholder="{Binding L[Queue_Search]}" />
+                   Placeholder="{Binding L[Queue_Search]}" 
+                   Text="{Binding Query.Name, Mode=TwoWay}"/>
             <button:CollectionDisplayModeButtonSimple Grid.Column="1"
+                                                      IsVisible="False"
                                                       DisplayMode="{Binding DisplayMode}"/>
         </Grid>
         <CollectionView Grid.Row="1"

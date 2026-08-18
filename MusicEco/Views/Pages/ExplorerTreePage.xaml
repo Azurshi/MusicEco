@@ -25,6 +25,7 @@
             <DataTemplate x:Key="FileMenuTemplate"
                           x:DataType="itemVM:FileEntryViewModel">
                 <VerticalStackLayout>
+                    <button:FavouriteMenuItemButton />
                     <button:MenuItemButton Text="{Binding [Menu_AddToQueue], Source={Static service:Localization.L}}"
                                            Command="{Static commands:MenuCommands.AddToQueueCommand}" />
                     <button:MenuItemButton Text="{Binding [Menu_AddToPlaylist], Source={Static service:Localization.L}}"
@@ -64,7 +65,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <control:ManagedIcon Grid.Column="0"
+                            <control:ManagedSKIcon Grid.Column="0"
                                                  FileHash="{Binding FileHash}"
                                                  WidthRequest="{DynamicResource IconItemSize}" />
                             <Label Grid.Column="1"

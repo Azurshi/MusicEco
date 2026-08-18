@@ -68,6 +68,7 @@ internal partial class Scanner: IScanner {
                 try {
                     sw.Restart();
                     await Task.Run(() => PushChange(db.Connection, dto, progress.PushChange, updateInterval));
+                    await Task.Run(() => PostScanCache(db.Connection));
                     await db.Connection.CommitTransactionAsync();
                     sw.Stop();
                     pushTime = sw.Elapsed;

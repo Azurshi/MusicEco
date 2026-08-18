@@ -57,8 +57,8 @@ internal class AudioQueryRepository {
                 Hash256, string>($"""
                 SELECT FileHash, DisplayTitle
                 FROM AudioEntity
-                WHERE Name LIKE ? AND FileHash IN (
-                    SELECT UNIQUE(FileHash)
+                WHERE DisplayTitle LIKE ? AND FileHash NOT IN (
+                    SELECT DISTINCT(FileHash)
                     FROM PlayEventEntity
                     WHERE PlayedRatio >= ?
                 )

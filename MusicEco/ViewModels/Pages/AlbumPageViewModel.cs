@@ -6,29 +6,47 @@ using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages;
 
+public partial class AlbumPageQuery: ObservableObject {
+    [ObservableProperty]
+    public partial string Name { get; set; }
+    public AlbumPageQuery() {
+        this.Name = string.Empty;
+    }
+}
 public partial class AlbumPageViewModel: BasePageViewModel {
+
     public override PageRoute Route => PageRoute.Album;
-    private readonly string _nameQuery;
+    public AlbumPageQuery Query { get; init; } = new();
+    private readonly DelayedDispatcher _queryDispatcher;
     private readonly IAudioQueryService _queryService;
-    public ObservableCollectionExtend<AlbumViewModel> Items { get; init; }
-    //public SyncCommand<AlbumViewModel> SelectItemCommand { get; init; }
-    public CollectionDisplayMode DisplayMode {
-        get => this._setting.Get(CollectionDisplayMode.SimpleGrid, $"Album.{nameof(DisplayMode)}");
-        set {
-            this._setting.Set(value, $"Album.{nameof(DisplayMode)}");
-            OnPropertyChanged();
+    public ManagedCollection<AlbumViewModel> Items { get; init; }
+    [AppSettingProperty(CollectionDisplayMode.SimpleGrid)]
+    public partial CollectionDisplayMode DisplayMode { get; set; }
+    public AlbumPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioQueryService audioQueryService) : base(localizationService, appSetting) {
+        this.Items = new(this.Filter);
+        this._queryService = audioQueryService;
+        this.Query.PropertyChanged += this.Query_PropertyChanged;
+        this._queryDispatcher = new(Config.UserInputDelay);
+    }
+    private IReadOnlyList<AlbumViewModel> Filter(IReadOnlyList<AlbumViewModel> items) {
+        string nameQuery = this.Query.Name.Trim();
+        if (nameQuery.Length >= Config.MinNameLength) {
+            List<AlbumViewModel> result = [];
+            foreach (var item in items) {
+                if (item.Name.Contains(nameQuery, StringComparison.InvariantCultureIgnoreCase)) {
+                    result.Add(item);
+                }
+            }
+            return result;
+        } else {
+            return items;
         }
     }
-    public AlbumPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAudioQueryService audioQueryService) : base(localizationService, appSetting) {
-        this.Items = new();
-        this._nameQuery = string.Empty;
-        this._queryService = audioQueryService;
-        //this.SelectItemCommand = new(SelectItem);
-        //this.SelectItemCommand
+    private async void Query_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {
+        await this._queryDispatcher.Dispatch(this.Items.Refresh);
     }
     public override async Task Refresh() {
-        string query = this._nameQuery;
-        var albums = await this._queryService.QueryAlbum(query);
+        var albums = await this._queryService.QueryAlbum(string.Empty);
         List<AlbumViewModel> items = [];
         foreach (var album in albums) {
             items.Add(new(album.Name, album.Audios.Select(a => a.Hash).ToList()));

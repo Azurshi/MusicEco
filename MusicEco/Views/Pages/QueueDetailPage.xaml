@@ -15,6 +15,7 @@
             <DataTemplate x:Key="MenuTemplate"
                           x:DataType="itemVM:AudioEntryViewModel">
                 <VerticalStackLayout>
+                    <button:FavouriteMenuItemButton />
                     <button:MenuItemButton Text="{Binding [Menu_RemoveFromQueue], Source={Static service:Localization.L}}"
                                            Tapped="MenuItemButton_Tapped" />
                     <button:MenuItemButton Text="{Binding [Menu_AddToQueue], Source={Static service:Localization.L}}"
@@ -37,7 +38,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <control:ManagedIcon Grid.Column="0"
+                            <control:ManagedSKIcon Grid.Column="0"
                                                  WidthRequest="{DynamicResource IconItemSize}"
                                                  FileHash="{Binding FileHash}"
                                                  Option="Small" />

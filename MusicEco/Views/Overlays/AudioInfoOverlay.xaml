@@ -99,7 +99,7 @@
                    Style="{StaticResource Title}"
                    Text="{Binding Title}"
                    Margin="8" />
-            <control:ManagedIcon Grid.Row="1"
+            <control:ManagedSKIcon Grid.Row="1"
                                  Grid.ColumnSpan="2"
                                  x:Name="CoverDisplay"
                                  FileHash="{Binding FileHash}"

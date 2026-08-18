@@ -6,21 +6,52 @@ using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages.Users;
 
+public sealed partial class PlaylistPageQuery: ObservableObject {
+    [ObservableProperty]
+    public partial string Name { get; set; }
+    public PlaylistPageQuery() {
+        this.Name = string.Empty;
+    }
+}
+
 public partial class PlaylistPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.Playlist;
     private readonly IPlaylistService _playlistService;
-    public ObservableCollectionExtend<PlaylistItemViewModel> Items { get; init; }
+    public PlaylistPageQuery Query { get; init; }
+    private readonly DelayedDispatcher _queryDispatcher;
+    public ManagedCollection<PlaylistItemViewModel> Items { get; init; }
     [AppSettingProperty(CollectionDisplayMode.SimpleList)]
     public partial CollectionDisplayMode DisplayMode { get; set; }
     public PlaylistPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IPlaylistService playlistService) : base(localizationService, appSetting) {
+        this.Query = new();
+        this._queryDispatcher = new(Config.UserInputDelay);
         this._playlistService = playlistService;
-        this.Items = new();
+        this.Items = new(this.Filter);
+        this.Query.PropertyChanged += this.Query_PropertyChanged;
+    }
+
+    private async void Query_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {
+        await this._queryDispatcher.Dispatch(this.Items.Refresh);
     }
 
     private async void PlaylistService_ItemsChanged(object? sender, PlaylistChangedEventArgs e) {
         await Refresh();
     }
-
+    private IReadOnlyList<PlaylistItemViewModel> Filter(IReadOnlyList<PlaylistItemViewModel> items) {
+        string nameQuery = this.Query.Name.Trim();
+        if (nameQuery.Length >= Config.MinNameLength) {
+            List<PlaylistItemViewModel> result = [];
+            foreach (var item in items) {
+                if (item.Name.Contains(nameQuery, StringComparison.InvariantCultureIgnoreCase)) {
+                    result.Add(item);
+                }
+            }
+            return result;
+        }
+        else {
+            return items;
+        }
+    }
     public override async Task Refresh() {
         var playlists = await this._playlistService.GetAll();
         List<PlaylistItemViewModel> items = [];

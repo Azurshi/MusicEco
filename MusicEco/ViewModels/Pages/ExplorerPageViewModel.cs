@@ -1,9 +1,7 @@
 ﻿using MusicEco.Core;
 using MusicEco.Core.Services;
-using MusicEco.Core.Types;
 using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
-using System.Diagnostics;
 
 namespace MusicEco.ViewModels.Pages;
 

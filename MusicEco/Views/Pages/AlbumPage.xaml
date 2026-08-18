@@ -95,7 +95,8 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Entry Grid.Column="0"
-                   Placeholder="{Binding L[Album_Search]}" />
+                   Placeholder="{Binding L[Album_Search]}" 
+                   Text="{Binding Q.Name, Mode=TwoWay}"/>
             <button:CollectionDisplayModeButtonSimple Grid.Column="1"
                                                       DisplayMode="{Binding DisplayMode, Mode=TwoWay}"/>
         </Grid>     

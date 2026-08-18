@@ -5,31 +5,33 @@ using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages;
+public partial class AlbumDetailPageQuery: ObservableObject {
+    [ObservableProperty]
+    public partial string AlbumName { get; set; }
+    public AlbumDetailPageQuery() {
+        this.AlbumName = string.Empty;
+    }
+}
 
 public partial class AlbumDetailPageViewModel: BasePageViewModel {
-    private sealed class Query {
-        public string AlbumName;
-        public Query() {
-            this.AlbumName = string.Empty;
-        }
-    }
     public override PageRoute Route => PageRoute.AlbumDetail;
-    private readonly Query _q;
+    public AlbumDetailPageQuery Query { get; init; }
     private readonly IAudioQueryService _queryService;
     private readonly IPlaybackService _playbackService;
-    public string AlbumName => _q.AlbumName;
+    public string AlbumName => this.Query.AlbumName;
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
     [AppSettingProperty(CollectionDisplayMode.SimpleList)]
     public partial CollectionDisplayMode DisplayMode { get; set; }
     public AlbumDetailPageViewModel(ILocalizationService localizationService, IAudioQueryService audioQueryService, IAppSetting appSetting, IPlaybackService playbackService) : base(localizationService, appSetting) {
-        this._q = new();
+        this.Query = new();
         this._queryService = audioQueryService;
         this._playbackService = playbackService;
         this.Items = new();
     }
+
     public override async Task Refresh() {
         OnPropertyChanged(nameof(AlbumName));
-        var album = await this._queryService.GetAlbum(this._q.AlbumName);
+        var album = await this._queryService.GetAlbum(this.Query.AlbumName);
         if (album != null) {
             List<AudioEntryViewModel> items = [];
             foreach(var audio in album.Audios) {
@@ -43,7 +45,7 @@ public partial class AlbumDetailPageViewModel: BasePageViewModel {
         await base.OnNavigateTo(e);
         if (e.Query.TryGetValue("albumName", out var albumNameObj)) {
             if (albumNameObj is string albumName) {
-                this._q.AlbumName = albumName;
+                this.Query.AlbumName = albumName;
                 await Refresh();
             }
         }

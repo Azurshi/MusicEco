@@ -16,6 +16,7 @@
             <DataTemplate x:Key="MenuTemplate"
                           x:DataType="itemVM:AudioEntryViewModel">
                 <VerticalStackLayout>
+                    <button:FavouriteMenuItemButton />
                     <button:MenuItemButton Text="{Binding [Menu_RemoveFromPlaylist], Source={Static service:Localization.L}}"
                                            Tapped="MenuItemButton_Tapped" />
                     <button:MenuItemButton Text="{Binding [Menu_AddToQueue], Source={Static service:Localization.L}}"

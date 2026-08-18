@@ -15,11 +15,11 @@
             <DataTemplate x:Key="MenuTemplate"
                           x:DataType="itemVM:AudioEntryViewModel">
                 <VerticalStackLayout>
+                    <button:FavouriteMenuItemButton />
                     <button:MenuItemButton Text="{Binding [Menu_AddToQueue], Source={Static service:Localization.L}}"
                                            Command="{Static commands:MenuCommands.AddToQueueCommand}" />
                     <button:MenuItemButton Text="{Binding [Menu_AddToPlaylist], Source={Static service:Localization.L}}"
                                            Command="{Static commands:MenuCommands.AddToPlaylistCommand}" />
-                    <button:FavouriteMenuItemButton />
                     <button:MenuItemButton Text="{Binding [Menu_Info], Source={Static service:Localization.L}}"
                                            Command="{Static commands:MenuCommands.ShowAudioInfoCommand}" />
                 </VerticalStackLayout>
@@ -94,7 +94,7 @@
                                              WidthRequest="{DynamicResource HeaderSize}"
                                              Margin="4, 8" />
             <Label Grid.Column="1"
-                   Text="{Binding AlbumName}"
+                   Text="{Binding Query.AlbumName}"
                    Style="{StaticResource OneLine}" />
             <button:CollectionDisplayModeButtonSimple Grid.Column="2"
                                                       DisplayMode="{Binding DisplayMode, Mode=TwoWay}" />
@@ -107,7 +107,7 @@
                                               ItemTemplate="{StaticResource ListAudioItemTemplate}">
                     <control:CollectionViewPreset.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical"
-                                           ItemSpacing="8"/>
+                                           ItemSpacing="8" />
                     </control:CollectionViewPreset.ItemsLayout>
                 </control:CollectionViewPreset>
                 <control:CollectionViewPreset DisplayMode="SimpleGrid"
@@ -120,7 +120,6 @@
                     </control:CollectionViewPreset.ItemsLayout>
                 </control:CollectionViewPreset>
             </control:CollectionViewExtend.ItemPresets>
-            
         </control:CollectionViewExtend>
     </Grid>
 </ContentView>
