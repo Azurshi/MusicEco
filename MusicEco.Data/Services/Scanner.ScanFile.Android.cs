@@ -30,19 +30,22 @@ internal partial class Scanner {
         Dictionary<string, FileEntry> existsFilesMap = existsFiles.ToDictionary(f => f.Path);
         Queue<Uri> folderQ = new(paths.Select(UriUtility.GetUri).OfType<Uri>());
         List<FileInfo> files = [];
-        while (folderQ.Count > 0) {
-            var folderURI = folderQ.Dequeue();
-            foreach (var childDirectory in UriUtility.GetFolders(folderURI)) {
-                folderQ.Enqueue(childDirectory);
-                //Debug.WriteLine(childDirectory.ToString());
-            }
-            foreach (var file in UriQuery.GetFilesInfo(folderURI)) {
-                if (fileExtensions.Contains(Path.GetExtension(file.Name))) {
-                    files.Add(file);
-                    //Debug.WriteLine(files.Count);
+        void ScanFolderJobs() {
+            while (folderQ.Count > 0) {
+                var folderURI = folderQ.Dequeue();
+                foreach (var childDirectory in UriUtility.GetFolders(folderURI)) {
+                    folderQ.Enqueue(childDirectory);
+                    //Debug.WriteLine(childDirectory.ToString());
+                }
+                foreach (var file in UriQuery.GetFilesInfo(folderURI)) {
+                    if (fileExtensions.Contains(Path.GetExtension(file.Name))) {
+                        files.Add(file);
+                        //Debug.WriteLine(files.Count);
+                    }
                 }
             }
         }
+        await Task.Run(ScanFolderJobs);
         List<byte[]> ioBuffers = new(nWorkers);
         for (int i = 0; i < nWorkers; i++) {
             ioBuffers.Add(new byte[Config.IOBufferSize]);

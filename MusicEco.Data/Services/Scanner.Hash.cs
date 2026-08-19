@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace MusicEco.Data.Services;
 
+#pragma warning disable SYSLIB1054
 internal unsafe class NativeBlakeWrapper {
     private const string LibraryName = "music_eco_blake3";
     [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "music_eco_blake3_create")]
@@ -22,7 +23,7 @@ internal unsafe class NativeBlakeWrapper {
     [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "music_eco_blake3_dispose")]
     public static extern void Dispose(nint context);
 }
-
+#pragma warning restore SYSLIB1054
 internal partial class Scanner {
     private static long ReadTicks = 0;
     private static long HashTicks = 0;
