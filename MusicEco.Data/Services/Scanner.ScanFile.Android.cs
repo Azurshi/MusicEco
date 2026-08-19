@@ -5,6 +5,7 @@ using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.Data.Platforms.Android;
 using System.Diagnostics;
+using System.Security.Cryptography;
 using FileInfo = MusicEco.Data.Platforms.Android.FileInfo;
 using Uri = Android.Net.Uri;
 
@@ -14,13 +15,17 @@ internal partial class Scanner {
     private static FileEntry FileInfoToEntry(FileInfo file, byte[] ioBuffer) {
         Hash256 hash;
         using (var fileStream = UriUtility.OpenFile(file.Uri, ioBuffer.Length, FileAccess.Read)) {
-            hash = ComputeHash(fileStream, ioBuffer);
+            hash = ComputeHash(fileStream!, ioBuffer);
         }
         string fileName = Path.GetFileNameWithoutExtension(file.Name);
         FileEntry entry = new(file.Path, hash, file.LastWriteTimeUtc, file.Name, fileName, file.Length);
         return entry;
     }
     private static async Task<ScanFileDto> ScanFiles(List<FileEntry> existsFiles, IReadOnlyList<string> paths, HashSet<string> fileExtensions, int nWorkers, IProgress<ScanFileProgress> progress, TimeSpan updateInterval) {
+        ReadTicks = 0;
+        HashTicks = 0;
+        FinalizeTicks = 0;
+
         ScanFileDto result = new();
         Dictionary<string, FileEntry> existsFilesMap = existsFiles.ToDictionary(f => f.Path);
         Queue<Uri> folderQ = new(paths.Select(UriUtility.GetUri).OfType<Uri>());

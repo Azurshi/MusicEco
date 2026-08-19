@@ -1,12 +1,13 @@
-﻿using Blake3;
-using MusicEco.Core.Data;
+﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.Data.Database.Repositories;
 using SQLiteORM;
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace MusicEco.Data.Services;
+
 internal partial class Scanner: IScanner {
     private class BufferOverflowException: Exception {
 
@@ -23,26 +24,11 @@ internal partial class Scanner: IScanner {
         this._provider = serviceProvider;
         this._scanPathService = scanPathService;
     }
-    private static Hash256 ComputeHash(Stream stream, byte[] ioBuffer) {
-        using(var harsher = Hasher.New()) {
-            int read = 0;
-            while((read = stream.Read(ioBuffer, 0, ioBuffer.Length)) > 0) {
-                harsher.Update(ioBuffer.AsSpan()[..read]);
-            }
-            Span<byte> output = stackalloc byte[32];
-            harsher.Finalize(output);
-            return new(output);
-        }
-    }
-    private static Hash256 ComputeHash(Memory<byte> data) {
-        Span<byte> output = stackalloc byte[32];
-        Hasher.Hash(data.Span, output);
-        return new(output);
-    }
-
-    public async Task<bool> ScanAndUpdate(ScanProgress progress, List<string> fileExtensions, int scanWorkers, int processWorkers, TimeSpan updateInterval, object? caller = null) {
+    private static bool DebugMode = false;
+    public async Task<IScanResult> ScanAndUpdate(ScanProgress progress, List<string> fileExtensions, int scanWorkers, int processWorkers, TimeSpan updateInterval, object? caller = null, bool verbose = false) {
         this.Running = true;
         this.RunningChanged?.Invoke(caller, this.Running);
+        DebugMode = verbose;
         try {
             var folderPaths = await this._scanPathService.GetPaths();
             HandleFileDto dto;
@@ -75,11 +61,27 @@ internal partial class Scanner: IScanner {
                     Debug.WriteLine($"Scan file time: {scanFilesTime.TotalSeconds} s");
                     Debug.WriteLine($"Handle file time: {handleFileTime.TotalSeconds} s");
                     Debug.WriteLine($"Push time: {pushTime.TotalSeconds} s");
-                    return true;
+                    if (!DebugMode) {
+                        return new SimpleScanResult(true);
+                    }
+                    else {
+#if WINDOWS
+                        int factor = 1;
+#elif ANDROID
+                        int factor = 100;
+#endif
+#if ANDROID || WINDOWS
+
+                        ValueTuple<TimeSpan, TimeSpan, TimeSpan> extra = (TimeSpan.FromTicks(ReadTicks / factor), TimeSpan.FromTicks(HashTicks / factor), TimeSpan.FromTicks(FinalizeTicks / factor));
+                        return new DetailScanResult(scanFilesTime, handleFileTime, pushTime, extra);
+#else
+                        return new DetailScanResult(scanFilesTime, handleFileTime, pushTime);
+#endif
+                    }
                 }
                 catch {
                     await db.Connection.RollbackTransactionAsync();
-                    return false;
+                    return new SimpleScanResult(true);
                 }
             }
         }

@@ -33,6 +33,7 @@ public static class ServiceRegister {
         services.AddSingleton<PlaylistRepository>();
         services.AddSingleton<QueueRepository>();
         services.AddSingleton<AudioQueryRepository>();
+        services.AddSingleton<GlobalRepository>();
 
         var result = TypeMapExtend.Register(
             typeof(Hash256),

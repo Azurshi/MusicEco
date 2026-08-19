@@ -89,6 +89,8 @@ public static class ServiceRegister {
         services.AddTransient<AudioInfoOverlayViewModel>();
         services.AddTransient<CreateNewPlaylistOverlay>();
         services.AddTransient<CreateNewPlaylistOverlayViewModel>();
+
+        services.AddTransient<DevInfoOverlay>();
         return services;
     }
     public static IServiceCollection RegisterOthers(this IServiceCollection services) {

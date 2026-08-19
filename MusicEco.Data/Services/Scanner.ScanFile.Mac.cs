@@ -1,7 +1,8 @@
 ﻿#if MACCATALYST
+using Blake3;
 using MusicEco.Core.Data;
 using MusicEco.Core.Services;
-
+using MusicEco.Core.Types;
 namespace MusicEco.Data.Services;
 
 internal partial class Scanner {

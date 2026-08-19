@@ -84,7 +84,7 @@ public static class UriUtility {
             cursor.Dispose();
         }
     }
-    public static FileStream OpenFile(Uri uri, int bufferSize, FileAccess fileAccess) {
+    public static FileStream? OpenFile(Uri uri, int bufferSize, FileAccess fileAccess) {
         var context = AndroidF.App.Application.Context;
         var resolver = context.ContentResolver!;
         SafeFileHandle? handle = null;
@@ -94,23 +94,29 @@ public static class UriUtility {
             FileAccess.ReadWrite => "rw",
             _ => throw new ArgumentException(null, nameof(fileAccess))
         };
-        using (var parcelFileDesriptor = resolver.OpenFileDescriptor(uri, flag) ?? throw new InvalidOperationException($"Failed to open: {uri.Path}")) {
-            int fd = parcelFileDesriptor.DetachFd();
-            try {
-                handle = new SafeFileHandle(fd, ownsHandle: true);
-                return new FileStream(handle, fileAccess, bufferSize, false);
-            }
-            catch {
-                if (handle != null) {
-                    handle.Close();
+        try {
+            using (var parcelFileDesriptor = resolver.OpenFileDescriptor(uri, flag) ?? throw new InvalidOperationException($"Failed to open: {uri.Path}")) {
+                int fd = parcelFileDesriptor.DetachFd();
+                try {
+                    handle = new SafeFileHandle(fd, ownsHandle: true);
+                    return new FileStream(handle, fileAccess, bufferSize, false);
                 }
-                else {
-                    using (var cleanup = ParcelFileDescriptor.AdoptFd(fd)) {
-
+                catch {
+                    if (handle != null) {
+                        handle.Close();
                     }
+                    else {
+                        using (var cleanup = ParcelFileDescriptor.AdoptFd(fd)) {
+
+                        }
+                    }
+                    throw;
                 }
-                throw;
             }
+        }
+        catch (Java.Lang.SecurityException) {
+            System.Diagnostics.Debug.WriteLine($"------ Android: Permission denied");
+            return null;
         }
     }
 }

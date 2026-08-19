@@ -13,4 +13,5 @@ public interface IAppSetting {
     public T Get<T>(T defaultValue, [CallerMemberName] string key = "");
     public bool Register(Type type, JsonConverter converter);
     public bool Register<T>(JsonConverter<T> converter);
+    public Task DeleteAllData();
 }

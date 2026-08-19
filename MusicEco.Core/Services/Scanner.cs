@@ -39,12 +39,15 @@ public class ScanProgress {
         this.PushChange = new Progress<PushChangeProgress>(pushChange);
     }
 }
+public interface IScanResult {
+    public bool Success { get; }
+}
 public interface IScanner {
     public event EventHandler<bool>? RunningChanged;
     // Block delete AudioEntity and modify FileEntity while running
     public bool Running { get; }
     // Scan, compare with exising data and update
-    public Task<bool> ScanAndUpdate(ScanProgress progress, List<string> fileExtensions, int scanWorkers, int processWorkers, TimeSpan updateInterval, object? caller = null);
+    public Task<IScanResult> ScanAndUpdate(ScanProgress progress, List<string> fileExtensions, int scanWorkers, int processWorkers, TimeSpan updateInterval, object? caller = null, bool verbose = false);
 }
 public interface IScanPathService {
     public event EventHandler ItemChanged;

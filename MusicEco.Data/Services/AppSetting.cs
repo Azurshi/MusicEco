@@ -12,11 +12,13 @@ internal partial class AppSetting: IAppSetting, IDisposable {
     public event EventHandler<SettingChangedEventArgs>? ItemChanged;
     private readonly JsonSerializerOptions _options;
     private readonly DictionaryRepository _dictRepo;
+    private readonly GlobalRepository _globalRepo;
     private readonly Dictionary<string, object?> _settings;
     private bool _disposed = false;
     private readonly Stopwatch _sw;
-    public AppSetting(DictionaryRepository dictionaryRepository) {
+    public AppSetting(DictionaryRepository dictionaryRepository, GlobalRepository globalRepository) {
         this._dictRepo = dictionaryRepository;
+        this._globalRepo = globalRepository;
         this._options = new();
         this.Register(new Hash256JsonConverter());
         this._settings = [];
@@ -101,6 +103,10 @@ internal partial class AppSetting: IAppSetting, IDisposable {
     }
     public void Dispose() {
         this._disposed = true;
+    }
+
+    public async Task DeleteAllData() {
+        await this._globalRepo.DeleteAllData();
     }
     #endregion
 }

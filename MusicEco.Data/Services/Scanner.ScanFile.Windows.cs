@@ -1,4 +1,5 @@
 ﻿#if WINDOWS
+using Blake3;
 using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
@@ -24,6 +25,10 @@ internal partial class Scanner {
     IProgress<ScanFileProgress> progress,
     TimeSpan updateInterval
     ) {
+        ReadTicks = 0;
+        HashTicks = 0;
+        FinalizeTicks = 0;
+
         ScanFileDto result = new();
         Dictionary<string, FileEntry> existsFilesMap = existsFiles.ToDictionary(f => f.Path);
         Queue<string> folderQ = new(paths);

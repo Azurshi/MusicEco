@@ -64,13 +64,17 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
-                    Text="{Binding L[Explorer_Scan]}" 
-                    Command="{Binding ScanCommand}"/>
+                    Text="{Binding L[Explorer_Scan]}"
+                    Command="{Binding ScanCommand}" />
             <Button Grid.Column="1"
                     Command="{Binding AddNewPathCommand}"
                     Text="{Binding L[Explorer_AddFolder]}" />
+            <Button  Grid.Column="2"
+                     Command="{Binding DeleteAllDataCommand}"
+                     Text="Delete data" />
         </Grid>
         <Grid Grid.Row="0"
               HeightRequest="{DynamicResource HeaderSize}"
@@ -95,9 +99,9 @@
                    Text="{Binding L[Explorer_FileProcess]}"
                    Style="{StaticResource OneLine}" />
             <Label Grid.Row="2"
-                   Grid.Column="0" 
+                   Grid.Column="0"
                    Text="{Binding L[Explorer_SaveData]}"
-                   Style="{StaticResource OneLine}"/>
+                   Style="{StaticResource OneLine}" />
             <ProgressBar Grid.Row="0"
                          Grid.Column="1"
                          Progress="{Binding ProgressInfo.ScanFileProgress}" />

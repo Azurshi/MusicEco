@@ -39,7 +39,6 @@
 		<PackageVersion>0.1.0</PackageVersion>
 		<ApplicationDisplayVersion>0.1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
-
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>MSIX</WindowsPackageType>
 
@@ -209,6 +208,9 @@
 		</MauiXaml>
 		<MauiXaml Update="Views\Overlays\CreateNewPlaylistOverlay.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\Overlays\DevInfoOverlay.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\Pages\AlbumDetailPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
