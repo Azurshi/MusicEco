@@ -32,17 +32,11 @@
         <Label Grid.Row="0"
                HeightRequest="{DynamicResource HeaderSize}"
                Text="{Binding L[User_Playlist_Select]}"
-               FontAttributes="Bold"
-               FontSize="20"
-               HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center" />
+               Style="{StaticResource CenterTitle}"
+               BackgroundColor="{DynamicResource HeaderColor}"/>
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Items}"
-                        ItemTemplate="{StaticResource ItemTemplate}">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical"
-                                   ItemSpacing="4" />
-            </CollectionView.ItemsLayout>
-        </CollectionView>
+                        ItemTemplate="{StaticResource ItemTemplate}"
+                        ItemsLayout="{StaticResource LinearLayout}" />
     </Grid>
 </ContentView>

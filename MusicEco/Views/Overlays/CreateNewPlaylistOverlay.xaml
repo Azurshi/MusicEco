@@ -26,10 +26,8 @@
                Grid.ColumnSpan="2"
                HeightRequest="{DynamicResource HeaderSize}"
                Text="{Binding L[User_Playlist_Info]}"
-               FontAttributes="Bold"
-               FontSize="20"
-               HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center" />
+               Style="{DynamicResource CenterTitle}"
+               BackgroundColor="{DynamicResource HeaderColor}" />
         <Label Grid.Row="1"
                HeightRequest="{DynamicResource TextItemSize}"
                Text="{Binding L[User_Playlist_Name]}"
@@ -50,7 +48,7 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="1"
                     Text="{Binding L[Common_Confirm]}"
-                    Command="{Binding ConfirmCommand}" />
+                    Command="{Binding CreateCommand}" />
             <Button Grid.Column="2"
                     Text="{Binding L[Common_Cancel]}"
                     Command="{Binding CancelCommand}" />

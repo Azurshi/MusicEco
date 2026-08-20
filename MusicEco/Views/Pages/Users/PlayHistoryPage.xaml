@@ -28,8 +28,8 @@
             <DataTemplate x:Key="PlayHistoryItemTemplate"
                           x:DataType="itemVM:PlayHistoryViewModel">
                 <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
-                                Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type userVM:PlayHistoryPageViewModel}}}"
-                                IsSelected="{Binding Selected}">
+                                BackgroundColor="{Binding BackgroundColor}"
+                                Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type userVM:PlayHistoryPageViewModel}}}">
                     <item:ItemFrame.ItemContent>
                         <Grid ColumnSpacing="4">
                             <Grid.ColumnDefinitions>
@@ -65,7 +65,8 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
               ColumnSpacing="8"
-              HeightRequest="{DynamicResource HeaderSize}">
+              HeightRequest="{DynamicResource HeaderSize}"
+              BackgroundColor="{DynamicResource HeaderColor}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -79,6 +80,7 @@
         </Grid>
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Items.Items}"
-                        ItemTemplate="{StaticResource PlayHistoryItemTemplate}" />
+                        ItemTemplate="{StaticResource PlayHistoryItemTemplate}" 
+                        ItemsLayout="{StaticResource LinearLayout}"/>
     </Grid>
 </ContentView>

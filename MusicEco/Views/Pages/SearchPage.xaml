@@ -27,6 +27,7 @@
             <DataTemplate x:Key="AudioItemTemplate"
                           x:DataType="itemVM:AudioEntryViewModel">
                 <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
+                                BackgroundColor="{Binding BackgroundColor}"
                                 Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type pageVM:SearchPageViewModel}}}">
                     <item:ItemFrame.ItemContent>
                         <Grid>
@@ -56,12 +57,17 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Entry Grid.Row="0" 
-               HeightRequest="{DynamicResource HeaderSize}"
-               Text="{Binding SearchText, Mode=TwoWay}"
-               Placeholder="{Binding L[Search_Title]}"/>
+        <Grid Grid.Row="0"
+              ColumnSpacing="8"
+              HeightRequest="{DynamicResource HeaderSize}"
+              BackgroundColor="{DynamicResource HeaderColor}">
+            <Entry HeightRequest="{DynamicResource HeaderSize}"
+                   Text="{Binding SearchText, Mode=TwoWay}"
+                   Placeholder="{Binding L[Search_Title]}" />
+        </Grid>
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Items.Items}"
-                        ItemTemplate="{StaticResource AudioItemTemplate}" />
+                        ItemTemplate="{StaticResource AudioItemTemplate}" 
+                        ItemsLayout="{StaticResource LinearLayout}"/>
     </Grid>
 </ContentView>

@@ -49,11 +49,11 @@ public partial class ControlButton: Grid {
 
     private void OnPointerReleased(object? sender, PointerEventArgs e) {
         Scale = 1.0;
-        BackgroundColor = Utility.GetResource<Color>("ButtonHighlightColor");
+        BackgroundColor = DynamicColors.ButtonHighlightColor;
     }
 
     private void OnPointerEntered(object? sender, PointerEventArgs e) {
-        BackgroundColor = Utility.GetResource<Color>("ButtonHighlightColor");
+        BackgroundColor = DynamicColors.ButtonHighlightColor;
     }
 
     private void OnPointerExited(object? sender, PointerEventArgs e) {

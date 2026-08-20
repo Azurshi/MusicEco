@@ -1,8 +1,8 @@
 ﻿using MusicEco.Core.Types;
 namespace MusicEco.ViewModels.Items;
 
-public class FolderEntryViewModel: IUpdateble {
-    public object Identify => this.Path;
+public partial class FolderEntryViewModel: ListItem, IUpdateble {
+    public IComparable Identify => this.Path;
     public string Path { get; init; }
     public string Name { get; init; }
     public FolderEntryViewModel(string path) {

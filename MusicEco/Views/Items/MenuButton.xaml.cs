@@ -1,5 +1,6 @@
 using MusicEco.Services;
 using MusicEco.SourceGeneration;
+using MusicEco.Views.Buttons;
 using MusicEco.Views.Shell;
 using System.Numerics;
 using System.Windows.Input;
@@ -25,7 +26,7 @@ public partial class MenuButton: ContentView {
     }
 
     private void OnPointerEntered(object sender, PointerEventArgs e) {
-        BackgroundColor = Utility.GetResource<Color>("ButtonHighlightColor");
+        BackgroundColor = DynamicColors.ButtonHighlightColor;
     }
 
     private void OnPointerExited(object sender, PointerEventArgs e) {

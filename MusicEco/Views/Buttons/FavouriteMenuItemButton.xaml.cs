@@ -45,7 +45,7 @@ public partial class FavouriteMenuItemButton: ContentView, IMenuItemButton {
     }
 
     private void PointerGestureRecognizer_PointerEntered(object? sender, PointerEventArgs e) {
-        this.BackgroundColor = Utility.GetResource<Color>("ButtonHighlightColor");
+        this.BackgroundColor = DynamicColors.ButtonHighlightColor;
     }
 
     private void PointerGestureRecognizer_PointerExited(object? sender, PointerEventArgs e) {

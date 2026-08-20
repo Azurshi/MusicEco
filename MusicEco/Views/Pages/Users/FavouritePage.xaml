@@ -28,12 +28,14 @@
             <DataTemplate x:Key="ListItemTemplate" 
                           x:DataType="itemVM:AudioEntryViewModel">
                 <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
+                                BackgroundColor="{Binding BackgroundColor}"
                                 Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type userVM:FavouritePageViewModel}}}">
                     <item:ItemFrame.ItemContent>
                         <Grid ColumnDefinitions="Auto, *, Auto">
                             <control:ManagedSKIcon Grid.Column="0"
                                                    WidthRequest="{DynamicResource IconItemSize}"
-                                                   FileHash="{Binding FileHash}" />
+                                                   FileHash="{Binding FileHash}" 
+                                                   Option="Small"/>
                             <Label Grid.Column="1"
                                    Text="{Binding DisplayTitle}"
                                    Style="{DynamicResource OneLine}" />
@@ -52,8 +54,9 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
+              ColumnSpacing="8"
               HeightRequest="{DynamicResource HeaderSize}"
-              ColumnSpacing="8">
+              BackgroundColor="{DynamicResource HeaderColor}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -70,12 +73,8 @@
                                       ItemsSource="{Binding Items.Items}">
             <control:CollectionViewExtend.ItemPresets>
                 <control:CollectionViewPreset DisplayMode="SimpleList"
-                                              ItemTemplate="{StaticResource ListItemTemplate}">
-                    <control:CollectionViewPreset.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical"
-                                           ItemSpacing="4" />
-                    </control:CollectionViewPreset.ItemsLayout>
-                </control:CollectionViewPreset>
+                                              ItemTemplate="{StaticResource ListItemTemplate}"
+                                              ItemsLayout="{StaticResource LinearLayout}" />
             </control:CollectionViewExtend.ItemPresets>
         </control:CollectionViewExtend>
     </Grid>

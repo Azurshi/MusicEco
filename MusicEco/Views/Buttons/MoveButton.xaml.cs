@@ -12,7 +12,7 @@ public partial class MoveButton: Label {
     }
 
     private void PointerGestureRecognizer_PointerEntered(object sender, PointerEventArgs e) {
-        this.BackgroundColor = Colors.Yellow;
+        this.BackgroundColor = DynamicColors.ButtonHighlightColor;
         this.IsDraggable = true;
     }
 

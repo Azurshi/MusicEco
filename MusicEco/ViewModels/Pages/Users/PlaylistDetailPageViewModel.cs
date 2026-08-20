@@ -114,14 +114,14 @@ public partial class PlaylistDetailPageViewModel: BasePageViewModel {
     #region Drag&Drop
     private AudioEntryViewModel? _movingItem;
     [RelayCommand(CanExecute = nameof(IsDraggable))]
-    private void OnItemDrag(AudioEntryViewModel? vm) {
+    private void DragItem(AudioEntryViewModel? vm) {
         if (vm == null) {
             return;
         }
         this._movingItem = vm;
     }
     [RelayCommand]
-    private async Task OnItemDrop(AudioEntryViewModel? vm) {
+    private async Task DropItem(AudioEntryViewModel? vm) {
         if (vm == null || this._movingItem == null) {
             return;
         }

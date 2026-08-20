@@ -39,7 +39,7 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <control:ManagedIcon Grid.Column="0"
+                        <control:ManagedSKIcon Grid.Column="0"
                                              Grid.RowSpan="2"
                                              WidthRequest="{DynamicResource IconItemSize}"
                                              FileHash="{Binding FileHash}"
@@ -64,7 +64,7 @@
             </item:ItemFrame>
         </DataTemplate>
     </ContentView.Resources>
-    <ScrollView Orientation="Vertical" 
+    <ScrollView Orientation="Vertical"
                 HorizontalScrollBarVisibility="Never"
                 VerticalScrollBarVisibility="Default">
         <Grid RowSpacing="4"
@@ -79,7 +79,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                
+
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -100,10 +100,10 @@
                    Text="{Binding Title}"
                    Margin="8" />
             <control:ManagedSKIcon Grid.Row="1"
-                                 Grid.ColumnSpan="2"
-                                 x:Name="CoverDisplay"
-                                 FileHash="{Binding FileHash}"
-                                 Option="Large" />
+                                   Grid.ColumnSpan="2"
+                                   x:Name="CoverDisplay"
+                                   FileHash="{Binding FileHash}"
+                                   Option="Large" />
             <Label Grid.Row="2"
                    FontAttributes="Bold"
                    Text="{Binding L[Info_Title]}"
@@ -232,14 +232,8 @@
                             Grid.ColumnSpan="2"
                             HorizontalOptions="Fill"
                             ItemsSource="{Binding Files}"
-                            ItemTemplate="{StaticResource FileItemTemplate}">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical"
-                                       ItemSpacing="2" />
-                </CollectionView.ItemsLayout>
-            </CollectionView>
-                            
+                            ItemTemplate="{StaticResource FileItemTemplate}"
+                            ItemsLayout="{StaticResource LinearLayout}" />
         </Grid>
     </ScrollView>
-
 </ContentView>

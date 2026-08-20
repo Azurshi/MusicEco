@@ -1,4 +1,5 @@
 using MusicEco.SourceGeneration;
+using MusicEco.Views.Buttons;
 using System.Windows.Input;
 
 namespace MusicEco.Views.Items;
@@ -33,7 +34,7 @@ public partial class ItemFrame: Border {
                 var value = (bool)v;
                 Color color;
                 if (value) {
-                    color = Utility.GetResource<Color>("SelectedItemBorderColor");
+                    color = DynamicColors.SelectedBorderColor;
                 } else {
                     color = Colors.Transparent;
                 }
@@ -53,7 +54,7 @@ public partial class ItemFrame: Border {
     }
 
     private void PointerGestureRecognizer_PointerEntered(object? sender, PointerEventArgs e) {
-        Container.BackgroundColor = Utility.GetResource<Color>("ItemHighlightColor");
+        Container.BackgroundColor = DynamicColors.HighLightColor;
     }
 
     private void PointerGestureRecognizer_PointerExited(object? sender, PointerEventArgs e) {

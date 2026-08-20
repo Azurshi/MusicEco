@@ -1,6 +1,7 @@
 ﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Pages;
 using System;
 using System.Collections.Generic;
@@ -8,13 +9,10 @@ using System.Text;
 
 namespace MusicEco.ViewModels.Overlays;
 
-public partial class CreateNewPlaylistOverlayViewModel: ObservableObject {
+public partial class CreateNewPlaylistOverlayViewModel: BaseOverlayViewModel {
     private readonly IPlaylistService _playlistService;
     // Weak Action to prevent ViewModel keep View alive
     private WeakReference<Action>? _closeRef;
-    public AssemblyLocalization L { get; init; }
-    public AsyncCommandExtend ConfirmCommand { get; init; }
-    public SyncCommand CancelCommand { get; init; }
     private bool _initialized = false;
     private string _playlistName = string.Empty;
     public string PlaylistName {
@@ -23,7 +21,7 @@ public partial class CreateNewPlaylistOverlayViewModel: ObservableObject {
             if (this._playlistName != value) {
                 this._playlistName = value;
                 OnPropertyChanged();
-                ConfirmCommand.NotifyCanExecute();
+                this.CreateCommand.NotifyCanExecute();
             }
         }
     }
@@ -37,16 +35,12 @@ public partial class CreateNewPlaylistOverlayViewModel: ObservableObject {
             this._existsNames.Add(playlist.Name);
         }
         this._initialized = true;
-        this.ConfirmCommand.NotifyCanExecute();
+        this.CreateCommand.NotifyCanExecute();
     }
     private readonly HashSet<string> _existsNames;
-    public CreateNewPlaylistOverlayViewModel(ILocalizationService localizationService, IPlaylistService playlistService) {
-        this.L = localizationService.Get(typeof(BasePageViewModel));
+    public CreateNewPlaylistOverlayViewModel(ILocalizationService localizationService, IPlaylistService playlistService): base(localizationService) {
         this._playlistService = playlistService;
         this._existsNames = [];
-        this.ConfirmCommand = new(Create, CanCreate);
-        this.CancelCommand = new(Cancel);
-
     }
     private bool CanCreate() {
         if (!this._initialized) {
@@ -58,6 +52,7 @@ public partial class CreateNewPlaylistOverlayViewModel: ObservableObject {
         }
         return true;
     }
+    [RelayCommand(CanExecute = nameof(CanCreate))]
     private async Task Create() {
         if (!this._initialized) {
             return;
@@ -73,6 +68,7 @@ public partial class CreateNewPlaylistOverlayViewModel: ObservableObject {
             throw new InvalidOperationException("View close Action already collected by GC");
         }
     }
+    [RelayCommand]
     private void Cancel() {
         if (!this._initialized) {
             return;

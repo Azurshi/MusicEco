@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../../Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="../../Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="../../Resources/Styles/Shared.xaml" />
                 <ResourceDictionary Source="../../Resources/Themes/WidgetSize.xaml" />
                 <!--Theme must always at last-->
                 <ResourceDictionary Source="../../Resources/Themes/GlobalTheme.xaml" />

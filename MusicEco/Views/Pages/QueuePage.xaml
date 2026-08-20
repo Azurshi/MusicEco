@@ -23,6 +23,7 @@
             <DataTemplate x:Key="QueueItemTemplate"
                           x:DataType="itemVM:QueueItemViewModel">
                 <item:ItemFrame HeightRequest="{DynamicResource TextItemSize}"
+                                BackgroundColor="{Binding BackgroundColor}"
                                 Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type pageVM:QueuePageViewModel}}}">
                     <item:ItemFrame.ItemContent>
                         <Grid>
@@ -54,7 +55,9 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
-              HeightRequest="{DynamicResource HeaderSize}">
+              ColumnSpacing="8"
+              HeightRequest="{DynamicResource HeaderSize}"
+              BackgroundColor="{DynamicResource HeaderColor}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -68,8 +71,7 @@
         </Grid>
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Items.Items}"
-                        ItemTemplate="{StaticResource QueueItemTemplate}" />
-
-
+                        ItemTemplate="{StaticResource QueueItemTemplate}"
+                        ItemsLayout="{StaticResource LinearLayout}" />
     </Grid>
 </ContentView>

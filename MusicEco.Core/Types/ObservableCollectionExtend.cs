@@ -12,7 +12,7 @@ public class ObservableCollectionExtend<T> where T: IUpdateble {
         Replace,
         State
     }
-    private void HandleMoveOrShuffle(IReadOnlyList<T> newItems) {
+    internal void HandleMoveOrShuffle(IReadOnlyList<T> newItems) {
         var currentItems = Items.ToList();
         List<ValueTuple<int, int>> l2rMovePath = [];
         List<ValueTuple<int, int>> r2lMovePath = [];
@@ -63,13 +63,13 @@ public class ObservableCollectionExtend<T> where T: IUpdateble {
             //Debug.WriteLine($"{fromIndex} -> {toIndex}");
         }
     }
-    private void HandleInsert(IReadOnlyList<T> items, int diffIndex) {
+    internal void HandleInsert(IReadOnlyList<T> items, int diffIndex) {
         Items.Insert(diffIndex, items[diffIndex]);
     }
-    private void HandleRemove(IReadOnlyList<T> items, int diffIndex) {
+    internal void HandleRemove(IReadOnlyList<T> items, int diffIndex) {
         Items.RemoveAt(diffIndex);
     }
-    private void HandleReplace(IReadOnlyList<T> newItems) {
+    internal void HandleReplace(IReadOnlyList<T> newItems) {
         int oldCount = Items.Count;
         int newCount = newItems.Count;
         if (newCount > oldCount) {
@@ -103,7 +103,7 @@ public class ObservableCollectionExtend<T> where T: IUpdateble {
             }
         }
     }
-    private void HandleState(IReadOnlyList<T> items) {
+    internal void HandleState(IReadOnlyList<T> items) {
         // Nothing changed
     }
     internal ValueTuple<CollectionChangeKind, int?> DetectChangeKinds(IReadOnlyList<T> newItems) {

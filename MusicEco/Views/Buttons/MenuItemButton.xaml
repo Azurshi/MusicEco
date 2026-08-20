@@ -4,7 +4,6 @@
              x:Class="MusicEco.Views.Buttons.MenuItemButton"
              Padding="8, 4">
     <Label x:Name="InnerLabel"
-           BackgroundColor="Transparent"
            Style="{StaticResource OneLine}">
         <Label.GestureRecognizers>
             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />

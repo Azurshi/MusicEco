@@ -6,8 +6,7 @@ using MusicEco.ViewModels.Pages;
 
 namespace MusicEco.ViewModels.Overlays;
 
-public partial class AudioInfoOverlayViewModel: ObservableObject {
-    public AssemblyLocalization L { get; init; }
+public partial class AudioInfoOverlayViewModel: BaseOverlayViewModel {
     private readonly IAudioService _audioService;
     private readonly IFileService _fileService;
     private AudioModel? _audio;
@@ -65,8 +64,7 @@ public partial class AudioInfoOverlayViewModel: ObservableObject {
         string format = this.L["Format_Time_HourMinuteSecond"];
         return string.Format(format, Math.Floor(duration.TotalHours), duration.Minutes.ToString("D2"), duration.Seconds.ToString("D2"));
     }
-    public AudioInfoOverlayViewModel(ILocalizationService localizationService, IAudioService audioService, IFileService fileService) {
-        this.L = localizationService.Get(typeof(BasePageViewModel));
+    public AudioInfoOverlayViewModel(ILocalizationService localizationService, IAudioService audioService, IFileService fileService): base(localizationService) {
         this._audioService = audioService;
         this._fileService = fileService;
         this.Files = [];

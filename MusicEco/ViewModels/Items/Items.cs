@@ -1,41 +1,32 @@
 ﻿using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
+using MusicEco.Views.Buttons;
 
 namespace MusicEco.ViewModels.Items;
 
 public partial class ListItem: ObservableObject, IListItem {
-    private static readonly Brush EvenBrush = new SolidColorBrush(Colors.Transparent);
-    private static readonly Brush OddBrush = new SolidColorBrush(Colors.Gray);
-    private Brush _background = EvenBrush;
-    private bool _isActive = true;
-    public bool IsActive {
-        get => _isActive;
-        set {
-            if (_isActive != value) {
-                _isActive = value;
-                OnPropertyChanged();
-            }
-        }
-    }
-    public Brush Background {
-        get => _background;
-        set {   
-            _background = value;
-            OnPropertyChanged();
-        }
-    }
+    public static Color EvenColor => DynamicColors.ItemAltBackgroundColor;
+    public static Color OddColor => Colors.Transparent;
+    [ObservableProperty]
+    public partial bool IsActivate { get; set; }
+    [ObservableProperty]
+    public partial Color BackgroundColor { get; set; }
     public void SetOddBackgroundColor() {
-        Background = OddBrush;
+        BackgroundColor = OddColor;
     }
     public void SetEvenBackgroundColor() {
-        Background = EvenBrush;
+        BackgroundColor = EvenColor;
     }
     public void AutoBackgroundColor(int index) {
         if (index % 2 == 0) {
-            Background = OddBrush;
+            BackgroundColor = OddColor;
         }
         else {
-            Background = EvenBrush;
+            BackgroundColor = EvenColor;
         }
+    }
+    public ListItem() {
+        this.BackgroundColor = EvenColor;
     }
 }
 
@@ -54,16 +45,10 @@ public partial class ViewOnlyListItem: ListItem, IEditableListItem, ISelectableI
     }
     public bool ListEditVisibility => _listEditing;
     public bool ListViewVisibility => !_listEditing;
-    protected bool _selected = false;
-    public bool Selected {
-        get => _selected;
-        set {
-            if (_selected != value) {
-                _selected = value;
-                OnPropertyChanged();
-            }
-        }
-    }
+    [ObservableProperty]
+    public partial bool Selected { get; set; }
+    [ObservableProperty]
+    public partial bool IsDraggable { get; set; }
 }
 
 public partial class EditableListItem: ViewOnlyListItem, IEditableItem, IMoveableItem {
@@ -81,14 +66,4 @@ public partial class EditableListItem: ViewOnlyListItem, IEditableItem, IMoveabl
     }
     public bool EditVisibility => _editing;
     public bool ViewVisibility => !_editing;
-    private bool _idDraggable = false;
-    public bool IsDraggable {
-        get => _idDraggable;
-        set {
-            if (_idDraggable != value) {
-                _idDraggable = value;
-                OnPropertyChanged();
-            }
-        }
-    }
 }

@@ -3,7 +3,7 @@
 namespace MusicEco.ViewModels.Items;
 
 public partial class PlayCountViewModel: AudioEntryViewModel {
-    public override object Identify => (FileHash, PlayCount);
+    public override IComparable Identify => (FileHash, PlayCount);
 
     public int PlayCount { get; init; }
     public string PlayCountText => PlayCount.ToString();

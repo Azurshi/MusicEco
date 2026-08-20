@@ -2,8 +2,8 @@
 
 namespace MusicEco.ViewModels.Items;
 
-public class FileEntryViewModel: IUpdateble {
-    public object Identify => (this.FileHash, this.Path);
+public partial class FileEntryViewModel: ListItem, IUpdateble {
+    public IComparable Identify => (this.FileHash, this.Path);
     public Hash256 FileHash { get; init; }
     public string Path { get; init; }
     public string Name { get; init; }

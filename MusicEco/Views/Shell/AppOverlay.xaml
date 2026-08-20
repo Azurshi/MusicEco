@@ -17,13 +17,13 @@
                        Grid.Column="0"
                        Grid.ColumnSpan="3"
                        Grid.RowSpan="3"
-                       Fill="Gray"
+                       Fill="{DynamicResource BorderColor}"
                        Opacity="0.5" />
             <Border Grid.Row="1"
                     Grid.Column="1"
                     Margin="0"
-                    Stroke="Gray"
-                    BackgroundColor="{DynamicResource OverlayBackgroundColor}">
+                    Stroke="{DynamicResource BorderColor}"
+                    BackgroundColor="{DynamicResource PageColor}">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="16"
                                     StrokeThickness="1" />
@@ -35,8 +35,8 @@
                     Grid.Column="1"
                     HorizontalOptions="End"
                     VerticalOptions="Start"
-                    Stroke="Gray"
-                    BackgroundColor="{DynamicResource OverlayBackgroundColor}"
+                    Stroke="{DynamicResource BorderColor}"
+                    BackgroundColor="{DynamicResource PageColor}"
                     Margin="-8, -8"
                     WidthRequest="40"
                     HeightRequest="32">
@@ -58,8 +58,8 @@
                 <Border Grid.Row="1"
                         Grid.Column="1"
                         Margin="0"
-                        Stroke="Gray"
-                        BackgroundColor="{DynamicResource OverlayBackgroundColor}">
+                        Stroke="{DynamicResource BorderColor}"
+                        BackgroundColor="{DynamicResource PageColor}">
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="16"
                                         StrokeThickness="1" />

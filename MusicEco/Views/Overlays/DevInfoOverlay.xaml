@@ -11,7 +11,8 @@
                HeightRequest="{DynamicResource HeaderSize}"
                Text="Dev output" 
                Style="{StaticResource OneLine}"
-               HorizontalTextAlignment="Center"/>
+               HorizontalTextAlignment="Center"
+               BackgroundColor="{DynamicResource HeaderColor}" />
         <Label Grid.Row="1"
                x:Name="OutputLabel" />
     </Grid>

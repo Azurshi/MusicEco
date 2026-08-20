@@ -13,6 +13,7 @@
             <DataTemplate x:Key="ScanPathItemTemplate"
                           x:DataType="itemVM:ScanPathViewModel">
                 <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
+                                BackgroundColor="{Binding BackgroundColor}"
                                 Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type pageVM:ExplorerPageViewModel}}}">
                     <item:ItemFrame.ItemContent>
                         <Grid>
@@ -27,9 +28,7 @@
                             <Label Grid.Row="0"
                                    Grid.Column="0"
                                    Text="{Binding Name}"
-                                   Style="{StaticResource OneLine}"
-                                   Margin="4, 0, 0, 0"
-                                   FontSize="16" />
+                                   Style="{StaticResource Title}"/>
                             <Label Grid.Row="1"
                                    Grid.Column="0"
                                    Text="{Binding Path}"
@@ -58,8 +57,9 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
-              HeightRequest="{DynamicResource HeaderSize}"
               ColumnSpacing="8"
+              HeightRequest="{DynamicResource HeaderSize}"
+              BackgroundColor="{DynamicResource HeaderColor}"
               IsVisible="{Binding IsUnLocked}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -77,8 +77,9 @@
                      Text="Delete data" />
         </Grid>
         <Grid Grid.Row="0"
-              HeightRequest="{DynamicResource HeaderSize}"
               ColumnSpacing="8"
+              HeightRequest="{DynamicResource HeaderSize}"
+              BackgroundColor="{DynamicResource HeaderColor}"
               IsVisible="{Binding IsLocked}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -125,18 +126,15 @@
                    Style="{StaticResource OneLine}" />
         </Grid>
         <Grid Grid.Row="1"
-              HeightRequest="{DynamicResource HeaderSize}">
+              HeightRequest="{DynamicResource HeaderSize}"
+              BackgroundColor="{DynamicResource HeaderColor}">
             <Label Text="{Binding L[Explorer_DisplayText]}"
                    FontSize="24"
                    Style="{StaticResource OneLine}" />
         </Grid>
         <CollectionView Grid.Row="2"
                         ItemsSource="{Binding Items.Items}"
-                        ItemTemplate="{StaticResource ScanPathItemTemplate}">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical"
-                                   ItemSpacing="8" />
-            </CollectionView.ItemsLayout>
-        </CollectionView>
+                        ItemTemplate="{StaticResource ScanPathItemTemplate}"
+                        ItemsLayout="{StaticResource LinearLayout}" />
     </Grid>
 </ContentView>

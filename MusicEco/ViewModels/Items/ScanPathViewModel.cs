@@ -2,8 +2,8 @@
 
 namespace MusicEco.ViewModels.Items;
 
-public sealed partial class ScanPathViewModel: ObservableObject, IUpdateble, ILockableItem {
-    public object Identify => this.Path;
+public sealed partial class ScanPathViewModel: ListItem, IUpdateble, ILockableItem {
+    public IComparable Identify => this.Path;
     public string Path { get; init; }
     public string Name { get; init; }
     private bool _isLocked;
@@ -17,7 +17,6 @@ public sealed partial class ScanPathViewModel: ObservableObject, IUpdateble, ILo
             }
         }
     }
-
     public bool IsUnlocked => !IsLocked;
 
     public ScanPathViewModel(string path) {

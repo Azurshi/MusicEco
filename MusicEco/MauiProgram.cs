@@ -5,6 +5,7 @@ using MusicEco.Data;
 using MusicEco.Image;
 using MusicEco.Resources.Themes;
 using MusicEco.Services;
+using MusicEco.Views.Buttons;
 using MusicEco.Views.Shell;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using SQLiteORM;
@@ -83,6 +84,7 @@ public static class MauiProgram {
             styleService.Register(new LightTheme());
             styleService.Register(new DarkTheme());
             styleService.LoadLastTheme();
+            DynamicColors.Initialize(provider);
         });
     }
     private static void RegisterCleanup() {

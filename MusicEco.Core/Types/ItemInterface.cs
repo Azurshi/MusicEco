@@ -1,7 +1,7 @@
 ﻿namespace MusicEco.Core.Types;
 
 public interface IUpdateble {
-    public object Identify { get; }
+    public IComparable Identify { get; }
 }
 public interface IBackgroundItem {
     public void SetOddBackgroundColor();

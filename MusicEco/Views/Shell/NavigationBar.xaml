@@ -6,7 +6,8 @@
              x:Class="MusicEco.Views.Shell.NavigationBar">
     <Grid RowDefinitions="*, Auto">
         <ScrollView Grid.Row="0"
-                    Orientation="Vertical">
+                    Orientation="Vertical"
+                    VerticalScrollBarVisibility="Never">
             <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto"
                   RowSpacing="8">
                 <button:NavigationButton Grid.Row="0"

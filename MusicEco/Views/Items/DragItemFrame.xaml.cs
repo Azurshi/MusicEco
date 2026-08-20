@@ -1,4 +1,5 @@
 using MusicEco.SourceGeneration;
+using MusicEco.Views.Buttons;
 using System.Windows.Input;
 
 namespace MusicEco.Views.Items;
@@ -57,7 +58,7 @@ public partial class DragItemFrame: ItemFrame {
     }
 
     private void DropGR_DragOver(object sender, DragEventArgs e) {
-        this.Container.BackgroundColor = Utility.GetResource<Color>("ButtonHighlightColor");
+        this.Container.BackgroundColor = DynamicColors.ButtonHighlightColor;
     }
 
     private void DropGR_DragLeave(object sender, DragEventArgs e) {

@@ -2,13 +2,15 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MusicEco.Resources.Themes.DarkTheme">
-    <Color x:Key="HoverBackgroundColor">Silver</Color>
-    <Color x:Key="MenuBackgroundColor">Black</Color>
+    <Color x:Key="TextColor">#DDDDDD</Color>
     <Color x:Key="BorderColor">Gray</Color>
-    <Color x:Key="ItemHighlightColor">#20ADA8FF</Color>
-    <Color x:Key="ButtonHighlightColor">#40AAD8FF</Color>
-    <Color x:Key="SelectedItemBorderColor">LawnGreen</Color>
+    <Color x:Key="SelectedBorderColor">LawnGreen</Color>
     <Color x:Key="SeparatorColor">Gray</Color>
-    <Color x:Key="WindowColor">Transparent</Color>
-    <Color x:Key="OverlayBackgroundColor">Black</Color>
+    <Color x:Key="HighlightColor">#20ADA8FF</Color>
+    <Color x:Key="ButtonHighlightColor">#40AAD8FF</Color>
+    <Color x:Key="ItemAltBackgroundColor">#2A6A6A6A</Color>
+
+    <Color x:Key="PageColor">#FF1C1C1D</Color>
+    <Color x:Key="HeaderColor">#FF101011</Color>
+    <Color x:Key="MenuColor">Black</Color>
 </ResourceDictionary>

@@ -6,6 +6,7 @@ using MusicEco.SourceGeneration;
 
 namespace MusicEco.Views.Controls;
 
+[Obsolete("Use ManagedSKIcon instead")]
 public partial class ManagedIcon: Microsoft.Maui.Controls.Image {
     private static readonly Type ThisType = typeof(ManagedIcon);
     [BindableAutoGen]

@@ -23,6 +23,7 @@
             <DataTemplate x:Key="ListItemViewModel"
                           x:DataType="itemVM:PlaylistItemViewModel">
                 <item:ItemFrame HeightRequest="{DynamicResource TextItemSize}"
+                                BackgroundColor="{Binding BackgroundColor}"
                                 Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type userVM:PlaylistPageViewModel}}}">
                     <item:ItemFrame.ItemContent>
                         <Grid>
@@ -47,7 +48,9 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
-              HeightRequest="{DynamicResource HeaderSize}">
+              ColumnSpacing="8"
+              HeightRequest="{DynamicResource HeaderSize}"
+              BackgroundColor="{DynamicResource HeaderColor}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -67,11 +70,8 @@
                                       ItemsSource="{Binding Items.Items}">
             <control:CollectionViewExtend.ItemPresets>
                 <control:CollectionViewPreset DisplayMode="SimpleList"
-                                              ItemTemplate="{StaticResource ListItemViewModel}">
-                    <control:CollectionViewPreset.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical"
-                                           ItemSpacing="4" />
-                    </control:CollectionViewPreset.ItemsLayout>
+                                              ItemTemplate="{StaticResource ListItemViewModel}"
+                                              ItemsLayout="{StaticResource LinearLayout}">
                 </control:CollectionViewPreset>
             </control:CollectionViewExtend.ItemPresets>
         </control:CollectionViewExtend>

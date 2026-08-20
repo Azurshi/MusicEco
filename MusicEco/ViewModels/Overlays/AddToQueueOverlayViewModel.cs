@@ -1,26 +1,23 @@
 ﻿using MusicEco.Core.Services;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 using MusicEco.ViewModels.Pages;
 
 namespace MusicEco.ViewModels.Overlays;
 
-public partial class AddToQueueOverlayViewModel: ObservableObject {
+public partial class AddToQueueOverlayViewModel: BaseOverlayViewModel {
     private readonly IQueueService _queueService;
     // Weak Action to prevent ViewModel keep View alive
     private WeakReference<Action>? _closeRef;
-    public AssemblyLocalization L { get; init; }
     public IReadOnlyList<QueueItemViewModel> Items { get; private set; }
-    public AsyncCommandExtend<QueueItemViewModel> SelectItemCommand { get; init; }
     private Hash256? _selectedHash;
     private readonly Dictionary<DateTime, bool> _canSelectMap;
     private bool _initialized = false;
-    public AddToQueueOverlayViewModel(ILocalizationService localizationService, IQueueService queueService) {
-        this.L = localizationService.Get(typeof(BasePageViewModel));
+    public AddToQueueOverlayViewModel(ILocalizationService localizationService, IQueueService queueService): base(localizationService) {
         this._queueService = queueService;
         this.Items = [];
         this._canSelectMap = [];
-        this.SelectItemCommand = new(SelectItem, CanSelectItem);
     }
     public async Task Initialize(Hash256 fileHash, Action close) {
         this._closeRef = new(close);
@@ -44,6 +41,7 @@ public partial class AddToQueueOverlayViewModel: ObservableObject {
         }
         return this._canSelectMap[vm.CreationTime];
     }
+    [RelayCommand(CanExecute = nameof(CanSelectItem))]
     private async Task SelectItem(QueueItemViewModel? vm) {
         if (!this._initialized || vm == null || this._selectedHash == null) {
             return;

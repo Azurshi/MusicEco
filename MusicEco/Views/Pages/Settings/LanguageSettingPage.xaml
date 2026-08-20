@@ -30,8 +30,10 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" HeightRequest="{DynamicResource HeaderSize}"
-              ColumnSpacing="8">
+        <Grid Grid.Row="0"
+              ColumnSpacing="8"
+              HeightRequest="{DynamicResource HeaderSize}"
+              BackgroundColor="{DynamicResource HeaderColor}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -49,11 +51,7 @@
         </Grid>
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Languages}"
-                        ItemTemplate="{StaticResource ListLanguageItemTemplate}">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical"
-                                   ItemSpacing="4" />
-            </CollectionView.ItemsLayout>
-        </CollectionView>
+                        ItemTemplate="{StaticResource ListLanguageItemTemplate}"
+                        ItemsLayout="{StaticResource LinearLayout}" />
     </Grid>
 </ContentView>

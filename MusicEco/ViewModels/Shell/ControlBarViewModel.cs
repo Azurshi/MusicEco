@@ -1,6 +1,6 @@
 ﻿using MusicEco.Core.Services;
 using MusicEco.Core.Types;
-using MusicEco.Services;
+using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Pages;
 using System.Diagnostics;
 
@@ -9,6 +9,8 @@ namespace MusicEco.ViewModels.Shell;
 public partial class ControlBarViewModel: ObservableObject {
     private readonly IAppSetting _setting;
     private readonly IPlayerController _player;
+    private readonly IPlaybackService _playback;
+    private readonly IQueueService _queueService;
     public AssemblyLocalization L { get; init; }
     protected readonly ILocalizationService _localizationService;
     public bool IsRepeating {
@@ -35,15 +37,6 @@ public partial class ControlBarViewModel: ObservableObject {
         }
     }
     public bool IsPlaying { get; private set; }
-    public AsyncCommand PreviousAudioCommand { get; }
-    public AsyncCommand NextAudioCommand { get; }
-    public AsyncCommandExtend SeekBackwardCommand { get; }
-    public AsyncCommandExtend SeekForwardCommand { get; }
-    public SyncCommand ChangeRepeatCommand { get; }
-    public SyncCommand ChangeShuffleCommand { get; }
-    public AsyncCommand ChangeFavouriteCommand { get; }
-    public SyncCommand ToggleVolumeButtonCommand { get; }
-    public AsyncCommand PlayPauseCommand { get; }
     private TimeSpan _playbackDuration = TimeSpan.Zero;
     public string PlaybackPosition => this.Format(this._playbackRatio * this._playbackDuration);
     public string PlaybackDuration => this.Format(this._playbackDuration);
@@ -63,8 +56,6 @@ public partial class ControlBarViewModel: ObservableObject {
         }
     }
     private bool _positionEventUpdateBlocked = false;
-    public SyncCommandExtend RatioDragStartedCommand { get; init; }
-    public AsyncCommand RatioDragCompletedCommand { get; init; }
     private TimeSpan PerSeekDuration => TimeSpan.FromSeconds(this._setting.Get(15, SettingFields.PerSeekSeconds));
     private const double _volumeEpsilon = 0.01;
     public double Volume {
@@ -84,23 +75,20 @@ public partial class ControlBarViewModel: ObservableObject {
             }
         }
     }
-    public ControlBarViewModel(IAppSetting appSetting, IPlayerController playerController, ILocalizationService localizationService) {
+    public ControlBarViewModel(
+        IAppSetting appSetting,
+        ILocalizationService localizationService,
+        IPlayerController playerController, 
+        IPlaybackService playbackService, 
+        IQueueService queueService
+        ) {
         this._setting = appSetting;
         this._localizationService = localizationService;
+        this._player = playerController;
+        this._playback = playbackService;
+        this._queueService = queueService;
         this.L = this._localizationService.Get(typeof(BasePageViewModel));
         this._localizationService.LanguageChanged += OnLanguageChanged;
-        this.PreviousAudioCommand = new(PreviousAudio);
-        this.NextAudioCommand = new(NextAudio);
-        this.SeekBackwardCommand = new(SeekBackward, () => this.IsPlaying);
-        this.SeekForwardCommand = new(SeekForward, () => this.IsPlaying);
-        this.ChangeRepeatCommand = new(ChangeRepeat);
-        this.ChangeShuffleCommand = new(ChangeShuffle);
-        this.ChangeFavouriteCommand = new(ChangeFavourite);
-        this.ToggleVolumeButtonCommand = new(ToggleVolumeButton);
-        this.PlayPauseCommand = new(PlayPause);
-        this.RatioDragStartedCommand = new(RatioDragStarted, () => !this._positionEventUpdateBlocked);
-        this.RatioDragCompletedCommand = new(RatioDragCompleted);
-        this._player = playerController;
         this._player.PositionChanged += this.PlayerController_PositionChanged;
         this._player.RepeatingChanged += this.Player_RepeatingChanged;
         this._player.StateChanged += this.Player_StateChanged;
@@ -135,33 +123,48 @@ public partial class ControlBarViewModel: ObservableObject {
             }
         }
     }
-
+    [RelayCommand]
     private async Task PreviousAudio() {
-
+        var currentQueue = await this._queueService.GetCurrent();
+        if (currentQueue != null && currentQueue.Current != null && currentQueue.Audios.Count > 1) {
+            currentQueue = currentQueue.Previous().WithModifyNow();
+            await this._playback.PlayQueue(currentQueue, this);
+        }
     }
+    [RelayCommand]
     private async Task NextAudio() {
-
+        var currentQueue = await this._queueService.GetCurrent();
+        if (currentQueue != null && currentQueue.Current != null && currentQueue.Audios.Count > 1) {
+            currentQueue = currentQueue.Next().WithModifyNow();
+            await this._playback.PlayQueue(currentQueue, this);
+        }
     }
+    private bool CanSeek() {
+        return this.IsPlaying;
+    }
+    [RelayCommand(CanExecute = nameof(CanSeek))]
     private async Task SeekBackward() {
         var position = this._playbackDuration * this._playbackRatio;
         this._player.Seek(position - this.PerSeekDuration);
     }
+    [RelayCommand(CanExecute = nameof(CanSeek))]
     private async Task SeekForward() {
         var position = this._playbackDuration * this._playbackRatio;
         this._player.Seek(position + this.PerSeekDuration);
     }
+    [RelayCommand]
     private void ChangeRepeat() {
         this.IsRepeating = !this.IsRepeating;
     }
+    [RelayCommand]
     private void ChangeShuffle() {
         this.IsShuffling = !this.IsShuffling;
     }
-    private async Task ChangeFavourite() {
-
-    }
+    [RelayCommand]
     private void ToggleVolumeButton() {
         this.VolumeVisible = !this.VolumeVisible;
     }
+    [RelayCommand]
     private async Task PlayPause() {
         if (this.IsPlaying) {
             this._player.Pause();
@@ -170,9 +173,14 @@ public partial class ControlBarViewModel: ObservableObject {
             this._player.Resume();
         }
     }
+    private bool CanDrag() {
+        return !this._positionEventUpdateBlocked;
+    }
+    [RelayCommand(CanExecute = nameof(CanDrag))]
     private void RatioDragStarted() {
         this._positionEventUpdateBlocked = true;
     }
+    [RelayCommand]
     private async Task RatioDragCompleted() {
         this._player.Seek(this._playbackRatio * this._playbackDuration);
         await Task.Delay(500);

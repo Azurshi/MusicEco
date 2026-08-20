@@ -1,6 +1,7 @@
 using MusicEco.ViewModels.Items;
 using MusicEco.ViewModels.Pages;
 using MusicEco.Views.Buttons;
+using MusicEco.Views.Items;
 using System.Diagnostics;
 
 namespace MusicEco.Views.Pages;
@@ -15,6 +16,14 @@ public partial class QueueDetailPage: ContentView {
         if (sender is MenuItemButton button) {
             var vm = (QueueDetailPageViewModel)this.BindingContext;
             vm.RemoveItemCommand.Execute(button.BindingContext);
+        }
+    }
+    private void DropGestureRecognizer_Drop(object sender, DropEventArgs e) {
+        if (sender is CollectionView collection) {
+            var items = collection.GetVisualTreeDescendants().OfType<DragItemFrame>();
+            foreach (var item in items) {
+                item.Reset();
+            }
         }
     }
 }

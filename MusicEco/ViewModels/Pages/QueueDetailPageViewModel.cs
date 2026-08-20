@@ -3,6 +3,7 @@ using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
+using System.Diagnostics;
 
 namespace MusicEco.ViewModels.Pages;
 
@@ -125,4 +126,44 @@ public partial class QueueDetailPageViewModel: BasePageViewModel {
             await this._queueService.Update(audioQueue, this);
         }
     }
+    #region Drag&Drop
+    private AudioEntryViewModel? _movingItem;
+    [RelayCommand(CanExecute = nameof(IsDraggable))]
+    private void DragItem(AudioEntryViewModel? vm) {
+        if (vm == null) {
+            return;
+        }
+        this._movingItem = vm;
+    }
+    [RelayCommand]
+    private async Task DropItem(AudioEntryViewModel? vm) {
+        if (vm == null || this._movingItem == null) {
+            return;
+        }
+        int targetIndex = this.Items.Items.IndexOf(vm);
+        int currentIndex = this.Items.Items.IndexOf(this._movingItem);
+        Debug.WriteLine($"Moving: {currentIndex} -> {targetIndex}");
+        if (targetIndex == 0 || currentIndex == targetIndex) {
+            return;
+        }
+        // For data
+        var queue = await this._queueService.Get(this._q.CreationTime);
+        if (queue != null) {
+            var audios = queue.Audios.ToList();
+            var current = audios[currentIndex];
+            audios.RemoveAt(currentIndex);
+            audios.Insert(targetIndex, current);
+            queue = queue.WithAudios(queue.Current, audios).WithModifyNow();
+            await this._queueService.Update(queue, this);
+        }
+    }
+    private bool IsDraggable(AudioEntryViewModel? vm) {
+        if (vm != null && vm.IsDraggable) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    #endregion
 }

@@ -37,6 +37,7 @@
             <DataTemplate x:Key="ListFolderItemTemplate"
                           x:DataType="itemVM:FolderEntryViewModel">
                 <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
+                                BackgroundColor="{Binding BackgroundColor}"
                                 Command="{Binding SelectFolderCommand, Source={RelativeSource AncestorType={x:Type pageVM:ExplorerTreePageViewModel}}}">
                     <item:ItemFrame.ItemContent>
                         <Grid>
@@ -57,6 +58,7 @@
             <DataTemplate x:Key="ListFileItemTemplate"
                           x:DataType="itemVM:FileEntryViewModel">
                 <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
+                                BackgroundColor="{Binding BackgroundColor}"
                                 Command="{Binding SelectFileCommand, Source={RelativeSource AncestorType={x:Type pageVM:ExplorerTreePageViewModel}}}">
                     <item:ItemFrame.ItemContent>
                         <Grid>
@@ -90,7 +92,8 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
               ColumnSpacing="8"
-              HeightRequest="{DynamicResource HeaderSize}">
+              HeightRequest="{DynamicResource HeaderSize}"
+              BackgroundColor="{DynamicResource HeaderColor}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -119,11 +122,7 @@
         </Grid>
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Items.Items}"
-                        ItemTemplate="{StaticResource ListItemSelector}">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical"
-                                   ItemSpacing="8" />
-            </CollectionView.ItemsLayout>
-        </CollectionView>
+                        ItemTemplate="{StaticResource ListItemSelector}"
+                        ItemsLayout="{StaticResource LinearLayout}" />
     </Grid>
 </ContentView>

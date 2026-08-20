@@ -11,7 +11,7 @@ public interface IEditableListItem {
     public bool ListViewVisibility { get; }
 }
 public interface IListItem: IBackgroundItem {
-    public Brush Background { get; }
+    public Color BackgroundColor { get; }
 }
 public interface IEditableItem {
     public bool Editing { get; set; }
