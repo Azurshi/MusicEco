@@ -1,4 +1,6 @@
-﻿namespace MusicEco.Core;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace MusicEco.Core;
 
 public interface IPlugin {
     public int Priority { get; }

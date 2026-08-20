@@ -1,11 +1,12 @@
 ﻿#if ANDROID
 using MusicEco.Core.Data;
-using MusicEco.Core.Platforms.Android;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.Data.Platforms.Android;
+using MusicEco.Platform;
 using System.Diagnostics;
 using System.Security.Cryptography;
+
 using FileInfo = MusicEco.Data.Platforms.Android.FileInfo;
 using Uri = Android.Net.Uri;
 

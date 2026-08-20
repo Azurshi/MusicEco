@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using MusicEco.Core.Types;
+using System.Collections.ObjectModel;
 
 namespace MusicEco.ViewModels;
 

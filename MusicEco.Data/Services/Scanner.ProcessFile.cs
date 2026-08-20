@@ -1,11 +1,12 @@
-﻿using MusicEco.Core.Data;
-using MusicEco.Core.Services;
+﻿using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.Core.Utility;
 using MusicEco.Data.Database.Entities;
 using SQLiteORM;
 using System.Diagnostics;
-
+#if WINDOWS || ANDROID
+using MusicEco.Platform;
+#endif
 namespace MusicEco.Data.Services;
 
 internal partial class Scanner {
@@ -62,15 +63,19 @@ internal partial class Scanner {
                         Config.SmallIconSize, Config.MediumIconSize, Config.LargeIconSize,
                         encoderBuffer.SmallIconBuffer, encoderBuffer.MediumIconBuffer, encoderBuffer.LargeIconBuffer);
                     encodeResult.ThrowIfEmpty();
+#if WINDOWS || ANDROID
                     TempFile smallFile = new();
-                    smallFile.Write(encoderBuffer.GetSmallIcon(encodeResult));
+                    smallFile.Write(encoderBuffer.GetSmallIcon(encodeResult).Span);
                     TempFile mediumFile = new();
-                    mediumFile.Write(encoderBuffer.GetMediumIcon(encodeResult));
+                    mediumFile.Write(encoderBuffer.GetMediumIcon(encodeResult).Span);
                     TempFile largeFile = new();
-                    largeFile.Write(encoderBuffer.GetLargeIcon(encodeResult));
+                    largeFile.Write(encoderBuffer.GetLargeIcon(encodeResult).Span);
                     lock(resultLock) {
                         result.Icons.Add(new(iconHash.Value, smallFile, mediumFile, largeFile));
                     }
+#else
+                    throw new NotImplementedException();
+#endif
                 }
             }
             // Handle metadata

@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../MusicEco.Core/MusicEco.Core.csproj" />
+  <Project Path="MusicEco.Platform.csproj" />
+</Solution>

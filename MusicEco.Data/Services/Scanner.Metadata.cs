@@ -1,6 +1,6 @@
 ﻿using MusicEco.Core.Data;
 #if ANDROID
-using MusicEco.Core.Platforms.Android;
+using MusicEco.Platform;
 #endif
 namespace MusicEco.Data.Services;
 
@@ -28,7 +28,7 @@ internal partial class Scanner {
         stream = File.OpenRead(filePath);
 #elif ANDROID
         Android.Net.Uri uri = Android.Net.Uri.Parse(filePath)!;
-        stream = UriUtility.OpenFile(uri, Config.TagLibIOBufferSize, FileAccess.Read);
+        stream = UriUtility.OpenFile(uri, Config.TagLibIOBufferSize, FileAccess.Read)!;
 #else
         stream = File.OpenRead(filePath); // Not implemented
 #endif

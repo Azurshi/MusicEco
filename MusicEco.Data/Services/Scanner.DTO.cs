@@ -9,9 +9,9 @@ namespace MusicEco.Data.Services;
 internal partial class Scanner {
     private sealed record IconDatabaseDto(
         Hash256 IconHash,
-        TempFile SmallFile,
-        TempFile MediumFile,
-        TempFile LargeFile);
+        ITempFile SmallFile,
+        ITempFile MediumFile,
+        ITempFile LargeFile);
     private sealed record AudioMetadataDatabaseDto(
         AudioEntity Audio,
         List<AudioTagRelation> Tags);

@@ -1,4 +1,5 @@
-﻿namespace MusicEco.ViewModels.Items;
+﻿using MusicEco.Core.Types;
+namespace MusicEco.ViewModels.Items;
 
 public class FolderEntryViewModel: IUpdateble {
     public object Identify => this.Path;

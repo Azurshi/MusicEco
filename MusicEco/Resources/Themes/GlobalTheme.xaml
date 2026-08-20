@@ -11,4 +11,6 @@
     <Color x:Key="SeparatorColor">#CCCCCC</Color>
     <Color x:Key="WindowColor">#190649</Color>
     <Color x:Key="OverlayBackgroundColor">#190649</Color>
+
+    <Color x:Key="TextColor">#DDDDDD</Color>
 </ResourceDictionary>

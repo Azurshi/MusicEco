@@ -21,57 +21,17 @@
 		<Optimize Condition="'$(Configuration)' == 'Release'">true</Optimize>
 
 		<Authors>Azurshi</Authors>
-		<Version Condition="'$(Configuration)' == 'Debug'">0.0.3-dev</Version>
+		<Version Condition="'$(Configuration)' == 'Debug'">0.0.1-dev</Version>
 		<Version Condition="'$(Configuration)' == 'Release'">0.0.1</Version>
-		<Description> v0.0: Data module.</Description>
+		<Description> v0.0: Platform specific module.</Description>
 	</PropertyGroup>
-	
-	<ItemGroup>
-	  <None Include="Services\Scanner.Converter.cs">
-	    <DependentUpon>Scanner.cs</DependentUpon>
-	  </None>
-	  <None Include="Services\Scanner.DTO.cs">
-	    <DependentUpon>Scanner.cs</DependentUpon>
-	  </None>
-	  <None Include="Services\Scanner.Hash.cs">
-	    <DependentUpon>Scanner.cs</DependentUpon>
-	  </None>
-	  <None Include="Services\Scanner.Metadata.cs">
-	    <DependentUpon>Scanner.cs</DependentUpon>
-	  </None>
-	  <None Include="Services\Scanner.PostScanCache.cs">
-	    <DependentUpon>Scanner.cs</DependentUpon>
-	  </None>
-	  <None Include="Services\Scanner.ProcessFile.cs">
-	    <DependentUpon>Scanner.cs</DependentUpon>
-	  </None>
-	  <None Include="Services\Scanner.PushChange.cs">
-	    <DependentUpon>Scanner.cs</DependentUpon>
-	  </None>
-	  <None Include="Services\Scanner.ScanFile.Android.cs">
-	    <DependentUpon>Scanner.cs</DependentUpon>
-	  </None>
-	  <None Include="Services\Scanner.ScanFile.IOS.cs">
-	    <DependentUpon>Scanner.cs</DependentUpon>
-	  </None>
-	  <None Include="Services\Scanner.ScanFile.Mac.cs">
-	    <DependentUpon>Scanner.cs</DependentUpon>
-	  </None>
-	  <None Include="Services\Scanner.ScanFile.Windows.cs">
-	    <DependentUpon>Scanner.cs</DependentUpon>
-	  </None>
-	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Blake3" Version="3.0.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="SQLiteORM" Version="0.0.5-dev" />
-		<PackageReference Include="TagLibSharp" Version="2.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\MusicEco.Core\MusicEco.Core.csproj" />
-	  <ProjectReference Include="..\MusicEco.Platform\MusicEco.Platform.csproj" />
 	</ItemGroup>
 
 </Project>

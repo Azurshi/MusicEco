@@ -1,13 +1,10 @@
-﻿using Android;
+﻿#if ANDROID
 using Uri = Android.Net.Uri;
-
-using AndroidF = Android;
 using Android.Provider;
 using Microsoft.Win32.SafeHandles;
 using Android.OS;
 
-namespace MusicEco.Core.Platforms.Android;
-
+namespace MusicEco.Platform;
 
 public static class UriUtility {
     private const string FolderMimeType = "vnd.android.document/directory";
@@ -42,12 +39,13 @@ public static class UriUtility {
     }
     private static List<Uri> GetItems(Uri treeUri, bool queryFile) {
         List<Uri> items = [];
-        var context = AndroidF.App.Application.Context;
+        var context = Android.App.Application.Context;
         var resolver = context.ContentResolver!;
         string documentId;
         if (DocumentsContract.IsDocumentUri(context, treeUri)) {
             documentId = DocumentsContract.GetDocumentId(treeUri)!;
-        } else {
+        }
+        else {
             documentId = DocumentsContract.GetTreeDocumentId(treeUri)!;
         }
         var childrenUri = DocumentsContract.BuildChildDocumentsUriUsingTree(treeUri, documentId)!;
@@ -85,7 +83,7 @@ public static class UriUtility {
         }
     }
     public static FileStream? OpenFile(Uri uri, int bufferSize, FileAccess fileAccess) {
-        var context = AndroidF.App.Application.Context;
+        var context = Android.App.Application.Context;
         var resolver = context.ContentResolver!;
         SafeFileHandle? handle = null;
         string flag = fileAccess switch {
@@ -120,3 +118,4 @@ public static class UriUtility {
         }
     }
 }
+#endif

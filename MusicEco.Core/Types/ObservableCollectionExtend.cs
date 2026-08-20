@@ -1,11 +1,10 @@
-﻿using MusicEco.Core.Types;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 
-namespace MusicEco.ViewModels;
+namespace MusicEco.Core.Types;
 
-public partial class ObservableCollectionExtend<T>: ObservableObject where T : IUpdateble {
-    private enum ChangeKind {
+public class ObservableCollectionExtend<T> where T: IUpdateble {
+    internal enum CollectionChangeKind {
         Insert,
         Remove,
         Move,
@@ -107,7 +106,7 @@ public partial class ObservableCollectionExtend<T>: ObservableObject where T : I
     private void HandleState(IReadOnlyList<T> items) {
         // Nothing changed
     }
-    private ValueTuple<ChangeKind, int?> DetectChangeKinds(IReadOnlyList<T> newItems) {
+    internal ValueTuple<CollectionChangeKind, int?> DetectChangeKinds(IReadOnlyList<T> newItems) {
         int oldCount = Items.Count;
         int newCount = newItems.Count;
 
@@ -123,7 +122,7 @@ public partial class ObservableCollectionExtend<T>: ObservableObject where T : I
                 }
             }
             if (isStateOnly) {
-                return (ChangeKind.State, null);
+                return (CollectionChangeKind.State, null);
             }
             // Check move
             Dictionary<object, T> oldDict = [];
@@ -142,12 +141,12 @@ public partial class ObservableCollectionExtend<T>: ObservableObject where T : I
             // Check if have same items
             for (int i = 0; i < count; i++) {
                 if (!oldIds[i].Equals(newIds[i])) {
-                    return (ChangeKind.Replace, null);
+                    return (CollectionChangeKind.Replace, null);
                 }
             }
             // Either move or shuffle
             // Since shuffle or move use same method
-            return (ChangeKind.Shuffle, null);
+            return (CollectionChangeKind.Shuffle, null);
         }
         else {
             if (newCount == oldCount + 1) {
@@ -162,7 +161,7 @@ public partial class ObservableCollectionExtend<T>: ObservableObject where T : I
                             newIndex++;
                         }
                         else {
-                            return (ChangeKind.Replace, null);
+                            return (CollectionChangeKind.Replace, null);
                         }
                     }
                     else {
@@ -173,7 +172,7 @@ public partial class ObservableCollectionExtend<T>: ObservableObject where T : I
                 if (diffIndex == -1) {
                     diffIndex = oldCount;
                 }
-                return (ChangeKind.Insert, diffIndex);
+                return (CollectionChangeKind.Insert, diffIndex);
             }
             else if (newCount == oldCount - 1) {
                 // Maybe remove
@@ -187,7 +186,7 @@ public partial class ObservableCollectionExtend<T>: ObservableObject where T : I
                             oldIndex++;
                         }
                         else {
-                            return (ChangeKind.Replace, null);
+                            return (CollectionChangeKind.Replace, null);
                         }
                     }
                     else {
@@ -198,15 +197,14 @@ public partial class ObservableCollectionExtend<T>: ObservableObject where T : I
                 if (diffIndex == -1) {
                     diffIndex = newCount;
                 }
-                return (ChangeKind.Remove, diffIndex);
+                return (CollectionChangeKind.Remove, diffIndex);
             }
             else {
                 // Replace
-                return (ChangeKind.Replace, null);
+                return (CollectionChangeKind.Replace, null);
             }
         }
     }
-
     public ObservableCollection<T> Items { get; private set; }
     public ObservableCollectionExtend() {
         Items = [];
@@ -221,22 +219,22 @@ public partial class ObservableCollectionExtend<T>: ObservableObject where T : I
         var (kind, diffIndex) = DetectChangeKinds(items);
         Console.WriteLine(kind);
         switch (kind) {
-            case ChangeKind.Insert:
+            case CollectionChangeKind.Insert:
                 HandleInsert(items, diffIndex!.Value);
                 break;
-            case ChangeKind.Remove:
+            case CollectionChangeKind.Remove:
                 HandleRemove(items, diffIndex!.Value);
                 break;
-            case ChangeKind.Replace:
+            case CollectionChangeKind.Replace:
                 HandleReplace(items);
                 break;
-            case ChangeKind.State:
+            case CollectionChangeKind.State:
                 HandleState(items);
                 break;
-            case ChangeKind.Shuffle:
+            case CollectionChangeKind.Shuffle:
                 HandleMoveOrShuffle(items);
                 break;
-            case ChangeKind.Move:
+            case CollectionChangeKind.Move:
                 HandleMoveOrShuffle(items);
                 break;
             default:
@@ -248,7 +246,7 @@ public partial class ObservableCollectionExtend<T>: ObservableObject where T : I
     public void RefreshState(Action<T>? changeState = null) {
         for (int i = 0; i < Items.Count; i++) {
             var item = this.Items[i];
-            if (item is IListItem listItem) {
+            if (item is IBackgroundItem listItem) {
                 listItem.AutoBackgroundColor(i);
             }
             changeState?.Invoke(item);

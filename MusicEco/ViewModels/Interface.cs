@@ -1,8 +1,7 @@
-﻿namespace MusicEco.ViewModels;
+﻿using MusicEco.Core.Types;
+namespace MusicEco.ViewModels;
 
-public interface IUpdateble {
-    public object Identify { get; }
-}
+
 public interface ISelectableItem {
     public bool Selected { get; set; }
 }
@@ -11,11 +10,8 @@ public interface IEditableListItem {
     public bool ListEditVisibility { get; }
     public bool ListViewVisibility { get; }
 }
-public interface IListItem {
+public interface IListItem: IBackgroundItem {
     public Brush Background { get; }
-    public void SetOddBackgroundColor();
-    public void SetEvenBackgroundColor();
-    public void AutoBackgroundColor(int index);
 }
 public interface IEditableItem {
     public bool Editing { get; set; }

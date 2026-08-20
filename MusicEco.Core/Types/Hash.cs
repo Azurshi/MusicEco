@@ -1,6 +1,5 @@
 ﻿using System.Buffers;
 using System.Buffers.Text;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -19,14 +18,6 @@ public readonly struct Hash256: IEquatable<Hash256>, IComparable {
     public override readonly int GetHashCode() {
         return HashCode.Combine(A, B, C, D);
     }
-    ///// <summary>
-    ///// The span returned must have equal or less lifespan than <see cref="Hash256"/> struct.
-    ///// </summary>
-    ///// <returns></returns>
-    //[UnscopedRef]
-    //public Span<byte> AsSpan() {
-    //    return MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref this, 1));
-    //}
     public Hash256(ReadOnlySpan<byte> source) {
         if (source.Length != 32) {
             throw new ArgumentException("Source must be 32 bytes");
@@ -83,7 +74,7 @@ public class Hash256JsonConverter: JsonConverter<Hash256> {
         if (status != OperationStatus.Done || bytesWritten != 32) {
             throw new JsonException("Invalid Base64 data");
         }
-        return new Hash256(buffer.Slice(0, 32));
+        return new Hash256(buffer[..32]);
     }
 
     public override void Write(Utf8JsonWriter writer, Hash256 value, JsonSerializerOptions options) {

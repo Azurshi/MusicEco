@@ -1,5 +1,4 @@
 ﻿#if WINDOWS
-using Blake3;
 using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
