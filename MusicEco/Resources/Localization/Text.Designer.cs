@@ -889,6 +889,15 @@ namespace MusicEco.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UI scale.
+        /// </summary>
+        public static string Setting_Interface_Scale {
+            get {
+                return ResourceManager.GetString("Setting_Interface_Scale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Setting_Language {

@@ -14,18 +14,19 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0"
-                   WidthRequest="64"
+                   WidthRequest="{DynamicResource ControlBarSize}"
                    Text="{Binding PlaybackPosition}"
                    Style="{StaticResource OneLine}"
                    HorizontalTextAlignment="Center" />
             <Slider Grid.Column="1"
+                    HeightRequest="{DynamicResource ProgressBarSize}"
                     Value="{Binding PlaybackRatio, Mode=TwoWay}"
                     DragStartedCommand="{Binding RatioDragStartedCommand}"
                     DragCompletedCommand="{Binding RatioDragCompletedCommand}"
                     Minimum="0"
                     Maximum="1" />
             <Label Grid.Column="2"
-                   WidthRequest="64"
+                   WidthRequest="{DynamicResource ControlBarSize}"
                    Text="{Binding PlaybackDuration}"
                    Style="{StaticResource OneLine}"
                    HorizontalTextAlignment="Center" />
@@ -77,7 +78,7 @@
                                   Command="{Binding ChangeShuffleCommand}" />
             <AbsoluteLayout Grid.Row="0"
                             x:Name="Overlay"
-                            Margin="100, 14, 0, 0 "
+                            Margin="{DynamicResource ProgressBarSize}"
                             InputTransparent="True"
                             HorizontalOptions="Fill"
                             VerticalOptions="Fill"
@@ -87,7 +88,7 @@
                 <Slider x:Name="VolumeSlider"
                         Minimum="0"
                         Maximum="1"
-                        HeightRequest="28"
+                        HeightRequest="{DynamicResource ProgressBarSize}"
                         Value="{Binding Volume, Mode=TwoWay}" />
             </AbsoluteLayout>
 

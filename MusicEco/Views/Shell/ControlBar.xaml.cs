@@ -23,6 +23,7 @@ public partial class ControlBar: ContentView {
         double volumeSliderWidth = ButtonContainer.Height * _volumeScale;
         double volumeSliderLeftMargin = ButtonContainer.Height * (_volumeScale - _itemScale) / 2;
         VolumeSlider.WidthRequest = volumeSliderWidth;
-        Overlay.Margin = new(itemWidth + spacing - volumeSliderLeftMargin, 14, 0, 0);
+        double defaultSize = Utility.GetResource<double>("ProgressBarSize");
+        Overlay.Margin = new(itemWidth + spacing - volumeSliderLeftMargin, defaultSize/4, 0, 0);
     }
 }

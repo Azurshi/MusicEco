@@ -34,9 +34,25 @@ public partial class MainWindow: Window {
         // Landing page
         EventSystem.Connect<NavigateEventArgs>(OnNavigate);
 
+        var interaceService = provider.GetRequiredService<IAppInterfaceService>();
+        interaceService.ScaleChanged += this.InteraceService_ScaleChanged;
         await AppLifeCycle.AfterUILoaded();
 
     }
+
+    private void InteraceService_ScaleChanged(object? sender, float e) {
+        RowDefinitionCollection rowDefinitions = new([
+            new RowDefinition(new GridLength(1, GridUnitType.Star)),
+            new RowDefinition(new GridLength(Utility.GetResource<double>("ControlBarSize"), GridUnitType.Absolute))
+            ]);
+        ColumnDefinitionCollection columnDefinitions = new([
+            new ColumnDefinition(new GridLength(Utility.GetResource<double>("NavigationBarSize"), GridUnitType.Absolute)),
+            new ColumnDefinition(new GridLength(1, GridUnitType.Star))
+            ]);
+        this.Container.RowDefinitions = rowDefinitions;
+        this.Container.ColumnDefinitions = columnDefinitions;
+    }
+
     protected override async void OnActivated() {
         base.OnActivated();
         Debug.WriteLine("Activated");

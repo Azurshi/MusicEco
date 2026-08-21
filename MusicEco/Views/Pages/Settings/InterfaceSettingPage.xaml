@@ -27,7 +27,9 @@
     <Grid RowSpacing="4">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
               ColumnSpacing="8"
@@ -52,5 +54,20 @@
                         ItemsSource="{Binding Themes}"
                         ItemTemplate="{StaticResource ListThemeItemTemplate}"
                         ItemsLayout="{StaticResource LinearLayout}" />
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <!--Label Grid.Column="0"
+                   Text="{Binding L[Setting_Interface_Scale]}"
+                   Style="{StaticResource OneLine}"
+                   FontAttributes="Bold" /-->
+            <Picker Grid.Column="1"
+                    Title="{Binding L[Setting_Interface_Scale]}"
+                    ItemsSource="{Binding Scales}"
+                    SelectedItem="{Binding SelectedScale}" />
+        </Grid>
+                     
     </Grid>
 </ContentView>

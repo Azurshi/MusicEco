@@ -26,6 +26,7 @@ public static class ServiceRegister {
         services.AddSingleton<TimeFormatter>();
         services.AddSingleton<BasicFormatter>();
         services.AddSingleton<IStyleService, StyleService>();
+        services.AddSingleton<IAppInterfaceService, AppInterfaceService>();
         return services;
     }
     public static IServiceCollection RegisterShell(this IServiceCollection services) {

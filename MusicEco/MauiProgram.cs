@@ -85,6 +85,10 @@ public static class MauiProgram {
             styleService.Register(new DarkTheme());
             styleService.LoadLastTheme();
             DynamicColors.Initialize(provider);
+
+            var interfaceService = provider.GetRequiredService<IAppInterfaceService>();
+            interfaceService.LoadLastScale();
+            interfaceService.LoadLastOrientation();
         });
     }
     private static void RegisterCleanup() {

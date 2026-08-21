@@ -124,3 +124,18 @@ public interface IStyleService {
     public List<ITheme> GetAll();
     public void Register(ITheme theme);
 }
+
+public enum InterfaceOrientation {
+    Landscape,
+    Portrait
+}
+public interface IAppInterfaceService {
+    public event EventHandler<float>? ScaleChanged;
+    public event EventHandler<InterfaceOrientation>? OrientationChanged;
+    public float GetScale();
+    public void SetScale(float scale);
+    public void LoadLastScale();
+    public InterfaceOrientation GetOrientation();
+    public void SetOrientation(InterfaceOrientation orientation);
+    public void LoadLastOrientation();
+}

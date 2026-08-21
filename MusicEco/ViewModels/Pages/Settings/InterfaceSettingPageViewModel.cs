@@ -8,10 +8,39 @@ namespace MusicEco.ViewModels.Pages.Settings;
 public partial class InterfaceSettingPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.InterfaceSetting;
     private readonly IStyleService _styleService;
+    private readonly IAppInterfaceService _interfaceService;
     public IReadOnlyList<ThemeViewModel> Themes { get; private set; }
     public string CurrentThemeName { get; private set; }
-    public InterfaceSettingPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IStyleService styleService) : base(localizationService, appSetting) {
+    private readonly Dictionary<string, float> _map = new() {
+        ["50%"] = 0.5f,
+        ["75%"] = 0.75f,
+        ["100%"] = 1f,
+        ["125%"] = 1.25f,
+        ["150%"] = 1.5f,
+        ["175%"] = 1.75f,
+        ["200%"] = 2f
+    };
+    public List<string> Scales => _map.Keys.ToList();
+    public string SelectedScale {
+        get {
+            var currentScale = this._interfaceService.GetScale();
+            string currentValue = string.Empty;
+            foreach(var (key, value) in this._map) {
+                if (value == currentScale) {
+                    currentValue = key;
+                }
+            }
+            return currentValue;
+        }
+        set {
+            float scaleValue = this._map[value];
+            this._interfaceService.SetScale(scaleValue);
+            OnPropertyChanged();
+        }
+    }
+    public InterfaceSettingPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IStyleService styleService, IAppInterfaceService appInterfaceService) : base(localizationService, appSetting) {
         this._styleService = styleService;
+        this._interfaceService = appInterfaceService;
         this.Themes = [];
         this.CurrentThemeName = string.Empty;
     }

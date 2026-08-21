@@ -4,8 +4,7 @@
              x:Class="MusicEco.Views.Shell.MainWindow"
              Title="MusicEco">
     <ContentPage Background="Transparent">
-        <Grid ColumnDefinitions="64, *"
-              RowDefinitions="*, 76"
+        <Grid x:Name="Container"
               RowSpacing="0"
               ColumnSpacing="0">
             <ContentView x:Name="NavigationBarHost"
