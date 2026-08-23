@@ -227,6 +227,7 @@ public partial class ManagedSKIcon: SKCanvasView {
                 canvas.DrawImage(image, rect, SKSamplingOptions.Default);
             }
             catch (ObjectDisposedException) {
+                Debug.WriteLine("Image already disposed by IconService cache");
                 this._decodeResult = null;
                 this._state = IconViewState.Empty;
                 canvas.Clear(SKColors.Transparent);

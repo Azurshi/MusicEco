@@ -12,29 +12,42 @@ public partial class FavouriteControlButton: ContentView {
     public static readonly BindableProperty CommandProperty
         = Utility.Create<ICommand?>(ThisType);
     [BindedProperty]
-    public partial ImageSource? ActivateImageSource { get; set; }
-    public static readonly BindableProperty ActivateImageSourceProperty
-        = Utility.Create<ImageSource?>(ThisType,
+    public partial string ResourcePath { get; set; }
+    public static readonly BindableProperty ResourcePathProperty
+        = Utility.Create<string>(ThisType, string.Empty,
             propertyChanged: (b, _, v) => {
                 var This = (FavouriteControlButton)b;
-                var value = (ImageSource?)v;
-                This.ActivateImage.Source = value;
+                var value = (string)v;
+                This.ImageLabel.ResourcePath = value;
             });
     [BindedProperty]
-    public partial ImageSource? DeactivateImageSource { get; set; }
-    public static readonly BindableProperty DeactivateImageSourceProperty
-        = Utility.Create<ImageSource?>(ThisType,
+    public partial Color? ActiveTintColor { get; set; }
+    public static readonly BindableProperty ActiveTintColorProperty
+        = Utility.Create<Color?>(ThisType,
             propertyChanged: (b, _, v) => {
                 var This = (FavouriteControlButton)b;
-                var value = (ImageSource?)v;
-                This.DeactivateImage.Source = value;
+                var value = (Color?)v;
+                This.RefreshDisplay();
+            });
+    [BindedProperty]
+    public partial Color? InactiveTintColor { get; set; }
+    public static readonly BindableProperty InactiveTintColorProperty
+        = Utility.Create<Color?>(ThisType,
+            propertyChanged: (b, _, v) => {
+                var This = (FavouriteControlButton)b;
+                var value = (Color?)v;
+                This.RefreshDisplay();
             });
     private bool _isFavourite = false;
     private readonly IFavouriteService _favouriteService;
     private readonly IQueueService _queueServce;
     private void RefreshDisplay() {
-        this.ActivateImage.IsVisible = this._isFavourite;
-        this.DeactivateImage.IsVisible = !this._isFavourite;
+        if (this._isFavourite) {
+            this.ImageLabel.TintColor = this.ActiveTintColor;
+        }
+        else {
+            this.ImageLabel.TintColor = this.InactiveTintColor;
+        }
     }
     public FavouriteControlButton() {
         InitializeComponent();
@@ -44,7 +57,11 @@ public partial class FavouriteControlButton: ContentView {
         // Lifetime event
         this._favouriteService.ItemsChanged += this.FavouriteService_ItemsChanged;
         this._queueServce.CurrentChanged += this.QueueServce_CurrentChanged;
+        this.Loaded += this.FavouriteControlButton_Loaded;
+    }
 
+    private async void FavouriteControlButton_Loaded(object? sender, EventArgs e) {
+        await RefreshState();
     }
 
     private async void QueueServce_CurrentChanged(object? sender, EventArgs e) {

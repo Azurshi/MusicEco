@@ -138,3 +138,19 @@ public interface IAppInterfaceService {
     public void SetOrientation(DisplayOrientation orientation);
     public void LoadLastOrientation();
 }
+
+public class SharedImageCodec {
+    private static bool Created = false;
+    public IIconDecoder IconDecoder { get; init; }
+    public IImageDecoder ImageDecoder { get; init; }
+    public SharedImageCodec(IIconDecoder iconDecoder, IImageDecoder imageDecoder) {
+        if (Created) {
+            throw new Exception("Singleton already created");
+        }
+        this.IconDecoder = iconDecoder;
+        this.IconDecoder.Initialize(1);
+        this.ImageDecoder = imageDecoder;
+        this.ImageDecoder.Initialize(1);
+        Created = true;
+    }
+}

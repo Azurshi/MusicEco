@@ -17,7 +17,6 @@ public partial class FavouritePageViewModel: BasePageViewModel {
         this._favouriteService = favouriteService;
         this._playbackService = playbackService;
         this.Items = new();
-        this._favouriteService.ItemsChanged += this.FavouriteService_ItemsChanged;
     }
 
     private async void FavouriteService_ItemsChanged(object? sender, EventArgs e) {
@@ -36,6 +35,7 @@ public partial class FavouritePageViewModel: BasePageViewModel {
     public override async Task OnNavigateTo(NavigateEventArgs e) {
         await base.OnNavigateTo(e);
         await Refresh();
+        this._favouriteService.ItemsChanged += this.FavouriteService_ItemsChanged;
         FireNavigated(e);
     }
     public override async Task OnNavigatedFrom(NavigateEventArgs e) {

@@ -12,32 +12,32 @@
                         <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto"
                               RowSpacing="8">
                             <button:NavigationButton Grid.Row="0"
-                                                     ActivateImageSource="play_on.png"
-                                                     DeactivateImageSource="play.png"
+                                                     HeightRequest="{DynamicResource NavigationBarSize}"
+                                                     ResourcePath="play_raw.png"
                                                      PageRoute="{x:Static top:PageRoute.Home}" />
                             <button:NavigationButton Grid.Row="1"
-                                                     ActivateImageSource="playlist_on.png"
-                                                     DeactivateImageSource="playlist.png"
+                                                     HeightRequest="{DynamicResource NavigationBarSize}"
+                                                     ResourcePath="playlist_raw.png"
                                                      PageRoute="{x:Static top:PageRoute.Queue}" />
                             <button:NavigationButton Grid.Row="2"
-                                                     ActivateImageSource="album_on.png"
-                                                     DeactivateImageSource="album.png"
+                                                     HeightRequest="{DynamicResource NavigationBarSize}"
+                                                     ResourcePath="album_raw.png"
                                                      PageRoute="{x:Static top:PageRoute.Album}" />
                             <button:NavigationButton Grid.Row="3"
-                                                     ActivateImageSource="folder_on.png"
-                                                     DeactivateImageSource="folder.png"
+                                                     HeightRequest="{DynamicResource NavigationBarSize}"
+                                                     ResourcePath="folder_raw.png"
                                                      PageRoute="{x:Static top:PageRoute.Explorer}" />
                             <button:NavigationButton Grid.Row="4"
-                                                     ActivateImageSource="search_on.png"
-                                                     DeactivateImageSource="search.png"
+                                                     HeightRequest="{DynamicResource NavigationBarSize}"
+                                                     ResourcePath="search_raw.png"
                                                      PageRoute="{x:Static top:PageRoute.Search}" />
                             <button:NavigationButton Grid.Row="5"
-                                                     ActivateImageSource="user_on.png"
-                                                     DeactivateImageSource="user.png"
+                                                     HeightRequest="{DynamicResource NavigationBarSize}"
+                                                     ResourcePath="user_raw.png"
                                                      PageRoute="{x:Static top:PageRoute.User}" />
                             <button:NavigationButton Grid.Row="6"
-                                                     ActivateImageSource="setting_on.png"
-                                                     DeactivateImageSource="setting.png"
+                                                     HeightRequest="{DynamicResource NavigationBarSize}"
+                                                     ResourcePath="setting_raw.png"
                                                      PageRoute="{x:Static top:PageRoute.Setting}" />
                         </Grid>
                     </ScrollView>
@@ -49,44 +49,31 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="PortraitLayout">
-                <Grid ColumnDefinitions="*, Auto">
-                    <Grid Grid.Column="0"
-                          ColumnDefinitions="*, *, *, *, *, *, *"
-                          ColumnSpacing="0">
-                        <button:NavigationButton Grid.Column="0"
-                                                 ActivateImageSource="play_on.png"
-                                                 DeactivateImageSource="play.png"
-                                                 PageRoute="{x:Static top:PageRoute.Home}" />
-                        <button:NavigationButton Grid.Column="1"
-                                                 ActivateImageSource="playlist_on.png"
-                                                 DeactivateImageSource="playlist.png"
-                                                 PageRoute="{x:Static top:PageRoute.Queue}" />
-                        <button:NavigationButton Grid.Column="2"
-                                                 ActivateImageSource="album_on.png"
-                                                 DeactivateImageSource="album.png"
-                                                 PageRoute="{x:Static top:PageRoute.Album}" />
-                        <button:NavigationButton Grid.Column="3"
-                                                 ActivateImageSource="folder_on.png"
-                                                 DeactivateImageSource="folder.png"
-                                                 PageRoute="{x:Static top:PageRoute.Explorer}" />
-                        <button:NavigationButton Grid.Column="4"
-                                                 ActivateImageSource="search_on.png"
-                                                 DeactivateImageSource="search.png"
-                                                 PageRoute="{x:Static top:PageRoute.Search}" />
-                        <button:NavigationButton Grid.Column="5"
-                                                 ActivateImageSource="user_on.png"
-                                                 DeactivateImageSource="user.png"
-                                                 PageRoute="{x:Static top:PageRoute.User}" />
-                        <button:NavigationButton Grid.Column="6"
-                                                 ActivateImageSource="setting_on.png"
-                                                 DeactivateImageSource="setting.png"
-                                                 PageRoute="{x:Static top:PageRoute.Setting}" />
-                    </Grid>
-                    <Grid Grid.Column="1"
-                          ColumnDefinitions="*, *">
-                        <button:NavigationBackwardButton Grid.Column="0" />
-                        <button:NavigationForwardButton Grid.Column="1" />
-                    </Grid>
+                <Grid ColumnDefinitions="Auto, *, *, *, *, *, *, *, Auto"
+                      ColumnSpacing="2">
+                    <button:NavigationBackwardButton Grid.Column="0" />
+                    <button:NavigationButton Grid.Column="1"
+                                             ResourcePath="play_raw.png"
+                                             PageRoute="{x:Static top:PageRoute.Home}" />
+                    <button:NavigationButton Grid.Column="2"
+                                             ResourcePath="playlist_raw.png"
+                                             PageRoute="{x:Static top:PageRoute.Queue}" />
+                    <button:NavigationButton Grid.Column="3"
+                                             ResourcePath="album_raw.png"
+                                             PageRoute="{x:Static top:PageRoute.Album}" />
+                    <button:NavigationButton Grid.Column="4"
+                                             ResourcePath="folder_raw.png"
+                                             PageRoute="{x:Static top:PageRoute.Explorer}" />
+                    <button:NavigationButton Grid.Column="5"
+                                             ResourcePath="search_raw.png"
+                                             PageRoute="{x:Static top:PageRoute.Search}" />
+                    <button:NavigationButton Grid.Column="6"
+                                             ResourcePath="user_raw.png"
+                                             PageRoute="{x:Static top:PageRoute.User}" />
+                    <button:NavigationButton Grid.Column="7"
+                                             ResourcePath="setting_raw.png"
+                                             PageRoute="{x:Static top:PageRoute.Setting}" />
+                    <button:NavigationForwardButton Grid.Column="8" />
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>

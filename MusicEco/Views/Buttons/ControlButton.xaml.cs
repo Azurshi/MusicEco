@@ -3,45 +3,47 @@ using System.Windows.Input;
 
 namespace MusicEco.Views.Buttons;
 
-public partial class ControlButton: Grid {
+public partial class ControlButton: ContentView {
     private static readonly Type ThisType = typeof(ControlButton);
     [BindableAutoGen]
     public static readonly BindableProperty CommandProperty
         = Utility.Create<ICommand?>(ThisType);
     [BindedProperty]
-    public partial bool IsActivate { get; set; }
-    public static readonly BindableProperty IsActivateProperty
+    public partial bool IsActive { get; set; }
+    public static readonly BindableProperty IsActiveProperty
         = Utility.Create<bool>(ThisType, false,
             propertyChanged: (b, _, v) => {
                 var This = (ControlButton)b;
+                var value = (bool)v;
                 This.RefreshState();
             });
     [BindedProperty]
-    public partial ImageSource? ActivateImageSource { get; set; }
-    public static readonly BindableProperty ActivateImageSourceProperty
-        = Utility.Create<ImageSource?>(ThisType,
+    public partial string ActiveResourcePath { get; set; }
+    public static readonly BindableProperty ActiveResourcePathProperty
+        = Utility.Create<string>(ThisType, string.Empty,
             propertyChanged: (b, _, v) => {
                 var This = (ControlButton)b;
-                var value = (ImageSource?)v;
-                This.ActivateImage.Source = value;
+                var value = (string)v;
+                This.ActiveLabel.ResourcePath = value;
             });
     [BindedProperty]
-    public partial ImageSource? DeactivateImageSource { get; set; }
-    public static readonly BindableProperty DeactivateImageSourceProperty
-        = Utility.Create<ImageSource?>(ThisType,
+    public partial string InactiveResourcePath { get; set; }
+    public static readonly BindableProperty InactiveResourcePathProperty
+        = Utility.Create<string>(ThisType, string.Empty,
             propertyChanged: (b, _, v) => {
                 var This = (ControlButton)b;
-                var value = (ImageSource?)v;
-                This.DeactivateImage.Source = value;
+                var value = (string)v;
+                This.InactiveLabel.ResourcePath = value;
             });
+
     private void RefreshState() {
-        this.ActivateImage.IsVisible = this.IsActivate;
-        this.DeactivateImage.IsVisible = !this.IsActivate;
+        this.ActiveLabel.IsVisible = this.IsActive;
+        this.InactiveLabel.IsVisible = !this.IsActive;
     }
     public event EventHandler<TappedEventArgs>? Tapped;
     public ControlButton() {
         InitializeComponent();
-        RefreshState();
+        this.RefreshState();
     }
     private void OnPointerPressed(object? sender, PointerEventArgs e) {
         Scale = 0.9;
@@ -62,7 +64,7 @@ public partial class ControlButton: Grid {
     }
 
     private void OnTapped(object? sender, TappedEventArgs e) {
-        Command?.Execute(IsActivate);
+        Command?.Execute(this.IsActive);
         Tapped?.Invoke(this, e);
     }
 }

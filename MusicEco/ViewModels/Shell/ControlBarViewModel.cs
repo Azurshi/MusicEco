@@ -45,8 +45,13 @@ public partial class ControlBarViewModel: ObservableObject {
     public string PlaybackPosition => this.Format(this._playbackRatio * this._playbackDuration);
     public string PlaybackDuration => this.Format(this._playbackDuration);
     private string Format(TimeSpan duration) {
-        string format = this.L["Format_Time_HourMinuteSecond"];
-        return string.Format(format, Math.Floor(duration.TotalHours), duration.Minutes.ToString("D2"), duration.Seconds.ToString("D2"));
+        if (duration.TotalHours >= 1) {
+            string format = this.L["Format_Time_HourMinuteSecond"];
+            return string.Format(format, Math.Floor(duration.TotalHours), duration.Minutes.ToString("D2"), duration.Seconds.ToString("D2"));
+        } else {
+            string format = this.L["Format_Time_MinuteSecond"];
+            return string.Format(format, duration.Minutes.ToString("D2"), duration.Seconds.ToString("D2"));
+        }
     }
     private double _playbackRatio = 0.0;
     public double PlaybackRatio {

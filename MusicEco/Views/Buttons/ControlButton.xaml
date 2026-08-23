@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-      x:Class="MusicEco.Views.Buttons.ControlButton">
-    <Grid.GestureRecognizers>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:control="clr-namespace:MusicEco.Views.Controls"
+             xmlns:top="clr-namespace:MusicEco"
+             x:Class="MusicEco.Views.Buttons.ControlButton">
+    <ContentView.GestureRecognizers>
         <TapGestureRecognizer Tapped="OnTapped" />
         <PointerGestureRecognizer PointerPressed="OnPointerPressed"
                                   PointerReleased="OnPointerReleased"
                                   PointerEntered="OnPointerEntered"
                                   PointerExited="OnPointerExited" />
-    </Grid.GestureRecognizers>
-    <Image x:Name="ActivateImage" />
-    <Image x:Name="DeactivateImage" />
-</Grid>
+    </ContentView.GestureRecognizers>
+    <Grid>
+        <control:SKImageLabel x:Name="ActiveLabel" 
+                              Option="{Static top:SamplingOptions.Trilinear}"
+                              TintColor="{DynamicResource TintColor}"
+                              MaxSize="{Static top:Config.MaxIconButtonSize}"/>
+        <control:SKImageLabel x:Name="InactiveLabel"
+                              Option="{Static top:SamplingOptions.Trilinear}" 
+                              TintColor="{DynamicResource TintColor}"
+                              MaxSize="{Static top:Config.MaxIconButtonSize}"/>
+    </Grid>
+</ContentView>

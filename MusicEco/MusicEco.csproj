@@ -118,6 +118,9 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Text.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Views\Controls\SKImageLabel.xaml.cs">
+		  <DependentUpon>SKImageLabel.xaml</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -156,7 +159,7 @@
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\Buttons\ControlButton.xaml">
-			<Generator>MSBuild:Compile</Generator>
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\Buttons\FavouriteControlButton.xaml">
 			<Generator>MSBuild:Compile</Generator>
@@ -167,8 +170,14 @@
 		<MauiXaml Update="Views\Buttons\MoveButton.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Views\Buttons\NavigationButton.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\Controls\ManagedSKIcon.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\Controls\SKImageLabel.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\Items\DragItemFrame.xaml">
 			<Generator>MSBuild:Compile</Generator>
@@ -183,9 +192,6 @@
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\Buttons\NavigationBackwardButton.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\Buttons\NavigationButton.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\Buttons\NavigationForwardButton.xaml">

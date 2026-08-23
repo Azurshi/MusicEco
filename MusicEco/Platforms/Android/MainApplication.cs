@@ -20,6 +20,7 @@ public partial class ExplorerPicker {
         if (uri == null || uri.Path == null) {
             return null;
         }
+
         else {
             string? path = uri.ToString();
             if (path == null) {

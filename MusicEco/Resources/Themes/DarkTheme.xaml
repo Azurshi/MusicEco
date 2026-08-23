@@ -13,4 +13,7 @@
     <Color x:Key="PageColor">#FF1C1C1D</Color>
     <Color x:Key="HeaderColor">#FF101011</Color>
     <Color x:Key="MenuColor">Black</Color>
+    <Color x:Key="ActiveTintColor">White</Color>
+    <Color x:Key="TintColor">#AAAAAA</Color>
+    <Color x:Key="InactiveTintColor">Gray</Color>
 </ResourceDictionary>

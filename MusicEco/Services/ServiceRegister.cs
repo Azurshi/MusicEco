@@ -27,6 +27,7 @@ public static class ServiceRegister {
         services.AddSingleton<BasicFormatter>();
         services.AddSingleton<IStyleService, StyleService>();
         services.AddSingleton<IAppInterfaceService, AppInterfaceService>();
+        services.AddSingleton<SharedImageCodec>();
         return services;
     }
     public static IServiceCollection RegisterShell(this IServiceCollection services) {
