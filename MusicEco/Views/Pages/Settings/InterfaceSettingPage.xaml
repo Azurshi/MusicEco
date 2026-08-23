@@ -55,19 +55,14 @@
                         ItemTemplate="{StaticResource ListThemeItemTemplate}"
                         ItemsLayout="{StaticResource LinearLayout}" />
         <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <!--Label Grid.Column="0"
-                   Text="{Binding L[Setting_Interface_Scale]}"
-                   Style="{StaticResource OneLine}"
-                   FontAttributes="Bold" /-->
-            <Picker Grid.Column="1"
-                    Title="{Binding L[Setting_Interface_Scale]}"
+            <Picker Title="{Binding L[Setting_Interface_Scale]}"
                     ItemsSource="{Binding Scales}"
                     SelectedItem="{Binding SelectedScale}" />
         </Grid>
-                     
+        <Grid Grid.Row="3">
+            <Picker Title="{Binding L[Setting_Interface_Orientation]}"
+                    ItemsSource="{Binding Orientations}"
+                    SelectedItem="{Binding SelectedOrientation}" />
+        </Grid>
     </Grid>
 </ContentView>

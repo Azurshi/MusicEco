@@ -1,12 +1,19 @@
 using MusicEco.Core;
 using MusicEco.Services;
 using MusicEco.SourceGeneration;
-using System.Windows.Input;
 
 namespace MusicEco.Views.Buttons;
 
-public partial class NavigationButton: Grid {
+public partial class NavigationButton: Grid, IDisposable {
     private static readonly Type ThisType = typeof(NavigationButton);
+    private static bool ComputeActive(PageRoute? currentRoute, PageRoute buttonRoute) {
+        if (currentRoute == null) {
+            return false;
+        }
+        else {
+            return currentRoute.Route.StartsWith(buttonRoute.Route);
+        }
+    }
     [BindedProperty]
     public partial PageRoute PageRoute { get; set; }
     public static readonly BindableProperty PageRouteProperty 
@@ -14,7 +21,7 @@ public partial class NavigationButton: Grid {
             propertyChanged: (b, _, v) => {
                 var This = (NavigationButton)b;
                 var value = (PageRoute)v;
-                This.IsActivate = This._stack.CurrentRoute == value;
+                This.IsActivate = ComputeActive(This._stack.CurrentRoute, value);
             });
     [BindedProperty]
     public partial ImageSource? ActivateImageSource { get; set; }
@@ -55,7 +62,7 @@ public partial class NavigationButton: Grid {
 
     private void NavigationButton_RouteChanged(object? sender, PageRoute e) {
         bool isActivate = false;
-        if (e.Route.StartsWith(this.PageRoute.Route)) {
+        if (ComputeActive(e, this.PageRoute)) {
             isActivate = true;
         }
         this.IsActivate = isActivate;
@@ -89,5 +96,10 @@ public partial class NavigationButton: Grid {
                 EventSystem.Publish(this, navigateEventArgs);
             }
         }
+    }
+
+    public void Dispose() {
+        //Debug.WriteLine("Detach navigation event");
+        this._stack.RouteChanged -= NavigationButton_RouteChanged;
     }
 }

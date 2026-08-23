@@ -38,6 +38,7 @@ public partial class ControlButton: Grid {
         this.ActivateImage.IsVisible = this.IsActivate;
         this.DeactivateImage.IsVisible = !this.IsActivate;
     }
+    public event EventHandler<TappedEventArgs>? Tapped;
     public ControlButton() {
         InitializeComponent();
         RefreshState();
@@ -62,5 +63,6 @@ public partial class ControlButton: Grid {
 
     private void OnTapped(object? sender, TappedEventArgs e) {
         Command?.Execute(IsActivate);
+        Tapped?.Invoke(this, e);
     }
 }

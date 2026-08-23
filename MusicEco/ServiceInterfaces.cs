@@ -2,7 +2,6 @@
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
 using MusicEco.Views.Overlays;
-using SkiaSharp;
 using System.Numerics;
 
 namespace MusicEco;
@@ -125,17 +124,17 @@ public interface IStyleService {
     public void Register(ITheme theme);
 }
 
-public enum InterfaceOrientation {
+public enum DisplayOrientation {
     Landscape,
     Portrait
 }
 public interface IAppInterfaceService {
     public event EventHandler<float>? ScaleChanged;
-    public event EventHandler<InterfaceOrientation>? OrientationChanged;
+    public event EventHandler<DisplayOrientation>? OrientationChanged;
     public float GetScale();
     public void SetScale(float scale);
     public void LoadLastScale();
-    public InterfaceOrientation GetOrientation();
-    public void SetOrientation(InterfaceOrientation orientation);
+    public DisplayOrientation GetOrientation();
+    public void SetOrientation(DisplayOrientation orientation);
     public void LoadLastOrientation();
 }

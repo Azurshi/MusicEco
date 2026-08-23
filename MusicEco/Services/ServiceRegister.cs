@@ -31,6 +31,7 @@ public static class ServiceRegister {
     }
     public static IServiceCollection RegisterShell(this IServiceCollection services) {
         services.AddSingleton<MainWindow>();
+        services.AddSingleton<MainPage>();
         services.AddSingleton<NavigationBar>();
         services.AddSingleton<ControlBar>();
         services.AddSingleton<ControlBarViewModel>();
@@ -90,6 +91,8 @@ public static class ServiceRegister {
         services.AddTransient<AudioInfoOverlayViewModel>();
         services.AddTransient<CreateNewPlaylistOverlay>();
         services.AddTransient<CreateNewPlaylistOverlayViewModel>();
+        services.AddTransient<ChangeVolumeOverlay>();
+        services.AddTransient<ChangeVolumeOverlayViewModel>();
 
         services.AddTransient<DevInfoOverlay>();
         return services;

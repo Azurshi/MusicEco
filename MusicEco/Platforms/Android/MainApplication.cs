@@ -1,6 +1,6 @@
 ﻿using Android.App;
 using Android.Runtime;
-using MusicEco.Core.Platforms.Android;
+using MusicEco.Platform;
 
 namespace MusicEco;
 
@@ -15,7 +15,7 @@ public class MainApplication: MauiApplication {
 
 public partial class ExplorerPicker {
     public static async Task<string?> PickFolder() {
-        var activity = Platform.CurrentActivity as MainActivity ?? throw new Exception("Main activity not found");
+        var activity = Microsoft.Maui.ApplicationModel.Platform.CurrentActivity as MainActivity ?? throw new Exception("Main activity not found");
         var uri = await activity.FolderPickerInternal();
         if (uri == null || uri.Path == null) {
             return null;

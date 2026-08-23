@@ -16,6 +16,6 @@
     <x:Double x:Key="LabelFontSize">16</x:Double>
     <x:Double x:Key="TitleFontSize">20</x:Double>
     <x:Double x:Key="NavigationBarSize">64</x:Double>
-    <x:Double x:Key="ControlBarSize">76</x:Double>
     <x:Double x:Key="ProgressBarSize">28</x:Double>
+    <x:Double x:Key="VolumeBarSize">128</x:Double>
 </ResourceDictionary>

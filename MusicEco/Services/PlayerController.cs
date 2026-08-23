@@ -4,7 +4,7 @@ using System.Diagnostics;
 using MusicEco.Core.Types;
 
 #if ANDROID
-using MusicEco.Core.Platforms.Android;
+using MusicEco.Platform;
 #endif
 namespace MusicEco.Services;
 internal partial class PlayerController: IPlayerController {

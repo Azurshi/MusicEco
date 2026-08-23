@@ -11,7 +11,7 @@ public partial class InterfaceSettingPageViewModel: BasePageViewModel {
     private readonly IAppInterfaceService _interfaceService;
     public IReadOnlyList<ThemeViewModel> Themes { get; private set; }
     public string CurrentThemeName { get; private set; }
-    private readonly Dictionary<string, float> _map = new() {
+    private readonly Dictionary<string, float> _scaleMap = new() {
         ["50%"] = 0.5f,
         ["75%"] = 0.75f,
         ["100%"] = 1f,
@@ -20,12 +20,12 @@ public partial class InterfaceSettingPageViewModel: BasePageViewModel {
         ["175%"] = 1.75f,
         ["200%"] = 2f
     };
-    public List<string> Scales => _map.Keys.ToList();
+    public List<string> Scales => _scaleMap.Keys.ToList();
     public string SelectedScale {
         get {
             var currentScale = this._interfaceService.GetScale();
             string currentValue = string.Empty;
-            foreach(var (key, value) in this._map) {
+            foreach(var (key, value) in this._scaleMap) {
                 if (value == currentScale) {
                     currentValue = key;
                 }
@@ -33,8 +33,30 @@ public partial class InterfaceSettingPageViewModel: BasePageViewModel {
             return currentValue;
         }
         set {
-            float scaleValue = this._map[value];
+            float scaleValue = this._scaleMap[value];
             this._interfaceService.SetScale(scaleValue);
+            OnPropertyChanged();
+        }
+    }
+    private readonly Dictionary<string, DisplayOrientation> _orientationMap = new() {
+        ["Landscape"] = DisplayOrientation.Landscape,
+        ["Portrait"] = DisplayOrientation.Portrait
+    };
+    public List<string> Orientations => _orientationMap.Keys.ToList();
+    public string SelectedOrientation {
+        get {
+            var currentOrientation = this._interfaceService.GetOrientation();
+            string currentValue = string.Empty;
+            foreach(var (key, value) in this._orientationMap) {
+                if (value == currentOrientation) {
+                    currentValue = key;
+                }
+            }
+            return currentValue;
+        }
+        set {
+            DisplayOrientation orientationValue = this._orientationMap[value];
+            this._interfaceService.SetOrientation(orientationValue);
             OnPropertyChanged();
         }
     }

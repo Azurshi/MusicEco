@@ -4,25 +4,25 @@ using MusicEco.Views.Shell;
 namespace MusicEco.Services;
 
 internal class AppInterfaceService: IAppInterfaceService {
-    private const InterfaceOrientation DefaultOrientation
+    private const DisplayOrientation DefaultOrientation
 #if WINDOWS || MACCATALYST
-        = InterfaceOrientation.Landscape;
+        = DisplayOrientation.Landscape;
 #elif ANDROID || IOS
-        = InterfaceOrientation.Portrait;
+        = DisplayOrientation.Portrait;
 #endif
     private const float DefaultScale = 1.0f;
     private readonly IAppSetting _setting;
     public event EventHandler<float>? ScaleChanged;
-    public event EventHandler<InterfaceOrientation>? OrientationChanged;
+    public event EventHandler<DisplayOrientation>? OrientationChanged;
     public AppInterfaceService(IAppSetting appSetting) {
         this._setting = appSetting;
     }
-    public InterfaceOrientation GetOrientation() {
-        return this._setting.Get(DefaultOrientation, nameof(InterfaceOrientation));
+    public DisplayOrientation GetOrientation() {
+        return this._setting.Get(DefaultOrientation, nameof(DisplayOrientation));
     }
-    public void SetOrientation(InterfaceOrientation orientation) {
+    public void SetOrientation(DisplayOrientation orientation) {
         if (this.GetOrientation() != orientation) {
-            this._setting.Set(orientation, nameof(InterfaceOrientation));
+            this._setting.Set(orientation, nameof(DisplayOrientation));
             OrientationChanged?.Invoke(this, orientation);
         }
     }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MusicEco.Views.Shell.MainPage"
+             Title="MusicEco"
+             Background="Transparent">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="LandscapeLayout">
+                <Grid RowSpacing="0"
+                      ColumnSpacing="0">
+                    <ContentView x:Name="NavigationBarHost"
+                                 Grid.Column="0"
+                                 Grid.Row="0"
+                                 Margin="0"
+                                 BackgroundColor="{DynamicResource MenuColor}" />
+                    <ContentView x:Name="ViewHost"
+                                 Grid.Column="1"
+                                 Grid.Row="0"
+                                 Margin="0"
+                                 BackgroundColor="{DynamicResource PageColor}" />
+                    <ContentView x:Name="ControlBarHost"
+                                 Grid.Column="0"
+                                 Grid.ColumnSpan="2"
+                                 Grid.Row="1"
+                                 Margin="0"
+                                 BackgroundColor="{DynamicResource MenuColor}" />
+                    <ContentView x:Name="OverlayHost"
+                                 Grid.ColumnSpan="2"
+                                 Grid.RowSpan="3"
+                                 Margin="0" />
+                </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="PortraitLayout">
+                <Grid RowSpacing="0"
+                      ColumnSpacing="8">
+                    <ContentView x:Name="ViewHost"
+                                 Grid.Row="0"
+                                 Margin="0"
+                                 BackgroundColor="{DynamicResource PageColor}" />
+                    <ContentView x:Name="ControlBarHost"
+                                 Grid.Column="0"
+                                 Grid.Row="1"
+                                 Margin="0"
+                                 BackgroundColor="{DynamicResource MenuColor}" />
+                    <ContentView x:Name="NavigationBarHost"
+                                 Grid.Row="2"
+                                 Margin="0"
+                                 BackgroundColor="{DynamicResource MenuColor}" />
+                    <ContentView x:Name="OverlayHost"
+                                 Grid.Row="0"
+                                 Grid.RowSpan="3"
+                                 Margin="0" />
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+</ContentPage>

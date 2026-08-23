@@ -1,29 +1,45 @@
+using MusicEco.Core;
+using MusicEco.Services;
 using MusicEco.ViewModels.Shell;
-using System.Diagnostics;
+using System.Numerics;
 
 namespace MusicEco.Views.Shell;
 
 public partial class ControlBar: ContentView {
-    public ControlBar(ControlBarViewModel viewModel) {
+    private readonly IAppInterfaceService _interfaceService;
+    public ControlBar(ControlBarViewModel viewModel, IAppInterfaceService interfaceService) {
         InitializeComponent();
         this.BindingContext = viewModel;
+        this._interfaceService = interfaceService;
+        this._interfaceService.OrientationChanged += this.InterfaceService_OrientationChanged;
     }
-    private readonly double _itemScale = 1.5;
-    private readonly double _volumeScale = 3;
-    private void ButtonContainer_SizeChanged(object? sender, EventArgs e) {
-        int childCount = ButtonContainer.Children.Count;
-        double itemWidth = ButtonContainer.Height * _itemScale;
-        double totalSpacing = ButtonContainer.Width - itemWidth * childCount;
-        totalSpacing = Math.Max(0, totalSpacing);
-        double spacing = 0;
-        if (childCount - 1 > 0) {
-            spacing = totalSpacing / (childCount - 1);
+
+    private void InterfaceService_OrientationChanged(object? sender, DisplayOrientation e) {
+        LoadLayout();
+    }
+    private void LoadLayout() {
+        DisplayOrientation orientation = this._interfaceService.GetOrientation();
+        Grid layout = orientation switch {
+            DisplayOrientation.Landscape => this.LoadTemplate<Grid>("LandscapeLayout"),
+            DisplayOrientation.Portrait => this.LoadTemplate<Grid>("PortraitLayout"),
+            _ => throw new ValueNotExistsExeption()
+        };
+        if (this.Content is Element oldContent) {
+            foreach (var child in oldContent.WalkChildrenRecursive(true)) {
+                if (child is IDisposable disposable) {
+                    disposable.Dispose();
+                }
+            }
         }
-        ButtonContainer.ColumnSpacing = spacing;
-        double volumeSliderWidth = ButtonContainer.Height * _volumeScale;
-        double volumeSliderLeftMargin = ButtonContainer.Height * (_volumeScale - _itemScale) / 2;
-        VolumeSlider.WidthRequest = volumeSliderWidth;
-        double defaultSize = Utility.GetResource<double>("ProgressBarSize");
-        Overlay.Margin = new(itemWidth + spacing - volumeSliderLeftMargin, defaultSize/4, 0, 0);
+        this.Content = layout;
+    }
+
+    private void ControlButton_Tapped(object sender, TappedEventArgs e) {
+        if (this.BindingContext is ControlBarViewModel viewModel) {
+            var position = e.GetPosition(AppLifeCycle.Provider.GetRequiredService<AppOverlay>());
+            if (position != null) {
+                viewModel.ChangeVolumeCommand.Execute(new Vector2((float)position.Value.X, (float)position.Value.Y));
+            }
+        }
     }
 }

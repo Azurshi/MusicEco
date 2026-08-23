@@ -889,6 +889,15 @@ namespace MusicEco.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display orientation.
+        /// </summary>
+        public static string Setting_Interface_Orientation {
+            get {
+                return ResourceManager.GetString("Setting_Interface_Orientation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UI scale.
         /// </summary>
         public static string Setting_Interface_Scale {

@@ -483,4 +483,7 @@
   <data name="Setting_Interface_Scale" xml:space="preserve">
     <value>Tỉ lệ giao diện</value>
   </data>
+  <data name="Setting_Interface_Orientation" xml:space="preserve">
+    <value>Display orientation</value>
+  </data>
 </root>

@@ -2,12 +2,16 @@
 using MusicEco.Core.Types;
 using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Pages;
+using MusicEco.Views.Overlays;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace MusicEco.ViewModels.Shell;
 
 public partial class ControlBarViewModel: ObservableObject {
     private readonly IAppSetting _setting;
+    private readonly IServiceProvider _provider;
+    private readonly IOverlayService _overlay;
     private readonly IPlayerController _player;
     private readonly IPlaybackService _playback;
     private readonly IQueueService _queueService;
@@ -57,26 +61,10 @@ public partial class ControlBarViewModel: ObservableObject {
     }
     private bool _positionEventUpdateBlocked = false;
     private TimeSpan PerSeekDuration => TimeSpan.FromSeconds(this._setting.Get(15, SettingFields.PerSeekSeconds));
-    private const double _volumeEpsilon = 0.01;
-    public double Volume {
-        get => this._player.GetVolume();
-        set {
-            double volume = this._player.GetVolume();
-            if (value < _volumeEpsilon) {
-                value = 0;
-            }
-            if (value > (1-_volumeEpsilon)) {
-                value = 1.0;
-            }
-            if (Math.Abs(volume - value) > _volumeEpsilon) {
-                float floatValue = (float)value;
-                this._player.SetVolume(floatValue);
-                OnPropertyChanged();
-            }
-        }
-    }
     public ControlBarViewModel(
         IAppSetting appSetting,
+        IServiceProvider serviceProvider,
+        IOverlayService overlayService,
         ILocalizationService localizationService,
         IPlayerController playerController, 
         IPlaybackService playbackService, 
@@ -84,6 +72,8 @@ public partial class ControlBarViewModel: ObservableObject {
         ) {
         this._setting = appSetting;
         this._localizationService = localizationService;
+        this._provider = serviceProvider;
+        this._overlay = overlayService;
         this._player = playerController;
         this._playback = playbackService;
         this._queueService = queueService;
@@ -163,6 +153,14 @@ public partial class ControlBarViewModel: ObservableObject {
     [RelayCommand]
     private void ToggleVolumeButton() {
         this.VolumeVisible = !this.VolumeVisible;
+    }
+    [RelayCommand]
+    private void ChangeVolume(Vector2? position) {
+        if (position == null) {
+            return;
+        }
+        var view = this._provider.GetRequiredService<ChangeVolumeOverlay>();
+        this._overlay.ShowFixed(position.Value, view);
     }
     [RelayCommand]
     private async Task PlayPause() {

@@ -212,6 +212,9 @@
 		<MauiXaml Update="Views\Overlays\AudioInfoOverlay.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Views\Overlays\ChangeVolumeOverlay.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\Overlays\CreateNewPlaylistOverlay.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -280,6 +283,9 @@
 		</MauiXaml>
 		<MauiXaml Update="Views\Shell\ControlBar.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\Shell\MainPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\Shell\MainWindow.xaml">
 			<Generator>MSBuild:Compile</Generator>

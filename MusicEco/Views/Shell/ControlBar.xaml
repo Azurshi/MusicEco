@@ -5,93 +5,159 @@
              xmlns:shellVM="clr-namespace:MusicEco.ViewModels.Shell"
              x:Class="MusicEco.Views.Shell.ControlBar"
              x:DataType="shellVM:ControlBarViewModel">
-    <Grid RowDefinitions="24, *"
-          RowSpacing="4">
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Label Grid.Column="0"
-                   WidthRequest="{DynamicResource ControlBarSize}"
-                   Text="{Binding PlaybackPosition}"
-                   Style="{StaticResource OneLine}"
-                   HorizontalTextAlignment="Center" />
-            <Slider Grid.Column="1"
-                    HeightRequest="{DynamicResource ProgressBarSize}"
-                    Value="{Binding PlaybackRatio, Mode=TwoWay}"
-                    DragStartedCommand="{Binding RatioDragStartedCommand}"
-                    DragCompletedCommand="{Binding RatioDragCompletedCommand}"
-                    Minimum="0"
-                    Maximum="1" />
-            <Label Grid.Column="2"
-                   WidthRequest="{DynamicResource ControlBarSize}"
-                   Text="{Binding PlaybackDuration}"
-                   Style="{StaticResource OneLine}"
-                   HorizontalTextAlignment="Center" />
-        </Grid>
-        <Grid Grid.Row="1"
-              x:Name="ButtonContainer"
-              SizeChanged="ButtonContainer_SizeChanged"
-              ColumnDefinitions="*, *, *, *, *, *, *, *, *">
-            <button:FavouriteControlButton Grid.Column="0"
-                                           ActivateImageSource="favourite.png"
-                                           DeactivateImageSource="no_favourite.png" />
-            <button:ControlButton Grid.Column="1"
-                                  ActivateImageSource="volume_on.png"
-                                  DeactivateImageSource="volume.png"
-                                  IsActivate="{Binding VolumeVisible}"
-                                  Command="{Binding ToggleVolumeButtonCommand}" />
-            <button:ControlButton Grid.Column="2"
-                                  ActivateImageSource="next.png"
-                                  IsActivate="true"
-                                  Command="{Binding PreviousAudioCommand}"
-                                  Rotation="180" />
-            <button:ControlButton Grid.Column="3"
-                                  ActivateImageSource="forward.png"
-                                  IsActivate="true"
-                                  Command="{Binding SeekBackwardCommand}"
-                                  Rotation="180" />
-            <button:ControlButton Grid.Column="4"
-                                  ActivateImageSource="pause.png"
-                                  DeactivateImageSource="play_on.png"
-                                  IsActivate="{Binding IsPlaying}"
-                                  Command="{Binding PlayPauseCommand}" />
-            <button:ControlButton Grid.Column="5"
-                                  ActivateImageSource="forward.png"
-                                  IsActivate="true"
-                                  Command="{Binding SeekForwardCommand}" />
-            <button:ControlButton Grid.Column="6"
-                                  ActivateImageSource="next.png"
-                                  IsActivate="true"
-                                  Command="{Binding NextAudioCommand}" />
-            <button:ControlButton Grid.Column="7"
-                                  ActivateImageSource="repeat_on.png"
-                                  DeactivateImageSource="repeat.png"
-                                  IsActivate="{Binding IsRepeating}"
-                                  Command="{Binding ChangeRepeatCommand}" />
-            <button:ControlButton Grid.Column="8"
-                                  ActivateImageSource="shuffle_on.png"
-                                  DeactivateImageSource="shuffle.png"
-                                  IsActivate="{Binding IsShuffling}"
-                                  Command="{Binding ChangeShuffleCommand}" />
-            <AbsoluteLayout Grid.Row="0"
-                            x:Name="Overlay"
-                            Margin="{DynamicResource ProgressBarSize}"
-                            InputTransparent="True"
-                            HorizontalOptions="Fill"
-                            VerticalOptions="Fill"
-                            CascadeInputTransparent="False"
-                            IsClippedToBounds="False"
-                            IsVisible="{Binding VolumeVisible}">
-                <Slider x:Name="VolumeSlider"
-                        Minimum="0"
-                        Maximum="1"
-                        HeightRequest="{DynamicResource ProgressBarSize}"
-                        Value="{Binding Volume, Mode=TwoWay}" />
-            </AbsoluteLayout>
-
-        </Grid>
-    </Grid>
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="LandscapeLayout"
+                          x:DataType="shellVM:ControlBarViewModel">
+                <Grid RowDefinitions="Auto, *"
+                      RowSpacing="4">
+                    <Grid Grid.Row="0"
+                          HeightRequest="{DynamicResource ProgressBarSize}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0"
+                               WidthRequest="{DynamicResource ControlBarSize}"
+                               Text="{Binding PlaybackPosition}"
+                               Style="{StaticResource OneLine}"
+                               HorizontalTextAlignment="Center" />
+                        <Slider Grid.Column="1"
+                                HeightRequest="{DynamicResource ProgressBarSize}"
+                                Value="{Binding PlaybackRatio, Mode=TwoWay}"
+                                DragStartedCommand="{Binding RatioDragStartedCommand}"
+                                DragCompletedCommand="{Binding RatioDragCompletedCommand}"
+                                Minimum="0"
+                                Maximum="1" />
+                        <Label Grid.Column="2"
+                               WidthRequest="{DynamicResource ControlBarSize}"
+                               Text="{Binding PlaybackDuration}"
+                               Style="{StaticResource OneLine}"
+                               HorizontalTextAlignment="Center" />
+                    </Grid>
+                    <Grid Grid.Row="1"
+                          ColumnDefinitions="*, *, *, *, *, *, *, *, *">
+                        <button:FavouriteControlButton Grid.Column="0"
+                                                       ActivateImageSource="favourite.png"
+                                                       DeactivateImageSource="no_favourite.png" />
+                        <button:ControlButton Grid.Column="1"
+                                              ActivateImageSource="volume.png"
+                                              IsActivate="True"
+                                              Tapped="ControlButton_Tapped" />
+                        <button:ControlButton Grid.Column="2"
+                                              ActivateImageSource="next.png"
+                                              IsActivate="true"
+                                              Command="{Binding PreviousAudioCommand}"
+                                              Rotation="180" />
+                        <button:ControlButton Grid.Column="3"
+                                              ActivateImageSource="forward.png"
+                                              IsActivate="true"
+                                              Command="{Binding SeekBackwardCommand}"
+                                              Rotation="180" />
+                        <button:ControlButton Grid.Column="4"
+                                              ActivateImageSource="pause.png"
+                                              DeactivateImageSource="play_on.png"
+                                              IsActivate="{Binding IsPlaying}"
+                                              Command="{Binding PlayPauseCommand}" />
+                        <button:ControlButton Grid.Column="5"
+                                              ActivateImageSource="forward.png"
+                                              IsActivate="true"
+                                              Command="{Binding SeekForwardCommand}" />
+                        <button:ControlButton Grid.Column="6"
+                                              ActivateImageSource="next.png"
+                                              IsActivate="true"
+                                              Command="{Binding NextAudioCommand}" />
+                        <button:ControlButton Grid.Column="7"
+                                              ActivateImageSource="repeat_on.png"
+                                              DeactivateImageSource="repeat.png"
+                                              IsActivate="{Binding IsRepeating}"
+                                              Command="{Binding ChangeRepeatCommand}" />
+                        <button:ControlButton Grid.Column="8"
+                                              ActivateImageSource="shuffle_on.png"
+                                              DeactivateImageSource="shuffle.png"
+                                              IsActivate="{Binding IsShuffling}"
+                                              Command="{Binding ChangeShuffleCommand}" />
+                    </Grid>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="PortraitLayout"
+                          x:DataType="shellVM:ControlBarViewModel">
+                <Grid RowDefinitions="*, Auto, *"
+                      RowSpacing="0">
+                    <Grid Grid.Row="1"
+                          HeightRequest="{DynamicResource ProgressBarSize}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0"
+                               WidthRequest="{DynamicResource ControlBarSize}"
+                               Text="{Binding PlaybackPosition}"
+                               Style="{StaticResource OneLine}"
+                               HorizontalTextAlignment="Center" />
+                        <Slider Grid.Column="1"
+                                HeightRequest="{DynamicResource ProgressBarSize}"
+                                Value="{Binding PlaybackRatio, Mode=TwoWay}"
+                                DragStartedCommand="{Binding RatioDragStartedCommand}"
+                                DragCompletedCommand="{Binding RatioDragCompletedCommand}"
+                                Minimum="0"
+                                Maximum="1" />
+                        <Label Grid.Column="2"
+                               WidthRequest="{DynamicResource ControlBarSize}"
+                               Text="{Binding PlaybackDuration}"
+                               Style="{StaticResource OneLine}"
+                               HorizontalTextAlignment="Center" />
+                    </Grid>
+                    <Grid Grid.Row="0"
+                          ColumnDefinitions="*, *, *, *, *, *, *">
+                        <button:FavouriteControlButton Grid.Column="0"
+                                                       ActivateImageSource="favourite.png"
+                                                       DeactivateImageSource="no_favourite.png" />
+                        <button:ControlButton Grid.Column="1"
+                                              ActivateImageSource="volume.png"
+                                              IsActivate="True"
+                                              Tapped="ControlButton_Tapped" />
+                        <button:ControlButton Grid.Column="5"
+                                              ActivateImageSource="repeat_on.png"
+                                              DeactivateImageSource="repeat.png"
+                                              IsActivate="{Binding IsRepeating}"
+                                              Command="{Binding ChangeRepeatCommand}" />
+                        <button:ControlButton Grid.Column="6"
+                                              ActivateImageSource="shuffle_on.png"
+                                              DeactivateImageSource="shuffle.png"
+                                              IsActivate="{Binding IsShuffling}"
+                                              Command="{Binding ChangeShuffleCommand}" />
+                    </Grid>
+                    <Grid Grid.Row="2"
+                          ColumnDefinitions="*, *, *, *, *, *, *">
+                        <button:ControlButton Grid.Column="1"
+                                              ActivateImageSource="next.png"
+                                              IsActivate="true"
+                                              Command="{Binding PreviousAudioCommand}"
+                                              Rotation="180" />
+                        <button:ControlButton Grid.Column="2"
+                                              ActivateImageSource="forward.png"
+                                              IsActivate="true"
+                                              Command="{Binding SeekBackwardCommand}"
+                                              Rotation="180" />
+                        <button:ControlButton Grid.Column="3"
+                                              ActivateImageSource="pause.png"
+                                              DeactivateImageSource="play_on.png"
+                                              IsActivate="{Binding IsPlaying}"
+                                              Command="{Binding PlayPauseCommand}" />
+                        <button:ControlButton Grid.Column="4"
+                                              ActivateImageSource="forward.png"
+                                              IsActivate="true"
+                                              Command="{Binding SeekForwardCommand}" />
+                        <button:ControlButton Grid.Column="5"
+                                              ActivateImageSource="next.png"
+                                              IsActivate="true"
+                                              Command="{Binding NextAudioCommand}" />
+                    </Grid>
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentView.Resources>
 </ContentView>
