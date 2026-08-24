@@ -11,7 +11,7 @@
 		The Mac App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
 		either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
 		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
-		<UseMaui>10.0.90</UseMaui>
+		<UseMaui>10.0.100</UseMaui>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>MusicEco</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -179,6 +179,9 @@
 		<MauiXaml Update="Views\Controls\SKImageLabel.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Views\Controls\TextLabel.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\Items\DragItemFrame.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -302,6 +305,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Update="Views\Controls\TextLabel.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</None>
 		<None Update="Views\Pages\AlbumPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</None>

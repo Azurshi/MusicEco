@@ -32,9 +32,9 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <control:ManagedSKIcon Grid.Column="0"
-                                                 FileHashes="{Binding FileHashes}"
-                                                 WidthRequest="{DynamicResource IconItemSize}"
-                                                 Option="Small" />
+                                                   FileHashes="{Binding FileHashes}"
+                                                   WidthRequest="{DynamicResource IconItemSize}"
+                                                   Option="Small" />
                             <Label Grid.Column="1"
                                    Text="{Binding Name}"
                                    Style="{StaticResource OneLine}" />
@@ -58,10 +58,9 @@
                             <control:ManagedSKIcon Grid.Row="0"
                                                    FileHashes="{Binding FileHashes}"
                                                    Option="Medium" />
-                            <Label Grid.Row="1"
-                                   Text="{Binding Name}"
-                                   HeightRequest="{DynamicResource TextOnlySize}"
-                                   Style="{StaticResource OneLine}" />
+                            <control:TextLabel Grid.Row="1"
+                                               Text="{Binding Name}"
+                                               HeightRequest="{DynamicResource TextOnlySize}" />
                             <item:MenuButton Grid.RowSpan="2"
                                              VerticalOptions="Start"
                                              HorizontalOptions="End"
@@ -89,16 +88,16 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Entry Grid.Column="0"
-                   Placeholder="{Binding L[Album_Search]}" 
-                   Text="{Binding Q.Name, Mode=TwoWay}"/>
+                   Placeholder="{Binding L[Album_Search]}"
+                   Text="{Binding Q.Name, Mode=TwoWay}" />
             <button:CollectionDisplayModeButtonSimple Grid.Column="1"
-                                                      DisplayMode="{Binding DisplayMode, Mode=TwoWay}"/>
-        </Grid>     
+                                                      DisplayMode="{Binding DisplayMode, Mode=TwoWay}" />
+        </Grid>
         <control:CollectionViewExtend Grid.Row="1"
                                       x:Name="Collection"
                                       DisplayMode="{Binding DisplayMode}"
                                       ItemsSource="{Binding Items.Items}">
-            <control:CollectionViewExtend.ItemPresets>  
+            <control:CollectionViewExtend.ItemPresets>
                 <control:CollectionViewPreset DisplayMode="SimpleGrid"
                                               ItemTemplate="{StaticResource GridAlbumItemTemplate}"
                                               ItemsLayout="{StaticResource GridLayout}" />
