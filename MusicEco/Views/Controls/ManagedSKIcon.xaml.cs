@@ -228,7 +228,10 @@ public partial class ManagedSKIcon: SKCanvasView {
                     offsetX + width,
                     offsetY + height);
                 //SW.Restart();
-                // This take 0.25ms for Large 0.05ms for Medium and 0.03ms for Small
+                // This take
+                // 0.25ms for Large
+                // 0.05ms for Medium
+                // 0.03ms for Small
                 canvas.DrawImage(image, rect, SKSamplingOptions.Default);
                 //TotalDrawTime += SW.Elapsed;
                 //TotalDrawCount++;
