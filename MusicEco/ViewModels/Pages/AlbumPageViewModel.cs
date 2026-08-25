@@ -17,7 +17,7 @@ public partial class AlbumPageViewModel: BasePageViewModel {
 
     public override PageRoute Route => PageRoute.Album;
     public AlbumPageQuery Query { get; init; } = new();
-    private readonly DelayedDispatcher _queryDispatcher;
+    private readonly DelayedDispatcherEx _queryDispatcher;
     private readonly IAudioQueryService _queryService;
     public ManagedCollection<AlbumViewModel> Items { get; init; }
     [AppSettingProperty(CollectionDisplayMode.SimpleGrid)]

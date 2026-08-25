@@ -2,10 +2,10 @@
 
 namespace MusicEco.ViewModels;
 
-public sealed class DelayedDispatcher {
+public sealed class DelayedDispatcherEx {
     private readonly TimeSpan _delay;
     private CancellationTokenSource? _pending;
-    public DelayedDispatcher(TimeSpan delay) {
+    public DelayedDispatcherEx(TimeSpan delay) {
         this._delay = delay;
     }
     public async Task Dispatch(Action action) {
@@ -28,5 +28,29 @@ public sealed class DelayedDispatcher {
             }
             current.Dispose();
         }
+    }
+}
+public sealed partial class DelayedDispatcher: IDisposable {
+    private readonly IDispatcherTimer _timer;
+    private Action? _action;
+    public DelayedDispatcher(IDispatcher dispatcher, TimeSpan delay) {
+        this._timer = dispatcher.CreateTimer();
+        this._timer.Interval = delay;
+        this._timer.IsRepeating = false;
+        this._timer.Tick += this.OnTick;
+    }
+    public void Dispatch(Action action) {
+        this._action = action;
+        this._timer.Stop();
+        this._timer.Start();
+    }
+    private void OnTick(object? sender, EventArgs e) {
+        var action = this._action;
+        this._action = null;
+        action?.Invoke();
+    }
+    public void Dispose() {
+        this._timer.Stop();
+        this._timer.Tick -= OnTick;
     }
 }

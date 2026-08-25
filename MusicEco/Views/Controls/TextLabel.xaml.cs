@@ -36,15 +36,17 @@ public partial class TextLabel: ContentView, IAnimatedView {
     private readonly DelayedDispatcher _dispatcher;
     public TextLabel() {
         InitializeComponent();
-        this._dispatcher = new(Config.ResizeInputDelay);
+        this._cachedAction = new(UpdateAnimation);
+        this._dispatcher = new(this.Dispatcher, Config.ResizeInputDelay);
         this.Viewport.SizeChanged += this.OnSizeChanged;
         this.TextElement.SizeChanged += this.OnSizeChanged;
     }
-    private async void OnSizeChanged(object? sender, EventArgs e) {
-        await this._dispatcher.Dispatch(this.QueueAnimation);
+    private void OnSizeChanged(object? sender, EventArgs e) {
+        this.QueueAnimation();
     }
+    private readonly Action _cachedAction;
     private void QueueAnimation() {
-        this.Dispatcher.Dispatch(this.UpdateAnimation);
+        this._dispatcher.Dispatch(this._cachedAction);
     }
     private double _lastViewportWidth;
     private double _lastTextWidth;
@@ -71,7 +73,7 @@ public partial class TextLabel: ContentView, IAnimatedView {
         //    || Math.Abs(textWidth - this._lastTextWidth) < 0.5) {
         //    return;
         //}
-        Debug.WriteLine("Start animation");
+        //Debug.WriteLine("Start animation");
         this._lastViewportWidth = viewportWidth;
         this._lastTextWidth = textWidth;
         this.StopAnimation();

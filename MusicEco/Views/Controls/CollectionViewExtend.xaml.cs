@@ -1,10 +1,8 @@
 namespace MusicEco.Views.Controls;
 
 using MusicEco.Core;
-using MusicEco.Core.Types;
 using MusicEco.SourceGeneration;
 using MusicEco.ViewModels;
-using MusicEco.ViewModels.Pages;
 using MusicEco.Views.Items;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -39,11 +37,14 @@ public partial class CollectionViewExtend: ContentView {
     // true when DisplayMode use {Binding}, else when use direct value.
     // To handle UI initialization, after init, it is true in both cases.
     private bool _isBindedDisplayMode = true;
+    private readonly DelayedDispatcher _dispatcher;
     public CollectionViewExtend() {
         InitializeComponent();
         this.ItemPresets = [];
         CollectionView content = new();
         this.Content = content;
+        this._dispatcher = new(this.Dispatcher, MusicEco.Config.ProgrammingDelay);
+        this._cachedAction = new(RefreshStateInner);
     }
     private void SetCollection(IEnumerable? oldCollection, IEnumerable? newCollection) {
         if (!this._isBindedDisplayMode) {
@@ -151,6 +152,10 @@ public partial class CollectionViewExtend: ContentView {
         }
     }
     private void RefreshState() {
+        this._dispatcher.Dispatch(this._cachedAction);
+    }
+    private readonly Action _cachedAction;
+    private void RefreshStateInner() {
         if (this._currentObservableCollection != null
             && this._firstVisbleindex != this._lastVisibleIndex
             && this._currentObservableCollection is IEnumerable enumerable) {
@@ -158,7 +163,7 @@ public partial class CollectionViewExtend: ContentView {
             int last = this._lastVisibleIndex;
             int index = 0;
             int visibleCount = 0;
-            foreach(var item in enumerable) {
+            foreach (var item in enumerable) {
                 if (item is IAnimationAware animationAware
                     && (index < first || index > last)) {
                     animationAware.IsVisibleInViewport = false;

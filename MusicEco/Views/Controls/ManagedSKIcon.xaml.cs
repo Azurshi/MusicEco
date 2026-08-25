@@ -199,6 +199,9 @@ public partial class ManagedSKIcon: SKCanvasView {
     private static long DrawCount = 0;
     private static long ClearCount = 0;
     private static long InstanceCount = 0;
+    private static TimeSpan TotalDrawTime = TimeSpan.Zero;
+    private static long TotalDrawCount = 0;
+    //private static readonly Stopwatch SW = new Stopwatch();
     private void SKCanvasView_PaintSurface(object sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e) {
         var canvas = e.Surface.Canvas;
         canvas.Clear(SKColors.Transparent);
@@ -224,7 +227,12 @@ public partial class ManagedSKIcon: SKCanvasView {
                     offsetY,
                     offsetX + width,
                     offsetY + height);
+                //SW.Restart();
+                // This take 0.25ms for Large 0.05ms for Medium and 0.03ms for Small
                 canvas.DrawImage(image, rect, SKSamplingOptions.Default);
+                //TotalDrawTime += SW.Elapsed;
+                //TotalDrawCount++;
+                //Debug.WriteLine($"Draw speed: {TotalDrawTime.TotalMilliseconds / TotalDrawCount:F2} ms | {TotalDrawTime.TotalMilliseconds:F2} ms");
             }
             catch (ObjectDisposedException) {
                 Debug.WriteLine("Image already disposed by IconService cache");

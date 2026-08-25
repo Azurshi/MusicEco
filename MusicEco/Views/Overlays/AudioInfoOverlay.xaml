@@ -104,7 +104,7 @@
                    Grid.ColumnSpan="2"
                    Style="{StaticResource Title}"
                    Text="{Binding L[Info_Header]}"
-                   Margin="8" 
+                   Margin="{DynamicResource TextMargin}"
                    HorizontalTextAlignment="Center"/>
             <control:ManagedSKIcon Grid.Row="1"
                                    Grid.ColumnSpan="2"

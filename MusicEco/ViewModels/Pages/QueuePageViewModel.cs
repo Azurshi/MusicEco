@@ -17,7 +17,7 @@ public partial class QueuePageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.Queue;
     private readonly IQueueService _queueService;
     public QueuePageQuery Query { get; init; }
-    private readonly DelayedDispatcher _queryDispatcher;
+    private readonly DelayedDispatcherEx _queryDispatcher;
     public ManagedCollection<QueueItemViewModel> Items { get; init; }
     [AppSettingProperty(CollectionDisplayMode.SimpleList)]
     public partial CollectionDisplayMode DisplayMode { get; set; }

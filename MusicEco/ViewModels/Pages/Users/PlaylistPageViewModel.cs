@@ -18,7 +18,7 @@ public partial class PlaylistPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.Playlist;
     private readonly IPlaylistService _playlistService;
     public PlaylistPageQuery Query { get; init; }
-    private readonly DelayedDispatcher _queryDispatcher;
+    private readonly DelayedDispatcherEx _queryDispatcher;
     public ManagedCollection<PlaylistItemViewModel> Items { get; init; }
     [AppSettingProperty(CollectionDisplayMode.SimpleList)]
     public partial CollectionDisplayMode DisplayMode { get; set; }
