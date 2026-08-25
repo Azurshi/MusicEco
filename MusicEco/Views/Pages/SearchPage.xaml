@@ -37,12 +37,12 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <control:ManagedSKIcon Grid.Column="0"
-                                                 WidthRequest="{DynamicResource IconItemSize}"
-                                                 FileHash="{Binding FileHash}"
-                                                 Option="Small" />
-                            <Label Grid.Column="1"
-                                   Text="{Binding DisplayTitle}"
-                                   Style="{StaticResource OneLine}" />
+                                                   WidthRequest="{DynamicResource IconItemSize}"
+                                                   FileHash="{Binding FileHash}"
+                                                   Option="Small" />
+                            <control:TextLabel Grid.Column="1"
+                                               Text="{Binding DisplayTitle}"
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.Column="2"
                                              WidthRequest="{DynamicResource IconButtonItemSize}"
                                              MenuTemplate="{StaticResource MenuTemplate}" />
@@ -65,9 +65,14 @@
                    Text="{Binding SearchText, Mode=TwoWay}"
                    Placeholder="{Binding L[Search_Title]}" />
         </Grid>
-        <CollectionView Grid.Row="1"
-                        ItemsSource="{Binding Items.Items}"
-                        ItemTemplate="{StaticResource AudioItemTemplate}" 
-                        ItemsLayout="{StaticResource LinearLayout}"/>
+        <control:CollectionViewExtend Grid.Row="1"
+                                      DisplayMode="SimpleList"
+                                      ItemsSource="{Binding Items.Items}">
+            <control:CollectionViewExtend.ItemPresets>
+                <control:CollectionViewPreset DisplayMode="SimpleList"
+                                              ItemTemplate="{StaticResource AudioItemTemplate}"
+                                              ItemsLayout="{StaticResource LinearItemsLayout}" />
+            </control:CollectionViewExtend.ItemPresets>
+        </control:CollectionViewExtend>
     </Grid>
 </ContentView>

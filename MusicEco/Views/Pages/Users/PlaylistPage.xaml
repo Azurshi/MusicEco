@@ -31,9 +31,9 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0"
-                                   Text="{Binding Name}"
-                                   Style="{StaticResource OneLine}" />
+                            <control:TextLabel Grid.Column="0"
+                                               Text="{Binding Name}"
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.Column="1"
                                              WidthRequest="{DynamicResource TextItemSize}" />
                         </Grid>
@@ -58,9 +58,9 @@
             </Grid.ColumnDefinitions>
             <button:NavigationBackwardButton Grid.Column="0"
                                              WidthRequest="{DynamicResource HeaderSize}" />
-            <Entry Grid.Column="1" 
+            <Entry Grid.Column="1"
                    Placeholder="{Binding L[User_Playlist_Placeholder]}"
-                   Text="{Binding Query.Name, Mode=TwoWay}"/>
+                   Text="{Binding Query.Name, Mode=TwoWay}" />
             <Button Grid.Column="2"
                     Text="{Binding L[User_Playlist_Create]}"
                     Command="{Static commands:MenuCommands.CreateNewPlaylistCommand}" />

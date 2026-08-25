@@ -46,12 +46,12 @@
                                                WidthRequest="{DynamicResource IconButtonItemSize}"
                                                IsDraggable="{Binding IsDraggable, Mode=TwoWay}" />
                             <control:ManagedSKIcon Grid.Column="1"
-                                                 WidthRequest="{DynamicResource IconItemSize}"
-                                                 FileHash="{Binding FileHash}"
-                                                 Option="Small" />
-                            <Label Grid.Column="2"
-                                   Text="{Binding DisplayTitle}"
-                                   Style="{StaticResource OneLine}" />
+                                                   WidthRequest="{DynamicResource IconItemSize}"
+                                                   FileHash="{Binding FileHash}"
+                                                   Option="Small" />
+                            <control:TextLabel Grid.Column="2"
+                                               Text="{Binding DisplayTitle}"
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.Column="3"
                                              WidthRequest="{DynamicResource IconButtonItemSize}"
                                              MenuTemplate="{StaticResource MenuTemplate}" />
@@ -81,13 +81,17 @@
                    Text="{Binding PlaylistName}"
                    Style="{StaticResource OneLine}" />
         </Grid>
-        <CollectionView Grid.Row="1"
-                        ItemsSource="{Binding Items.Items}"
-                        ItemTemplate="{StaticResource AudioItemTemplate}"
-                        ItemsLayout="{StaticResource LinearLayout}">
-            <CollectionView.GestureRecognizers>
+        <control:CollectionViewExtend Grid.Row="1"
+                                      DisplayMode="SimpleList"
+                                      ItemsSource="{Binding Items.Items}">
+            <control:CollectionViewExtend.ItemPresets>
+                <control:CollectionViewPreset DisplayMode="SimpleList"
+                                              ItemTemplate="{StaticResource AudioItemTemplate}"
+                                              ItemsLayout="{StaticResource LinearLayout}" />
+            </control:CollectionViewExtend.ItemPresets>
+            <control:CollectionViewExtend.GestureRecognizers>
                 <DropGestureRecognizer Drop="DropGestureRecognizer_Drop" />
-            </CollectionView.GestureRecognizers>
-        </CollectionView>
+            </control:CollectionViewExtend.GestureRecognizers>
+        </control:CollectionViewExtend>
     </Grid>
 </ContentView>

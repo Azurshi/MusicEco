@@ -24,4 +24,13 @@ public static class Extensions {
             }
         }
     }
+    public static IEnumerable<Element> WalkChildren(this Element element) {
+        if (element is IVisualTreeElement visual) {
+            foreach(var child in visual.GetVisualChildren()) {
+                if (child is Element childElement) {
+                    yield return childElement;
+                }
+            }
+        }
+    }
 }

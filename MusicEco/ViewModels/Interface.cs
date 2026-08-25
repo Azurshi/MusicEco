@@ -35,3 +35,7 @@ public enum CollectionDisplayMode {
     SimpleList,
     DetailList
 }
+
+public interface IAnimationAware {
+    public bool IsVisibleInViewport { get; set; }
+}

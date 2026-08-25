@@ -475,6 +475,15 @@ namespace MusicEco.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Info.
+        /// </summary>
+        public static string Info_Header {
+            get {
+                return ResourceManager.GetString("Info_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lyric.
         /// </summary>
         public static string Info_Lyric {

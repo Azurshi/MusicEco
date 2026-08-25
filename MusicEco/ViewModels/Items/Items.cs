@@ -4,13 +4,15 @@ using MusicEco.Views.Buttons;
 
 namespace MusicEco.ViewModels.Items;
 
-public partial class ListItem: ObservableObject, IListItem {
+public partial class ListItem: ObservableObject, IListItem, IAnimationAware {
     public static Color EvenColor => DynamicColors.ItemAltBackgroundColor;
     public static Color OddColor => Colors.Transparent;
     [ObservableProperty]
     public partial bool IsActivate { get; set; }
     [ObservableProperty]
     public partial Color BackgroundColor { get; set; }
+    [ObservableProperty]
+    public partial bool IsVisibleInViewport { get; set; }
     public void SetOddBackgroundColor() {
         BackgroundColor = OddColor;
     }
@@ -27,6 +29,7 @@ public partial class ListItem: ObservableObject, IListItem {
     }
     public ListItem() {
         this.BackgroundColor = EvenColor;
+        this.IsVisibleInViewport = false;
     }
 }
 

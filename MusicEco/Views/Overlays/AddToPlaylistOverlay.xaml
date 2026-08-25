@@ -16,9 +16,8 @@
                 <item:ItemFrame HeightRequest="{DynamicResource TextItemSize}"
                                 Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type overlayVM:AddToPlaylistOverlayViewModel}}}">
                     <item:ItemFrame.ItemContent>
-                        <Label Text="{Binding Name}"
-                               Style="{StaticResource OneLine}"
-                               Margin="8, 0, 0, 0" />
+                        <control:TextLabel Text="{Binding Name}"
+                                           IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                     </item:ItemFrame.ItemContent>
                 </item:ItemFrame>
             </DataTemplate>
@@ -33,10 +32,15 @@
                HeightRequest="{DynamicResource HeaderSize}"
                Text="{Binding L[User_Playlist_Select]}"
                Style="{StaticResource CenterTitle}"
-               BackgroundColor="{DynamicResource HeaderColor}"/>
-        <CollectionView Grid.Row="1"
-                        ItemsSource="{Binding Items}"
-                        ItemTemplate="{StaticResource ItemTemplate}"
-                        ItemsLayout="{StaticResource LinearLayout}" />
+               BackgroundColor="{DynamicResource HeaderColor}" />
+        <control:CollectionViewExtend Grid.Row="1"
+                                      DisplayMode="SimpleList"
+                                      ItemsSource="{Binding Items}">
+            <control:CollectionViewExtend.ItemPresets>
+                <control:CollectionViewPreset DisplayMode="SimpleList"
+                                              ItemTemplate="{StaticResource ItemTemplate}"
+                                              ItemsLayout="{StaticResource LinearLayout}" />
+            </control:CollectionViewExtend.ItemPresets>
+        </control:CollectionViewExtend>
     </Grid>
 </ContentView>

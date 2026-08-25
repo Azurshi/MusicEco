@@ -486,4 +486,7 @@
   <data name="Setting_Interface_Orientation" xml:space="preserve">
     <value>Display orientation</value>
   </data>
+  <data name="Info_Header" xml:space="preserve">
+    <value>Info</value>
+  </data>
 </root>

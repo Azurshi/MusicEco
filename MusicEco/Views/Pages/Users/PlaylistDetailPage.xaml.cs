@@ -1,5 +1,6 @@
 using MusicEco.ViewModels.Pages.Users;
 using MusicEco.Views.Buttons;
+using MusicEco.Views.Controls;
 using MusicEco.Views.Items;
 
 namespace MusicEco.Views.Pages.Users;
@@ -18,11 +19,8 @@ public partial class PlaylistDetailPage: ContentView {
     }
 
     private void DropGestureRecognizer_Drop(object sender, DropEventArgs e) {
-        if (sender is CollectionView collection) {
-            var items = collection.GetVisualTreeDescendants().OfType<DragItemFrame>();
-            foreach (var item in items) {
-                item.Reset();
-            }
+        if (sender is CollectionViewExtend collectionView) {
+            collectionView.ResetStateOnDrop();
         }
     }
 }

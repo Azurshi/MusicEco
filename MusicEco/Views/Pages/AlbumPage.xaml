@@ -35,9 +35,9 @@
                                                    FileHashes="{Binding FileHashes}"
                                                    WidthRequest="{DynamicResource IconItemSize}"
                                                    Option="Small" />
-                            <Label Grid.Column="1"
-                                   Text="{Binding Name}"
-                                   Style="{StaticResource OneLine}" />
+                            <control:TextLabel Grid.Column="1"
+                                               Text="{Binding Name}"
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}"/>
                             <item:MenuButton Grid.Column="2"
                                              WidthRequest="{DynamicResource IconButtonItemSize}"
                                              MenuTemplate="{StaticResource MenuTemplate}" />
@@ -60,6 +60,7 @@
                                                    Option="Medium" />
                             <control:TextLabel Grid.Row="1"
                                                Text="{Binding Name}"
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}"
                                                HeightRequest="{DynamicResource TextOnlySize}" />
                             <item:MenuButton Grid.RowSpan="2"
                                              VerticalOptions="Start"
@@ -94,7 +95,6 @@
                                                       DisplayMode="{Binding DisplayMode, Mode=TwoWay}" />
         </Grid>
         <control:CollectionViewExtend Grid.Row="1"
-                                      x:Name="Collection"
                                       DisplayMode="{Binding DisplayMode}"
                                       ItemsSource="{Binding Items.Items}">
             <control:CollectionViewExtend.ItemPresets>

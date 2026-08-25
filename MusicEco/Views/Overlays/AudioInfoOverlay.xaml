@@ -13,52 +13,58 @@
              x:DataType="overlayVM:AudioInfoOverlayViewModel"
              SizeChanged="ContentView_SizeChanged"
              Margin="8, 4">
+    <!--Intercep event from AppOverlay-->
+    <ContentView.GestureRecognizers>
+        <TapGestureRecognizer />
+    </ContentView.GestureRecognizers>
     <ContentView.Resources>
         <DataTemplate x:Key="FileMenuTemplate"
                       x:DataType="itemVM:FileEntryViewModel">
             <VerticalStackLayout>
                 <button:MenuItemButton Text="{Binding [Menu_AddToQueue], Source={Static service:Localization.L}}"
-                                       Command="{Static commands:MenuCommands.AddToQueueCommand}" />
+                                       Command="{Static commands:MenuCommands.AddToQueueCommand}" 
+                                       Tapped="MenuItemButton_Tapped"/>
                 <button:MenuItemButton Text="{Binding [Menu_AddToPlaylist], Source={Static service:Localization.L}}"
-                                       Command="{Static commands:MenuCommands.AddToPlaylistCommand}" />
-                <button:MenuItemButton Text="{Binding [Menu_Info], Source={Static service:Localization.L}}"
-                                       Command="{Static commands:MenuCommands.ShowAudioInfoCommand}" />
+                                       Command="{Static commands:MenuCommands.AddToPlaylistCommand}"
+                                       Tapped="MenuItemButton_Tapped"/>
             </VerticalStackLayout>
         </DataTemplate>
-        <DataTemplate x:Key="FileItemTemplate" 
+        <DataTemplate x:Key="FileItemTemplate"
                       x:DataType="itemVM:FileEntryViewModel">
             <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}">
                 <item:ItemFrame.ItemContent>
                     <Grid WidthRequest="{Binding FileWidthRequest, Source={RelativeSource AncestorType={x:Type overlayVM:AudioInfoOverlayViewModel}}}"
-                          ColumnSpacing="8">
+                          ColumnSpacing="0"
+                          SizeChanged="Grid_SizeChanged">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <control:ManagedSKIcon Grid.Column="0"
-                                             Grid.RowSpan="2"
-                                             WidthRequest="{DynamicResource IconItemSize}"
-                                             FileHash="{Binding FileHash}"
-                                             Option="Small" />
-                        <Label Grid.Row="0"
-                               Grid.Column="1"
-                               Text="{Binding Name}"
-                               Style="{StaticResource OneLine}"
-                               HorizontalOptions="Fill" />
-                        <Label Grid.Row="1"
-                               Grid.Column="1"
-                               Text="{Binding Path}"
-                               Style="{StaticResource OneLine}"
-                               HorizontalOptions="Fill"
-                               Opacity="0.75" />
-                        <!--item:MenuButton  Grid.Column="2"
+                                               Grid.RowSpan="2"
+                                               WidthRequest="{DynamicResource IconItemSize}"
+                                               FileHash="{Binding FileHash}"
+                                               Option="Small" />
+                        <!--Explicit set IsAnimationEnabled = True,
+                            Seem like put CollectionView inside ScrollView is not a good idea-->
+                        <control:TextLabel Grid.Row="0"
+                                           Grid.Column="1"
+                                           Text="{Binding Name}"
+                                           IsAnimationEnabled="True"/>
+                        <control:TextLabel Grid.Row="1"
+                                           Grid.Column="1"
+                                           Text="{Binding Path}"
+                                           IsAnimationEnabled="True"
+                                           Opacity="0.75"/>
+                        <item:MenuButton  Grid.Column="2"
                                           Grid.RowSpan="2"
                                           WidthRequest="{DynamicResource IconButtonItemSize}"
-                                          MenuTemplate="{StaticResource FileMenuTemplate}" /-->
+                                          MenuTemplate="{StaticResource FileMenuTemplate}" />
                     </Grid>
                 </item:ItemFrame.ItemContent>
             </item:ItemFrame>
@@ -68,7 +74,7 @@
                 HorizontalScrollBarVisibility="Never"
                 VerticalScrollBarVisibility="Default">
         <Grid RowSpacing="4"
-              ColumnSpacing="8">
+              ColumnSpacing="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -97,8 +103,9 @@
             <Label Grid.Row="0"
                    Grid.ColumnSpan="2"
                    Style="{StaticResource Title}"
-                   Text="{Binding Title}"
-                   Margin="8" />
+                   Text="{Binding L[Info_Header]}"
+                   Margin="8" 
+                   HorizontalTextAlignment="Center"/>
             <control:ManagedSKIcon Grid.Row="1"
                                    Grid.ColumnSpan="2"
                                    x:Name="CoverDisplay"
@@ -108,102 +115,104 @@
                    FontAttributes="Bold"
                    Text="{Binding L[Info_Title]}"
                    Style="{StaticResource OneLine}"
+                   VerticalOptions="Center"
                    HeightRequest="{DynamicResource TextItemSize}" />
-            <Label Grid.Row="2"
-                   Grid.Column="1"
-                   Text="{Binding Title}"
-                   Style="{StaticResource OneLine}"
-                   HeightRequest="{DynamicResource TextItemSize}" />
+            <control:TextLabel Grid.Row="2"
+                               Grid.Column="1"
+                               Text="{Binding Title}"
+                               IsAnimationEnabled="True"
+                               HeightRequest="{DynamicResource TextItemSize}"
+                               VerticalOptions="Center" />
             <Label Grid.Row="3"
                    FontAttributes="Bold"
                    Text="{Binding L[Info_Album]}"
                    Style="{StaticResource OneLine}"
                    HeightRequest="{DynamicResource TextItemSize}" />
-            <Label Grid.Row="3"
-                   Grid.Column="1"
-                   Text="{Binding Album}"
-                   Style="{StaticResource OneLine}"
-                   HeightRequest="{DynamicResource TextItemSize}" />
+            <control:TextLabel Grid.Row="3"
+                               Grid.Column="1"
+                               Text="{Binding Album}"
+                               IsAnimationEnabled="True"
+                               HeightRequest="{DynamicResource TextItemSize}" />
             <Label Grid.Row="4"
                    FontAttributes="Bold"
                    Text="{Binding L[Info_Artist]}"
                    Style="{StaticResource OneLine}"
                    HeightRequest="{DynamicResource TextItemSize}" />
-            <Label Grid.Row="4"
-                   Grid.Column="1"
-                   Text="{Binding Artists}"
-                   Style="{StaticResource OneLine}"
-                   HeightRequest="{DynamicResource TextItemSize}" />
+            <control:TextLabel Grid.Row="4"
+                               Grid.Column="1"
+                               Text="{Binding Artists}"
+                               IsAnimationEnabled="True"
+                               HeightRequest="{DynamicResource TextItemSize}" />
             <Label Grid.Row="5"
                    FontAttributes="Bold"
                    Text="{Binding L[Info_AlbumArtist]}"
                    Style="{StaticResource OneLine}"
                    HeightRequest="{DynamicResource TextItemSize}" />
-            <Label Grid.Row="5"
-                   Grid.Column="1"
-                   Text="{Binding AlbumArtists}"
-                   Style="{StaticResource OneLine}"
-                   HeightRequest="{DynamicResource TextItemSize}" />
+            <control:TextLabel Grid.Row="5"
+                               Grid.Column="1"
+                               Text="{Binding AlbumArtists}"
+                               IsAnimationEnabled="True"
+                               HeightRequest="{DynamicResource TextItemSize}" />
             <Label Grid.Row="6"
                    FontAttributes="Bold"
                    Text="{Binding L[Info_Composer]}"
                    Style="{StaticResource OneLine}"
                    HeightRequest="{DynamicResource TextItemSize}" />
-            <Label Grid.Row="6"
-                   Grid.Column="1"
-                   Text="{Binding Composers}"
-                   Style="{StaticResource OneLine}"
-                   HeightRequest="{DynamicResource TextItemSize}" />
+            <control:TextLabel Grid.Row="6"
+                               Grid.Column="1"
+                               Text="{Binding Composers}"
+                               IsAnimationEnabled="True"
+                               HeightRequest="{DynamicResource TextItemSize}" />
             <Label Grid.Row="7"
                    FontAttributes="Bold"
                    Text="{Binding L[Info_Genre]}"
                    Style="{StaticResource OneLine}"
                    HeightRequest="{DynamicResource TextItemSize}" />
-            <Label Grid.Row="7"
-                   Grid.Column="1"
-                   Text="{Binding Genres}"
-                   Style="{StaticResource OneLine}"
-                   HeightRequest="{DynamicResource TextItemSize}" />
+            <control:TextLabel Grid.Row="7"
+                               Grid.Column="1"
+                               Text="{Binding Genres}"
+                               IsAnimationEnabled="True"
+                               HeightRequest="{DynamicResource TextItemSize}" />
             <Label Grid.Row="8"
                    FontAttributes="Bold"
                    Text="{Binding L[Info_Group]}"
                    Style="{StaticResource OneLine}"
                    HeightRequest="{DynamicResource TextItemSize}" />
-            <Label Grid.Row="8"
-                   Grid.Column="1"
-                   Text="{Binding Group}"
-                   Style="{StaticResource OneLine}"
-                   HeightRequest="{DynamicResource TextItemSize}" />
+            <control:TextLabel Grid.Row="8"
+                               Grid.Column="1"
+                               Text="{Binding Group}"
+                               IsAnimationEnabled="True"
+                               HeightRequest="{DynamicResource TextItemSize}" />
             <Label Grid.Row="9"
                    FontAttributes="Bold"
                    Text="{Binding L[Info_Track]}"
                    Style="{StaticResource OneLine}"
                    HeightRequest="{DynamicResource TextItemSize}" />
-            <Label Grid.Row="9"
-                   Grid.Column="1"
-                   Text="{Binding Track}"
-                   Style="{StaticResource OneLine}"
-                   HeightRequest="{DynamicResource TextItemSize}" />
+            <control:TextLabel Grid.Row="9"
+                               Grid.Column="1"
+                               Text="{Binding Track}"
+                               IsAnimationEnabled="True"
+                               HeightRequest="{DynamicResource TextItemSize}" />
             <Label Grid.Row="10"
                    FontAttributes="Bold"
                    Text="{Binding L[Info_Disc]}"
                    Style="{StaticResource OneLine}"
                    HeightRequest="{DynamicResource TextItemSize}" />
-            <Label Grid.Row="10"
-                   Grid.Column="1"
-                   Text="{Binding Disc}"
-                   Style="{StaticResource OneLine}"
-                   HeightRequest="{DynamicResource TextItemSize}" />
+            <control:TextLabel Grid.Row="10"
+                               Grid.Column="1"
+                               Text="{Binding Disc}"
+                               IsAnimationEnabled="True"
+                               HeightRequest="{DynamicResource TextItemSize}" />
             <Label Grid.Row="11"
                    FontAttributes="Bold"
                    Text="{Binding L[Info_Duration]}"
                    Style="{StaticResource OneLine}"
                    HeightRequest="{DynamicResource TextItemSize}" />
-            <Label Grid.Row="11"
-                   Grid.Column="1"
-                   Text="{Binding Duration}"
-                   Style="{StaticResource OneLine}"
-                   HeightRequest="{DynamicResource TextItemSize}" />
+            <control:TextLabel Grid.Row="11"
+                               Grid.Column="1"
+                               Text="{Binding Duration}"
+                               IsAnimationEnabled="True"
+                               HeightRequest="{DynamicResource TextItemSize}" />
             <Label Grid.Row="12"
                    FontAttributes="Bold"
                    Text="{Binding L[Info_Comment]}"
@@ -216,7 +225,7 @@
             <Label Grid.Row="13"
                    FontAttributes="Bold"
                    Text="{Binding L[Info_Lyric]}"
-                   Style="{StaticResource OneLine}"
+                   Style="{StaticResource MultiLines}"
                    HeightRequest="{DynamicResource TextItemSize}" />
             <Label Grid.Row="13"
                    Grid.Column="1"
@@ -227,13 +236,17 @@
                    FontAttributes="Bold"
                    Text="{Binding L[Info_Files]}"
                    Style="{StaticResource OneLine}"
-                   HeightRequest="{DynamicResource TextItemSize}" />
-            <CollectionView Grid.Row="15"
-                            Grid.ColumnSpan="2"
-                            HorizontalOptions="Fill"
-                            ItemsSource="{Binding Files}"
-                            ItemTemplate="{StaticResource FileItemTemplate}"
-                            ItemsLayout="{StaticResource LinearLayout}" />
+                   HeightRequest="{DynamicResource TextItemSize}"/>
+            <control:CollectionViewExtend Grid.Row="15"
+                                          Grid.ColumnSpan="2"
+                                          DisplayMode="SimpleList"
+                                          ItemsSource="{Binding Files}">
+                <control:CollectionViewExtend.ItemPresets>
+                    <control:CollectionViewPreset DisplayMode="SimpleList"
+                                                  ItemTemplate="{StaticResource FileItemTemplate}"
+                                                  ItemsLayout="{StaticResource LinearLayout}" />
+                </control:CollectionViewExtend.ItemPresets>
+            </control:CollectionViewExtend>
         </Grid>
     </ScrollView>
 </ContentView>

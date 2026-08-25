@@ -37,12 +37,12 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <control:ManagedSKIcon Grid.Column="0"
-                                                 WidthRequest="{DynamicResource IconItemSize}"
-                                                 FileHash="{Binding FileHash}"
-                                                 Option="Small" />
-                            <Label Grid.Column="1"
-                                   Text="{Binding DisplayTitle}"
-                                   Style="{StaticResource OneLine}" />
+                                                   WidthRequest="{DynamicResource IconItemSize}"
+                                                   FileHash="{Binding FileHash}"
+                                                   Option="Small" />
+                            <control:TextLabel Grid.Column="1"
+                                               Text="{Binding DisplayTitle}"
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.Column="2"
                                              WidthRequest="{DynamicResource IconButtonItemSize}"
                                              MenuTemplate="{StaticResource MenuTemplate}" />
@@ -61,13 +61,12 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <control:ManagedSKIcon Grid.Row="0"
-                                                 FileHash="{Binding FileHash}"
-                                                 Option="Medium" />
-                            <Label Grid.Row="1"
-                                   Text="{Binding DisplayTitle}"
-                                   HeightRequest="{DynamicResource TextOnlySize}"
-                                   Style="{StaticResource OneLine}" 
-                                   HorizontalTextAlignment="Center"/>
+                                                   FileHash="{Binding FileHash}"
+                                                   Option="Medium" />
+                            <control:TextLabel Grid.Row="1"
+                                               Text="{Binding DisplayTitle}"
+                                               HeightRequest="{DynamicResource TextOnlySize}"
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.RowSpan="2"
                                              WidthRequest="{DynamicResource IconButtonItemSize}"
                                              HeightRequest="{DynamicResource IconButtonItemSize}"

@@ -25,16 +25,19 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Row="0"
-                                   Grid.Column="0"
-                                   Text="{Binding Name}"
-                                   Style="{StaticResource Title}"/>
-                            <Label Grid.Row="1"
-                                   Grid.Column="0"
-                                   Text="{Binding Path}"
-                                   Style="{StaticResource OneLine}"
-                                   Margin="8, 0, 0, 4"
-                                   Opacity="0.75" />
+                            <control:TextLabel Grid.Row="0"
+                                               Grid.Column="0"
+                                               Text="{Binding Name}"
+                                               FontAttributes="Bold"
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}" />
+                            <ContentView Grid.Row="1"
+                                         Margin="{DynamicResource TextMargin}">
+                                <control:TextLabel Grid.Row="1"
+                                                   Grid.Column="0"
+                                                   Text="{Binding Path}"
+                                                   IsAnimationEnabled="{Binding IsVisibleInViewport}"
+                                                   Opacity="0.75" />
+                            </ContentView>
                             <Button Grid.Row="0"
                                     Grid.Column="1"
                                     Grid.RowSpan="2"
@@ -132,9 +135,14 @@
                    FontSize="24"
                    Style="{StaticResource OneLine}" />
         </Grid>
-        <CollectionView Grid.Row="2"
-                        ItemsSource="{Binding Items.Items}"
-                        ItemTemplate="{StaticResource ScanPathItemTemplate}"
-                        ItemsLayout="{StaticResource LinearLayout}" />
+        <control:CollectionViewExtend Grid.Row="2"
+                                      DisplayMode="SimpleList"
+                                      ItemsSource="{Binding Items.Items}">
+            <control:CollectionViewExtend.ItemPresets>
+                <control:CollectionViewPreset DisplayMode="SimpleList"
+                                              ItemTemplate="{StaticResource ScanPathItemTemplate}"
+                                              ItemsLayout="{StaticResource LinearLayout}" />
+            </control:CollectionViewExtend.ItemPresets>
+        </control:CollectionViewExtend>
     </Grid>
 </ContentView>

@@ -45,9 +45,9 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" 
-                                   Text="{Binding Name}"
-                                   Style="{StaticResource OneLine}" />
+                            <control:TextLabel Grid.Column="0"
+                                               Text="{Binding Name}"
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.Column="1"
                                              WidthRequest="{DynamicResource IconButtonItemSize}"
                                              MenuTemplate="{StaticResource FolderMenuTemplate}" />
@@ -68,11 +68,11 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <control:ManagedSKIcon Grid.Column="0"
-                                                 FileHash="{Binding FileHash}"
-                                                 WidthRequest="{DynamicResource IconItemSize}" />
-                            <Label Grid.Column="1"
-                                   Text="{Binding Name}"
-                                   Style="{StaticResource OneLine}" />
+                                                   FileHash="{Binding FileHash}"
+                                                   WidthRequest="{DynamicResource IconItemSize}" />
+                            <control:TextLabel Grid.Column="1"
+                                               Text="{Binding Name}"
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.Column="2"
                                              WidthRequest="{DynamicResource IconButtonItemSize}"
                                              MenuTemplate="{StaticResource FileMenuTemplate}" />
@@ -104,25 +104,29 @@
             </Grid.ColumnDefinitions>
             <button:NavigationBackwardButton Grid.Column="0" />
             <Button Grid.Column="1"
-                    Text="Refresh" 
-                    Command="{Binding RefreshFolderCommand}"/>
+                    Text="Refresh"
+                    Command="{Binding RefreshFolderCommand}" />
             <Button Grid.Column="2"
-                    Text="Previous" 
-                    Command="{Binding PreviousFolderCommand}"/>
+                    Text="Previous"
+                    Command="{Binding PreviousFolderCommand}" />
             <Button Grid.Column="3"
                     Text="Next"
-                    Command="{Binding NextFolderCommand}"/>
+                    Command="{Binding NextFolderCommand}" />
             <Button Grid.Column="4"
-                    Text="Up" 
-                    Command="{Binding UpFolderCommand}"/>
-            <Label Grid.Column="5"
-                   Text="{Binding FolderPath}"
-                   Style="{StaticResource OneLine}"
-                   Margin="8, 0, 0, 0" />
+                    Text="Up"
+                    Command="{Binding UpFolderCommand}" />
+            <control:TextLabel Grid.Column="5"
+                               Text="{Binding FolderPath}"
+                               IsAnimationEnabled="True" />
         </Grid>
-        <CollectionView Grid.Row="1"
-                        ItemsSource="{Binding Items.Items}"
-                        ItemTemplate="{StaticResource ListItemSelector}"
-                        ItemsLayout="{StaticResource LinearLayout}" />
+        <control:CollectionViewExtend Grid.Row="1"
+                                      DisplayMode="SimpleList"
+                                      ItemsSource="{Binding Items.Items}">
+            <control:CollectionViewExtend.ItemPresets>
+                <control:CollectionViewPreset DisplayMode="SimpleList"
+                                              ItemTemplate="{StaticResource ListItemSelector}"
+                                              ItemsLayout="{StaticResource LinearLayout}" />
+            </control:CollectionViewExtend.ItemPresets>
+        </control:CollectionViewExtend>
     </Grid>
 </ContentView>

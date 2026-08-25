@@ -11,6 +11,8 @@ public partial class AppOverlay: ContentView, IOverlayService {
     public AppOverlay() {
         InitializeComponent();
         this.SizeChanged += this.AppOverlay_SizeChanged;
+        this.FixedOverlay.IsVisible = false;
+        this.DynamicOverlay.IsVisible = false;
     }
 
     private void AppOverlay_SizeChanged(object? sender, EventArgs e) {
@@ -23,7 +25,7 @@ public partial class AppOverlay: ContentView, IOverlayService {
     }
 
     private void Grid_Tapped(object sender, TappedEventArgs e) {
-        OnOverlayClosed(null, EventArgs.Empty);
+        this.ForceCloseOverlay();
     }
     private void UpdateDynamicSize() {
         if (this._dynamicSize != null) {
@@ -46,6 +48,7 @@ public partial class AppOverlay: ContentView, IOverlayService {
                 overlay.ForceClose();
             }
             else {
+                // Seem like we need to ignore this since two overlay can exists now or because of race condition
                 throw new InvalidOperationException();
             }
         }
@@ -64,6 +67,8 @@ public partial class AppOverlay: ContentView, IOverlayService {
 
     private void OnOverlayClosed(object? sender, EventArgs e) {
         this.IsVisible = false;
+        this.FixedOverlay.IsVisible = false;
+        this.DynamicOverlay.IsVisible = false;
         this.DynamicContainer.Content = null;
         this.FixedContainer.Content = null;
         Debug.WriteLine("Overlay closed");
@@ -84,7 +89,7 @@ public partial class AppOverlay {
         }
         this.IsVisible = true;
         this.DynamicOverlay.IsVisible = true;
-        this.FixedOverlay.IsVisible = false;
+        //this.FixedOverlay.IsVisible = false;
         //this.FixedContainer.Content = null;
         this.UpdateDynamicSize();
         Debug.WriteLine("Overlay dynamic");
@@ -125,7 +130,7 @@ public partial class AppOverlay {
             AbsoluteLayout.SetLayoutBounds(this.FixedViewContainer, layoutBound);
         }
         this.IsVisible = true;
-        this.DynamicOverlay.IsVisible = false;
+        //this.DynamicOverlay.IsVisible = false;
         this.FixedOverlay.IsVisible = true;
         //this.DynamicContainer.Content = null;
         Debug.WriteLine("Overlay fixed");

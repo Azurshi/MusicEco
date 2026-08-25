@@ -35,7 +35,7 @@ public partial class AudioInfoOverlayViewModel: BaseOverlayViewModel {
             }
         }
     }
-    private static string[] PropertyNames = [
+    private static readonly string[] PropertyNames = [
         nameof(Title), nameof(Artists), nameof(AlbumArtists),
         nameof(Composers), nameof(Genres), nameof(Album),
         nameof(Comment), nameof(Lyrics), nameof(Track),

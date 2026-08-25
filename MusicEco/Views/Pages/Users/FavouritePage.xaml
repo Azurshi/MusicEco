@@ -22,10 +22,10 @@
                     <button:MenuItemButton Text="{Binding [Menu_AddToPlaylist], Source={Static service:Localization.L}}"
                                            Command="{Static commands:MenuCommands.AddToPlaylistCommand}" />
                     <button:MenuItemButton Text="{Binding [Menu_Info], Source={Static service:Localization.L}}"
-                                           Command="{Static commands:MenuCommands.ShowAudioInfoCommand}" />                
+                                           Command="{Static commands:MenuCommands.ShowAudioInfoCommand}" />
                 </VerticalStackLayout>
             </DataTemplate>
-            <DataTemplate x:Key="ListItemTemplate" 
+            <DataTemplate x:Key="ListItemTemplate"
                           x:DataType="itemVM:AudioEntryViewModel">
                 <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
                                 BackgroundColor="{Binding BackgroundColor}"
@@ -34,11 +34,11 @@
                         <Grid ColumnDefinitions="Auto, *, Auto">
                             <control:ManagedSKIcon Grid.Column="0"
                                                    WidthRequest="{DynamicResource IconItemSize}"
-                                                   FileHash="{Binding FileHash}" 
-                                                   Option="Small"/>
-                            <Label Grid.Column="1"
-                                   Text="{Binding DisplayTitle}"
-                                   Style="{DynamicResource OneLine}" />
+                                                   FileHash="{Binding FileHash}"
+                                                   Option="Small" />
+                            <control:TextLabel Grid.Column="1"
+                                               Text="{Binding DisplayTitle}"
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.Column="2"
                                              WidthRequest="{DynamicResource IconButtonItemSize}"
                                              MenuTemplate="{StaticResource MenuTemplate}" />

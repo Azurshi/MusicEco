@@ -42,9 +42,9 @@
                                                    WidthRequest="{DynamicResource IconItemSize}"
                                                    FileHash="{Binding FileHash}"
                                                    Option="Small" />
-                            <Label Grid.Column="1"
-                                   Text="{Binding DisplayTitle}"
-                                   Style="{StaticResource OneLine}" />
+                            <control:TextLabel Grid.Column="1"
+                                               Text="{Binding DisplayTitle}"
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <Label Grid.Column="2"
                                    Text="{Binding LastPlayedText}"
                                    Style="{StaticResource OneLine}"
@@ -78,9 +78,14 @@
                    Text="{Binding L[User_Recent_Title]}"
                    Style="{StaticResource OneLine}" />
         </Grid>
-        <CollectionView Grid.Row="1"
-                        ItemsSource="{Binding Items.Items}"
-                        ItemTemplate="{StaticResource PlayHistoryItemTemplate}" 
-                        ItemsLayout="{StaticResource LinearLayout}"/>
+        <control:CollectionViewExtend Grid.Row="1"
+                                      DisplayMode="SimpleList"
+                                      ItemsSource="{Binding Items.Items}">
+            <control:CollectionViewExtend.ItemPresets>
+                <control:CollectionViewPreset DisplayMode="SimpleList"
+                                              ItemTemplate="{StaticResource PlayHistoryItemTemplate}"
+                                              ItemsLayout="{StaticResource LinearLayout}" />
+            </control:CollectionViewExtend.ItemPresets>
+        </control:CollectionViewExtend>
     </Grid>
 </ContentView>
