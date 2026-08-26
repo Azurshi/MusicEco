@@ -5,6 +5,10 @@ namespace MusicEco.Views.Buttons;
 
 public partial class CollectionDisplayModeButtonSimple: ContentView {
     private static readonly Type ThisType = typeof(CollectionDisplayModeButtonSimple);
+    [BindedProperty]
+    public partial double SizeRequest { get; set; }
+    public static readonly BindableProperty SizeRequestProperty
+        = Utility.Create<double>(ThisType, 64.0);
     [BindableAutoGen]
     public static readonly BindableProperty DisplayModeProperty
         = Utility.Create<CollectionDisplayMode>(ThisType, CollectionDisplayMode.SimpleList,
@@ -25,25 +29,34 @@ public partial class CollectionDisplayModeButtonSimple: ContentView {
             throw new ArgumentOutOfRangeException(nameof(mode));
         }
         if (mode == CollectionDisplayMode.SimpleGrid) {
-            this.GridButton.InputTransparent = true;
-            this.ListButton.InputTransparent = false;
-            this.GridButton.Opacity = 1.0;
-            this.ListButton.Opacity = 0.5;
+            this.GridButton.ChangeToActiveState();
+            this.ListButton.ChangeToInactiveState();
         }
         else {
-            this.GridButton.InputTransparent = false;
-            this.ListButton.InputTransparent = true;
-            this.GridButton.Opacity = 0.5;
-            this.ListButton.Opacity = 1.0;
+            this.GridButton.ChangeToInactiveState();
+            this.ListButton.ChangeToActiveState();
         }
         DisplayModeChanged?.Invoke(this, mode);
     }
 
-    private void GridButton_Clicked(object sender, EventArgs e) {
+    private void GridButton_Tapped(object sender, TappedEventArgs e) {
         this.DisplayMode = CollectionDisplayMode.SimpleGrid;
+
+    }
+    private void ListButton_Tapped(object sender, TappedEventArgs e) {
+        this.DisplayMode = CollectionDisplayMode.SimpleList;
+
+    }
+    private void PointerGestureRecognizer_PointerEntered(object sender, PointerEventArgs e) {
+        if (sender is View view) {
+            view.BackgroundColor = DynamicColors.ButtonHighlightColor;
+        }
     }
 
-    private void ListButton_Clicked(object sender, EventArgs e) {
-        this.DisplayMode = CollectionDisplayMode.SimpleList;
+    private void PointerGestureRecognizer_PointerExited(object sender, PointerEventArgs e) {
+        if (sender is View view) {
+            view.BackgroundColor = Colors.Transparent;
+        }
     }
+
 }

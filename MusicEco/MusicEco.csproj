@@ -176,6 +176,9 @@
 		<MauiXaml Update="Views\Controls\ManagedSKIcon.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Views\Controls\SKImageButton.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\Controls\SKImageLabel.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

@@ -46,7 +46,7 @@
                                               IsActive="False"
                                               Tapped="ControlButton_Tapped" />
                         <button:ControlButton Grid.Column="2"
-                                              InactiveResourcePath="next_raw.png"
+                                              InactiveResourcePath="next_audio_raw.png"
                                               IsActive="False"
                                               Command="{Binding PreviousAudioCommand}"
                                               Rotation="180" />
@@ -65,7 +65,7 @@
                                               IsActive="False"
                                               Command="{Binding SeekForwardCommand}" />
                         <button:ControlButton Grid.Column="6"
-                                              InactiveResourcePath="next_raw.png"
+                                              InactiveResourcePath="next_audio_raw.png"
                                               IsActive="False"
                                               Command="{Binding NextAudioCommand}" />
                         <button:ControlButton Grid.Column="7"
@@ -132,7 +132,7 @@
                     <Grid Grid.Row="2"
                           ColumnDefinitions="*, *, *, *, *, *, *">
                         <button:ControlButton Grid.Column="1"
-                                              InactiveResourcePath="next_raw.png"
+                                              InactiveResourcePath="next_audio_raw.png"
                                               IsActive="False"
                                               Command="{Binding PreviousAudioCommand}"
                                               Rotation="180" />
@@ -151,7 +151,7 @@
                                               IsActive="False"
                                               Command="{Binding SeekForwardCommand}" />
                         <button:ControlButton Grid.Column="5"
-                                              InactiveResourcePath="next_raw.png"
+                                              InactiveResourcePath="next_audio_raw.png"
                                               IsActive="False"
                                               Command="{Binding NextAudioCommand}" />
                     </Grid>

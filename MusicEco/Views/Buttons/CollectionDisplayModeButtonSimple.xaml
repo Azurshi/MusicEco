@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MusicEco.Views.Buttons.CollectionDisplayModeButtonSimple">
+             xmlns:control="clr-namespace:MusicEco.Views.Controls"
+             xmlns:top="clr-namespace:MusicEco"
+             x:Name="Root"
+             x:Class="MusicEco.Views.Buttons.CollectionDisplayModeButtonSimple"
+             SizeRequest="{DynamicResource HeaderSize}">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="0"
-                x:Name="GridButton"
-                Text="Grid" 
-                Clicked="GridButton_Clicked"/>
-        <Button Grid.Column="1"
-                x:Name="ListButton"
-                Text="List" 
-                Clicked="ListButton_Clicked"/>
+        <control:SKImageButton Grid.Column="0"
+                               x:Name="GridButton"
+                               ResourcePath="grid_raw.png"
+                               DisplayMode="DualTint"
+                               ActiveTintColor="{DynamicResource ActiveTintColor}"
+                               InactiveTintColor="{DynamicResource InactiveTintColor}"
+                               WidthRequest="{Binding SizeRequest, Source={Reference Root}}"
+                               HeightRequest="{Binding SizeRequest, Source={Reference Root}}"
+                               Tapped="GridButton_Tapped" />
+        <control:SKImageButton Grid.Column="1"
+                               x:Name="ListButton"
+                               ResourcePath="list_raw.png"
+                               DisplayMode="DualTint"
+                               ActiveTintColor="{DynamicResource ActiveTintColor}"
+                               InactiveTintColor="{DynamicResource InactiveTintColor}"
+                               WidthRequest="{Binding SizeRequest, Source={Reference Root}}"
+                               HeightRequest="{Binding SizeRequest, Source={Reference Root}}"
+                               Tapped="ListButton_Tapped" />
     </Grid>
 </ContentView>

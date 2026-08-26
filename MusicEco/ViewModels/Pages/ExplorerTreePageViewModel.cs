@@ -33,6 +33,7 @@ public partial class ExplorerTreePageViewModel: BasePageViewModel {
         this._stack = new();
         this.Items = new();
     }
+    [RelayCommand]
     public override async Task Refresh() {
         if (PathSeparator.Length == 0) {
             throw new InvalidOperationException();
