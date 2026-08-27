@@ -7,6 +7,9 @@ public static class Extensions {
     public static T LoadTemplate<T>(this ContentPage view, string templateKey) {
         return (T)((DataTemplate)view.Resources[templateKey]).CreateContent();
     }
+    public static T GetResource<T>(this ContentView view, string resourceKey) {
+        return (T)view.Resources[resourceKey];
+    }
     public static IEnumerable<Element> WalkChildrenRecursive(this Element element, bool includeSelf) {
         Queue<Element> q = new();
         q.Enqueue(element);

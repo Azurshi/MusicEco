@@ -5,6 +5,8 @@ obj/
 MusicEco/Todo.txt
 */CSource/*
 
+Assets/
+
 AudioCodecTest/
 MusicEco.DataTest/
 PerformanceTest/

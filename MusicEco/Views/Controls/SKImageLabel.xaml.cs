@@ -147,7 +147,7 @@ public partial class SKImageLabel: ContentView, IDisposable {
         }
     }
 
-    public void Dispose() {
+    public virtual void Dispose() {
         if (this._disposed) {
             // Prevent double call
             return;
