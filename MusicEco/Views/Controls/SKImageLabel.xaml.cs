@@ -104,6 +104,9 @@ public partial class SKImageLabel: ContentView, IDisposable {
             this._limiter.Release();
         }
     }
+    public void InvalidateSurface() {
+        this.Canvas.InvalidateSurface();
+    }
     private void Canvas_PaintSurface(object sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e) {
         var canvas = e.Surface.Canvas;
         canvas.Clear(SKColors.Transparent);

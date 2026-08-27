@@ -498,4 +498,7 @@
   <data name="Setting_Interface_Scale_Template" xml:space="preserve">
     <value>{0} %</value>
   </data>
+  <data name="Setting_Interface_Theme" xml:space="preserve">
+    <value>Chủ đề</value>
+  </data>
 </root>

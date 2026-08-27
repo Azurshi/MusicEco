@@ -7,7 +7,8 @@
              x:Class="MusicEco.Views.Buttons.NavigationForwardButton"
              HeightRequest="{DynamicResource HeaderSize}"
              WidthRequest="{DynamicResource HeaderSize}"
-             SizeRequest="{DynamicResource HeaderSize}">
+             SizeRequest="{DynamicResource HeaderSize}"
+             Padding="{DynamicResource FrameMargin}">
     <control:SKImageButton x:Name="InnerButton"
                            ResourcePath="next_raw.png"
                            DisplayMode="DualTint"

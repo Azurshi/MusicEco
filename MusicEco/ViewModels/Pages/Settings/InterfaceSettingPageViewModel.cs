@@ -5,6 +5,14 @@ namespace MusicEco.ViewModels.Pages.Settings;
 public partial class InterfaceSettingPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.InterfaceSetting;
     private readonly IAppInterfaceService _interfaceService;
+    private string  GetPlatformTitle(string fieldName) {
+#if ANDROID
+        return this.L[fieldName];
+#else
+        return string.Empty;
+#endif
+    }
+    public string ThemePickerTitle => this.GetPlatformTitle("Setting_Interface_Theme");
     public IReadOnlyList<ThemeItemViewModel> Themes { get; init; }
     public ThemeItemViewModel CurrentTheme {
         get {
@@ -23,6 +31,7 @@ public partial class InterfaceSettingPageViewModel: BasePageViewModel {
             }
         }
     }
+    public string ScalePickerTitle => this.GetPlatformTitle("Setting_Interface_Scale");
     public IReadOnlyList<ScaleItemViewModel> Scales { get; init; }
     public ScaleItemViewModel CurrentScale {
         get {
@@ -39,6 +48,7 @@ public partial class InterfaceSettingPageViewModel: BasePageViewModel {
             OnPropertyChanged();
         }
     }
+    public string OrientationPickerTitle => this.GetPlatformTitle("Setting_Interface_Orientation");
     public IReadOnlyList<OrientationItemViewModel> Orientations { get; init; }
     public OrientationItemViewModel CurrentOrientation {
         get {

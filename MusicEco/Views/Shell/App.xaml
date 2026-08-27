@@ -11,8 +11,8 @@
                 <ResourceDictionary Source="../../Resources/Styles/Shared.xaml" />
                 <ResourceDictionary x:Name="SizeDictionary" 
                                     Source="../../Resources/Styles/WidgetSize.xaml" />
-                <!--Theme must always at last-->
-                <ResourceDictionary Source="../../Resources/Themes/GlobalTheme.xaml" />
+                <ResourceDictionary x:Name="PalletDictionary" 
+                                    Source="../../Resources/Themes/DefaultTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

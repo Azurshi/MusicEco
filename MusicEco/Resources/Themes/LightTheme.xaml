@@ -5,14 +5,14 @@
     <Color x:Key="TextColor">Black</Color>
     <Color x:Key="BorderColor">#FF3E3C3C</Color>
     <Color x:Key="SelectedBorderColor">#FF70E7F1</Color>
-    <Color x:Key="SeparatorColor">#FF3E3C3C</Color>
     <Color x:Key="HighlightColor">#9DC8D6</Color>
     <Color x:Key="ButtonHighlightColor">#ADD8E6</Color>
     <Color x:Key="ItemAltBackgroundColor">#3BABB0B2</Color>
 
-    <Color x:Key="PageColor">#FFE7EFF1</Color>
-    <Color x:Key="HeaderColor">#FFC9DBDE</Color>
-    <Color x:Key="MenuColor">#FFC1CDDA</Color>
+    <Color x:Key="PageColor">#EFF1F3</Color>
+    <Color x:Key="HeaderColor">#EBEDEF</Color>
+    <Color x:Key="MenuColor">#E7EBEF</Color>
+    <Color x:Key="SeparatorColor">#DEE2E6</Color>
 
     <Color x:Key="ActiveTintColor">Gray</Color>
     <Color x:Key="TintColor">#AAAAAA</Color>

@@ -13,23 +13,55 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Picker Title="{Binding L[Setting_Interface_CurrentTheme]}"
-                    ItemsSource="{Binding Themes}"
-                    SelectedItem="{Binding CurrentTheme, Mode=TwoWay}" />
+        <Grid Grid.Row="0"
+              HeightRequest="{DynamicResource HeaderSize}"
+              BackgroundColor="{DynamicResource HeaderColor}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <button:NavigationBackwardButton Grid.Column="0"
+                                             WidthRequest="{DynamicResource HeaderSize}" />
+            <Label Grid.Column="1"
+                   Text="{Binding L[Setting_Interface]}"
+                   Style="{StaticResource Title}" />
         </Grid>
         <Grid Grid.Row="1">
-            <Picker Title="{Binding L[Setting_Interface_Scale]}"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"
+                   Text="{Binding L[Setting_Interface_Theme]}"
+                   Style="{DynamicResource OneLine}" />
+            <Picker Grid.Row="0"
+                    Grid.Column="2"
+                    ItemsSource="{Binding Themes}"
+                    SelectedItem="{Binding CurrentTheme, Mode=TwoWay}"
+                    Title="{Binding ThemePickerTitle}" />
+            <Label Grid.Row="1"
+                   Text="{Binding L[Setting_Interface_Scale]}"
+                   Style="{DynamicResource OneLine}" />
+            <Picker Grid.Row="1"
+                    Grid.Column="2"
                     ItemsSource="{Binding Scales}"
-                    SelectedItem="{Binding CurrentScale, Mode=TwoWay}" />
-        </Grid>
-        <Grid Grid.Row="2">
-            <Picker Title="{Binding L[Setting_Interface_Orientation]}"
+                    SelectedItem="{Binding CurrentScale, Mode=TwoWay}"
+                    Title="{Binding ScalePickerTitle}" />
+            <Label Grid.Row="2"
+                   Text="{Binding L[Setting_Interface_Orientation]}"
+                   Style="{DynamicResource OneLine}" />
+            <Picker Grid.Row="2"
+                    Grid.Column="2"
                     ItemsSource="{Binding Orientations}"
-                    SelectedItem="{Binding CurrentOrientation, Mode=TwoWay}" />
+                    SelectedItem="{Binding CurrentOrientation, Mode=TwoWay}"
+                    Title="{Binding OrientationPickerTitle}" />
         </Grid>
     </Grid>
 </ContentView>

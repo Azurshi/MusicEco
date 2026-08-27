@@ -43,15 +43,18 @@ public partial class MainPage: ContentPage {
         DisplayOrientation orientation = this._interfaceService.GetOrientation().Orientation;
         double navigationBarSize = Utility.GetResource<double>("NavigationBarSize");
         double progressBarSize = Utility.GetResource<double>("ProgressBarSize");
+        double separatorSize = Utility.GetResource<double>("SeparatorSize");
         double spacing = 4;
         if (orientation == DisplayOrientation.Landscape) {
             RowDefinitionCollection rowDefinitions = new([
                 new RowDefinition(new GridLength(1, GridUnitType.Star)),
+                new RowDefinition(new GridLength(separatorSize, GridUnitType.Absolute)),
                 new RowDefinition(new GridLength(navigationBarSize + progressBarSize + spacing, GridUnitType.Absolute))
             ]);
             ColumnDefinitionCollection columnDefinitions = new([
                 new ColumnDefinition(new GridLength(navigationBarSize, GridUnitType.Absolute)),
-            new ColumnDefinition(new GridLength(1, GridUnitType.Star))
+                new ColumnDefinition(new GridLength(separatorSize, GridUnitType.Absolute)),
+                new ColumnDefinition(new GridLength(1, GridUnitType.Star))
                 ]);
             container.RowDefinitions = rowDefinitions;
             container.ColumnDefinitions = columnDefinitions;
@@ -59,6 +62,7 @@ public partial class MainPage: ContentPage {
         else {
             RowDefinitionCollection rowDifinitions = new([
                 new RowDefinition(new GridLength(1, GridUnitType.Star)),
+                new RowDefinition(new GridLength(1, GridUnitType.Absolute)),
                 new RowDefinition(new GridLength(navigationBarSize * 2 + progressBarSize + spacing * 0, GridUnitType.Absolute)),
                 new RowDefinition(new GridLength(navigationBarSize, GridUnitType.Absolute))
                 ]);

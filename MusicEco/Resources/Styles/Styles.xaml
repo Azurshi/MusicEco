@@ -10,12 +10,22 @@
     <Style TargetType="Button">
         <Setter Property="TextColor"
                 Value="{DynamicResource TextColor}" />
+        <Setter Property="FontSize"
+                Value="{DynamicResource LabelFontSize}" />
     </Style>
     <Style TargetType="Entry">
         <Setter Property="TextColor"
-                   Value="{DynamicResource TextColor}"/>
+                Value="{DynamicResource TextColor}" />
+        <Setter Property="FontSize"
+                Value="{DynamicResource LabelFontSize}" />
         <Setter Property="PlaceholderColor"
                 Value="{DynamicResource TextColor}" />
+    </Style>
+    <Style TargetType="Picker">
+        <Setter Property="TextColor"
+                Value="{DynamicResource TextColor}" />
+        <Setter Property="FontSize"
+                Value="{DynamicResource LabelFontSize}" />
     </Style>
     <Style TargetType="Label"
            x:Key="OneLine">
@@ -78,5 +88,9 @@
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
+    </Style>
+    <Style TargetType="Rectangle">
+        <Setter Property="StrokeThickness"
+                Value="0" />
     </Style>
 </ResourceDictionary>

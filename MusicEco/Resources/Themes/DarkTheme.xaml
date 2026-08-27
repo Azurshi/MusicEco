@@ -5,7 +5,6 @@
     <Color x:Key="TextColor">#DDDDDD</Color>
     <Color x:Key="BorderColor">Gray</Color>
     <Color x:Key="SelectedBorderColor">LawnGreen</Color>
-    <Color x:Key="SeparatorColor">Gray</Color>
     <Color x:Key="HighlightColor">#20ADA8FF</Color>
     <Color x:Key="ButtonHighlightColor">#40AAD8FF</Color>
     <Color x:Key="ItemAltBackgroundColor">#2A6A6A6A</Color>
@@ -13,6 +12,8 @@
     <Color x:Key="PageColor">#FF1C1C1D</Color>
     <Color x:Key="HeaderColor">#FF101011</Color>
     <Color x:Key="MenuColor">Black</Color>
+    <Color x:Key="SeparatorColor">Gray</Color>
+
     <Color x:Key="ActiveTintColor">White</Color>
     <Color x:Key="TintColor">#AAAAAA</Color>
     <Color x:Key="InactiveTintColor">Gray</Color>

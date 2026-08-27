@@ -51,7 +51,8 @@
             <DataTemplate x:Key="PortraitLayout">
                 <Grid ColumnDefinitions="Auto, *, *, *, *, *, *, *, Auto"
                       ColumnSpacing="2">
-                    <button:NavigationBackwardButton Grid.Column="0" />
+                    <button:NavigationBackwardButton Grid.Column="0"
+                                                     Padding="0"/>
                     <button:NavigationButton Grid.Column="1"
                                              ResourcePath="play_raw.png"
                                              PageRoute="{x:Static top:PageRoute.Home}" />
@@ -73,7 +74,8 @@
                     <button:NavigationButton Grid.Column="7"
                                              ResourcePath="setting_raw.png"
                                              PageRoute="{x:Static top:PageRoute.Setting}" />
-                    <button:NavigationForwardButton Grid.Column="8" />
+                    <button:NavigationForwardButton Grid.Column="8"
+                                                    Padding="0"/>
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>

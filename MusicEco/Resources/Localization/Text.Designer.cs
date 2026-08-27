@@ -943,6 +943,15 @@ namespace MusicEco.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        public static string Setting_Interface_Theme {
+            get {
+                return ResourceManager.GetString("Setting_Interface_Theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Setting_Language {
