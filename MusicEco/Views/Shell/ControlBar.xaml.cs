@@ -14,11 +14,11 @@ public partial class ControlBar: ContentView {
         this._interfaceService.OrientationChanged += this.InterfaceService_OrientationChanged;
     }
 
-    private void InterfaceService_OrientationChanged(object? sender, DisplayOrientation e) {
+    private void InterfaceService_OrientationChanged(object? sender, OrientationItem e) {
         LoadLayout();
     }
     private void LoadLayout() {
-        DisplayOrientation orientation = this._interfaceService.GetOrientation();
+        DisplayOrientation orientation = this._interfaceService.GetOrientation().Orientation;
         Grid layout = orientation switch {
             DisplayOrientation.Landscape => this.LoadTemplate<Grid>("LandscapeLayout"),
             DisplayOrientation.Portrait => this.LoadTemplate<Grid>("PortraitLayout"),

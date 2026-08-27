@@ -10,6 +10,6 @@ public partial class DevInfoOverlay: ContentView, IOverlay {
         this.OutputLabel.Text = text;
     }
     public void ForceClose() {
-        Closed?.Invoke(this, EventArgs.Empty);
+        this.Closed?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -1,6 +1,4 @@
-using MusicEco.Views.Buttons;
 using MusicEco.Views.Overlays;
-using System.Diagnostics;
 
 namespace MusicEco.Views.Items;
 
@@ -14,7 +12,7 @@ public partial class MenuFrame: ContentView, IOverlay {
         InitializeComponent();
     }
     public void ForceClose() {
-        Closed?.Invoke(this, EventArgs.Empty);
+        this.Closed?.Invoke(this, EventArgs.Empty);
     }
     public void Assign(Layout layout) {
         this.Container.Content = layout;
@@ -36,6 +34,6 @@ public partial class MenuFrame: ContentView, IOverlay {
         }
     }
     private void Button_Clicked(object? sender, EventArgs e) {
-        Closed?.Invoke(this, EventArgs.Empty);
+        this.Closed?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Border xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MusicEco.Views.Items.ItemFrame">
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Name="Root"
+        x:Class="MusicEco.Views.Items.ItemFrame">
     <Border.StrokeShape>
         <RoundRectangle StrokeThickness="1"
-                        CornerRadius="4"/>
+                        CornerRadius="4" />
     </Border.StrokeShape>
     <ContentView x:Name="Container"
-                 x:FieldModifier="Protected">
+                 x:FieldModifier="Protected"
+                 Content="{Binding ItemContent, Source={Reference Root}}">
         <ContentView.GestureRecognizers>
             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
             <PointerGestureRecognizer PointerEntered="PointerGestureRecognizer_PointerEntered"

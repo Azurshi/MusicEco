@@ -39,8 +39,8 @@ internal class RelayCommandGenerator: IMethodBasedGenerator {
                     method.Name,
                     method.ReturnType.ToDisplayString()));
         }
-        string? canExecuteMethodName = GetCanExecute(context);
-        if (canExecuteMethodName != null) {
+        if (Utility.TryGetAttibuteNamedArguments(context, "CanExecute", out string? canExecuteMethodName)
+            && canExecuteMethodName != null) {
             commandClass += "Extend";
             constructorArguments += $", {canExecuteMethodName}";
         }
@@ -83,15 +83,6 @@ internal class RelayCommandGenerator: IMethodBasedGenerator {
             && type.Name == "Task"
             && type.ContainingNamespace.ToDisplayString() == "System.Threading.Tasks"
             && type.Arity == 0;
-    }
-    private static string? GetCanExecute(GeneratorAttributeSyntaxContext context) {
-        foreach(var argument in context.Attributes[0].NamedArguments) {
-            if (argument.Key == "CanExecute"
-                && argument.Value.Value is string canExecuteMethodName) {
-                return canExecuteMethodName;
-            }
-        }
-        return null;
     }
 #pragma warning disable RS2008
     private static readonly DiagnosticDescriptor InvalidReturnType = new(

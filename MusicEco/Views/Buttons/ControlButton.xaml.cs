@@ -20,21 +20,11 @@ public partial class ControlButton: ContentView {
     [BindedProperty]
     public partial string ActiveResourcePath { get; set; }
     public static readonly BindableProperty ActiveResourcePathProperty
-        = Utility.Create<string>(ThisType, string.Empty,
-            propertyChanged: (b, _, v) => {
-                var This = (ControlButton)b;
-                var value = (string)v;
-                This.ActiveLabel.ResourcePath = value;
-            });
+        = Utility.Create<string>(ThisType, string.Empty);
     [BindedProperty]
     public partial string InactiveResourcePath { get; set; }
     public static readonly BindableProperty InactiveResourcePathProperty
-        = Utility.Create<string>(ThisType, string.Empty,
-            propertyChanged: (b, _, v) => {
-                var This = (ControlButton)b;
-                var value = (string)v;
-                This.InactiveLabel.ResourcePath = value;
-            });
+        = Utility.Create<string>(ThisType, string.Empty);
 
     private void RefreshState() {
         this.ActiveLabel.IsVisible = this.IsActive;

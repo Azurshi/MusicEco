@@ -6,18 +6,14 @@ namespace MusicEco.Services;
 
 internal partial class PlaybackService: IPlaybackService {
     private readonly IQueueService _queueService;
-    private readonly IAudioService _audioService;
     private readonly IFileService _fileSerivce;
-    private readonly IPlaybackTrackingService _trackingService;
     private readonly IPlayerController _player;
     private DateTime? _queueKey;
     private static readonly TimeSpan _minimumDelay = TimeSpan.FromSeconds(1);
     private readonly Stopwatch _sw;
-    public PlaybackService(IQueueService queueService, IAudioService audioService, IFileService fileService, IPlaybackTrackingService trackingService, IPlayerController playerController) {
+    public PlaybackService(IQueueService queueService, IFileService fileService, IPlayerController playerController) {
         this._queueService = queueService;
-        this._audioService = audioService;
         this._fileSerivce = fileService;
-        this._trackingService = trackingService;
         this._player = playerController;
         this._player.NextAudioRequested += this.Player_NextAudioRequested;
         this._sw = new();
@@ -101,9 +97,5 @@ internal partial class PlaybackService: IPlaybackService {
             }
             await this.PlayQueueInner(queue.Name, queue.Audios.ToList(), queue.Current!, sender, TrackChangeReason.User);
         }
-    }
-
-    public void Dispose() {
-        
     }
 }

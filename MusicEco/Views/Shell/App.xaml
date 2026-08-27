@@ -10,7 +10,7 @@
                 <ResourceDictionary Source="../../Resources/Styles/Styles.xaml" />
                 <ResourceDictionary Source="../../Resources/Styles/Shared.xaml" />
                 <ResourceDictionary x:Name="SizeDictionary" 
-                                    Source="../../Resources/Themes/WidgetSize.xaml" />
+                                    Source="../../Resources/Styles/WidgetSize.xaml" />
                 <!--Theme must always at last-->
                 <ResourceDictionary Source="../../Resources/Themes/GlobalTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>

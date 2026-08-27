@@ -64,13 +64,6 @@ public static partial class AppLifeCycle {
         Debug.WriteLine($"!!!---UI started---!!! {sw.ElapsedMilliseconds} ms");
         WorkerLoop(Config.AppLoopDelta);
     }
-    private static async void CleanupLoop() {
-        var iconService = AppLifeCycle.Provider.GetRequiredService<IIconService>();
-        while (!AppLifeCycle.Closed) {
-            iconService.Compact();
-            await Task.Delay(1000);
-        }
-    }
     public static void CloseApp() {
         if (_closed) {
             Debug.WriteLine("Duplicated exit");

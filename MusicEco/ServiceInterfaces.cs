@@ -40,7 +40,7 @@ public interface IIconService: IDisposable {
     public void Compact();
 }
 
-public interface IPlaybackService: IDisposable {
+public interface IPlaybackService {
     public Task PlayQueue(string name, List<AudioEntry> audios, AudioEntry current, object? sender);
     public Task PlayQueue(AudioQueue queue, object? sender);
 }
@@ -107,38 +107,6 @@ public interface IOverlayService {
     public void ShowFixed(Vector2 position, IOverlay overlay);
 }
 
-public interface ITheme {
-    public string Id { get; }
-    public string Name { get; }
-    public ResourceDictionary GetResources();
-}
-
-
-public interface IStyleService {
-    public event EventHandler? ThemeChanged;
-    public string GetCurrentThemeId();
-    public string GetCurrentThemeName();
-    public void SetTheme(string themeId);
-    public void LoadLastTheme();
-    public List<ITheme> GetAll();
-    public void Register(ITheme theme);
-}
-
-public enum DisplayOrientation {
-    Landscape,
-    Portrait
-}
-public interface IAppInterfaceService {
-    public event EventHandler<float>? ScaleChanged;
-    public event EventHandler<DisplayOrientation>? OrientationChanged;
-    public float GetScale();
-    public void SetScale(float scale);
-    public void LoadLastScale();
-    public DisplayOrientation GetOrientation();
-    public void SetOrientation(DisplayOrientation orientation);
-    public void LoadLastOrientation();
-}
-
 public class SharedImageCodec {
     private static bool Created = false;
     public IIconDecoder IconDecoder { get; init; }
@@ -153,4 +121,41 @@ public class SharedImageCodec {
         this.ImageDecoder.Initialize(1);
         Created = true;
     }
+}
+
+public interface ITheme {
+    public string Id { get; }
+    public string Name { get; }
+    public ResourceDictionary GetResources();
+}
+public sealed record ThemeItem(
+    string Id,
+    string Text);
+public sealed record ScaleItem(
+    float Value,
+    string Text);
+public sealed record OrientationItem(
+    DisplayOrientation Orientation,
+    string Text);
+public enum DisplayOrientation {
+    Landscape,
+    Portrait
+}
+public interface IAppInterfaceService {
+    public event EventHandler<ThemeItem>? ThemeChanged;
+    public ThemeItem GetTheme();
+    public IReadOnlyList<ThemeItem> GetThemes();
+    public void SetTheme(string themeId);
+    public void LoadLastTheme();
+    public void RegisterTheme(ITheme theme);
+    public event EventHandler<ScaleItem>? ScaleChanged;
+    public ScaleItem GetScale();
+    public IReadOnlyList<ScaleItem> GetScales();
+    public void SetScale(float scale);
+    public void LoadLastScale();
+    public event EventHandler<OrientationItem>? OrientationChanged;
+    public OrientationItem GetOrientation();
+    public IReadOnlyList<OrientationItem> GetOrientations();
+    public void SetOrientation(DisplayOrientation orientation);
+    public void LoadLastOrientation();
 }

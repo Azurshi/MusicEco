@@ -489,4 +489,13 @@
   <data name="Info_Header" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="Setting_Interface_Orientation_Landscape" xml:space="preserve">
+    <value>Landscape</value>
+  </data>
+  <data name="Setting_Interface_Orientation_Portrait" xml:space="preserve">
+    <value>Portrait</value>
+  </data>
+  <data name="Setting_Interface_Scale_Template" xml:space="preserve">
+    <value>{0} %</value>
+  </data>
 </root>

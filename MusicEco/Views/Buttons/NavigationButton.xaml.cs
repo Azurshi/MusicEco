@@ -18,12 +18,7 @@ public partial class NavigationButton: ContentView {
     [BindedProperty]
     public partial string ResourcePath { get; set; }
     public static readonly BindableProperty ResourcePathProperty
-        = Utility.Create<string>(ThisType, string.Empty,
-            propertyChanged: (b, _, v) => {
-                var This = (NavigationButton)b;
-                var value = (string)v;
-                This.ImageLabel.ResourcePath = value;
-            });
+        = Utility.Create<string>(ThisType, string.Empty);
     [BindedProperty]
     public partial PageRoute PageRoute { get; set; }
     public static readonly BindableProperty PageRouteProperty

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:control="clr-namespace:MusicEco.Views.Controls"
              xmlns:top="clr-namespace:MusicEco"
+             x:Name="Root"
              x:Class="MusicEco.Views.Buttons.FavouriteControlButton"
              ActiveTintColor="{DynamicResource ActiveTintColor}"
              InactiveTintColor="{DynamicResource InactiveTintColor}">
@@ -15,5 +16,6 @@
     </ContentView.GestureRecognizers>
     <control:SKImageLabel x:Name="ImageLabel"
                           Option="{Static top:SamplingOptions.Trilinear}"
-                          MaxSize="{Static top:Config.MaxIconButtonSize}" />
+                          MaxSize="{Static top:Config.MaxIconButtonSize}" 
+                          ResourcePath="{Binding ResourcePath, Source={Reference Root}}"/>
 </ContentView>

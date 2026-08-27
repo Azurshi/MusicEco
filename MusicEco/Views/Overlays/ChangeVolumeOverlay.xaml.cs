@@ -9,6 +9,6 @@ public partial class ChangeVolumeOverlay: ContentView, IOverlay {
     }
     public event EventHandler? Closed;
     public void ForceClose() {
-        Closed?.Invoke(this, EventArgs.Empty);
+        this.Closed?.Invoke(this, EventArgs.Empty);
     }
 }

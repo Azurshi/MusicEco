@@ -79,14 +79,12 @@ public static class MauiProgram {
             var playbackService = provider.GetRequiredService<IPlaybackService>();
         });
         AppLifeCycle.RegisterAfterUILoaded(static (provider) => {
-            var styleService = provider.GetRequiredService<IStyleService>();
-            styleService.Register(new DefaultTheme());
-            styleService.Register(new LightTheme());
-            styleService.Register(new DarkTheme());
-            styleService.LoadLastTheme();
-            DynamicColors.Initialize(provider);
-
             var interfaceService = provider.GetRequiredService<IAppInterfaceService>();
+            interfaceService.RegisterTheme(new DefaultTheme());
+            interfaceService.RegisterTheme(new LightTheme());
+            interfaceService.RegisterTheme(new DarkTheme());
+            interfaceService.LoadLastTheme();
+            DynamicColors.Initialize(provider);
             interfaceService.LoadLastScale();
             interfaceService.LoadLastOrientation();
         });

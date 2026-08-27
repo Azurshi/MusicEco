@@ -1,4 +1,4 @@
-﻿using MusicEco.Resources.Themes;
+﻿using MusicEco.Resources.Styles;
 
 namespace MusicEco.Views.Shell;
 

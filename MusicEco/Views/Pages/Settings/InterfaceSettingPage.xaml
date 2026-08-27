@@ -9,21 +9,6 @@
              xmlns:button="clr-namespace:MusicEco.Views.Buttons"
              x:Class="MusicEco.Views.Pages.Settings.InterfaceSettingPage"
              x:DataType="settingPageVM:InterfaceSettingPageViewModel">
-    <ContentView.Resources>
-        <ResourceDictionary>
-            <DataTemplate x:Key="ListThemeItemTemplate"
-                          x:DataType="itemVM:ThemeViewModel">
-                <item:ItemFrame HeightRequest="{DynamicResource TextItemSize}"
-                                Command="{Binding SelectThemeCommand, Source={RelativeSource AncestorType={x:Type settingPageVM:InterfaceSettingPageViewModel}}}">
-                    <item:ItemFrame.ItemContent>
-                        <Label Text="{Binding ThemeName}"
-                               Style="{StaticResource OneLine}"
-                               Margin="8, 0" />
-                    </item:ItemFrame.ItemContent>
-                </item:ItemFrame>
-            </DataTemplate>
-        </ResourceDictionary>
-    </ContentView.Resources>
     <Grid RowSpacing="4">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -31,38 +16,20 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0"
-              ColumnSpacing="8"
-              HeightRequest="{DynamicResource HeaderSize}"
-              BackgroundColor="{DynamicResource HeaderColor}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <button:NavigationBackwardButton Grid.Column="0"
-                                             WidthRequest="{DynamicResource HeaderSize}" />
-            <Label Grid.Column="1"
-                   Text="{Binding L[Setting_Interface_CurrentTheme]}"
-                   Style="{StaticResource OneLine}"
-                   FontAttributes="Bold" />
-            <Label Grid.Column="2"
-                   Text="{Binding CurrentThemeName}"
-                   Style="{StaticResource OneLine}" />
+        <Grid Grid.Row="0">
+            <Picker Title="{Binding L[Setting_Interface_CurrentTheme]}"
+                    ItemsSource="{Binding Themes}"
+                    SelectedItem="{Binding CurrentTheme, Mode=TwoWay}" />
         </Grid>
-        <CollectionView Grid.Row="1"
-                        ItemsSource="{Binding Themes}"
-                        ItemTemplate="{StaticResource ListThemeItemTemplate}"
-                        ItemsLayout="{StaticResource LinearLayout}" />
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="1">
             <Picker Title="{Binding L[Setting_Interface_Scale]}"
                     ItemsSource="{Binding Scales}"
-                    SelectedItem="{Binding SelectedScale}" />
+                    SelectedItem="{Binding CurrentScale, Mode=TwoWay}" />
         </Grid>
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="2">
             <Picker Title="{Binding L[Setting_Interface_Orientation]}"
                     ItemsSource="{Binding Orientations}"
-                    SelectedItem="{Binding SelectedOrientation}" />
+                    SelectedItem="{Binding CurrentOrientation, Mode=TwoWay}" />
         </Grid>
     </Grid>
 </ContentView>

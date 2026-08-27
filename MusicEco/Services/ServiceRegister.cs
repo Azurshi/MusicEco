@@ -25,7 +25,6 @@ public static class ServiceRegister {
         services.AddSingleton<IOverlayService>(provider => provider.GetRequiredService<AppOverlay>());
         services.AddSingleton<TimeFormatter>();
         services.AddSingleton<BasicFormatter>();
-        services.AddSingleton<IStyleService, StyleService>();
         services.AddSingleton<IAppInterfaceService, AppInterfaceService>();
         services.AddSingleton<SharedImageCodec>();
         return services;

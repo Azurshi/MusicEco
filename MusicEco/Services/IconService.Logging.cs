@@ -8,21 +8,21 @@ public partial class IconService {
         public long MissCount { get; private set; }
         public long TotalCount => HitCount + MissCount;
         public CacheLog() {
-            HitCount = 0;
-            MissCount = 0;
+            this.HitCount = 0;
+            this.MissCount = 0;
         }
         public void Miss() {
-            MissCount++;
+            this.MissCount++;
         }
         public void Hit() {
-            HitCount++;
+            this.HitCount++;
         }
         public void Log() {
-            Debug.WriteLine($"Cache hit rate {100.0 * HitCount / TotalCount:F2}");
+            Debug.WriteLine($"Cache hit rate {100.0 * this.HitCount / this.TotalCount:F2}");
         }
         public void PeriodLog() {
-            if (TotalCount % 10 == 0) {
-                Debug.WriteLine($"Cache hit rate {100.0 * HitCount / TotalCount:F2}");
+            if (this.TotalCount % 10 == 0) {
+                Debug.WriteLine($"Cache hit rate {100.0 * this.HitCount / this.TotalCount:F2}");
             }
         }
     }
@@ -31,21 +31,21 @@ public partial class IconService {
         public long CancelCount { get; private set; }
         public long TotalCount => CompleteCount + CancelCount;
         public LoadLog() {
-            CompleteCount = 0;
-            CancelCount = 0;
+            this.CompleteCount = 0;
+            this.CancelCount = 0;
         }
         public void Complete() {
-            CompleteCount++;
+            this.CompleteCount++;
         }
         public void Cancel() {
-            CancelCount++;
+            this.CancelCount++;
         }
         public void Log() {
-            Debug.WriteLine($"Load complete rate {100.0 * CompleteCount / TotalCount:F2}");
+            Debug.WriteLine($"Load complete rate {100.0 * this.CompleteCount / this.TotalCount:F2}");
         }
         public void PeriodLog() {
             if (TotalCount % 10 == 0) {
-                Debug.WriteLine($"Load complete rate {100.0 * CompleteCount / TotalCount:F2}");
+                Debug.WriteLine($"Load complete rate {100.0 * this.CompleteCount / this.TotalCount:F2}");
             }
         }
     }

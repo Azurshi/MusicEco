@@ -2,7 +2,6 @@
 using MusicEco.Core.Types;
 using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
-using MusicEco.ViewModels.Pages;
 
 namespace MusicEco.ViewModels.Overlays;
 

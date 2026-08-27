@@ -9,7 +9,6 @@ namespace MusicEco.Generators;
 public sealed class SourceGenerator: IIncrementalGenerator {
     private const string GeneratedNameSpace = "MusicEco.SourceGeneration";
     private const string GeneratedFiledName = "GeneratedAttributes.g.cs";
-    private const string LineSeparator = "\r\n";
     private static readonly System.Text.Encoding Encoding = System.Text.Encoding.UTF8;
     public void Initialize(IncrementalGeneratorInitializationContext context) {
         List<ISourceGen> generators = [
@@ -24,7 +23,7 @@ public sealed class SourceGenerator: IIncrementalGenerator {
             namespace {GeneratedNameSpace};
             """;
         foreach (var generator in generators) {
-            fileSource += LineSeparator + generator.AttributeClassDefinition;
+            fileSource += Utility.LineSeparator + generator.AttributeClassDefinition;
         }
         context.RegisterPostInitializationOutput(context => {
             context.AddSource(GeneratedFiledName, SourceText.From(fileSource, Encoding));
@@ -88,7 +87,7 @@ public sealed class SourceGenerator: IIncrementalGenerator {
                     }
                 }
             }
-            var totalHeader = string.Join(LineSeparator, headers.ToImmutableHashSet().OrderBy(v => v));
+            var totalHeader = string.Join(Utility.LineSeparator, headers.ToImmutableHashSet().OrderBy(v => v));
             string source;
             string typeAccess = Utility.GetAccessibility(classType.DeclaredAccessibility);
             if (contents.Count == 0) {
@@ -99,7 +98,7 @@ public sealed class SourceGenerator: IIncrementalGenerator {
                     {{totalHeader}}
                     namespace {{classType.ContainingNamespace}};
                     {{typeAccess}} partial class {{className}} {
-                    {{string.Join(LineSeparator, contents)}}
+                    {{string.Join(Utility.LineSeparator, contents)}}
                     }
                     """;
             }
@@ -107,7 +106,7 @@ public sealed class SourceGenerator: IIncrementalGenerator {
                 source = $$"""
                     namespace {{classType.ContainingNamespace}};
                     {{typeAccess}} partial class {{className}} {
-                    {{string.Join(LineSeparator, contents)}}
+                    {{string.Join(Utility.LineSeparator, contents)}}
                     }
                     """;
             }

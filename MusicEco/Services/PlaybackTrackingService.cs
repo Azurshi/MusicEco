@@ -1,23 +1,19 @@
 ﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
 using MusicEco.Core.Types;
-using System.Buffers.Text;
+using MusicEco.SourceGeneration;
 using System.Diagnostics;
 using System.Text;
 
 namespace MusicEco.Services;
 
-internal class PlaybackTrackingService: IPlaybackTrackingService {
+internal partial class PlaybackTrackingService: IPlaybackTrackingService {
     private readonly IAppSetting _setting;
     private readonly IPlayEventService _eventService;
-    private Hash256? RecordHash {
-        get => this._setting.Get<Hash256?>(null, $"{nameof(PlaybackTrackingService)}.RecordHash");
-        set => this._setting.Set(value, $"{nameof(PlaybackTrackingService)}.RecordHash");
-    }
-    private DateTime? RecordTime {
-        get => this._setting.Get<DateTime?>(null, $"{nameof(PlaybackTrackingService)}.RecordTime");
-        set => this._setting.Set(value, $"{nameof(PlaybackTrackingService)}.RecordTime");
-    }
+    [AppSettingProperty(null, IsObservableObject = false)]
+    private partial Hash256? RecordHash { get; set; }
+    [AppSettingProperty(null, IsObservableObject = false)]
+    private partial DateTime? RecordTime { get; set; }
     public PlaybackTrackingService(IAppSetting appSetting, IPlayEventService playEventService) {
         this._setting = appSetting;
         this._eventService = playEventService;

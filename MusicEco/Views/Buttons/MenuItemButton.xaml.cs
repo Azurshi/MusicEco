@@ -22,20 +22,15 @@ public partial class MenuItemButton: ContentView, IMenuItemButton {
     [BindedProperty]
     public partial string Text { get; set; }
     public static readonly BindableProperty TextProperty
-        = Utility.Create<string>(ThisType, string.Empty,
-            propertyChanged: (b, _, v) => {
-                var This = (MenuItemButton)b;
-                var text = (string)v;
-                This.InnerLabel.Text = text;
-            });
+        = Utility.Create<string>(ThisType, string.Empty);
     public event EventHandler? Tapped;
     public MenuItemButton() {
         InitializeComponent();
     }
 
     private void TapGestureRecognizer_Tapped(object? sender, TappedEventArgs e) {
-        Tapped?.Invoke(this, e);
-        Command?.Execute(this.BindingContext);
+        this.Tapped?.Invoke(this, e);
+        this.Command?.Execute(this.BindingContext);
     }
 
     private void PointerGestureRecognizer_PointerEntered(object? sender, PointerEventArgs e) {

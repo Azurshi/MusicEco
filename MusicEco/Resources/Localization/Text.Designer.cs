@@ -907,11 +907,38 @@ namespace MusicEco.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Landscape.
+        /// </summary>
+        public static string Setting_Interface_Orientation_Landscape {
+            get {
+                return ResourceManager.GetString("Setting_Interface_Orientation_Landscape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Portrait.
+        /// </summary>
+        public static string Setting_Interface_Orientation_Portrait {
+            get {
+                return ResourceManager.GetString("Setting_Interface_Orientation_Portrait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UI scale.
         /// </summary>
         public static string Setting_Interface_Scale {
             get {
                 return ResourceManager.GetString("Setting_Interface_Scale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} %.
+        /// </summary>
+        public static string Setting_Interface_Scale_Template {
+            get {
+                return ResourceManager.GetString("Setting_Interface_Scale_Template", resourceCulture);
             }
         }
         

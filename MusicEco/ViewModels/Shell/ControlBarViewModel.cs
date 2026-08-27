@@ -3,7 +3,6 @@ using MusicEco.Core.Types;
 using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Pages;
 using MusicEco.Views.Overlays;
-using System.Diagnostics;
 using System.Numerics;
 
 namespace MusicEco.ViewModels.Shell;

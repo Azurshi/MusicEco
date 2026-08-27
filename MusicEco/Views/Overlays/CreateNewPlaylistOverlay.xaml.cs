@@ -10,12 +10,12 @@ public partial class CreateNewPlaylistOverlay: ContentView, IOverlay {
 
     }
     private void Close() {
-        Closed?.Invoke(this, EventArgs.Empty);
+        this.Closed?.Invoke(this, EventArgs.Empty);
     }
     public event EventHandler? Closed;
 
     public void ForceClose() {
-        Closed?.Invoke(this, EventArgs.Empty);
+        this.Closed?.Invoke(this, EventArgs.Empty);
     }
     // Keep the Action alive in the View while ViewModel hold only a weak reference
     private readonly Action _closeAction;

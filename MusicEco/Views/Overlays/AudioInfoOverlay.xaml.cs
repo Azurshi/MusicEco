@@ -39,6 +39,6 @@ public partial class AudioInfoOverlay: ContentView, IOverlay {
     }
 
     private void MenuItemButton_Tapped(object sender, EventArgs e) {
-        Closed?.Invoke(this, EventArgs.Empty);
+        this.Closed?.Invoke(this, EventArgs.Empty);
     }
 }

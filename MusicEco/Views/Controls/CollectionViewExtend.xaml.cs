@@ -1,6 +1,5 @@
 namespace MusicEco.Views.Controls;
 
-using MusicEco.Core;
 using MusicEco.SourceGeneration;
 using MusicEco.ViewModels;
 using MusicEco.Views.Items;

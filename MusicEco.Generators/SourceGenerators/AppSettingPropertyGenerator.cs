@@ -8,14 +8,12 @@ internal class AppSettingPropertyGenerator: IPropertyBasedGenerator {
         [global::System.AttributeUsage(global::System.AttributeTargets.Property)]
         public sealed class AppSettingPropertyAttribute: global::System.Attribute {
             public object? DefaultValue;
-            public string? StorageFieldName;
+            public string? StorageFieldName { get; set; }
+            public bool IsObservableObject { get; set; }
             public AppSettingPropertyAttribute(object? defaultValue) {
                 this.DefaultValue = defaultValue;
                 this.StorageFieldName = null;
-            }
-            public AppSettingPropertyAttribute(object? defaultValue, string storageFieldName) {
-                this.DefaultValue = defaultValue;
-                this.StorageFieldName = storageFieldName;
+                this.IsObservableObject = true;
             }
         }
         """;
@@ -24,25 +22,41 @@ internal class AppSettingPropertyGenerator: IPropertyBasedGenerator {
         string access = Utility.GetAccessibility(property.DeclaredAccessibility);
         var attribute = context.Attributes[0];
         var defaultValue = ToSource(attribute.ConstructorArguments[0]);
-        string storageFieldName;
-        if (attribute.ConstructorArguments.Length > 1) {
-            storageFieldName = (string)attribute.ConstructorArguments[1].Value!;
-        }
-        else {
+        if (!(Utility.TryGetAttibuteNamedArguments(context, "StorageFieldName", out string? storageFieldName)
+            && storageFieldName != null)) {
             storageFieldName = $"{classSymbol.Name}.{property.Name}";
         }
+        if (!(Utility.TryGetAttibuteNamedArguments(context, "IsObservableObject", out bool? isObservableObject)
+            && isObservableObject != null)) {
+            isObservableObject = true;
+        }
         string header = "";
-        string content = $$"""
-                {{access}} partial {{propertyType}} {{property.Name}} {
-                    get => this._setting.Get<{{propertyType}}>({{defaultValue}}, "{{storageFieldName}}");
-                    set {
-                        if (this.{{property.Name}} != value) {
-                            this._setting.Set(value, "{{storageFieldName}}");
-                            this.OnPropertyChanged();
+        string content;
+        if (isObservableObject.Value) {
+            content = $$"""
+                    {{access}} partial {{propertyType}} {{property.Name}} {
+                        get => this._setting.Get<{{propertyType}}>(({{propertyType}}){{defaultValue}}, "{{storageFieldName}}");
+                        set {
+                            if (this.{{property.Name}} != value) {
+                                this._setting.Set(value, "{{storageFieldName}}");
+                                this.OnPropertyChanged();
+                            }
                         }
                     }
-                }
-            """;
+                """;
+        }
+        else {
+            content = $$"""
+                    {{access}} partial {{propertyType}} {{property.Name}} {
+                        get => this._setting.Get<{{propertyType}}>(({{propertyType}}){{defaultValue}}, "{{storageFieldName}}");
+                        set {
+                            if (this.{{property.Name}} != value) {
+                                this._setting.Set(value, "{{storageFieldName}}");
+                            }
+                        }
+                    }
+                """;
+        }
         return new(header, content);
     }
 

@@ -5,7 +5,7 @@ using MusicEco.Views.Pages.Users;
 namespace MusicEco.Services;
 
 public class PageRegistry: IPageRouteRegistry {
-    private Dictionary<string, Type> _pageTypes = [];
+    private readonly Dictionary<string, Type> _pageTypes = [];
     public PageRegistry() {
         RegisterRoute<HomePage>(PageRoute.Home);
         RegisterRoute<QueuePage>(PageRoute.Queue);

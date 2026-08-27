@@ -1,7 +1,5 @@
 ﻿using MusicEco.Core.Services;
 using MusicEco.Core.Types;
-using SkiaSharp;
-using SkiaSharp.Views.Maui.Controls;
 
 namespace MusicEco.Services;
 
@@ -75,10 +73,10 @@ public partial class IconService: IIconService {
         // So this cache does not worth much
         if (this._cache.TryGet(key, out var image)) {
 #if DEBUG
-            _cacheLog.Hit();
-            _cacheLog.PeriodLog();
-            _loadLog.Complete();
-            _loadLog.PeriodLog();
+            this._cacheLog.Hit();
+            this._cacheLog.PeriodLog();
+            this._loadLog.Complete();
+            this._loadLog.PeriodLog();
 #endif
             return image;
         }
@@ -118,7 +116,7 @@ public partial class IconService: IIconService {
                 return buffer;
             }
         }
-        throw new Exception("Race condition");
+        throw new Exception("Race exception");
     }
     private async Task<IDecodeResult?> Loader(IconKey key, List<CancelSource> sources) {
         if (this._bufferLimiter == null || this._cache == null) {
@@ -127,8 +125,8 @@ public partial class IconService: IIconService {
         await this._bufferLimiter.WaitAsync();
         if (IsCancelled(sources)) {
 #if DEBUG
-            _loadLog.Cancel();
-            _loadLog.PeriodLog();
+            this._loadLog.Cancel();
+            this._loadLog.PeriodLog();
 #endif
             this._bufferLimiter.Release();
             return null;
@@ -144,10 +142,10 @@ public partial class IconService: IIconService {
             var decodeResult = await this._iconDecoder.DecodeAsync(data);
             this._cache.Add(key, decodeResult);
 #if DEBUG
-            _cacheLog.Miss();
-            _cacheLog.PeriodLog();
-            _loadLog.Complete();
-            _loadLog.PeriodLog();
+            this._cacheLog.Miss();
+            this._cacheLog.PeriodLog();
+            this._loadLog.Complete();
+            this._loadLog.PeriodLog();
 #endif
             return decodeResult;
         }
@@ -163,5 +161,6 @@ public partial class IconService: IIconService {
 
     public void Dispose() {
         this._cache?.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

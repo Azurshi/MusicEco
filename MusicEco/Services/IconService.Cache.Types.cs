@@ -1,5 +1,4 @@
 ﻿using MusicEco.Core.Services;
-using MusicEco.Core.Types;
 using MusicEco.Image.Decoder;
 using SkiaSharp;
 using System.Diagnostics;

@@ -5,11 +5,11 @@ namespace MusicEco.Views.Buttons;
 
 public static class DynamicColors {
     public static void Initialize(IServiceProvider provider) {
-        var styleService = provider.GetRequiredService<IStyleService>();
-        styleService.ThemeChanged += StyleService_ThemeChanged;
+        var styleService = provider.GetRequiredService<IAppInterfaceService>();
+        styleService.ThemeChanged += OnThemeChanged;
         ReloadTheme();
     }
-    private static void StyleService_ThemeChanged(object? sender, EventArgs e) {
+    private static void OnThemeChanged(object? sender, ThemeItem e) {
         ReloadTheme();
     }
     private static void ReloadTheme() {

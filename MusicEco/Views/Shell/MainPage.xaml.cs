@@ -29,18 +29,18 @@ public partial class MainPage: ContentPage {
         await AppLifeCycle.AfterUILoaded();
     }
 
-    private void InteraceService_OrientationChanged(object? sender, DisplayOrientation e) {
+    private void InteraceService_OrientationChanged(object? sender, OrientationItem e) {
         this.LoadLayout();
     }
 
-    private void InteraceService_ScaleChanged(object? sender, float e) {
+    private void InteraceService_ScaleChanged(object? sender, ScaleItem e) {
         if (this.Container == null) {
             throw new Exception("Not initialized");
         }
         this.LoadGridDefinition(this.Container);
     }
     private void LoadGridDefinition(Grid container) {
-        DisplayOrientation orientation = this._interfaceService.GetOrientation();
+        DisplayOrientation orientation = this._interfaceService.GetOrientation().Orientation;
         double navigationBarSize = Utility.GetResource<double>("NavigationBarSize");
         double progressBarSize = Utility.GetResource<double>("ProgressBarSize");
         double spacing = 4;
@@ -66,7 +66,7 @@ public partial class MainPage: ContentPage {
         }
     }
     private void LoadLayout() {
-        DisplayOrientation orientation = this._interfaceService.GetOrientation();
+        DisplayOrientation orientation = this._interfaceService.GetOrientation().Orientation;
         ContentView? oldViewHost = null;
         if (this.Content is Grid oldContainer) {
             oldViewHost = oldContainer.FindByName<ContentView>("ViewHost");

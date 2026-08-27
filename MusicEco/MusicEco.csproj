@@ -88,6 +88,18 @@
 	<!--End-->
 
 	<ItemGroup>
+		<None Include="Services\AppInterfaceService.Orientation.cs">
+		  <DependentUpon>AppInterfaceService.cs</DependentUpon>
+		</None>
+		<None Include="Services\AppInterfaceService.Scale.cs">
+		  <DependentUpon>AppInterfaceService.cs</DependentUpon>
+		</None>
+		<None Include="Services\AppInterfaceService.Theme.cs">
+		  <DependentUpon>AppInterfaceService.cs</DependentUpon>
+		</None>
+		<None Include="Services\AppLifeCycle.Loop.cs">
+		  <DependentUpon>AppLifeCycle.cs</DependentUpon>
+		</None>
 		<None Include="Services\IconService.Cache.cs">
 			<DependentUpon>IconService.cs</DependentUpon>
 		</None>
@@ -143,7 +155,7 @@
 		<MauiXaml Update="Resources\Themes\DarkTheme.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Resources\Themes\DefaultSize.xaml">
+		<MauiXaml Update="Resources\Styles\DefaultSize.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Resources\Themes\DefaultTheme.xaml">
@@ -155,7 +167,7 @@
 		<MauiXaml Update="Resources\Themes\LightTheme.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Resources\Themes\WidgetSize.xaml">
+		<MauiXaml Update="Resources\Styles\WidgetSize.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\Buttons\ControlButton.xaml">

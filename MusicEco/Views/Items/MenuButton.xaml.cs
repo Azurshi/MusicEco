@@ -3,7 +3,6 @@ using MusicEco.SourceGeneration;
 using MusicEco.Views.Buttons;
 using MusicEco.Views.Shell;
 using System.Numerics;
-using System.Windows.Input;
 
 namespace MusicEco.Views.Items;
 
@@ -21,16 +20,16 @@ public partial class MenuButton: ContentView {
     private void OnTapped(object sender, TappedEventArgs e) {
         var position = e.GetPosition(AppLifeCycle.Provider.GetRequiredService<AppOverlay>());
         if (position != null) {
-            HandleExecute(new(((float)position.Value.X), ((float)position.Value.Y)));
+            HandleExecute(new((float)position.Value.X, (float)position.Value.Y));
         }
     }
 
     private void OnPointerEntered(object sender, PointerEventArgs e) {
-        BackgroundColor = DynamicColors.ButtonHighlightColor;
+        this.BackgroundColor = DynamicColors.ButtonHighlightColor;
     }
 
     private void OnPointerExited(object sender, PointerEventArgs e) {
-        BackgroundColor = Colors.Transparent;
+        this.BackgroundColor = Colors.Transparent;
     }
     private void HandleExecute(Vector2 position) {
         if (this.MenuTemplate != null) {

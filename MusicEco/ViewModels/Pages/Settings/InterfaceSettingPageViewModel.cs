@@ -1,112 +1,90 @@
 ﻿using MusicEco.Core.Services;
-using MusicEco.Core.Types;
-using MusicEco.SourceGeneration;
-using MusicEco.ViewModels.Items;
 
 namespace MusicEco.ViewModels.Pages.Settings;
 
 public partial class InterfaceSettingPageViewModel: BasePageViewModel {
     public override PageRoute Route => PageRoute.InterfaceSetting;
-    private readonly IStyleService _styleService;
     private readonly IAppInterfaceService _interfaceService;
-    public IReadOnlyList<ThemeViewModel> Themes { get; private set; }
-    public string CurrentThemeName { get; private set; }
-    private readonly Dictionary<string, float> _scaleMap = new() {
-        ["50%"] = 0.5f,
-        ["75%"] = 0.75f,
-        ["100%"] = 1f,
-        ["125%"] = 1.25f,
-        ["150%"] = 1.5f,
-        ["175%"] = 1.75f,
-        ["200%"] = 2f
-    };
-    public List<string> Scales => _scaleMap.Keys.ToList();
-    public string SelectedScale {
+    public IReadOnlyList<ThemeItemViewModel> Themes { get; init; }
+    public ThemeItemViewModel CurrentTheme {
         get {
-            var currentScale = this._interfaceService.GetScale();
-            string currentValue = string.Empty;
-            foreach(var (key, value) in this._scaleMap) {
-                if (value == currentScale) {
-                    currentValue = key;
+            var current = this._interfaceService.GetTheme();
+            foreach(var theme in this.Themes) {
+                if (theme.ThemeId == current.Id) {
+                    return theme;
                 }
             }
-            return currentValue;
+            throw new KeyNotFoundException();
         }
         set {
-            float scaleValue = this._scaleMap[value];
-            this._interfaceService.SetScale(scaleValue);
+            if (value != null) {
+                this._interfaceService.SetTheme(value.ThemeId);
+                OnPropertyChanged();
+            }
+        }
+    }
+    public IReadOnlyList<ScaleItemViewModel> Scales { get; init; }
+    public ScaleItemViewModel CurrentScale {
+        get {
+            var current = this._interfaceService.GetScale();
+            foreach(var scale in this.Scales) {
+                if (scale.Value == current.Value) {
+                    return scale;
+                }
+            }
+            throw new KeyNotFoundException();
+        }
+        set {
+            this._interfaceService.SetScale(value.Value);
             OnPropertyChanged();
         }
     }
-    private readonly Dictionary<string, DisplayOrientation> _orientationMap = new() {
-        ["Landscape"] = DisplayOrientation.Landscape,
-        ["Portrait"] = DisplayOrientation.Portrait
-    };
-    public List<string> Orientations => _orientationMap.Keys.ToList();
-    public string SelectedOrientation {
+    public IReadOnlyList<OrientationItemViewModel> Orientations { get; init; }
+    public OrientationItemViewModel CurrentOrientation {
         get {
-            var currentOrientation = this._interfaceService.GetOrientation();
-            string currentValue = string.Empty;
-            foreach(var (key, value) in this._orientationMap) {
-                if (value == currentOrientation) {
-                    currentValue = key;
+            var current = this._interfaceService.GetOrientation();
+            foreach(var orientation in this.Orientations) {
+                if (orientation.Value == current.Orientation) {
+                    return orientation;
                 }
             }
-            return currentValue;
+            throw new KeyNotFoundException();
         }
         set {
-            DisplayOrientation orientationValue = this._orientationMap[value];
-            this._interfaceService.SetOrientation(orientationValue);
+            this._interfaceService.SetOrientation(value.Value);
             OnPropertyChanged();
         }
     }
-    public InterfaceSettingPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IStyleService styleService, IAppInterfaceService appInterfaceService) : base(localizationService, appSetting) {
-        this._styleService = styleService;
+    public InterfaceSettingPageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IAppInterfaceService appInterfaceService) : base(localizationService, appSetting) {
         this._interfaceService = appInterfaceService;
         this.Themes = [];
-        this.CurrentThemeName = string.Empty;
+
+        // Initialize
+        this.Themes = this._interfaceService.GetThemes()
+            .Select(item => new ThemeItemViewModel(item.Id, item.Text))
+            .ToList();
+        this.Scales = this._interfaceService.GetScales()
+            .Select(item => new ScaleItemViewModel(item.Value, item.Text))
+            .ToList();
+        this.Orientations = this._interfaceService.GetOrientations()
+            .Select(item => new OrientationItemViewModel(item.Orientation, item.Text))
+            .ToList();
     }
     public override async Task Refresh() {
-        var selectedThemeId = this._styleService.GetCurrentThemeId();
-        this.CurrentThemeName = this._styleService.GetCurrentThemeName();
-        OnPropertyChanged(nameof(CurrentThemeName));
-        var themes = this._styleService.GetAll();
-        List<ThemeViewModel> items = [];
-        foreach(var theme in themes) {
-            ThemeViewModel item = new(theme.Id, theme.Name) {
-                Selected = selectedThemeId == theme.Id
-            };
-            items.Add(item);
-        }
-        this.Themes = items;
-        OnPropertyChanged(nameof(Themes));
     }
     public override async Task OnNavigateTo(NavigateEventArgs e) {
         await base.OnNavigateTo(e);
         await Refresh();
         FireNavigated(e);
-        this._styleService.ThemeChanged += this.StyleService_ThemeChanged;
+        this._interfaceService.ThemeChanged += this.OnThemeChanged;
     }
 
-    private async void StyleService_ThemeChanged(object? sender, EventArgs e) {
-        await Refresh();
+    private async void OnThemeChanged(object? sender, ThemeItem e) {
+        OnPropertyChanged(nameof(CurrentTheme));
     }
 
     public override async Task OnNavigatedFrom(NavigateEventArgs e) {
         await base.OnNavigatedFrom(e);
-        this._styleService.ThemeChanged -= this.StyleService_ThemeChanged;
-    }
-    private bool CanSelectTheme(ThemeViewModel? vm) {
-        if (vm == null) {
-            return false;
-        }
-        return this._styleService.GetCurrentThemeId() != vm.ThemeId;
-    }
-    [RelayCommand(CanExecute = nameof(CanSelectTheme))]
-    private void SelectTheme(ThemeViewModel? vm) {
-        if (vm == null) {
-            return;
-        }
-        this._styleService.SetTheme(vm.ThemeId);
+        this._interfaceService.ThemeChanged -= this.OnThemeChanged;
     }
 }

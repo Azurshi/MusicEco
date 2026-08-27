@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace MusicEco.ViewModels;
+﻿namespace MusicEco.ViewModels;
 
 public sealed class DelayedDispatcherEx {
     private readonly TimeSpan _delay;

@@ -2,6 +2,8 @@
 using MusicEco.Core.Services;
 using System.Diagnostics;
 using MusicEco.Core.Types;
+using MusicEco.SourceGeneration;
+
 
 #if ANDROID
 using MusicEco.Platform;
@@ -22,10 +24,8 @@ internal partial class PlayerController: IPlayerController {
     private bool _endFlag;
     private PlayState _lastState = PlayState.Stopped;
     private bool _disposed = false;
-    private float Volume {
-        get => this._setting.Get(0.5f);
-        set => this._setting.Set(value);
-    }
+    [AppSettingProperty(0.5f, StorageFieldName = nameof(Volume), IsObservableObject = false)]
+    private partial float Volume { get; set; }
     public bool IsRepeating {
         get => _setting.Get(false);
         set {
@@ -35,10 +35,8 @@ internal partial class PlayerController: IPlayerController {
     }
     private Hash256 _playing;
     private bool _hasAudio = false;
-    private bool IsFirstAudio {
-        get => this._setting.Get(true, $"{nameof(PlayerController)}.IsFirstAudio");
-        set => this._setting.Set(value, $"{nameof(PlayerController)}.IsFirstAudio");
-    }
+    [AppSettingProperty(true, IsObservableObject = false)]
+    private partial bool IsFirstAudio { get; set; }
     public PlayerController(IAppSetting setting, IPlaybackTrackingService playbackTrackingService) {
         this._setting = setting;
         this._trackingService = playbackTrackingService;
@@ -54,10 +52,8 @@ internal partial class PlayerController: IPlayerController {
         TimeSpan epsilon = TimeSpan.FromMilliseconds(1);
         while (!this._disposed) {
             sw.Restart();
-            var position = this._player.GetPosition();
-            var duration = this._player.GetDuration();
-            PositionChanged?.Invoke(this, new(position, duration));
             var playerState = this._player.GetState();
+            this.UpdatePosition(playerState != AudioPlayer.PlaybackState.Playing);
             if (this._pauseFlags && playerState == AudioPlayer.PlaybackState.Playing) {
                 this._pauseFlags = false;
                 this.Pause();
@@ -66,7 +62,11 @@ internal partial class PlayerController: IPlayerController {
             if (playerState == AudioPlayer.PlaybackState.End) {
                 if (!this._endFlag) {
                     this._endFlag = true;
-                    await this._trackingService.Record(position, duration);
+                    var currentPosition = this._currentPosition;
+                    if (this._currentPosition > this._lastDuration) {
+                        currentPosition = this._lastDuration;
+                    }
+                    await this._trackingService.Record(currentPosition, this._lastDuration);
                     AudioEnded?.Invoke(this, EventArgs.Empty);
                     if (this.IsRepeating) {
                         this._player.Seek(TimeSpan.Zero);
@@ -92,6 +92,58 @@ internal partial class PlayerController: IPlayerController {
             //Debug.WriteLine($"Log {waitTime.TotalMilliseconds} ms");
             await Task.Delay(waitTime);
         }
+    }
+    private TimeSpan _lastDuration = TimeSpan.Zero;
+    private TimeSpan _currentPosition = TimeSpan.Zero;
+    private TimeSpan _referencePosition = TimeSpan.Zero;
+    private TimeSpan _rawPosition = TimeSpan.Zero;
+    private long _referenceTimeStamp = 0;
+    private readonly double _correction = 0.01;
+    private void ResetPositionClock(TimeSpan position) {
+        this._rawPosition = position;
+        this._currentPosition = position;
+        this._referencePosition = position;
+        this._referenceTimeStamp = Stopwatch.GetTimestamp();
+    }
+    private TimeSpan GetEstimatedPosition() {
+        var elapsed = Stopwatch.GetElapsedTime(this._referenceTimeStamp);
+        return this._referencePosition + elapsed;
+    }
+    /// <summary>
+    /// Monotonic guard and smoothing
+    /// </summary>
+    /// <param name="isPaused"></param>
+    private void UpdatePosition(bool isPaused) {
+        var duration = this._player.GetDuration();
+        var position = this._player.GetPosition();
+        if (this._lastDuration != duration) {
+            this.ResetPositionClock(TimeSpan.Zero);
+            this._lastDuration = duration;
+        }
+        else if (this._rawPosition != position) {
+            // Monotonic guard
+            if (Math.Abs(this._rawPosition.Ticks - position.Ticks) >= Config.MinAudioSeek.Ticks) {
+                this.ResetPositionClock(position);
+            }
+            else if (position > this._rawPosition) {
+                this._rawPosition = position;
+            }
+        }
+
+        var actual = this._rawPosition;
+        var estimated = this.GetEstimatedPosition();
+        var error = actual - estimated;
+        if (isPaused) {
+            this._referencePosition += error;
+        }
+        else {
+            this._referencePosition += error * this._correction;
+        }
+        this._currentPosition = this.GetEstimatedPosition();
+        if (this._currentPosition > this._lastDuration) {
+            this._currentPosition = this._lastDuration;
+        }
+        PositionChanged?.Invoke(this, new(this._currentPosition, this._lastDuration));
     }
     public void Dispose() {
         if (this._disposed) {

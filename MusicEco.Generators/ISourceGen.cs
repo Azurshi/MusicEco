@@ -58,6 +58,7 @@ internal class GeneratorSpec {
 }
 
 internal static class Utility {
+    public const string LineSeparator = "\r\n";
     public static string GetAccessibility(Accessibility accessibility) {
         return accessibility switch {
             Accessibility.Public => "public",
@@ -68,6 +69,17 @@ internal static class Utility {
             Accessibility.ProtectedOrInternal => "protected private",
             _ => ""
         };
+    }
+    public static bool TryGetAttibuteNamedArguments<T>(GeneratorAttributeSyntaxContext context, string attributeName, out T? value) {
+        foreach (var argument in context.Attributes[0].NamedArguments) {
+            if (argument.Key == attributeName
+                && argument.Value.Value is T outputValue) {
+                value = outputValue;
+                return true;
+            }
+        }
+        value = default;
+        return false;
     }
     public static string ToDisplayString(ITypeSymbol symbol) {
         return symbol.ToDisplayString(

@@ -1,12 +1,6 @@
 ﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
-using MusicEco.Core.Types;
 using MusicEco.SourceGeneration;
-using MusicEco.ViewModels.Pages;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace MusicEco.ViewModels.Overlays;
 
 public partial class CreateNewPlaylistOverlayViewModel: BaseOverlayViewModel {

@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <local:ItemFrame xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:MusicEco.Views.Items"
-             x:Class="MusicEco.Views.Items.DragItemFrame">
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:local="clr-namespace:MusicEco.Views.Items"
+                 x:Name="Root"
+                 x:Class="MusicEco.Views.Items.DragItemFrame">
     <local:ItemFrame.GestureRecognizers>
         <DragGestureRecognizer x:Name="DragGR"
-                               DragStarting="DragGR_DragStarting" />
+                               DragStarting="DragGR_DragStarting"
+                               DragStartingCommand="{Binding DragStartCommand, Source={Reference Root}}" />
         <DropGestureRecognizer x:Name="DropGR"
-                               Drop="DropGR_Drop" 
+                               Drop="DropGR_Drop"
                                DragOver="DropGR_DragOver"
-                               DragLeave="DropGR_DragLeave"/>
+                               DragLeave="DropGR_DragLeave"
+                               DragOverCommand="{Binding DragOverCommand, Source={Reference Root}}"
+                               DropCommand="{Binding DropCommand, Source={Reference Root}}" />
     </local:ItemFrame.GestureRecognizers>
 </local:ItemFrame>

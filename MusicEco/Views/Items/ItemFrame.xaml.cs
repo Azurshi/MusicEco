@@ -20,13 +20,9 @@ public partial class ItemFrame: Border {
     [BindedProperty]
     public partial View? ItemContent { get; set; }
     public static readonly BindableProperty ItemContentProperty
-        = Utility.Create<View?>(ThisType,
-            propertyChanged: (b, _, v) => {
-                var This = (ItemFrame)b;
-                var value = (View?)v;
-                This.Container.Content = value;
-            });
-    public event EventHandler? Tapped;
+        = Utility.Create<View?>(ThisType);
+    [BindedProperty]
+    public partial bool IsSelected { get; set; }
     public static readonly BindableProperty IsSelectedProperty
         = Utility.Create<bool>(ThisType, false,
             propertyChanged: (b, _, v) => {
@@ -40,25 +36,23 @@ public partial class ItemFrame: Border {
                 }
                 This.Stroke = new SolidColorBrush(color);
             });
-    public bool IsSelected {
-        get => (bool)GetValue(IsSelectedProperty);
-        set => SetValue(IsSelectedProperty, value);
-    }
+    public event EventHandler? Tapped;
+
     public ItemFrame() {
         InitializeComponent();
     }
 
     private void TapGestureRecognizer_Tapped(object? sender, TappedEventArgs e) {
-        Tapped?.Invoke(this, e);
-        Command?.Execute(this.BindingContext);
+        this.Tapped?.Invoke(this, e);
+        this.Command?.Execute(this.BindingContext);
     }
 
     private void PointerGestureRecognizer_PointerEntered(object? sender, PointerEventArgs e) {
-        Container.BackgroundColor = DynamicColors.HighLightColor;
+        this.Container.BackgroundColor = DynamicColors.HighLightColor;
     }
 
     private void PointerGestureRecognizer_PointerExited(object? sender, PointerEventArgs e) {
-        Container.BackgroundColor = Colors.Transparent;
+        this.Container.BackgroundColor = Colors.Transparent;
     }
     protected override void OnHandlerChanged() {
         base.OnHandlerChanged();

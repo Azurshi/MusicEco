@@ -1,5 +1,4 @@
 ﻿using MusicEco.Core.Services;
-using MusicEco.Core.Types;
 using MusicEco.SourceGeneration;
 using MusicEco.ViewModels.Items;
 

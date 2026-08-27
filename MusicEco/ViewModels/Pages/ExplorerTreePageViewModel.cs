@@ -14,6 +14,8 @@ public partial class ExplorerTreePageViewModel: BasePageViewModel {
     private const string PathSeparator
 #if WINDOWS
         = "\\";
+#elif ANDROID
+        = "/";
 #else
         = "";
 #endif
