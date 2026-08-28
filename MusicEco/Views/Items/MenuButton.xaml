@@ -4,6 +4,7 @@
              x:Class="MusicEco.Views.Items.MenuButton">
     <Label Text=":"
            Style="{StaticResource OneLine}"
+           FontSize="{DynamicResource LabelFontSize}"
            HorizontalTextAlignment="Center"
            HorizontalOptions="Fill"
            VerticalOptions="Fill">

@@ -33,20 +33,19 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <control:ManagedSKIcon Grid.Row="0"
-                             FileHash="{Binding FileHash}" 
-                             Option="Large"/>
+                               FileHash="{Binding FileHash}"
+                               Option="Large" 
+                               Margin="{DynamicResource PageContentMargin}"/>
         <Rectangle Grid.Row="1"
-                   Fill="Gray"
-                   HeightRequest="2" />
-        <Label Grid.Row="2"
-               HeightRequest="{DynamicResource HeaderSize}"
-               Text="{Binding DisplayTitle}" 
-               Style="{StaticResource CenterTitle}"/>
+                   Style="{StaticResource HorizontalSeparator}" />
+        <Grid Grid.Row="2"
+              Style="{StaticResource HeaderGrid}">
+            <control:TextLabel  x:Name="TextElement"
+                               Style="{StaticResource CenterTitleTextLabel}"
+                               Text="{Binding DisplayTitle}"/>
+        </Grid>
         <item:MenuButton Grid.RowSpan="3"
-                         VerticalOptions="Start"
-                         HorizontalOptions="End"
-                         WidthRequest="{DynamicResource IconButtonItemSize}"
-                         HeightRequest="{DynamicResource IconButtonItemSize}"
+                         Style="{StaticResource GridMenuButton}"
                          MenuTemplate="{StaticResource MenuTemplate}" />
     </Grid>
 </ContentView>

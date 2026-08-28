@@ -862,11 +862,20 @@ namespace MusicEco.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Backup.
+        ///   Looks up a localized string similar to Backup &amp; restore.
         /// </summary>
         public static string Setting_Backup {
             get {
                 return ResourceManager.GetString("Setting_Backup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete all data.
+        /// </summary>
+        public static string Setting_Backup_DeleteData {
+            get {
+                return ResourceManager.GetString("Setting_Backup_DeleteData", resourceCulture);
             }
         }
         

@@ -33,17 +33,18 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <ImageButton Grid.Column="0"
-                                         Source="play_on.png"
-                                         IsVisible="{Binding Selected}"
-                                         WidthRequest="{DynamicResource TextItemSize}" />
+                            <control:SKImageButton Grid.Column="0"
+                                                   ResourcePath="play_raw.png"
+                                                   IsVisible="{Binding Selected}"
+                                                   DisplayMode="SingleTint"
+                                                   TintColor="{DynamicResource ActiveTintColor}"
+                                                   WidthRequest="{DynamicResource TextItemSize}" />
                             <control:TextLabel Grid.Column="1"
                                                Text="{Binding Name}"
                                                IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.Column="2"
-                                             WidthRequest="{DynamicResource TextItemSize}"
+                                             Style="{StaticResource ListMenuButton}"
                                              MenuTemplate="{StaticResource MenuTemplate}" />
-
                         </Grid>
                     </item:ItemFrame.ItemContent>
                 </item:ItemFrame>
@@ -53,26 +54,24 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
-              ColumnSpacing="8"
-              HeightRequest="{DynamicResource HeaderSize}"
-              BackgroundColor="{DynamicResource HeaderColor}">
+              Style="{StaticResource HeaderGrid}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Entry Grid.Column="0"
                    Placeholder="{Binding L[Queue_Search]}"
                    Text="{Binding Query.Name, Mode=TwoWay}" />
-            <button:CollectionDisplayModeButtonSimple Grid.Column="1"
-                                                      IsVisible="False"
-                                                      DisplayMode="{Binding DisplayMode}" />
         </Grid>
-        <control:CollectionViewExtend Grid.Row="1"
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <control:CollectionViewExtend Grid.Row="2"
                                       DisplayMode="SimpleList"
-                                      ItemsSource="{Binding Items.Items}">
+                                      ItemsSource="{Binding Items.Items}"
+                                      Margin="{DynamicResource PageContentMargin}">
             <control:CollectionViewExtend.ItemPresets>
                 <control:CollectionViewPreset DisplayMode="SimpleList"
                                               ItemTemplate="{StaticResource QueueItemTemplate}"

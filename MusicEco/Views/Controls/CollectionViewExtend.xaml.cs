@@ -33,13 +33,15 @@ public partial class CollectionViewExtend: ContentView {
                 This.ChangeDisplayMode(value);
             });
     public IList<CollectionViewPreset> ItemPresets { get; init; }
+    public bool AllowDrop { get; set; }
     // true when DisplayMode use {Binding}, else when use direct value.
     // To handle UI initialization, after init, it is true in both cases.
     private bool _isBindedDisplayMode = true;
     private readonly DelayedDispatcher _dispatcher;
     public CollectionViewExtend() {
-        InitializeComponent();
+        this.AllowDrop = false;
         this.ItemPresets = [];
+        InitializeComponent();
         CollectionView content = new();
         this.Content = content;
         this._dispatcher = new(this.Dispatcher, MusicEco.Config.ProgrammingDelay);
@@ -76,6 +78,11 @@ public partial class CollectionViewExtend: ContentView {
         // No need to unsubcribe
         view.Scrolled += this.View_Scrolled;
         view.PropertyChanged += this.View_PropertyChanged;
+        if (this.AllowDrop) {
+            var dropGestureRecognizer = new DropGestureRecognizer();
+            dropGestureRecognizer.Drop += this.DropGestureRecognizer_Drop;
+            view.GestureRecognizers.Add(dropGestureRecognizer);
+        }
         if (selectedPreset.ItemsLayout != null) {
             view.ItemsLayout = selectedPreset.ItemsLayout;
         }
@@ -86,6 +93,7 @@ public partial class CollectionViewExtend: ContentView {
         this.Content = view;
     }
     private INotifyCollectionChanged? _currentObservableCollection;
+    private IEnumerable? _enumerable;
     private int _firstVisbleindex = 0;
     private int _lastVisibleIndex = 20; // Tempory const value
     private void View_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {
@@ -93,9 +101,13 @@ public partial class CollectionViewExtend: ContentView {
             if (sender is CollectionView collectionView) {
                 this._currentObservableCollection?.CollectionChanged -= this.ObservableCollection_CollectionChanged;
                 this._currentObservableCollection = null;
+                this._enumerable = null;
                 if (collectionView.ItemsSource is INotifyCollectionChanged observableCollection) {
                     observableCollection.CollectionChanged += this.ObservableCollection_CollectionChanged;
                     this._currentObservableCollection = observableCollection;
+                }
+                if (collectionView.ItemsSource is IEnumerable enumerable) {
+                    this._enumerable = enumerable;
                 }
                 this.RefreshState();
             }
@@ -155,9 +167,9 @@ public partial class CollectionViewExtend: ContentView {
     }
     private readonly Action _cachedAction;
     private void RefreshStateInner() {
-        if (this._currentObservableCollection != null
-            && this._firstVisbleindex != this._lastVisibleIndex
-            && this._currentObservableCollection is IEnumerable enumerable) {
+        if (this._firstVisbleindex != this._lastVisibleIndex
+            && this._enumerable != null) {
+            var enumerable = this._enumerable;
             int first = this._firstVisbleindex;
             int last = this._lastVisibleIndex;
             int index = 0;
@@ -181,10 +193,9 @@ public partial class CollectionViewExtend: ContentView {
             Debug.WriteLine($"Visible: {visibleCount} || Hidden: {index - visibleCount} || {first} -> {last}");
         }
     }
-
-    public void ResetStateOnDrop() {
-        if (this.Content is CollectionView collection) {
-            var items = collection.GetVisualTreeDescendants().OfType<DragItemFrame>();
+    private void DropGestureRecognizer_Drop(object? sender, DropEventArgs e) {
+        if (sender is CollectionView collectionView) {
+            var items = collectionView.GetVisualTreeDescendants().OfType<DragItemFrame>();
             foreach (var item in items) {
                 item.Reset();
             }

@@ -44,7 +44,7 @@
                                                Text="{Binding DisplayTitle}"
                                                IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.Column="2"
-                                             WidthRequest="{DynamicResource IconButtonItemSize}"
+                                             Style="{StaticResource ListMenuButton}"
                                              MenuTemplate="{StaticResource MenuTemplate}" />
                         </Grid>
                     </item:ItemFrame.ItemContent>
@@ -53,6 +53,7 @@
             <DataTemplate x:Key="GridAudioItemTemplate"
                           x:DataType="itemVM:AudioEntryViewModel">
                 <item:ItemFrame HeightRequest="{DynamicResource GridItemSize}"
+                                BorderColor="{DynamicResource BorderColor}"
                                 Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type pageVM:AlbumDetailPageViewModel}}}">
                     <item:ItemFrame.ItemContent>
                         <Grid RowSpacing="0">
@@ -66,10 +67,10 @@
                             <control:TextLabel Grid.Row="1"
                                                Text="{Binding DisplayTitle}"
                                                HeightRequest="{DynamicResource TextOnlySize}"
-                                               IsAnimationEnabled="{Binding IsVisibleInViewport}" />
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}" 
+                                               HorizontalOptions="Center"/>
                             <item:MenuButton Grid.RowSpan="2"
-                                             WidthRequest="{DynamicResource IconButtonItemSize}"
-                                             HeightRequest="{DynamicResource IconButtonItemSize}"
+                                             Style="{StaticResource GridMenuButton}"
                                              MenuTemplate="{StaticResource MenuTemplate}" />
                         </Grid>
                     </item:ItemFrame.ItemContent>
@@ -80,29 +81,30 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
-              ColumnSpacing="8"
-              HeightRequest="{DynamicResource HeaderSize}"
-              BackgroundColor="{DynamicResource HeaderColor}">
+              Style="{StaticResource HeaderGrid}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <button:NavigationBackwardButton Grid.Column="0"
-                                             WidthRequest="{DynamicResource HeaderSize}"
-                                             Margin="4, 8" />
-            <Label Grid.Column="1"
-                   Text="{Binding Query.AlbumName}"
-                   Style="{StaticResource OneLine}" />
+                                             WidthRequest="{DynamicResource HeaderSize}"/>
+            <control:TextLabel Grid.Column="1"
+                               Style="{StaticResource TitleTextLabel}"
+                               Text="{Binding Query.AlbumName}" />
             <button:CollectionDisplayModeButtonSimple Grid.Column="2"
                                                       DisplayMode="{Binding DisplayMode, Mode=TwoWay}" />
         </Grid>
-        <control:CollectionViewExtend Grid.Row="1"
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <control:CollectionViewExtend Grid.Row="2"
                                       DisplayMode="{Binding DisplayMode}"
-                                      ItemsSource="{Binding Items.Items}">
+                                      ItemsSource="{Binding Items.Items}"
+                                      Margin="{DynamicResource PageContentMargin}">
             <control:CollectionViewExtend.ItemPresets>
                 <control:CollectionViewPreset DisplayMode="SimpleList"
                                               ItemTemplate="{StaticResource ListAudioItemTemplate}"

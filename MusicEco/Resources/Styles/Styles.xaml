@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <!--MAUI default control styles-->
     <Style TargetType="Label">
         <Setter Property="TextColor"
                 Value="{DynamicResource TextColor}" />
@@ -19,7 +20,25 @@
         <Setter Property="FontSize"
                 Value="{DynamicResource LabelFontSize}" />
         <Setter Property="PlaceholderColor"
-                Value="{DynamicResource TextColor}" />
+                Value="{DynamicResource PlaceholderColor}" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" 
+                                    Value="Transparent"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Focused">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor"
+                                    Value="{DynamicResource HighlightColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
     <Style TargetType="Picker">
         <Setter Property="TextColor"
@@ -29,6 +48,10 @@
     </Style>
     <Style TargetType="Label"
            x:Key="OneLine">
+        <Setter Property="TextColor"
+                Value="{DynamicResource TextColor}" />
+        <Setter Property="FontSize"
+                Value="{DynamicResource LabelFontSize}" />
         <Setter Property="MaxLines"
                 Value="1" />
         <Setter Property="VerticalOptions"
@@ -40,6 +63,10 @@
     </Style>
     <Style TargetType="Label"
            x:Key="MultiLines">
+        <Setter Property="TextColor"
+                Value="{DynamicResource TextColor}" />
+        <Setter Property="FontSize"
+                Value="{DynamicResource LabelFontSize}" />
         <Setter Property="MaxLines"
                 Value="1000" />
         <Setter Property="VerticalOptions"
@@ -54,31 +81,35 @@
            BasedOn="{StaticResource OneLine}">
         <Setter Property="FontSize"
                 Value="{DynamicResource TitleFontSize}" />
-        <Setter Property="FontAttributes"
-                Value="Bold" />
+        <Setter Property="Margin"
+                Value="{DynamicResource TextMargin}" />
     </Style>
     <Style TargetType="Label"
            x:Key="CenterTitle"
-           BasedOn="{StaticResource OneLine}">
-        <Setter Property="FontSize"
-                Value="{DynamicResource TitleFontSize}" />
-        <Setter Property="FontAttributes"
-                Value="Bold" />
+           BasedOn="{StaticResource Title}">
         <Setter Property="HorizontalTextAlignment"
                 Value="Center" />
     </Style>
+    <!--Button have flicker when hover, noticeable on light theme-->
     <Style TargetType="Button"
            x:Key="Highlight">
-        <Setter Property="HorizontalOptions"
-                Value="Center" />
-        <Setter Property="Margin"
-                Value="8, 0" />
+        <Setter Property="TextColor"
+                Value="{DynamicResource TextColor}" />
+        <Setter Property="FontSize"
+                Value="{DynamicResource LabelFontSize}" />
         <Setter Property="BackgroundColor"
-                Value="Transparent" />
+                Value="{DynamicResource ButtonBackgroundColor}" />
+        <Setter Property="BorderColor"
+                Value="{DynamicResource BorderColor}" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup Name="CommonStates">
-                    <VisualState Name="Normal" />
+                    <VisualState Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor"
+                                    Value="{DynamicResource ButtonBackgroundColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
                     <VisualState Name="PointerOver">
                         <VisualState.Setters>
                             <Setter Property="BackgroundColor"
@@ -89,8 +120,33 @@
             </VisualStateGroupList>
         </Setter>
     </Style>
-    <Style TargetType="Rectangle">
+    <Style TargetType="Rectangle"
+           x:Key="Separator">
         <Setter Property="StrokeThickness"
                 Value="0" />
+        <Setter Property="Fill"
+                Value="{DynamicResource SeparatorColor}" />
     </Style>
-</ResourceDictionary>
+    <Style TargetType="Rectangle"
+           x:Key="HorizontalSeparator"
+           BasedOn="{StaticResource Separator}">
+        <Setter Property="HeightRequest"
+                Value="{DynamicResource SeparatorSize}" />
+    </Style>
+    <Style TargetType="Rectangle"
+           x:Key="VerticalSeparator"
+           BasedOn="{StaticResource Separator}">
+        <Setter Property="WidthRequest"
+                Value="{DynamicResource SeparatorSize}" />
+    </Style>
+    <!--It's for Grid, and style is Header, so that's why HeaderGrid, not GridHeader-->
+    <Style TargetType="Grid"
+           x:Key="HeaderGrid">
+        <Setter Property="ColumnSpacing"
+                Value="{DynamicResource HeaderSpacing}" />
+        <Setter Property="HeightRequest"
+                Value="{DynamicResource HeaderSize}" />
+        <Setter Property="BackgroundColor"
+                Value="{DynamicResource HeaderColor}" />
+    </Style>
+</ResourceDictionary>   

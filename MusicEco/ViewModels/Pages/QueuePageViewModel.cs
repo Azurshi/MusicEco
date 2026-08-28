@@ -19,8 +19,6 @@ public partial class QueuePageViewModel: BasePageViewModel {
     public QueuePageQuery Query { get; init; }
     private readonly DelayedDispatcherEx _queryDispatcher;
     public ManagedCollection<QueueItemViewModel> Items { get; init; }
-    [AppSettingProperty(CollectionDisplayMode.SimpleList)]
-    public partial CollectionDisplayMode DisplayMode { get; set; }
     public QueuePageViewModel(ILocalizationService localizationService, IAppSetting appSetting, IQueueService queueService) : base(localizationService, appSetting) {
         this.Query = new();
         this._queryDispatcher = new(Config.UserInputDelay);

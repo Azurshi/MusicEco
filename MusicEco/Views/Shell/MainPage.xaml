@@ -22,16 +22,18 @@
                                  Grid.ColumnSpan="3"
                                  x:Name="ControlBarHost"
                                  BackgroundColor="{DynamicResource MenuColor}" />
+
+
+                    <Rectangle Grid.Row="0"
+                               Grid.Column="1"
+                               Style="{StaticResource Separator}" />
+                    <Rectangle Grid.Row="1"
+                               Grid.ColumnSpan="3"
+                               Style="{StaticResource Separator}" />
                     <ContentView Grid.RowSpan="3"
                                  Grid.ColumnSpan="3"
                                  x:Name="OverlayHost" />
 
-                    <Rectangle Grid.Row="0"
-                               Grid.Column="1"
-                               Fill="{DynamicResource SeparatorColor}" />
-                    <Rectangle Grid.Row="1"
-                               Grid.ColumnSpan="3"
-                               Fill="{DynamicResource SeparatorColor}" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="PortraitLayout">
@@ -41,7 +43,7 @@
                                  x:Name="ViewHost"
                                  BackgroundColor="{DynamicResource PageColor}" />
                     <Rectangle Grid.Row="1"
-                               Fill="{DynamicResource SeparatorColor}" />
+                               Style="{StaticResource Separator}"/>
                     <ContentView Grid.Row="2"
                                  x:Name="ControlBarHost"
                                  BackgroundColor="{DynamicResource MenuColor}" />

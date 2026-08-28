@@ -43,16 +43,17 @@
                     </ScrollView>
                     <Grid Grid.Row="1"
                           ColumnDefinitions="*, *">
-                        <button:NavigationBackwardButton Grid.Column="0" />
-                        <button:NavigationForwardButton Grid.Column="1" />
+                        <button:NavigationBackwardButton Grid.Column="0" 
+                                                         Padding="{DynamicResource FrameMargin}"/>
+                        <button:NavigationForwardButton Grid.Column="1" 
+                                                        Padding="{DynamicResource FrameMargin}"/>
                     </Grid>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="PortraitLayout">
                 <Grid ColumnDefinitions="Auto, *, *, *, *, *, *, *, Auto"
                       ColumnSpacing="2">
-                    <button:NavigationBackwardButton Grid.Column="0"
-                                                     Padding="0"/>
+                    <button:NavigationBackwardButton Grid.Column="0"/>
                     <button:NavigationButton Grid.Column="1"
                                              ResourcePath="play_raw.png"
                                              PageRoute="{x:Static top:PageRoute.Home}" />
@@ -74,8 +75,7 @@
                     <button:NavigationButton Grid.Column="7"
                                              ResourcePath="setting_raw.png"
                                              PageRoute="{x:Static top:PageRoute.Setting}" />
-                    <button:NavigationForwardButton Grid.Column="8"
-                                                    Padding="0"/>
+                    <button:NavigationForwardButton Grid.Column="8" />
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>

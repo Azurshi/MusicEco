@@ -44,7 +44,7 @@
                                                Text="{Binding DisplayTitle}"
                                                IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.Column="2"
-                                             WidthRequest="{DynamicResource IconButtonItemSize}"
+                                             Style="{StaticResource ListMenuButton}"
                                              MenuTemplate="{StaticResource MenuTemplate}" />
                         </Grid>
                     </item:ItemFrame.ItemContent>
@@ -55,23 +55,25 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
-              ColumnSpacing="8"
-              HeightRequest="{DynamicResource HeaderSize}"
-              BackgroundColor="{DynamicResource HeaderColor}">
+              Style="{StaticResource HeaderGrid}">
             <Entry HeightRequest="{DynamicResource HeaderSize}"
-                   Text="{Binding SearchText, Mode=TwoWay}"
+                   Text="{Binding Query.SearchText, Mode=TwoWay}"
                    Placeholder="{Binding L[Search_Title]}" />
         </Grid>
-        <control:CollectionViewExtend Grid.Row="1"
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <control:CollectionViewExtend Grid.Row="2"
                                       DisplayMode="SimpleList"
-                                      ItemsSource="{Binding Items.Items}">
+                                      ItemsSource="{Binding Items.Items}"
+                                      Margin="{DynamicResource PageContentMargin}">
             <control:CollectionViewExtend.ItemPresets>
                 <control:CollectionViewPreset DisplayMode="SimpleList"
                                               ItemTemplate="{StaticResource AudioItemTemplate}"
-                                              ItemsLayout="{StaticResource LinearItemsLayout}" />
+                                              ItemsLayout="{StaticResource LinearLayout}" />
             </control:CollectionViewExtend.ItemPresets>
         </control:CollectionViewExtend>
     </Grid>

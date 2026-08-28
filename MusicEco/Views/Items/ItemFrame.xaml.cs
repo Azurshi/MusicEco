@@ -36,6 +36,10 @@ public partial class ItemFrame: Border {
                 }
                 This.Stroke = new SolidColorBrush(color);
             });
+    [BindedProperty]
+    public partial Color BorderColor { get; set; }
+    public static readonly BindableProperty BorderColorProperty
+        = Utility.Create<Color>(ThisType, Colors.Transparent);
     public event EventHandler? Tapped;
 
     public ItemFrame() {
@@ -66,7 +70,7 @@ public partial class ItemFrame: Border {
             this.Opacity = 1;
         }
         else {
-            this.Opacity = 0.4;
+            this.Opacity = 0.5;
         }
     }
 }

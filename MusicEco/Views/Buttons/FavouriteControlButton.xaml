@@ -5,7 +5,7 @@
              xmlns:top="clr-namespace:MusicEco"
              x:Name="Root"
              x:Class="MusicEco.Views.Buttons.FavouriteControlButton"
-             ActiveTintColor="{DynamicResource ActiveTintColor}"
+             ActiveTintColor="{DynamicResource FavouriteTintColor}"
              InactiveTintColor="{DynamicResource InactiveTintColor}">
     <ContentView.GestureRecognizers>
         <TapGestureRecognizer Tapped="OnTapped" />

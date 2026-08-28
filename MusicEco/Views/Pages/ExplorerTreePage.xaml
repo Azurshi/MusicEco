@@ -49,7 +49,7 @@
                                                Text="{Binding Name}"
                                                IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.Column="1"
-                                             WidthRequest="{DynamicResource IconButtonItemSize}"
+                                             Style="{StaticResource ListMenuButton}"
                                              MenuTemplate="{StaticResource FolderMenuTemplate}" />
                         </Grid>
                     </item:ItemFrame.ItemContent>
@@ -74,7 +74,7 @@
                                                Text="{Binding Name}"
                                                IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.Column="2"
-                                             WidthRequest="{DynamicResource IconButtonItemSize}"
+                                             Style="{StaticResource ListMenuButton}"
                                              MenuTemplate="{StaticResource FileMenuTemplate}" />
                         </Grid>
                     </item:ItemFrame.ItemContent>
@@ -88,11 +88,11 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
-              HeightRequest="{DynamicResource HeaderSize}"
-              BackgroundColor="{DynamicResource HeaderColor}">
+              Style="{StaticResource HeaderGrid}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -104,45 +104,32 @@
             <button:NavigationBackwardButton Grid.Column="0" />
             <control:SKImageButton Grid.Column="1"
                                    ResourcePath="refresh_raw.png"
-                                   DisplayMode="DualTint"
-                                   ActiveTintColor="{DynamicResource ActiveTintColor}"
-                                   InactiveTintColor="{DynamicResource InactiveTintColor}"
                                    Command="{Binding RefreshCommand}"
-                                   WidthRequest="{DynamicResource HeaderSize}"
-                                   HeightRequest="{DynamicResource HeaderSize}"/>
+                                   Style="{StaticResource SquareHeaderDualTintSKImageButton}"/>
             <control:SKImageButton Grid.Column="2"
                                    ResourcePath="next_raw.png"
                                    Rotation="180"
-                                   DisplayMode="DualTint"
-                                   ActiveTintColor="{DynamicResource ActiveTintColor}"
-                                   InactiveTintColor="{DynamicResource InactiveTintColor}"
                                    Command="{Binding PreviousFolderCommand}"
-                                   WidthRequest="{DynamicResource HeaderSize}"
-                                   HeightRequest="{DynamicResource HeaderSize}" />
+                                   Style="{StaticResource SquareHeaderDualTintSKImageButton}" />
             <control:SKImageButton Grid.Column="3"
                                    ResourcePath="next_raw.png"
-                                   DisplayMode="DualTint"
-                                   ActiveTintColor="{DynamicResource ActiveTintColor}"
-                                   InactiveTintColor="{DynamicResource InactiveTintColor}"
                                    Command="{Binding NextFolderCommand}"
-                                   WidthRequest="{DynamicResource HeaderSize}"
-                                   HeightRequest="{DynamicResource HeaderSize}" />
+                                   Style="{StaticResource SquareHeaderDualTintSKImageButton}"/>
             <control:SKImageButton Grid.Column="4"
                                    ResourcePath="next_raw.png"
-                                   Rotation="-90"
-                                   DisplayMode="DualTint"
-                                   ActiveTintColor="{DynamicResource ActiveTintColor}"
-                                   InactiveTintColor="{DynamicResource InactiveTintColor}"
                                    Command="{Binding UpFolderCommand}"
-                                   WidthRequest="{DynamicResource HeaderSize}"
-                                   HeightRequest="{DynamicResource HeaderSize}" />
+                                   Style="{StaticResource SquareHeaderDualTintSKImageButton}"
+                                   Rotation="-90" />
             <control:TextLabel Grid.Column="5"
                                Text="{Binding FolderPath}"
-                               IsAnimationEnabled="True" />
+                               Style="{StaticResource TitleTextLabel}" />
         </Grid>
-        <control:CollectionViewExtend Grid.Row="1"
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <control:CollectionViewExtend Grid.Row="2"
                                       DisplayMode="SimpleList"
-                                      ItemsSource="{Binding Items.Items}">
+                                      ItemsSource="{Binding Items.Items}"
+                                      Margin="{DynamicResource PageContentMargin}">
             <control:CollectionViewExtend.ItemPresets>
                 <control:CollectionViewPreset DisplayMode="SimpleList"
                                               ItemTemplate="{StaticResource ListItemSelector}"

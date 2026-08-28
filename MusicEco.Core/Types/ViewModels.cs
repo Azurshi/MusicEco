@@ -75,6 +75,8 @@ public partial class SyncCommand: ICommand {
         return this._enabled;
     }
     public void Execute(object? parameter) {
+        if (!this.CanExecute(parameter))
+            return;
         this._execute();
     }
     protected void InnerNotifyCanExecute() {

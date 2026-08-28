@@ -19,6 +19,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -28,17 +29,19 @@
                Text="{Binding L[User_Playlist_Info]}"
                Style="{DynamicResource CenterTitle}"
                BackgroundColor="{DynamicResource HeaderColor}" />
-        <Label Grid.Row="1"
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <Label Grid.Row="2"
                HeightRequest="{DynamicResource TextItemSize}"
                Text="{Binding L[User_Playlist_Name]}"
                FontAttributes="Bold"
                Style="{StaticResource OneLine}" />
-        <Entry Grid.Row="1"
+        <Entry Grid.Row="2"
                Grid.Column="1"
                Text="{Binding PlaylistName, Mode=TwoWay}"
                HeightRequest="{DynamicResource TextItemSize}"
                Placeholder="{Binding L[User_Playlist_Placeholder]}" />
-        <Grid Grid.Row="3"
+        <Grid Grid.Row="4"
               Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -48,10 +51,12 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="1"
                     Text="{Binding L[Common_Confirm]}"
-                    Command="{Binding CreateCommand}" />
+                    Command="{Binding CreateCommand}" 
+                    Style="{StaticResource Highlight}"/>
             <Button Grid.Column="2"
                     Text="{Binding L[Common_Cancel]}"
-                    Command="{Binding CancelCommand}" />
+                    Command="{Binding CancelCommand}" 
+                    Style="{StaticResource Highlight}"/>
         </Grid>
     </Grid>
 </ContentView>

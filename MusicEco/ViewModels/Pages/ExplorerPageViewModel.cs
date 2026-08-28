@@ -36,7 +36,6 @@ public partial class ExplorerPageViewModel: BasePageViewModel {
     private void Scanner_RunningChanged(object? sender, bool e) {
         ScanCommand.NotifyCanExecute();
         AddNewPathCommand.NotifyCanExecute();
-        DeleteAllDataCommand.NotifyCanExecute();
         OnPropertyChanged(nameof(IsLocked));
         OnPropertyChanged(nameof(IsUnLocked));
         RefreshState();
@@ -136,10 +135,5 @@ public partial class ExplorerPageViewModel: BasePageViewModel {
             view.Initialize(message);
 #endif
         }
-    }
-    [RelayCommand(CanExecute = nameof(IsNotScanning))]
-    private async Task DeleteAllData() {
-        await this._setting.DeleteAllData();
-        Application.Current?.Quit();
     }
 }

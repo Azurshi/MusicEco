@@ -49,15 +49,15 @@ public partial class AppOverlay: ContentView, IOverlayService {
             }
             else {
                 // Seem like we need to ignore this since two overlay can exists now or because of race condition
-                throw new InvalidOperationException();
+                //throw new InvalidOperationException();
             }
         }
-        else if (this._fixedPosition != null) {
+        if (this._fixedPosition != null) {
             if (this.FixedContainer.Content is IOverlay overlay) {
                 overlay.ForceClose();
             }
             else {
-                throw new InvalidOperationException();
+                //throw new InvalidOperationException();
             }
         }
     }

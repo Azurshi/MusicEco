@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:control="clr-namespace:MusicEco.Views.Controls"
+                    xmlns:item="clr-namespace:MusicEco.Views.Items">
+    <!--Custom control styles-->
+    <!--TextLabel-->
+    <Style TargetType="control:TextLabel">
+        <Setter Property="FontSize"
+                Value="{DynamicResource LabelFontSize}" />
+    </Style>
+    <Style TargetType="control:TextLabel"
+           x:Key="TextLabel">
+        <Setter Property="FontSize"
+                Value="{DynamicResource LabelFontSize}" />
+        <Setter Property="IsAnimationEnabled"
+                Value="True" />
+    </Style>
+    <Style TargetType="control:TextLabel"
+           x:Key="CenterTextLabel"
+           BasedOn="{StaticResource TextLabel}">
+        <Setter Property="HorizontalOptions"
+                Value="Center" />
+    </Style>
+    <Style TargetType="control:TextLabel"
+           x:Key="TitleTextLabel">
+        <Setter Property="FontSize"
+                Value="{DynamicResource TitleFontSize}" />
+        <Setter Property="IsAnimationEnabled"
+                Value="True" />
+    </Style>
+    <Style TargetType="control:TextLabel"
+           x:Key="CenterTitleTextLabel"
+           BasedOn="{StaticResource TitleTextLabel}">
+        <Setter Property="HorizontalOptions"
+                Value="Center" />
+    </Style>
+    <!--MenuButton-->
+    <Style TargetType="item:MenuButton"
+           x:Key="ListMenuButton">
+        <Setter Property="WidthRequest"
+                Value="{DynamicResource ItemButtonSize}" />
+    </Style>
+    <Style TargetType="item:MenuButton"
+           x:Key="GridMenuButton">
+        <Setter Property="WidthRequest"
+                Value="{DynamicResource ItemButtonSize}" />
+        <Setter Property="HeightRequest"
+                Value="{DynamicResource ItemButtonSize}" />
+        <Setter Property="VerticalOptions"
+                Value="Start" />
+        <Setter Property="HorizontalOptions"
+                Value="End" />
+    </Style>
+    <!--SKImageButton-->
+    <Style TargetType="control:SKImageButton"
+           x:Key="DualTintSKImageButton">
+        <Setter Property="DisplayMode"
+                Value="DualTint" />
+        <Setter Property="ActiveTintColor"
+                Value="{DynamicResource ActiveTintColor}" />
+        <Setter Property="InactiveTintColor"
+                Value="{DynamicResource InactiveTintColor}" />
+    </Style>
+    <Style TargetType="control:SKImageButton"
+           x:Key="SquareHeaderDualTintSKImageButton"
+           BasedOn="{StaticResource DualTintSKImageButton}">
+        <Setter Property="WidthRequest"
+                Value="{DynamicResource HeaderSize}" />
+        <Setter Property="HeightRequest"
+                Value="{DynamicResource HeaderSize}" />
+    </Style>
+</ResourceDictionary>

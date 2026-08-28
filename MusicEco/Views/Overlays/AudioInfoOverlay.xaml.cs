@@ -27,8 +27,9 @@ public partial class AudioInfoOverlay: ContentView, IOverlay {
     }
 
     private void Grid_SizeChanged(object sender, EventArgs e) {
+        // Maybe this only work with small number of items
         if (sender is Grid grid) {
-            double labelWidth = grid.Width - Utility.GetResource<double>("IconItemSize") - Utility.GetResource<double>("IconButtonItemSize");
+            double labelWidth = grid.Width - Utility.GetResource<double>("IconItemSize") - Utility.GetResource<double>("ItemButtonSize");
             foreach(var children in grid.WalkChildren()) {
                 if (children is TextLabel label) {
                     //Debug.WriteLine($"Assign: {labelWidth}");

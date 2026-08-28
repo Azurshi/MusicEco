@@ -5,15 +5,17 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Label Grid.Row="0"
                HeightRequest="{DynamicResource HeaderSize}"
                Text="Dev output" 
-               Style="{StaticResource OneLine}"
-               HorizontalTextAlignment="Center"
+               Style="{StaticResource CenterTitle}"
                BackgroundColor="{DynamicResource HeaderColor}" />
-        <Label Grid.Row="1"
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <Label Grid.Row="2"
                x:Name="OutputLabel" />
     </Grid>
 </ContentView>

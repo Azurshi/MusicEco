@@ -24,6 +24,9 @@ public partial class App: Application {
             if (value is double doubleValue) {
                 this.SizeDictionary[key] = (double)scale * doubleValue;
             }
+            else if (value is int intValue) {
+                this.SizeDictionary[key] = (int)(scale * intValue);
+            }
             else if (value is Thickness thickness) {
                 this.SizeDictionary[key] = new Thickness(thickness.Left * scale, thickness.Top * scale, thickness.Right * scale, thickness.Bottom * scale);
             }

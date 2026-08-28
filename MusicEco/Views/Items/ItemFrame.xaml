@@ -3,6 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
         x:Name="Root"
         x:Class="MusicEco.Views.Items.ItemFrame">
+    <Border.Stroke>
+        <SolidColorBrush Color="{Binding BorderColor, Source={Reference Root}}" />
+    </Border.Stroke>
     <Border.StrokeShape>
         <RoundRectangle StrokeThickness="1"
                         CornerRadius="4" />

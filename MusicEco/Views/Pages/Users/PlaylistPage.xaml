@@ -35,6 +35,7 @@
                                                Text="{Binding Name}"
                                                IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.Column="1"
+                                             Style="{StaticResource ListMenuButton}"
                                              WidthRequest="{DynamicResource TextItemSize}" />
                         </Grid>
                     </item:ItemFrame.ItemContent>
@@ -45,12 +46,11 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
-              ColumnSpacing="8"
-              HeightRequest="{DynamicResource HeaderSize}"
-              BackgroundColor="{DynamicResource HeaderColor}">
+              Style="{StaticResource HeaderGrid}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -59,15 +59,19 @@
             <button:NavigationBackwardButton Grid.Column="0"
                                              WidthRequest="{DynamicResource HeaderSize}" />
             <Entry Grid.Column="1"
-                   Placeholder="{Binding L[User_Playlist_Placeholder]}"
+                   Placeholder="{Binding L[User_Playlist_Name]}"
                    Text="{Binding Query.Name, Mode=TwoWay}" />
             <Button Grid.Column="2"
+                    Style="{StaticResource Highlight}"
                     Text="{Binding L[User_Playlist_Create]}"
                     Command="{Static commands:MenuCommands.CreateNewPlaylistCommand}" />
         </Grid>
-        <control:CollectionViewExtend Grid.Row="1"
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <control:CollectionViewExtend Grid.Row="2"
                                       DisplayMode="{Binding DisplayMode}"
-                                      ItemsSource="{Binding Items.Items}">
+                                      ItemsSource="{Binding Items.Items}"
+                                      Margin="{DynamicResource PageContentMargin}">
             <control:CollectionViewExtend.ItemPresets>
                 <control:CollectionViewPreset DisplayMode="SimpleList"
                                               ItemTemplate="{StaticResource ListItemViewModel}"

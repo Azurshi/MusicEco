@@ -30,6 +30,7 @@ public class PageRegistry: IPageRouteRegistry {
         // Settings
         RegisterRoute<LanguageSettingPage>(PageRoute.LanguageSetting);
         RegisterRoute<InterfaceSettingPage>(PageRoute.InterfaceSetting);
+        RegisterRoute<BackupSettingPage>(PageRoute.BackupSetting);
     }
     private void RegisterRoute<T>(PageRoute pageRoute) where T: ContentView {
         this._pageTypes[pageRoute.Route] = typeof(T);

@@ -19,9 +19,4 @@ public partial class QueueDetailPage: ContentView {
             vm.RemoveItemCommand.Execute(button.BindingContext);
         }
     }
-    private void DropGestureRecognizer_Drop(object sender, DropEventArgs e) {
-        if (sender is CollectionViewExtend collectionView) {
-            collectionView.ResetStateOnDrop();
-        }
-    }
 }

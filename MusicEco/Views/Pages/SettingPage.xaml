@@ -12,18 +12,21 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
-              HeightRequest="{DynamicResource HeaderSize}">
+              Style="{StaticResource HeaderGrid}">
             <Label Text="{Binding L[Setting_Title]}"
-                   Style="{StaticResource OneLine}" 
-                   Margin="16, 0, 0, 0"/>
+                   Style="{StaticResource Title}" />
         </Grid>
-        <ScrollView Grid.Row="1"
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <ScrollView Grid.Row="2"
                     HorizontalScrollBarVisibility="Never"
-                    VerticalScrollBarVisibility="Default">
-            <Grid RowSpacing="8">
+                    VerticalScrollBarVisibility="Default"
+                    Margin="{DynamicResource PageContentMargin}">
+            <Grid RowSpacing="{DynamicResource ListSpacing}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -36,32 +39,41 @@
                 </Grid.RowDefinitions>
                 <Button Grid.Row="0"
                         Text="{Binding L[Setting_Language]}"
-                        HeightRequest="{DynamicResource ButtonSize}"
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}"
                         Command="{Binding SelectSettingCommand}"
                         CommandParameter="{x:Static top:PageRoute.LanguageSetting}"/>
                 <Button Grid.Row="1"
                         Text="{Binding L[Setting_Interface]}"
-                        HeightRequest="{DynamicResource ButtonSize}"
-                        Command="{Binding SelectSettingCommand}"
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}"                        Command="{Binding SelectSettingCommand}"
                         CommandParameter="{x:Static top:PageRoute.InterfaceSetting}" />
                 <Button Grid.Row="2"
-                        Text="{Binding L[Setting_Audio]}"
-                        HeightRequest="{DynamicResource ButtonSize}" />
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}"
+                        Text="{Binding L[Setting_Audio]}"/>
                 <Button Grid.Row="3"
                         Text="{Binding L[Setting_Speaker]}"
-                        HeightRequest="{DynamicResource ButtonSize}" />
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}"/>
                 <Button Grid.Row="4"
                         Text="{Binding L[Setting_Notify]}"
-                        HeightRequest="{DynamicResource ButtonSize}" />
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}" />
                 <Button Grid.Row="5"
                         Text="{Binding L[Setting_Extension]}"
-                        HeightRequest="{DynamicResource ButtonSize}" />
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}"/>
                 <Button Grid.Row="6"
                         Text="{Binding L[Setting_Advanced]}"
-                        HeightRequest="{DynamicResource ButtonSize}" />
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}" />
                 <Button Grid.Row="7"
                         Text="{Binding L[Setting_Backup]}"
-                        HeightRequest="{DynamicResource ButtonSize}" />
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}"
+                        Command="{Binding SelectSettingCommand}"
+                        CommandParameter="{x:Static top:PageRoute.BackupSetting}" />
             </Grid>
         </ScrollView>
     </Grid>

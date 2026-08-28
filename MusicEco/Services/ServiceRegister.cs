@@ -80,6 +80,8 @@ public static class ServiceRegister {
         services.AddTransient<LanguageSettingPageViewModel>();
         services.AddTransient<InterfaceSettingPage>();
         services.AddTransient<InterfaceSettingPageViewModel>();
+        services.AddTransient<BackupSettingPage>();
+        services.AddTransient<BackupSetttingPageViewModel>();
         return services;
     }
     public static IServiceCollection RegisterOverlays(this IServiceCollection services) {

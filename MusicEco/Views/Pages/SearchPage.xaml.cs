@@ -6,5 +6,6 @@ public partial class SearchPage: ContentView {
     public SearchPage(SearchPageViewModel viewModel) {
         InitializeComponent();
         this.BindingContext = viewModel;
+        viewModel.InitDispatcher(this.Dispatcher);
     }
 }

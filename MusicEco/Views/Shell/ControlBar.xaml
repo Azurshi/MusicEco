@@ -96,7 +96,8 @@
                                WidthRequest="{DynamicResource ControlBarSize}"
                                Text="{Binding PlaybackPosition}"
                                Style="{StaticResource OneLine}"
-                               HorizontalTextAlignment="Center" />
+                               HorizontalTextAlignment="Center" 
+                               Margin="{DynamicResource TextMargin}"/>
                         <Slider Grid.Column="1"
                                 HeightRequest="{DynamicResource ProgressBarSize}"
                                 Value="{Binding PlaybackRatio, Mode=TwoWay}"
@@ -108,7 +109,8 @@
                                WidthRequest="{DynamicResource ControlBarSize}"
                                Text="{Binding PlaybackDuration}"
                                Style="{StaticResource OneLine}"
-                               HorizontalTextAlignment="Center" />
+                               HorizontalTextAlignment="Center"
+                               Margin="{DynamicResource TextMargin}" />
                     </Grid>
                     <Grid Grid.Row="0"
                           ColumnDefinitions="*, *, *, *, *, *, *">

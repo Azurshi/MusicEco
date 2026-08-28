@@ -316,7 +316,7 @@
     <value>Audio</value>
   </data>
   <data name="Setting_Backup" xml:space="preserve">
-    <value>Backup</value>
+    <value>Backup &amp; restore</value>
   </data>
   <data name="Setting_Extension" xml:space="preserve">
     <value>Extension</value>
@@ -500,5 +500,8 @@
   </data>
   <data name="Setting_Interface_Theme" xml:space="preserve">
     <value>Theme</value>
+  </data>
+  <data name="Setting_Backup_DeleteData" xml:space="preserve">
+    <value>Delete all data</value>
   </data>
 </root>

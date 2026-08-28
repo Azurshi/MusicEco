@@ -41,12 +41,11 @@
                             <Button Grid.Row="0"
                                     Grid.Column="1"
                                     Grid.RowSpan="2"
-                                    WidthRequest="{DynamicResource IconButtonItemSize}"
+                                    WidthRequest="{DynamicResource ItemButtonSize}"
                                     Text="X"
                                     IsVisible="{Binding IsUnlocked}"
                                     Command="{Binding DeleteItemCommand, Source={RelativeSource AncestorType={x:Type pageVM:ExplorerPageViewModel}}}"
                                     CommandParameter="{Binding}" />
-
                         </Grid>
                     </item:ItemFrame.ItemContent>
                 </item:ItemFrame>
@@ -57,32 +56,28 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
-              ColumnSpacing="8"
-              HeightRequest="{DynamicResource HeaderSize}"
-              BackgroundColor="{DynamicResource HeaderColor}"
+              Style="{StaticResource HeaderGrid}"
               IsVisible="{Binding IsUnLocked}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
+                    Style="{StaticResource Highlight}"
                     Text="{Binding L[Explorer_Scan]}"
                     Command="{Binding ScanCommand}" />
             <Button Grid.Column="1"
+                    Style="{StaticResource Highlight}"
                     Command="{Binding AddNewPathCommand}"
                     Text="{Binding L[Explorer_AddFolder]}" />
-            <Button  Grid.Column="2"
-                     Command="{Binding DeleteAllDataCommand}"
-                     Text="Delete data" />
         </Grid>
         <Grid Grid.Row="0"
-              ColumnSpacing="8"
-              HeightRequest="{DynamicResource HeaderSize}"
-              BackgroundColor="{DynamicResource HeaderColor}"
+              Style="{StaticResource HeaderGrid}"
+              HeightRequest="-1"
               IsVisible="{Binding IsLocked}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -129,15 +124,16 @@
                    Style="{StaticResource OneLine}" />
         </Grid>
         <Grid Grid.Row="1"
-              HeightRequest="{DynamicResource HeaderSize}"
-              BackgroundColor="{DynamicResource HeaderColor}">
-            <Label Text="{Binding L[Explorer_DisplayText]}"
-                   FontSize="24"
-                   Style="{StaticResource OneLine}" />
+              Style="{StaticResource HeaderGrid}">
+            <control:TextLabel Text="{Binding L[Explorer_DisplayText]}"
+                               Style="{StaticResource TextLabel}"/>
         </Grid>
-        <control:CollectionViewExtend Grid.Row="2"
+        <Rectangle Grid.Row="2"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <control:CollectionViewExtend Grid.Row="3"
                                       DisplayMode="SimpleList"
-                                      ItemsSource="{Binding Items.Items}">
+                                      ItemsSource="{Binding Items.Items}"
+                                      Margin="{DynamicResource PageContentMargin}">
             <control:CollectionViewExtend.ItemPresets>
                 <control:CollectionViewPreset DisplayMode="SimpleList"
                                               ItemTemplate="{StaticResource ScanPathItemTemplate}"

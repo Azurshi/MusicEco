@@ -9,14 +9,14 @@
              xmlns:button="clr-namespace:MusicEco.Views.Buttons"
              x:Class="MusicEco.Views.Pages.Settings.InterfaceSettingPage"
              x:DataType="settingPageVM:InterfaceSettingPageViewModel">
-    <Grid RowSpacing="4">
+    <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
-              HeightRequest="{DynamicResource HeaderSize}"
-              BackgroundColor="{DynamicResource HeaderColor}">
+              Style="{StaticResource HeaderGrid}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -27,7 +27,11 @@
                    Text="{Binding L[Setting_Interface]}"
                    Style="{StaticResource Title}" />
         </Grid>
-        <Grid Grid.Row="1">
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <Grid Grid.Row="2"
+              RowSpacing="{DynamicResource ListSpacing}"
+              ColumnSpacing="{DynamicResource ItemsGridSpacing}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -37,31 +41,47 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Label Grid.Row="0"
                    Text="{Binding L[Setting_Interface_Theme]}"
-                   Style="{DynamicResource OneLine}" />
+                   Style="{DynamicResource OneLine}"
+                   Margin="{DynamicResource TextMargin}"/>
             <Picker Grid.Row="0"
                     Grid.Column="2"
                     ItemsSource="{Binding Themes}"
                     SelectedItem="{Binding CurrentTheme, Mode=TwoWay}"
                     Title="{Binding ThemePickerTitle}" />
-            <Label Grid.Row="1"
+            <Rectangle Grid.Row="1"
+                       Grid.ColumnSpan="3"
+                       Style="{StaticResource HorizontalSeparator}" />
+            <Label Grid.Row="2"
                    Text="{Binding L[Setting_Interface_Scale]}"
-                   Style="{DynamicResource OneLine}" />
-            <Picker Grid.Row="1"
+                   Style="{DynamicResource OneLine}"
+                   Margin="{DynamicResource TextMargin}" />
+            <Picker Grid.Row="2"
                     Grid.Column="2"
                     ItemsSource="{Binding Scales}"
                     SelectedItem="{Binding CurrentScale, Mode=TwoWay}"
                     Title="{Binding ScalePickerTitle}" />
-            <Label Grid.Row="2"
+            <Rectangle Grid.Row="3"
+                       Grid.ColumnSpan="3"
+                       Style="{StaticResource HorizontalSeparator}" />
+            <Label Grid.Row="4"
                    Text="{Binding L[Setting_Interface_Orientation]}"
-                   Style="{DynamicResource OneLine}" />
-            <Picker Grid.Row="2"
+                   Style="{DynamicResource OneLine}"
+                   Margin="{DynamicResource TextMargin}" />
+            <Picker Grid.Row="4"
                     Grid.Column="2"
                     ItemsSource="{Binding Orientations}"
                     SelectedItem="{Binding CurrentOrientation, Mode=TwoWay}"
                     Title="{Binding OrientationPickerTitle}" />
+            <Rectangle Grid.Row="5"
+                       Grid.ColumnSpan="3"
+                       Style="{StaticResource HorizontalSeparator}" />
         </Grid>
     </Grid>
 </ContentView>

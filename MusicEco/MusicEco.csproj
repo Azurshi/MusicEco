@@ -143,6 +143,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<MauiXaml Update="Resources\Styles\ControlStyles.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Resources\Styles\Shared.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -253,6 +256,9 @@
 		</MauiXaml>
 		<MauiXaml Update="Views\Pages\HomePage.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\Pages\Settings\BackupSettingPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\Pages\Settings\InterfaceSettingPage.xaml">
 			<Generator>MSBuild:Compile</Generator>

@@ -19,21 +19,20 @@
                     <item:ItemFrame.ItemContent>
                         <Label Text="{Binding LanguageName}"
                                Style="{StaticResource OneLine}"
-                               Margin="8, 0" />
+                               Margin="{DynamicResource TextMargin}"/>
                     </item:ItemFrame.ItemContent>
                 </item:ItemFrame>
             </DataTemplate>
         </ResourceDictionary>
     </ContentView.Resources>
-    <Grid RowSpacing="4">
+    <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
-              ColumnSpacing="8"
-              HeightRequest="{DynamicResource HeaderSize}"
-              BackgroundColor="{DynamicResource HeaderColor}">
+              Style="{StaticResource HeaderGrid}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -43,13 +42,15 @@
                                              WidthRequest="{DynamicResource HeaderSize}"/>
             <Label Grid.Column="1" 
                    Text="{Binding L[Language_Current]}"
-                   Style="{StaticResource OneLine}"
-                   FontAttributes="Bold"/>
+                   Style="{StaticResource Title}"/>
             <Label Grid.Column="2"
                    Text="{Binding L[Language]}"
-                   Style="{StaticResource OneLine}" />
+                   Style="{StaticResource OneLine}" 
+                   FontAttributes="Bold"/>
         </Grid>
-        <CollectionView Grid.Row="1"
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <CollectionView Grid.Row="2"
                         ItemsSource="{Binding Languages}"
                         ItemTemplate="{StaticResource ListLanguageItemTemplate}"
                         ItemsLayout="{StaticResource LinearLayout}" />

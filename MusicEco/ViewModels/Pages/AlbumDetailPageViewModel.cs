@@ -18,7 +18,6 @@ public partial class AlbumDetailPageViewModel: BasePageViewModel {
     public AlbumDetailPageQuery Query { get; init; }
     private readonly IAudioQueryService _queryService;
     private readonly IPlaybackService _playbackService;
-    public string AlbumName => this.Query.AlbumName;
     public ObservableCollectionExtend<AudioEntryViewModel> Items { get; init; }
     [AppSettingProperty(CollectionDisplayMode.SimpleList)]
     public partial CollectionDisplayMode DisplayMode { get; set; }
@@ -30,7 +29,6 @@ public partial class AlbumDetailPageViewModel: BasePageViewModel {
     }
 
     public override async Task Refresh() {
-        OnPropertyChanged(nameof(AlbumName));
         var album = await this._queryService.GetAlbum(this.Query.AlbumName);
         if (album != null) {
             List<AudioEntryViewModel> items = [];
@@ -59,7 +57,8 @@ public partial class AlbumDetailPageViewModel: BasePageViewModel {
         if (vm == null) {
             return;
         }
-        string queueName = $"Album {AlbumName}";
+        string format = this.L["Queue_Template_Album"];
+        string queueName = string.Format(format, this.Query.AlbumName.Trim());
         AudioEntry? selected = null;
         List<AudioEntry> audios = [];
         foreach(var item in this.Items.Items) {

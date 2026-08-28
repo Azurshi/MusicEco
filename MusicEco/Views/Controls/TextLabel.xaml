@@ -2,8 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MusicEco.Views.Controls.TextLabel"
-             x:Name="Root"
-             FontSize="{DynamicResource LabelFontSize}">
+             x:Name="Root" >
     <AbsoluteLayout x:Name="Viewport"
                     IsClippedToBounds="True"
                     Margin="{DynamicResource TextMargin}">
@@ -13,6 +12,7 @@
                HorizontalOptions="Start"
                LineBreakMode="NoWrap"
                MaxLines="1"
+               TextColor="{DynamicResource TextColor}"
                Text="{Binding Text, Source={Reference Root}}" 
                FontSize="{Binding FontSize, Source={Reference Root}}"
                FontAttributes="{Binding FontAttributes, Source={Reference Root}}"/>

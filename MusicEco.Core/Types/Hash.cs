@@ -65,16 +65,23 @@ public class Hash256JsonConverter: JsonConverter<Hash256> {
         if (reader.TokenType == JsonTokenType.Null) {
             return default;
         }
+        // Don't know what cause this error
+        // Sometimes it use 51 bytes which cause error
         Span<byte> buffer = stackalloc byte[44];
-        int encodedLength = reader.CopyString(buffer);
-        if (encodedLength != 44) {
-            throw new JsonException("Invalid encoded length");
+        try {
+            int encodedLength = reader.CopyString(buffer);
+            if (encodedLength != 44) {
+                throw new JsonException("Invalid encoded length");
+            }
+            OperationStatus status = Base64.DecodeFromUtf8InPlace(buffer, out int bytesWritten);
+            if (status != OperationStatus.Done || bytesWritten != 32) {
+                throw new JsonException("Invalid Base64 data");
+            }
+            return new Hash256(buffer[..32]);
         }
-        OperationStatus status = Base64.DecodeFromUtf8InPlace(buffer, out int bytesWritten);
-        if (status != OperationStatus.Done || bytesWritten != 32) {
-            throw new JsonException("Invalid Base64 data");
+        catch {
+            return new Hash256();
         }
-        return new Hash256(buffer[..32]);
     }
 
     public override void Write(Utf8JsonWriter writer, Hash256 value, JsonSerializerOptions options) {

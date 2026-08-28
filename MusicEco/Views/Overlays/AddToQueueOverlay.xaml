@@ -17,7 +17,7 @@
                                 Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type overlayVM:AddToQueueOverlayViewModel}}}">
                     <item:ItemFrame.ItemContent>
                         <control:TextLabel Text="{Binding Name}"
-                               IsAnimationEnabled="{Binding IsVisibleInViewport}"/>
+                                           IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                     </item:ItemFrame.ItemContent>
                 </item:ItemFrame>
             </DataTemplate>
@@ -26,17 +26,18 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Label Grid.Row="0"
-               HeightRequest="{DynamicResource HeaderSize}"
-               Text="{Binding L[Queue_Select]}"
-               FontAttributes="Bold"
-               FontSize="20"
-               HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center"
-               BackgroundColor="{DynamicResource HeaderColor}" />
-        <control:CollectionViewExtend Grid.Row="1"
+        <Grid Grid.Row="0"
+              Style="{StaticResource HeaderGrid}">
+            <Label Grid.Row="0"
+                   Text="{Binding L[Queue_Select]}"
+                   Style="{StaticResource CenterTitle}" />
+        </Grid>
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <control:CollectionViewExtend Grid.Row="2"
                                       DisplayMode="SimpleList"
                                       ItemsSource="{Binding Items}">
             <control:CollectionViewExtend.ItemPresets>

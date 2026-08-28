@@ -43,7 +43,7 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <button:MoveButton Grid.Column="0"
-                                               WidthRequest="{DynamicResource IconButtonItemSize}"
+                                               WidthRequest="{DynamicResource ItemButtonSize}"
                                                IsDraggable="{Binding IsDraggable}" />
                             <control:ManagedSKIcon Grid.Column="1"
                                                    WidthRequest="{DynamicResource IconItemSize}"
@@ -53,7 +53,7 @@
                                                Text="{Binding DisplayTitle}"
                                                IsAnimationEnabled="{Binding IsVisibleInViewport}" />
                             <item:MenuButton Grid.Column="3"
-                                             WidthRequest="{DynamicResource IconButtonItemSize}"
+                                             Style="{StaticResource ListMenuButton}"
                                              MenuTemplate="{StaticResource MenuTemplate}" />
                         </Grid>
                     </item:DragItemFrame.ItemContent>
@@ -64,34 +64,32 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
-              ColumnSpacing="8"
-              HeightRequest="{DynamicResource HeaderSize}"
-              BackgroundColor="{DynamicResource HeaderColor}">
+              Style="{StaticResource HeaderGrid}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <button:NavigationBackwardButton Grid.Column="0"
-                                             WidthRequest="{DynamicResource HeaderSize}"
-                                             Margin="4, 8" />
-            <Label Grid.Column="1"
-                   Text="{Binding QueueName}"
-                   Style="{StaticResource OneLine}" />
+            <button:NavigationBackwardButton Grid.Column="0" />
+            <control:TextLabel Grid.Column="1"
+                               Text="{Binding QueueName}"
+                               Style="{StaticResource TitleTextLabel}" />
         </Grid>
-        <control:CollectionViewExtend Grid.Row="1"
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <control:CollectionViewExtend Grid.Row="2"
                                       DisplayMode="SimpleList"
-                                      ItemsSource="{Binding Items.Items}">
+                                      AllowDrop="True"
+                                      ItemsSource="{Binding Items.Items}"
+                                      Margin="{DynamicResource PageContentMargin}">
             <control:CollectionViewExtend.ItemPresets>
                 <control:CollectionViewPreset DisplayMode="SimpleList"
                                               ItemTemplate="{StaticResource AudioItemTemplate}"
                                               ItemsLayout="{StaticResource LinearLayout}" />
             </control:CollectionViewExtend.ItemPresets>
-            <control:CollectionViewExtend.GestureRecognizers>
-                <DropGestureRecognizer Drop="DropGestureRecognizer_Drop" />
-            </control:CollectionViewExtend.GestureRecognizers>
         </control:CollectionViewExtend>
     </Grid>
 </ContentView>

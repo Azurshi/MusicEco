@@ -23,6 +23,7 @@ public record PageRoute(string Route) {
 
     public static readonly PageRoute LanguageSetting = new("setting/language");
     public static readonly PageRoute InterfaceSetting = new("setting/interface");
+    public static readonly PageRoute BackupSetting = new("setting/backup");
 }
 
 public class NavigateEventArgs: EventArgs {

@@ -501,4 +501,7 @@
   <data name="Setting_Interface_Theme" xml:space="preserve">
     <value>Chủ đề</value>
   </data>
+  <data name="Setting_Backup_DeleteData" xml:space="preserve">
+    <value>Xóa dữ liệu</value>
+  </data>
 </root>

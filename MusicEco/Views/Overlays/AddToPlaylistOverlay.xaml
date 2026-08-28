@@ -26,14 +26,18 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Label Grid.Row="0"
-               HeightRequest="{DynamicResource HeaderSize}"
-               Text="{Binding L[User_Playlist_Select]}"
-               Style="{StaticResource CenterTitle}"
-               BackgroundColor="{DynamicResource HeaderColor}" />
-        <control:CollectionViewExtend Grid.Row="1"
+        <Grid Grid.Row="0"
+              Style="{StaticResource HeaderGrid}">
+            <Label Grid.Row="0"
+                   Text="{Binding L[User_Playlist_Select]}"
+                   Style="{StaticResource CenterTitle}" />
+        </Grid>
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <control:CollectionViewExtend Grid.Row="2"
                                       DisplayMode="SimpleList"
                                       ItemsSource="{Binding Items}">
             <control:CollectionViewExtend.ItemPresets>

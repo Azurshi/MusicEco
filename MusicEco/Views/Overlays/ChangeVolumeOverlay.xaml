@@ -9,7 +9,7 @@
              xmlns:button="clr-namespace:MusicEco.Views.Buttons"
              x:Class="MusicEco.Views.Overlays.ChangeVolumeOverlay"
              x:DataType="overlayVM:ChangeVolumeOverlayViewModel"
-             Margin="8, 4">
+             Margin="{DynamicResource FrameMargin}">
     <Grid WidthRequest="{DynamicResource ProgressBarSize}"
           HeightRequest="{DynamicResource VolumeBarSize}">
         <Slider Minimum="0"

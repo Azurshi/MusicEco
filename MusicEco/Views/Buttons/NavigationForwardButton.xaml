@@ -8,7 +8,7 @@
              HeightRequest="{DynamicResource HeaderSize}"
              WidthRequest="{DynamicResource HeaderSize}"
              SizeRequest="{DynamicResource HeaderSize}"
-             Padding="{DynamicResource FrameMargin}">
+             Padding="0">
     <control:SKImageButton x:Name="InnerButton"
                            ResourcePath="next_raw.png"
                            DisplayMode="DualTint"
