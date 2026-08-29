@@ -46,7 +46,7 @@ public partial class AlbumPageViewModel: BasePageViewModel {
         await this._queryDispatcher.Dispatch(this.Items.Refresh);
     }
     public override async Task Refresh() {
-        var albums = await this._queryService.QueryAlbum(string.Empty);
+        var albums = await this._queryService.GetAlbums();
         List<AlbumViewModel> items = [];
         foreach (var album in albums) {
             items.Add(new(album.Name, album.Audios.Select(a => a.Hash).ToList()));

@@ -34,7 +34,7 @@ public partial class AllSongPageViewModel: BasePageViewModel {
         var entries = await this._audioService.QueryEntry(nameLike);
         List<AudioEntryViewModel> items = [];
         foreach(var entry in entries) {
-            AudioEntryViewModel item = new(entry.Hash, entry.Title);
+            AudioEntryViewModel item = new(entry.Hash, entry.DisplayTitle);
             items.Add(item);
         }
         this.Items.Update(items);

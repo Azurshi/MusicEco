@@ -27,7 +27,7 @@ public partial class FavouritePageViewModel: BasePageViewModel {
         var entries = await this._favouriteService.GetFavourites();
         List<AudioEntryViewModel> items = [];
         foreach(var entry in entries) {
-            AudioEntryViewModel item = new(entry.Hash, entry.Title);
+            AudioEntryViewModel item = new(entry.Hash, entry.DisplayTitle);
             items.Add(item);
         }
         Items.Update(items);

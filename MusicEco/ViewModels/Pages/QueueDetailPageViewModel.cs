@@ -35,7 +35,7 @@ public partial class QueueDetailPageViewModel: BasePageViewModel {
             this.QueueName = audioQueue.Name;
             OnPropertyChanged(nameof(QueueName));
             foreach (var audio in audioQueue.Audios) {
-                AudioEntryViewModel item = new(audio.Hash, audio.Title);
+                AudioEntryViewModel item = new(audio.Hash, audio.DisplayTitle);
                 items.Add(item);
             }
             var current = audioQueue.Current;

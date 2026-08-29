@@ -10,7 +10,7 @@ public partial class AudioInfoOverlayViewModel: BaseOverlayViewModel {
     private readonly IFileService _fileService;
     private AudioModel? _audio;
 
-    public string Title => Format(this._audio?.Title);
+    public string Title => Format(this._audio?.DisplayTitle);
     public string Artists => Format(this._audio?.Metadata.Artists);
     public string AlbumArtists => Format(this._audio?.Metadata.AlbumArtists);
     public string Composers => Format(this._audio?.Metadata.Composers);

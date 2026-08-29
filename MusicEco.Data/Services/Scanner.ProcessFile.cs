@@ -1,6 +1,5 @@
 ﻿using MusicEco.Core.Services;
 using MusicEco.Core.Types;
-using MusicEco.Core.Utility;
 using MusicEco.Data.Database.Entities;
 using SQLiteORM;
 using System.Diagnostics;
@@ -44,7 +43,7 @@ internal partial class Scanner {
                 while (iconLength > iconBuffer.Length) {
                     iconBuffers[tIndex] = new byte[iconBuffer.Length * 2];
                     iconBuffer = iconBuffers[tIndex];
-                    Debug.WriteLine(iconBuffer.Length);
+                    Debug.WriteLine($"Scanner: Icon exceed capacity, allocate new buffer: {iconBuffer.Length}");
                 }
                 byteVector.CopyTo(iconBuffer, 0);
                 var iconMemory = iconBuffer.AsMemory(0, iconLength);

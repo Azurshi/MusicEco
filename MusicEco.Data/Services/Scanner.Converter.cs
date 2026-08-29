@@ -10,9 +10,9 @@ internal partial class Scanner {
         AudioEntity entity = new((
             fileHash, iconHash, metadata.Duration,
             metadata.Title ?? string.Empty, metadata.Title, metadata.TitleSort,
-            metadata.Album, metadata.AlbumSort, metadata.Comment,
-            metadata.Year, metadata.Year, metadata.TrackCount, metadata.Disc,
-            metadata.Disc, metadata.Lyrics, metadata.Grouping, metadata.BeatsPerMinute,
+            metadata.Album, metadata.AlbumSort, metadata.Comment, metadata.Year, 
+            metadata.Track, metadata.TrackCount, metadata.Disc, metadata.DiscCount, 
+            metadata.Lyrics, metadata.Grouping, metadata.BeatsPerMinute,
             metadata.Copyright, metadata.DateTagged, metadata.InitialKey, metadata.ISRC));
         List<AudioTagRelation> tagRelations = [];
         for (int i = 0; i < metadata.Artists.Count; i++) {

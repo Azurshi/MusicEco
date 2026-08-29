@@ -43,7 +43,7 @@ public partial class PlayHistoryPageViewModel: BasePageViewModel {
         var histories = await this._queryService.GetPlayHistory(Config.MinPlayedRatio);
         List<PlayHistoryViewModel> items = [];
         foreach(var history in histories) {
-            PlayHistoryViewModel item = new(history.Audio.Hash, history.Audio.Title, history.LastPlayTime);
+            PlayHistoryViewModel item = new(history.Audio.Hash, history.Audio.DisplayTitle, history.LastPlayTime);
             items.Add(item);
         }
         this.Items.Update(items);

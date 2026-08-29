@@ -21,7 +21,7 @@ public partial class PlayCountPageViewModel: BasePageViewModel {
         var playCounts = await this._queryService.QueryPlayCount(Config.MinPlayedRatio, DateTime.MinValue, DateTime.MaxValue);
         List<PlayCountViewModel> items = [];
         foreach (var playCount in playCounts) {
-            PlayCountViewModel item = new(playCount.Audio.Hash, playCount.Audio.Title, playCount.PlayCount);
+            PlayCountViewModel item = new(playCount.Audio.Hash, playCount.Audio.DisplayTitle, playCount.PlayCount);
             items.Add(item);
         }
         this.Items.Update(items);

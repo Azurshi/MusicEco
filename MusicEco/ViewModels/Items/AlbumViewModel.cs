@@ -12,3 +12,4 @@ public sealed partial class AlbumViewModel: ListItem, IUpdateble {
         this.Identify = (this.Name, this.FileHashes);
     }
 }
+

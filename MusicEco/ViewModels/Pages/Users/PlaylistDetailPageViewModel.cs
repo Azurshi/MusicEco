@@ -43,7 +43,7 @@ public partial class PlaylistDetailPageViewModel: BasePageViewModel {
         if (audioPlaylist != null) {
             this.PlaylistName = audioPlaylist.Name;
             foreach (var audio in audioPlaylist.Audios) {
-                AudioEntryViewModel item = new(audio.Hash, audio.Title);
+                AudioEntryViewModel item = new(audio.Hash, audio.DisplayTitle);
                 items.Add(item);
             }
         }

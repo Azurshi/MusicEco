@@ -1,16 +1,20 @@
 ﻿using MusicEco.Core.Data;
 using MusicEco.Core.Services;
+using MusicEco.Core.Utility;
 using MusicEco.Data.Database.Repositories;
 
 namespace MusicEco.Data.Services;
 
 internal class AudioQueryService: IAudioQueryService {
+    private const bool ProfilerEnabled = true;
     private readonly AudioQueryRepository _queryRepo;
     public AudioQueryService(AudioQueryRepository audioQueryRepository) {
         this._queryRepo = audioQueryRepository;
     }
     public async Task<AlbumData?> GetAlbum(string name) {
-        return await this._queryRepo.GetAlbum(name);
+        using (var _ = new TimeProfiler(ProfilerEnabled)) {
+            return await this._queryRepo.GetAlbum(name);
+        }
     }
 
     public async Task<List<AudioEntry>> GetNotPlay(float minRatio, string nameLike) {
@@ -21,8 +25,10 @@ internal class AudioQueryService: IAudioQueryService {
         return await this._queryRepo.GetPlayHistory(minRatio);
     }
 
-    public async Task<List<AlbumData>> QueryAlbum(string nameLike) {
-        return await this._queryRepo.QueryAlbum(nameLike);
+    public async Task<List<AlbumData>> GetAlbums() {
+        using (var _ = new TimeProfiler(ProfilerEnabled)) {
+            return await this._queryRepo.GetAlbums();
+        }
     }
 
     public async Task<List<PlayCountData>> QueryPlayCount(float minRatio, DateTime fromTime, DateTime toTime) {

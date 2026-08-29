@@ -28,7 +28,7 @@ public partial class NotPlayPageViewModel: BasePageViewModel {
         var audios = await this._queryService.GetNotPlay(Config.MinPlayedRatio, this._q.Name);
         List<AudioEntryViewModel> items = [];
         foreach (var audio in audios) {
-            AudioEntryViewModel item = new(audio.Hash, audio.Title);
+            AudioEntryViewModel item = new(audio.Hash, audio.DisplayTitle);
             items.Add(item);
         }
         this.Items.Update(items);

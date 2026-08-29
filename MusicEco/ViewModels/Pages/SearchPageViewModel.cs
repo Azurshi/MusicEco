@@ -45,7 +45,7 @@ public partial class SearchPageViewModel: BasePageViewModel {
             string query = this.Query.SearchText;
             var entries = await this._audioService.QueryEntry(query);
             foreach (var entry in entries) {
-                items.Add(new(entry.Hash, entry.Title));
+                items.Add(new(entry.Hash, entry.DisplayTitle));
             }
         }
         this.Items.Update(items);

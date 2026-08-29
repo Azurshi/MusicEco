@@ -25,7 +25,7 @@ public partial class HomePageViewModel: BasePageViewModel {
         if (currentQueue != null && currentQueue.Current != null) {
             AudioEntry current = currentQueue.Current;
             this.FileHash = current.Hash;
-            this.DisplayTitle = current.Title;
+            this.DisplayTitle = current.DisplayTitle;
         }
         else {
             this.FileHash = new Hash256();

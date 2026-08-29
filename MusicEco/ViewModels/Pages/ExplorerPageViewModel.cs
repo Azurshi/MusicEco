@@ -110,7 +110,7 @@ public partial class ExplorerPageViewModel: BasePageViewModel {
                 info.SaveDataCurrent = p.Current;
                 info.SaveDataTotal = p.Total;
             });
-#if WINDOWS
+#if ANDROID || WINDOWS
         int nScanWorkers = 2;
         int nProcessWorkers = 4;
 #else

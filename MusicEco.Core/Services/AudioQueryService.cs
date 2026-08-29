@@ -31,7 +31,7 @@ public sealed record PlayHistoryData {
 
 public interface IAudioQueryService {
     public abstract Task<AlbumData?> GetAlbum(string name);
-    public abstract Task<List<AlbumData>> QueryAlbum(string nameLike);
+    public abstract Task<List<AlbumData>> GetAlbums();
     public abstract Task<List<AudioEntry>> GetNotPlay(float minRatio, string nameLike);
     public abstract Task<List<PlayCountData>> QueryPlayCount(float minRatio, DateTime fromTime, DateTime toTime);
     public abstract Task<List<PlayHistoryData>> GetPlayHistory(float minRatio);

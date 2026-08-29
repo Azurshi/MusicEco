@@ -40,6 +40,8 @@ internal partial class Scanner: IScanner {
                 var connection = db.Connection;
                 var existsFiles = await FileRepository.GetAll(db.Connection);
                 Dictionary<string, FileEntry> existsFilesMap = existsFiles.ToDictionary(f => f.Path);
+                // Can merge Scan and Process to avoid double file open & better resource utilization
+                // But keep them separate for easier debug & profile
                 sw.Start();
                 var scanResult = await ScanFiles(existsFiles, folderPaths, fileExtensions.ToHashSet(), scanWorkers, progress.ScanFile, updateInterval);
                 sw.Stop();

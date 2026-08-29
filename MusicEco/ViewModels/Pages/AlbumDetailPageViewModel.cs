@@ -33,7 +33,7 @@ public partial class AlbumDetailPageViewModel: BasePageViewModel {
         if (album != null) {
             List<AudioEntryViewModel> items = [];
             foreach(var audio in album.Audios) {
-                AudioEntryViewModel item = new(audio.Hash, audio.Title);
+                AudioEntryViewModel item = new(audio.Hash, audio.DisplayTitle);
                 items.Add(item);
             }
             this.Items.Update(items);

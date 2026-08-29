@@ -4,16 +4,16 @@ namespace MusicEco.Core.Data;
 
 public class AudioEntry {
     public Hash256 Hash { get; init; }
-    public string Title { get; init; }
-    public AudioEntry(Hash256 hash, string title) {
+    public string DisplayTitle { get; init; }
+    public AudioEntry(Hash256 hash, string displayTitle) {
         this.Hash = hash;
-        this.Title = title;
+        this.DisplayTitle = displayTitle;
     }
 }
 
 public class AudioModel {
     public Hash256 Hash { get; }
-    public string Title {
+    public string DisplayTitle {
         get {
             if (string.IsNullOrEmpty(Metadata.Title)) {
                 foreach (var file in Files) {
