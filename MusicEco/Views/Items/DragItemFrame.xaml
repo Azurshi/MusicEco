@@ -7,7 +7,7 @@
     <local:ItemFrame.GestureRecognizers>
         <DragGestureRecognizer x:Name="DragGR"
                                DragStarting="DragGR_DragStarting"
-                               DragStartingCommand="{Binding DragStartCommand, Source={Reference DragRoot}}" />
+                               DropCompleted="DragGR_DropCompleted" />
         <DropGestureRecognizer x:Name="DropGR"
                                Drop="DropGR_Drop"
                                DragOver="DropGR_DragOver"

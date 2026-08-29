@@ -8,8 +8,4 @@
        VerticalOptions="Fill"
        HorizontalOptions="Fill"
        Text="=">
-    <Label.GestureRecognizers>
-        <PointerGestureRecognizer PointerEntered="PointerGestureRecognizer_PointerEntered"
-                                  PointerExited="PointerGestureRecognizer_PointerExited"/>
-    </Label.GestureRecognizers>
 </Label>

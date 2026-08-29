@@ -128,7 +128,7 @@ public partial class QueueDetailPageViewModel: BasePageViewModel {
     }
     #region Drag&Drop
     private AudioEntryViewModel? _movingItem;
-    [RelayCommand(CanExecute = nameof(IsDraggable))]
+    [RelayCommand]
     private void DragItem(AudioEntryViewModel? vm) {
         if (vm == null) {
             return;
@@ -155,14 +155,6 @@ public partial class QueueDetailPageViewModel: BasePageViewModel {
             audios.Insert(targetIndex, current);
             queue = queue.WithAudios(queue.Current, audios).WithModifyNow();
             await this._queueService.Update(queue, this);
-        }
-    }
-    private bool IsDraggable(AudioEntryViewModel? vm) {
-        if (vm != null && vm.IsDraggable) {
-            return true;
-        }
-        else {
-            return false;
         }
     }
     #endregion

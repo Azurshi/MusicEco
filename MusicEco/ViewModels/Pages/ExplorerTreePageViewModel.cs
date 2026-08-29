@@ -15,7 +15,7 @@ public partial class ExplorerTreePageViewModel: BasePageViewModel {
 #if WINDOWS
         = "\\";
 #elif ANDROID
-        = "/";
+        = "%2F";
 #else
         = "";
 #endif

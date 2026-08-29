@@ -33,13 +33,11 @@ public partial class CollectionViewExtend: ContentView {
                 This.ChangeDisplayMode(value);
             });
     public IList<CollectionViewPreset> ItemPresets { get; init; }
-    public bool AllowDrop { get; set; }
     // true when DisplayMode use {Binding}, else when use direct value.
     // To handle UI initialization, after init, it is true in both cases.
     private bool _isBindedDisplayMode = true;
     private readonly DelayedDispatcher _dispatcher;
     public CollectionViewExtend() {
-        this.AllowDrop = false;
         this.ItemPresets = [];
         InitializeComponent();
         CollectionView content = new();
@@ -72,17 +70,14 @@ public partial class CollectionViewExtend: ContentView {
         this._currentObservableCollection = null;
         this._firstVisbleindex = 0;
         this._lastVisibleIndex = 20;
-        CollectionView view = new();
+        CollectionView view = new() {
+            ItemsUpdatingScrollMode = Microsoft.Maui.Controls.ItemsUpdatingScrollMode.KeepScrollOffset
+        };
         // Old view will be discard by GC
         // So handler will be discard too
         // No need to unsubcribe
         view.Scrolled += this.View_Scrolled;
         view.PropertyChanged += this.View_PropertyChanged;
-        if (this.AllowDrop) {
-            var dropGestureRecognizer = new DropGestureRecognizer();
-            dropGestureRecognizer.Drop += this.DropGestureRecognizer_Drop;
-            view.GestureRecognizers.Add(dropGestureRecognizer);
-        }
         if (selectedPreset.ItemsLayout != null) {
             view.ItemsLayout = selectedPreset.ItemsLayout;
         }
@@ -191,14 +186,6 @@ public partial class CollectionViewExtend: ContentView {
                 index++;
             }
             Debug.WriteLine($"Visible: {visibleCount} || Hidden: {index - visibleCount} || {first} -> {last}");
-        }
-    }
-    private void DropGestureRecognizer_Drop(object? sender, DropEventArgs e) {
-        if (sender is CollectionView collectionView) {
-            var items = collectionView.GetVisualTreeDescendants().OfType<DragItemFrame>();
-            foreach (var item in items) {
-                item.Reset();
-            }
         }
     }
 }

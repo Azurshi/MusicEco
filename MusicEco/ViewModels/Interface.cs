@@ -18,9 +18,6 @@ public interface IEditableItem {
     public bool EditVisibility { get; }
     public bool ViewVisibility { get; }
 }
-public interface IMoveableItem {
-    public bool IsDraggable { get; set; }
-}
 public interface ILockableItem {
     public bool IsLocked { get; set; }
     public bool IsUnlocked { get; }

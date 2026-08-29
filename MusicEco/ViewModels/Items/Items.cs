@@ -50,11 +50,9 @@ public partial class ViewOnlyListItem: ListItem, IEditableListItem, ISelectableI
     public bool ListViewVisibility => !_listEditing;
     [ObservableProperty]
     public partial bool Selected { get; set; }
-    [ObservableProperty]
-    public partial bool IsDraggable { get; set; }
 }
 
-public partial class EditableListItem: ViewOnlyListItem, IEditableItem, IMoveableItem {
+public partial class EditableListItem: ViewOnlyListItem, IEditableItem {
     private bool _editing = false;
     public bool Editing {
         get => _editing;

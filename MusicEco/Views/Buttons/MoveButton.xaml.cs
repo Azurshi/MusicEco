@@ -1,23 +1,31 @@
-using MusicEco.SourceGeneration;
-
 namespace MusicEco.Views.Buttons;
 
 public partial class MoveButton: Label {
-    private static readonly Type ThisType = typeof(MoveButton);
-    [BindableAutoGen]
-    public static readonly BindableProperty IsDraggableProperty
-        = Utility.Create<bool>(ThisType, false, bindingMode: BindingMode.TwoWay);
     public MoveButton() {
         InitializeComponent();
+        this.PlatformInitialize();
+    }
+#if WINDOWS
+    private void PlatformInitialize() {
+        // Not needed on Android
+        var pointerGestureRecognizer = new PointerGestureRecognizer();
+        pointerGestureRecognizer.PointerEntered += this.PointerGestureRecognizer_PointerEntered;
+        pointerGestureRecognizer.PointerExited += this.PointerGestureRecognizer_PointerExited;
+        this.GestureRecognizers.Add(pointerGestureRecognizer);
+    }
+    private void MoveButton_Loaded(object? sender, EventArgs e) {
+        throw new NotImplementedException();
     }
 
-    private void PointerGestureRecognizer_PointerEntered(object sender, PointerEventArgs e) {
+    private void PointerGestureRecognizer_PointerEntered(object? sender, PointerEventArgs e) {
         this.BackgroundColor = DynamicColors.ButtonHighlightColor;
-        this.IsDraggable = true;
     }
 
-    private void PointerGestureRecognizer_PointerExited(object sender, PointerEventArgs e) {
+    private void PointerGestureRecognizer_PointerExited(object? sender, PointerEventArgs e) {
         this.BackgroundColor = Colors.Transparent;
-        this.IsDraggable = false;
     }
+#else
+    private void PlatformInitialize() {
+    }
+#endif
 }

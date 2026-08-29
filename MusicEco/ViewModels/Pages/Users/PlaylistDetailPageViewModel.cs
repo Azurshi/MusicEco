@@ -113,7 +113,7 @@ public partial class PlaylistDetailPageViewModel: BasePageViewModel {
     }
     #region Drag&Drop
     private AudioEntryViewModel? _movingItem;
-    [RelayCommand(CanExecute = nameof(IsDraggable))]
+    [RelayCommand]
     private void DragItem(AudioEntryViewModel? vm) {
         if (vm == null) {
             return;
@@ -140,13 +140,6 @@ public partial class PlaylistDetailPageViewModel: BasePageViewModel {
             audios.Insert(targetIndex, current);
             playlist = playlist.WithAudios(audios).WithModifyNow();
             await this._playlistService.Update(playlist);
-        }
-    }
-    private bool IsDraggable(AudioEntryViewModel? vm) {
-        if (vm != null && vm.IsDraggable) {
-            return true;
-        } else {
-            return false;
         }
     }
     #endregion

@@ -43,8 +43,7 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <button:MoveButton Grid.Column="0"
-                                               WidthRequest="{DynamicResource ItemButtonSize}"
-                                               IsDraggable="{Binding IsDraggable}" />
+                                               WidthRequest="{DynamicResource ItemButtonSize}"/>
                             <control:ManagedSKIcon Grid.Column="1"
                                                    WidthRequest="{DynamicResource IconItemSize}"
                                                    FileHash="{Binding FileHash}"
@@ -82,7 +81,6 @@
                    Style="{StaticResource HorizontalSeparator}" />
         <control:CollectionViewExtend Grid.Row="2"
                                       DisplayMode="SimpleList"
-                                      AllowDrop="True"
                                       ItemsSource="{Binding Items.Items}"
                                       Margin="{DynamicResource PageContentMargin}">
             <control:CollectionViewExtend.ItemPresets>
