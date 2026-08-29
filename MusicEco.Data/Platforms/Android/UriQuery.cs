@@ -24,7 +24,9 @@ public class FileInfo: ItemInfo {
     }
 }
 public class FolderInfo: ItemInfo {
-    public FolderInfo(Uri uri) : base(uri) {
+    public string Name;
+    public FolderInfo(Uri uri, string name) : base(uri) {
+        this.Name = name;
     }
 }
 public static class UriQuery {
@@ -71,7 +73,7 @@ public static class UriQuery {
                 bool isFolder = mimeType == FolderMimeType;
                 var childUri = DocumentsContract.BuildDocumentUriUsingTree(treeUri, childDocumentId);
                 if (isFolder) {
-                    FolderInfo info = new(childUri!);
+                    FolderInfo info = new(childUri!, name);
                     items.Add(info);
                 }
                 else {

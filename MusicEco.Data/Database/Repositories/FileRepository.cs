@@ -29,7 +29,7 @@ internal class FileRepository {
         List<FileEntry> files = [];
         var rows = await connection.SelectAsync<
             string, Hash256, DateTime, string, string, long>(
-            "SELECT * FROM FileEntity WHERE Path LIKE ?", $"{path}%");
+            "SELECT * FROM FileEntity WHERE Path LIKE ? || '%' ESCAPE '~'", path);
         foreach(var row in rows) {
             FileEntity entity = new(row);
             files.Add(ToEntry(entity));

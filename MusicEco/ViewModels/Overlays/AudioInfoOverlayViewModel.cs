@@ -73,10 +73,12 @@ public partial class AudioInfoOverlayViewModel: BaseOverlayViewModel {
         if (this._audio != null) {
             var fileEntries = await this._fileService.GetByHash(fileHash);
             List<FileEntryViewModel> files = [];
+#if WINDOWS
             foreach (var fileEntry in fileEntries) {
                 FileEntryViewModel item = new(fileEntry.Hash, fileEntry.Path);
                 files.Add(item);
             }
+#endif
             this.Files = files;
             foreach(var propertyName in PropertyNames) {
                 OnPropertyChanged(propertyName);

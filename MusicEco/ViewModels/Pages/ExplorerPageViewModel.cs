@@ -103,7 +103,7 @@ public partial class ExplorerPageViewModel: BasePageViewModel {
                 info.ScanFileTotal = p.Total;
             },
             (p) => {
-                info.ProcessFileCurrent = p.Current;
+                info.ProcessFileCurrent = p.Current;    
                 info.ProcessFileTotal = p.Total;
             },
             (p) => {

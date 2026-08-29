@@ -3,27 +3,28 @@
 namespace MusicEco.ViewModels.Pages;
 
 public partial class ExplorerTreePageViewModel {
-    private sealed class FolderStack {
-        private readonly List<string> _stacks;
+    private sealed class FolderStack<T> {
+        private readonly List<T> _stacks;
         private int _currentIndex;
         public FolderStack() {
             this._stacks = [];
             this._currentIndex = -1;
         }
-        public void ToFolder(string folder) {
+        public void ToFolder(T folder) {
             this._stacks.RemoveRange(this._currentIndex + 1, this._stacks.Count - (this._currentIndex + 1));
             this._stacks.Add(folder);
             this._currentIndex++;
         }
-        public string NextFolder() {
+        public T NextFolder() {
             if (CanNext()) {
                 this._currentIndex++;
                 return this._stacks[this._currentIndex];
-            } else {
+            }
+            else {
                 throw new InvalidOperationException();
             }
         }
-        public string PreviousFolder() {
+        public T PreviousFolder() {
             if (CanPrevious()) {
                 this._currentIndex--;
                 return this._stacks[this._currentIndex];
