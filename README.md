@@ -56,6 +56,7 @@
 - Android permissions may be revoked by OS, re-select scan folder(s) to re-apply permissions.
 - Development output may sometime show up in UI.
 ## 🗺 Roadmap
+- Better support for Android.
 - Cloud sync for user data.
 - Play song from cloud.
 - New theme/style.
