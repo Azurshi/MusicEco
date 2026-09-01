@@ -50,6 +50,8 @@
    - Add songs to playlists or queues via each song option menu ':'
      ![Option](Preview/Preview2.png)
    - Play song by click into song title.
+   - Change interface settings:  
+     ![InterfaceSetting](Preview/Preview3.png)
 ## 📋 Known issues
 - Low performance on Windows: UI may freeze around <1 second when display grid data.
 - Real audio position may deviated up to 500ms depend on OS.
