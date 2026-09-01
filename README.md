@@ -47,7 +47,7 @@
    - Browse by album or folder.
      ![Album](Preview/Preview1.png)
    - Create and edit custom playlists.
-   - Ad songs to playlists or queues via each song option menu ':'
+   - Add songs to playlists or queues via each song option menu ':'
      ![Option](Preview/Preview2.png)
    - Play song by click into song title.
 ## 📋 Known issues
