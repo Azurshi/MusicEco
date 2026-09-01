@@ -54,6 +54,7 @@
 - Low performance on Windows: UI may freeze around <1 second when display grid data.
 - Real audio position may deviated up to 500ms depend on OS.
 - Android permissions may be revoked by OS, re-select scan folder(s) to re-apply permissions.
+- Development output may sometime show up in UI.
 ## 🗺 Roadmap
 - Cloud sync for user data.
 - Play song from cloud.
