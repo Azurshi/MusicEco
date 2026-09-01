@@ -7,10 +7,17 @@ using MusicEco.ViewModels.Items;
 using MusicEco.ViewModels.Pages;
 using MusicEco.Views.Overlays;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 
 namespace MusicEco.Views.Commands;
 
 public static class MenuCommands {
+    private static readonly Vector2 DynamicSize =
+#if ANDROID
+        new Vector2(0.9f, 0.9f);
+#else
+        new Vector2(0.5f, 0.9f);
+#endif
     public static bool TryGetHash(object? vm, [MaybeNullWhen(false)] out Hash256 hash) {
         if (vm is AudioEntryViewModel audioEntry) {
             hash = audioEntry.FileHash;
@@ -35,7 +42,7 @@ public static class MenuCommands {
             var provider = AppLifeCycle.Provider;
             var overlay = provider.GetRequiredService<IOverlayService>();
             var view = provider.GetRequiredService<AddToQueueOverlay>();
-            overlay.ShowDynamic(new(0.5f, 0.9f), view);
+            overlay.ShowDynamic(DynamicSize, view);
             await view.Initialize(hash);
         }
     }
@@ -45,7 +52,7 @@ public static class MenuCommands {
             var provider = AppLifeCycle.Provider;
             var overlay = provider.GetRequiredService<IOverlayService>();
             var view = provider.GetRequiredService<AddToPlaylistOverlay>();
-            overlay.ShowDynamic(new(0.5f, 0.9f), view);
+            overlay.ShowDynamic(DynamicSize, view);
             await view.Initialize(hash);
         }
     }
@@ -55,7 +62,7 @@ public static class MenuCommands {
             var provider  = AppLifeCycle.Provider;
             var overlay = provider.GetRequiredService<IOverlayService>();
             var view = provider.GetRequiredService<AudioInfoOverlay>();
-            overlay.ShowDynamic(new(0.5f, 0.9f), view);
+            overlay.ShowDynamic(DynamicSize, view);
             await view.Initialize(hash);
         }
     }
@@ -118,7 +125,7 @@ public static class MenuCommands {
         var provider = AppLifeCycle.Provider;
         var overlay = provider.GetRequiredService<IOverlayService>();
         var view = provider.GetRequiredService<CreateNewPlaylistOverlay>();
-        overlay.ShowDynamic(new(0.5f, 0.5f), view);
+        overlay.ShowDynamic(DynamicSize, view);
         await view.Initialize();
     }
 }
