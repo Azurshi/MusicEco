@@ -6,6 +6,6 @@
   <Project Path="../MusicEco.Image/MusicEco.Image.csproj" />
   <Project Path="../MusicEco.Platform/MusicEco.Platform.csproj" />
   <Project Path="MusicEco.csproj">
-    <Deploy Solution="Debug|*" />
+    <Deploy />
   </Project>
 </Solution>

@@ -71,7 +71,8 @@ public partial class CollectionViewExtend: ContentView {
         this._firstVisbleindex = 0;
         this._lastVisibleIndex = 20;
         CollectionView view = new() {
-            ItemsUpdatingScrollMode = Microsoft.Maui.Controls.ItemsUpdatingScrollMode.KeepScrollOffset
+            ItemsUpdatingScrollMode = Microsoft.Maui.Controls.ItemsUpdatingScrollMode.KeepScrollOffset,
+            ItemSizingStrategy = ItemSizingStrategy.MeasureFirstItem
         };
         // Old view will be discard by GC
         // So handler will be discard too
