@@ -11,3 +11,5 @@ AudioCodecTest/
 MusicEco.DataTest/
 PerformanceTest/
 MusicEco.Tests/
+
+*.pfx
