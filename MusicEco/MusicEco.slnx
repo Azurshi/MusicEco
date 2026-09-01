@@ -1,0 +1,11 @@
+<Solution>
+  <Project Path="../AudioCodec/AudioCodec.csproj" />
+  <Project Path="../AudioPlayer/AudioPlayer.csproj" />
+  <Project Path="../MusicEco.Core/MusicEco.Core.csproj" />
+  <Project Path="../MusicEco.Data/MusicEco.Data.csproj" />
+  <Project Path="../MusicEco.Image/MusicEco.Image.csproj" />
+  <Project Path="../MusicEco.Platform/MusicEco.Platform.csproj" />
+  <Project Path="MusicEco.csproj">
+    <Deploy />
+  </Project>
+</Solution>

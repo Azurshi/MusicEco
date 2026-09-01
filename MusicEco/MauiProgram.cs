@@ -1,110 +1,113 @@
-﻿using CommunityToolkit.Maui;
-using DataStorage.DataAccess;
-using DataStorage.Models;
-using Domain.DataAccess;
-using Domain.EventSystem;
-using Domain.Models;
-using Microsoft.Extensions.Logging;
-#if ANDROID
-using MusicEco.Platforms.Android;
-#endif
-using MusicEco.ViewModels;
-using MusicEco.ViewModels.Components;
-using MusicEco.ViewModels.DetailPages;
-using MusicEco.ViewModels.Pages;
-using MusicEco.Views.DetailPages;
-using MusicEco.Views.Pages;
+﻿using Microsoft.Extensions.Logging;
+using MusicEco.Core;
+using MusicEco.Core.Services;
+using MusicEco.Data;
+using MusicEco.Image;
+using MusicEco.Resources.Themes;
+using MusicEco.Services;
+using MusicEco.Views.Buttons;
+using MusicEco.Views.Shell;
+using SkiaSharp.Views.Maui.Controls.Hosting;
+using SQLiteORM;
 using System.Diagnostics;
-using System.Runtime.Serialization;
 
 namespace MusicEco;
-public class LoadErrorHandler : IErrorHandler {
-    public void HandleError(Exception ex) {
-        Debug.WriteLine("---------------- Failed to load data ------------");
-        Debug.WriteLine($"Error: {ex}");
-        //IScanner scanner = new Scanner();
-        //scanner.DeleteAllData(); // Not work
-        Thread.Sleep(1000);
-    }
-}
+
 public static class MauiProgram {
     public static MauiApp CreateMauiApp() {
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
-            .UseMauiCommunityToolkit()
+            .UseSkiaSharp()
             .ConfigureFonts(fonts => {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
 #if DEBUG
-        builder.Logging.AddDebug();
+		builder.Logging.AddDebug();
 #endif
-        List<Type> staticInitializerResidentTypes = [
-            typeof(Domain.EventSystem.EventSystem), typeof(MauiProgram), typeof(DataStorage.Models.BaseModel),
-            typeof(AudioPlayer.AudioPlayer)
-        ];
-        try {
-            DataStorage.Serialization.InitializeAndLoad();
-        }
-        catch (Exception ex) {
-            Debug.WriteLine("------------------- ERROR ---------------");
-            Debug.WriteLine(ex.Message);
-            IScanner scanner = new Scanner();
-            scanner.DeleteAllData(); // is this work ?
-        }
-
-        DataStorage.Serialization.SaveTask().FireAndForgetAsync();
-
-        StaticInitializerAttribute.StaticInitialize(staticInitializerResidentTypes); // Current playing song bypass through this
-        EventSystem.PrintBlockedEvents.Add(typeof(Domain.Models.DataSavedEventArgs));
-        EventSystem.PrintBlockedEvents.Add(typeof(PlayerProgressChangedEventArgs));
-
-        #region DependencyInjection
-        builder.Services.AddSingleton<IScanner, Scanner>();
-        builder.Services.AddSingleton<IModelGetter, ModelGetter>();
-        builder.Services.AddTransient<ISongModel, SongModel>();
-        builder.Services.AddTransient<IPlaylistModel, PlaylistModel>();
-        builder.Services.AddTransient<ISettingField, SettingFieldModel>();
-        builder.Services.AddTransient<IFileModel, FileModel>();
-        builder.Services.AddTransient<IFolderModel, FolderModel>();
-
-        builder.Services.AddSingleton<GlobalModel>();
-        builder.Services.AddSingleton<NavigationBarModel>();
-        builder.Services.AddSingleton<ControlBarModel>();
-        builder.Services.AddSingleton<UserPreviewModel>();
-        builder.Services.AddSingleton<InfoPreviewModel>();
-
-        builder.Services.AddSingletonWithShellRoute<OverviewPage, OverviewPageModel>("overview");
-        builder.Services.AddSingletonWithShellRoute<QueuePage, QueuePageModel>("queue");
-        builder.Services.AddSingletonWithShellRoute<PlaylistPage, PlaylistPageModel>("playlist");
-        builder.Services.AddSingletonWithShellRoute<PlaylistDetailPage, PlaylistDetailPageModel>("playlist_detail");
-        builder.Services.AddSingletonWithShellRoute<AlbumPage, AlbumPageModel>("album");
-        builder.Services.AddSingletonWithShellRoute<AlbumDetailPage, AlbumDetailPageModel>("album_detail");
-        builder.Services.AddSingletonWithShellRoute<ExplorerPage, ExplorerPageModel>("explorer");
-        builder.Services.AddSingletonWithShellRoute<SearchPage, SearchPageModel>("search");
-        builder.Services.AddSingletonWithShellRoute<SettingPage, SettingPageModel>("setting");
-
-        builder.Services.AddSingletonWithShellRoute<UserPage, UserPageModel>("user");
-        builder.Services.AddSingletonWithShellRoute<FavouritePage, FavouritePageModel>("favourite");
-        builder.Services.AddSingletonWithShellRoute<PlaycountPage, PlaycountPageModel>("playcount");
-        builder.Services.AddSingletonWithShellRoute<ScanPage, ScanPageModel>("scan");
-
-        #endregion
-        IServiceProvider service = builder.Services.BuildServiceProvider();
-        IServiceAccess._service = service;
-        Startup(service).FireAndForgetAsync();
+        RegisterDependency(builder);
+        RegisterStartup();
+        RegisterCleanup();
+        RegisterLoop();
         return builder.Build();
     }
-    private static async Task Startup(IServiceProvider service) {
-        ScanPageModel model = service.GetRequiredService<ScanPageModel>();
-#if ANDROID
-        await UriUtility.RequestPermission();
-#endif
-        Debug.WriteLine("Start scan");
-        await model.ScanMusic();
-        Debug.WriteLine("Scan completed");
-    }
+    private static void RegisterDependency(MauiAppBuilder builder) {
+        var services = builder.Services;
+        services.RegisterServices();
+        services.RegisterShell();
+        services.RegisterPages();
+        services.RegisterOverlays();
+        services.RegisterOthers();
 
+        services.RegisterImage();
+        services.RegisterData();
+    }
+    private static void RegisterStartup() {
+        AppLifeCycle.RegisterAppStart(static async (provider) => {
+#if WINDOWS
+            string savePath = "D:\\Workstation\\Storage\\MusicEco\\Data";
+#else
+            string savePath = FileSystem.Current.AppDataDirectory;
+#endif
+            await MusicEco.Data.ServiceRegister.Initialize(provider, savePath);
+        });
+        AppLifeCycle.RegisterAppStart(static (provider) => {
+            var localization = provider.GetRequiredService<ILocalizationService>();
+            localization.RegisterMain();
+            Localization.Initalize(localization);
+        });
+        AppLifeCycle.RegisterAppStart(static async (provider) => {
+            var iconService = provider.GetRequiredService<IIconService>();
+            var setting = provider.GetRequiredService<IAppSetting>();
+            await iconService.InitializeDefault(provider);
+            var nWorkers = setting.Get(1, SettingFields.IconDecoderNumWorkers);
+            var capacity = setting.Get(100, SettingFields.IconDecoderCapacity);
+            await iconService.Setup(nWorkers, capacity);
+        });
+        AppLifeCycle.RegisterAfterUILoaded(static (provider) => {
+            // Localization
+            NavigateEventArgs args = new(null, PageRoute.None, PageRoute.Home);
+            EventSystem.Publish(null, args);
+        });
+
+        AppLifeCycle.RegisterAfterUILoaded(static (provider) => {
+            // Initialize stack
+            var stack = provider.GetRequiredService<NavigationStack>();
+            // Initialize PlaybackService
+            var playbackService = provider.GetRequiredService<IPlaybackService>();
+        });
+        AppLifeCycle.RegisterAfterUILoaded(static (provider) => {
+            var interfaceService = provider.GetRequiredService<IAppInterfaceService>();
+            interfaceService.RegisterTheme(new DefaultTheme());
+            interfaceService.RegisterTheme(new LightTheme());
+            interfaceService.RegisterTheme(new DarkTheme());
+            interfaceService.LoadLastTheme();
+            DynamicColors.Initialize(provider);
+            interfaceService.LoadLastScale();
+            interfaceService.LoadLastOrientation();
+        });
+    }
+    private static void RegisterCleanup() {
+        AppLifeCycle.RegisterAppClose(static (provider) => {
+            var icon = provider.GetRequiredService<IIconService>();
+            icon.Dispose();
+        });
+        AppLifeCycle.RegisterAppClose(static (provider) => {
+            var db = provider.GetRequiredService<DatabaseContextAsync>();
+            db.Dispose(true);
+        });
+        AppLifeCycle.RegisterAppClose(static (provider) => {
+            var player = provider.GetRequiredService<IPlayerController>();
+            player.Dispose();
+        });
+    }
+    private static void RegisterLoop() {
+        AppLifeCycle.RegisterLoop("IconCache", static (provider) => {
+            var cache = provider.GetRequiredService<IIconService>();
+            //Debug.WriteLine("Loop: Try compact cache");
+            cache.Compact();
+        }, TimeSpan.FromSeconds(1));
+    }
 }

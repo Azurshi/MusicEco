@@ -1,66 +1,80 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<local:BasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-                xmlns:b="clr-namespace:MusicEco.Views.Buttons"
-                xmlns:c="clr-namespace:MusicEco.Views.Components"
-                xmlns:d="clr-namespace:MusicEco.Views.Decorators"
-                xmlns:e="clr-namespace:MusicEco.Views.Edit"
-                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                xmlns:w="clr-namespace:MusicEco.Views.Widgets"
-                xmlns:vm="clr-namespace:MusicEco.ViewModels.Pages"
-                xmlns:item_vm="clr-namespace:MusicEco.ViewModels.Items"
-                xmlns:local="clr-namespace:MusicEco.Views.Pages"
-                x:Class="MusicEco.Views.Pages.SearchPage"
-                x:DataType="vm:SearchPageModel"
-                Title="SearchPage">
-    <local:BasePage.Resources>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:service="clr-namespace:MusicEco.Services"
+             xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
+             xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
+             xmlns:item="clr-namespace:MusicEco.Views.Items"
+             xmlns:control="clr-namespace:MusicEco.Views.Controls"
+             xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             xmlns:commands="clr-namespace:MusicEco.Views.Commands"
+             x:Class="MusicEco.Views.Pages.SearchPage"
+             x:DataType="pageVM:SearchPageViewModel">
+    <ContentView.Resources>
         <ResourceDictionary>
-            <DataTemplate x:Key="OptionMenuTemplate"
-                          x:DataType="item_vm:BasicSongItemModel">
-                <c:OptionMenu>
-                    <c:OptionMenu.MainContent>
-                        <StackLayout Orientation="Vertical">
-                            <b:QueueAddButton GetPageEventHandler="GetPageEventHandler"/>
-                            <b:PlaylistAddButton GetPageEventHandler="GetPageEventHandler"/>
-                        </StackLayout>
-                    </c:OptionMenu.MainContent>
-                </c:OptionMenu>
+            <DataTemplate x:Key="MenuTemplate"
+                          x:DataType="itemVM:AudioEntryViewModel">
+                <VerticalStackLayout>
+                    <button:FavouriteMenuItemButton />
+                    <button:MenuItemButton Text="{Binding [Menu_AddToQueue], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.AddToQueueCommand}" />
+                    <button:MenuItemButton Text="{Binding [Menu_AddToPlaylist], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.AddToPlaylistCommand}" />
+                    <button:MenuItemButton Text="{Binding [Menu_Info], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.ShowAudioInfoCommand}" />
+                </VerticalStackLayout>
+            </DataTemplate>
+            <DataTemplate x:Key="AudioItemTemplate"
+                          x:DataType="itemVM:AudioEntryViewModel">
+                <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
+                                BackgroundColor="{Binding BackgroundColor}"
+                                Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type pageVM:SearchPageViewModel}}}">
+                    <item:ItemFrame.ItemContent>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <control:ManagedSKIcon Grid.Column="0"
+                                                   WidthRequest="{DynamicResource IconItemSize}"
+                                                   FileHash="{Binding FileHash}"
+                                                   Option="Small" />
+                            <control:TextLabel Grid.Column="1"
+                                               Text="{Binding DisplayTitle}"
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}" />
+                            <item:MenuButton Grid.Column="2"
+                                             Style="{StaticResource ListMenuButton}"
+                                             MenuTemplate="{StaticResource MenuTemplate}" />
+                        </Grid>
+                    </item:ItemFrame.ItemContent>
+                </item:ItemFrame>
             </DataTemplate>
         </ResourceDictionary>
-    </local:BasePage.Resources>
-    <local:BasePage.MainContent>
-        <Grid RowDefinitions="Auto, *"
-              ColumnDefinitions="*">
-            <w:SearchBar Grid.Row="0" Grid.Column="0"
-                         Text="{Binding NameQuery}"
-                         Placeholder="Song name"
-                         HeightRequest="{DynamicResource ItemSize}"
-                         BackgroundColor="{DynamicResource ItemBackground}"/>
-            <w:DataList Grid.Row="1" Grid.Column="0"
-                        ItemsSource="{Binding Data}"
-                        PreloadAmount="{Binding ListPreload, Source={StaticResource AppSetting}}"
-                        LoadMoreItemCommand="{Binding LoadMoreItemCommand}">
-                <w:DataList.ItemTemplate>
-                    <DataTemplate x:DataType="item_vm:BasicSongItemModel">
-                        <w:ItemFrame>
-                            <Grid ColumnDefinitions="Auto, 7*, Auto"
-                                  RowDefinitions="*">
-                                <w:ImageFrame Grid.Row="0" Grid.Column="0"
-                                              Source="{Binding Icon}"
-                                              WidthRequest="{DynamicResource ListItemSize}"/>
-                                <w:TextButton Grid.Row="0" Grid.Column="1"
-                                              Text="{Binding Title}"
-                                              Available="{Binding Available}"
-                                              Command="{Binding SongSelectCommand, Source={RelativeSource AncestorType={x:Type vm:SearchPageModel}}}"
-                                              CommandParameter="{Binding Key}"
-                                              Style="{StaticResource ItemTextStyle}"/>
-                                <w:OptionButton Grid.Row="0" Grid.Column="2"
-                                                Clicked="OptionMenu_Clicked"/>
-                            </Grid>
-                        </w:ItemFrame>
-                    </DataTemplate>
-                </w:DataList.ItemTemplate>
-            </w:DataList>
-
+    </ContentView.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"
+              Style="{StaticResource HeaderGrid}">
+            <Entry HeightRequest="{DynamicResource HeaderSize}"
+                   Text="{Binding Query.SearchText, Mode=TwoWay}"
+                   Placeholder="{Binding L[Search_Title]}" />
         </Grid>
-    </local:BasePage.MainContent>
-</local:BasePage>
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <control:CollectionViewExtend Grid.Row="2"
+                                      DisplayMode="SimpleList"
+                                      ItemsSource="{Binding Items.Items}"
+                                      Margin="{DynamicResource PageContentMargin}">
+            <control:CollectionViewExtend.ItemPresets>
+                <control:CollectionViewPreset DisplayMode="SimpleList"
+                                              ItemTemplate="{StaticResource AudioItemTemplate}"
+                                              ItemsLayout="{StaticResource LinearLayout}" />
+            </control:CollectionViewExtend.ItemPresets>
+        </control:CollectionViewExtend>
+    </Grid>
+</ContentView>

@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="../AudioCodecTest/AudioCodecTest.csproj" Id="73e6fd08-9b85-42d2-b434-3298d786ea7a" />
+  <Project Path="../AudioPlayer/AudioPlayer.csproj" Id="8e22f859-14d3-41cb-b9a1-31bcb9d40385" />
+  <Project Path="AudioCodec.csproj" />
+</Solution>

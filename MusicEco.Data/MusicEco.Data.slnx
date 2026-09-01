@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="../MusicEco.DataTest/MusicEco.DataTest.csproj" Id="76fb9be9-cffd-4e3b-86c7-d09a059b300c">
+    <Deploy Solution="Debug|*" />
+  </Project>
+  <Project Path="../MusicEco.Platform/MusicEco.Platform.csproj" />
+  <Project Path="MusicEco.Data.csproj" />
+</Solution>

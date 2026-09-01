@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MusicEco.Views.Overlays.DevInfoOverlay">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0"
+               HeightRequest="{DynamicResource HeaderSize}"
+               Text="Dev output" 
+               Style="{StaticResource CenterTitle}"
+               BackgroundColor="{DynamicResource HeaderColor}" />
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <Label Grid.Row="2"
+               x:Name="OutputLabel" />
+    </Grid>
+</ContentView>

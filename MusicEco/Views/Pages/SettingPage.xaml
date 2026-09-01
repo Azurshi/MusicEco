@@ -1,67 +1,80 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<local:BasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                xmlns:w="clr-namespace:MusicEco.Views.Widgets"
-                xmlns:local="clr-namespace:MusicEco.Views.Pages"
-                xmlns:setting_vm="clr-namespace:MusicEco.ViewModels"
-                xmlns:vm="clr-namespace:MusicEco.ViewModels.Pages"
-                xmlns:field="clr-namespace:MusicEco.Views.SettingFields"
-                x:Class="MusicEco.Views.Pages.SettingPage"
-                x:DataType="vm:SettingPageModel"
-                Title="SettingPage">
-    <local:BasePage.MainContent>
-        <Grid RowDefinitions="Auto, *"
-              ColumnDefinitions="*">
-            <StackLayout x:Name="NavigationList"
-                         Grid.Row="0" Grid.Column="0"
-                         Orientation="Vertical">
-                <w:BorderTextButton Text="Application setting"
-                                    TextAlign="Center"
-                                    BackgroundColor="{DynamicResource ItemBackground}"
-                                    HeightRequest="{DynamicResource ItemSize}"
-                                    Clicked="Setting_Clicked"/>
-                <w:BorderTextButton Text="Scan"
-                                    TextAlign="Center"
-                                    BackgroundColor="{DynamicResource ItemBackground}"
-                                    HeightRequest="{DynamicResource ItemSize}"
-                                    Command="{Binding OpenScanPageCommand}"/>
-
-            </StackLayout>
-            <Grid x:Name="ControlTab"
-                  Grid.Row="0" Grid.Column="0"
-                  RowDefinitions="*"
-                  ColumnDefinitions="*, 2*"
-                  HeightRequest="{DynamicResource ItemSize}"
-                  IsVisible="False">
-                <w:BorderTextButton Grid.Row="0" Grid.Column="0"
-                                    Text="Back"
-                                    TextAlign="Center"
-                                    VerticalOptions="Fill"
-                                    BackgroundColor="{DynamicResource ItemBackground}"
-                                    Clicked="BackButton_Clicked"
-                                    Command="{Binding CancelCommand, Source={StaticResource AppSetting}}"/>
-                <w:ConfirmButton Grid.Row="0" Grid.Column="1"
-                                 VerticalOptions="Fill"
-                                 BackgroundColor="{DynamicResource ItemBackground}"
-                                 ConfirmClicked="Confirm_Clicked"
-                                 ConfirmCommand="{Binding ApplyCommand, Source={StaticResource AppSetting}}"
-                                 CancelClicked="Cancel_Clicked"
-                                 CancelCommand="{Binding CancelCommand, Source={StaticResource AppSetting}}"/>
-            </Grid>
-            <StackLayout Grid.Row="1" Grid.Column="0"
-                         x:Name="ApplicationSettingList"
-                         Orientation="Vertical"
-                         BindingContext="{StaticResource AppSetting}"
-                         x:DataType="setting_vm:AppSettingModel"
-                         IsVisible="False">
-                <field:SliderField BindingContext="{Binding ListItemsModel}"/>
-                <field:SliderField BindingContext="{Binding ListPreloadModel}"/>
-                <field:SliderField BindingContext="{Binding GridColumnsModel}"/>
-                <field:SliderField BindingContext="{Binding GridRowsModel}"/>
-                <field:SliderField BindingContext="{Binding GridPreloadModel}"/>
-                <field:ComboBoxField BindingContext="{Binding MusicPlayerUpdateDelayModel}"/>
-                <field:ComboBoxField BindingContext="{Binding ThemeModel}"/>
-            </StackLayout>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:top="clr-namespace:MusicEco"
+             xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
+             xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
+             xmlns:item="clr-namespace:MusicEco.Views.Items"
+             xmlns:control="clr-namespace:MusicEco.Views.Controls"
+             xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MusicEco.Views.Pages.SettingPage"
+             x:DataType="pageVM:SettingPageViewModel">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"
+              Style="{StaticResource HeaderGrid}">
+            <Label Text="{Binding L[Setting_Title]}"
+                   Style="{StaticResource Title}" />
         </Grid>
-    </local:BasePage.MainContent>
-</local:BasePage>       
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <ScrollView Grid.Row="2"
+                    HorizontalScrollBarVisibility="Never"
+                    VerticalScrollBarVisibility="Default"
+                    Margin="{DynamicResource PageContentMargin}">
+            <Grid RowSpacing="{DynamicResource ListSpacing}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0"
+                        Text="{Binding L[Setting_Language]}"
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}"
+                        Command="{Binding SelectSettingCommand}"
+                        CommandParameter="{x:Static top:PageRoute.LanguageSetting}"/>
+                <Button Grid.Row="1"
+                        Text="{Binding L[Setting_Interface]}"
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}"                        Command="{Binding SelectSettingCommand}"
+                        CommandParameter="{x:Static top:PageRoute.InterfaceSetting}" />
+                <Button Grid.Row="2"
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}"
+                        Text="{Binding L[Setting_Audio]}"/>
+                <Button Grid.Row="3"
+                        Text="{Binding L[Setting_Speaker]}"
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}"/>
+                <Button Grid.Row="4"
+                        Text="{Binding L[Setting_Notify]}"
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}" />
+                <Button Grid.Row="5"
+                        Text="{Binding L[Setting_Extension]}"
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}"/>
+                <Button Grid.Row="6"
+                        Text="{Binding L[Setting_Advanced]}"
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}" />
+                <Button Grid.Row="7"
+                        Text="{Binding L[Setting_Backup]}"
+                        Style="{StaticResource Highlight}"
+                        HeightRequest="{DynamicResource ItemButtonSize}"
+                        Command="{Binding SelectSettingCommand}"
+                        CommandParameter="{x:Static top:PageRoute.BackupSetting}" />
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentView>

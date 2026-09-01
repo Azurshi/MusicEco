@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:service="clr-namespace:MusicEco.Services"
+             xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
+             xmlns:userVM="clr-namespace:MusicEco.ViewModels.Pages.Users"
+             xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
+             xmlns:item="clr-namespace:MusicEco.Views.Items"
+             xmlns:control="clr-namespace:MusicEco.Views.Controls"
+             xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             xmlns:commands="clr-namespace:MusicEco.Views.Commands"
+             x:Class="MusicEco.Views.Pages.Users.NotPlayPage"
+             x:DataType="userVM:NotPlayPageViewModel">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="MenuTemplate"
+                          x:DataType="itemVM:AudioEntryViewModel">
+                <VerticalStackLayout>
+                    <button:FavouriteMenuItemButton />
+                    <button:MenuItemButton Text="{Binding [Menu_AddToQueue], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.AddToQueueCommand}" />
+                    <button:MenuItemButton Text="{Binding [Menu_AddToPlaylist], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.AddToPlaylistCommand}" />
+                    <button:MenuItemButton Text="{Binding [Menu_Info], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.ShowAudioInfoCommand}" />
+                </VerticalStackLayout>
+            </DataTemplate>
+            <DataTemplate x:Key="AudioItemTemplate"
+                          x:DataType="itemVM:AudioEntryViewModel">
+                <item:ItemFrame HeightRequest="{DynamicResource IconItemSize}"
+                                BackgroundColor="{Binding BackgroundColor}"
+                                Command="{Binding SelectItemCommand, Source={RelativeSource AncestorType={x:Type userVM:NotPlayPageViewModel}}}">
+                    <item:ItemFrame.ItemContent>
+                        <Grid ColumnSpacing="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <control:ManagedSKIcon Grid.Column="0"
+                                                   WidthRequest="{DynamicResource IconItemSize}"
+                                                   FileHash="{Binding FileHash}"
+                                                   Option="Small" />
+                            <control:TextLabel Grid.Column="1"
+                                               Text="{Binding DisplayTitle}"
+                                               IsAnimationEnabled="{Binding IsVisibleInViewport}" />
+                            <item:MenuButton Grid.Column="2"
+                                             Style="{StaticResource ListMenuButton}"
+                                             MenuTemplate="{StaticResource MenuTemplate}" />
+                        </Grid>
+                    </item:ItemFrame.ItemContent>
+                </item:ItemFrame>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"
+              Style="{StaticResource HeaderGrid}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <button:NavigationBackwardButton Grid.Column="0"
+                                             WidthRequest="{DynamicResource HeaderSize}" />
+            <Label Grid.Column="1"
+                   Text="{Binding L[User_Not_Title]}"
+                   Style="{StaticResource Title}" />
+        </Grid>
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <control:CollectionViewExtend Grid.Row="2"
+                                      DisplayMode="SimpleList"
+                                      ItemsSource="{Binding Items.Items}"
+                                      Margin="{DynamicResource PageContentMargin}">
+            <control:CollectionViewExtend.ItemPresets>
+                <control:CollectionViewPreset DisplayMode="SimpleList"
+                                              ItemTemplate="{StaticResource AudioItemTemplate}"
+                                              ItemsLayout="{StaticResource LinearLayout}" />
+            </control:CollectionViewExtend.ItemPresets>
+        </control:CollectionViewExtend>
+    </Grid>
+</ContentView>

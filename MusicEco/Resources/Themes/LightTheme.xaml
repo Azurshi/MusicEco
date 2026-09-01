@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="MusicEco.Resources.Themes.LightTheme">
+    <Color x:Key="TextColor">#100800</Color>
+    <Color x:Key="PlaceholderColor">#686460</Color>
+    <Color x:Key="PageColor">#EFF1F3</Color>
+    <Color x:Key="HeaderColor">#EBEDEF</Color>
+    <Color x:Key="MenuColor">#E7EBEF</Color>
+    <Color x:Key="SeparatorColor">#DEE2E6</Color>
+    <Color x:Key="ItemAltBackgroundColor">#EAEAEA</Color>
+    <Color x:Key="HighlightColor">#DFDFDF</Color>
+    <Color x:Key="ButtonBackgroundColor">#E4E8E8</Color>
+    <Color x:Key="ButtonHighlightColor">#D4D8D8</Color>
+    <Color x:Key="SelectedBorderColor">#B1D1FF</Color>
+    <Color x:Key="BorderColor">#CDCDCD</Color>
+
+    <Color x:Key="ActiveTintColor">#808088</Color>
+    <Color x:Key="TintColor">#B0B2B4</Color>
+    <Color x:Key="InactiveTintColor">#C0C0C8</Color>
+    <Color x:Key="FavouriteTintColor">#FF606F</Color>
+</ResourceDictionary>

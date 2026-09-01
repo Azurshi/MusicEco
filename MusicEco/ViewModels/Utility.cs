@@ -1,52 +1,54 @@
-﻿using System.Diagnostics;
+﻿namespace MusicEco.ViewModels;
 
-namespace MusicEco.ViewModels;
-public static class Utility {
-    public static bool Busy = false;
-    public static async Task GoToAsync(string topRoute, bool prefix = true) {
-        while (Busy) {
-            Debug.WriteLine("BUSY");
-            await Task.Delay(10);
-        }
-        Busy = true;
-        if (prefix) {
-            await Shell.Current.GoToAsync($"//{topRoute}");
-        }
-        else {
-            await Shell.Current.GoToAsync(topRoute);
-        }
-        Busy = false;
+public sealed class DelayedDispatcherEx {
+    private readonly TimeSpan _delay;
+    private CancellationTokenSource? _pending;
+    public DelayedDispatcherEx(TimeSpan delay) {
+        this._delay = delay;
     }
-    public static async Task GoToAsync(string route, long id) {
-        while (Busy) {
-            Debug.WriteLine("BUSY");
-            await Task.Delay(10);
+    public async Task Dispatch(Action action) {
+        if (this._pending != null) {
+            this._pending.Cancel();
+            // Already dispose on finally
         }
-        Busy = true;
-        await Shell.Current.GoToAsync($"{route}?id={id}");
-        Busy = false;
+        var current = new CancellationTokenSource();
+        this._pending = current;
+        try {
+            await Task.Delay(this._delay, current.Token);
+            action();
+        }
+        catch (OperationCanceledException) when (current.IsCancellationRequested) {
+            // Skip
+        }
+        finally {
+            if (ReferenceEquals(this._pending, current)) {
+                this._pending = null;
+            }
+            current.Dispose();
+        }
     }
-    public static async Task GoToAsync(string route, string name) {
-        while (Busy) {
-            Debug.WriteLine("BUSY");
-            await Task.Delay(10);
-        }
-        Busy = true;
-        name = Uri.EscapeDataString(name);
-        await Shell.Current.GoToAsync($"{route}?name={name}");
-        Busy = false;
+}
+public sealed partial class DelayedDispatcher: IDisposable {
+    private readonly IDispatcherTimer _timer;
+    private Action? _action;
+    public DelayedDispatcher(IDispatcher dispatcher, TimeSpan delay) {
+        this._timer = dispatcher.CreateTimer();
+        this._timer.Interval = delay;
+        this._timer.IsRepeating = false;
+        this._timer.Tick += this.OnTick;
     }
-    /// <summary>
-    /// Go back
-    /// </summary>
-    /// <returns></returns>
-    public static async Task GoToAsync() {
-        while (Busy) {
-            Debug.WriteLine("BUSY");
-            await Task.Delay(10);
-        }
-        Busy = true;
-        await Shell.Current.GoToAsync("..");
-        Busy = false;
+    public void Dispatch(Action action) {
+        this._action = action;
+        this._timer.Stop();
+        this._timer.Start();
+    }
+    private void OnTick(object? sender, EventArgs e) {
+        var action = this._action;
+        this._action = null;
+        action?.Invoke();
+    }
+    public void Dispose() {
+        this._timer.Stop();
+        this._timer.Tick -= OnTick;
     }
 }

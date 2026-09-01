@@ -1,41 +1,19 @@
+using MusicEco.ViewModels;
 using MusicEco.ViewModels.Pages;
 using MusicEco.Views.Buttons;
-using MusicEco.Views.Components;
-using MusicEco.Views.PageExtensions;
 
 namespace MusicEco.Views.Pages;
 
-public partial class QueuePage : BasePage, IDragSupportPage, IOptionMenuSupportPage
-{
-    private readonly QueuePageModel ViewModel;
-    private readonly OptionMenuExtension OptionComponent;
-    private readonly DragExtension DragComponent;
-    public QueuePage(QueuePageModel viewModel)
-	{
-		InitializeComponent();
-        ViewModel = viewModel;
-        MainBindingContext = viewModel;
-        OptionComponent = new(this);
-        DragComponent = new();
-	}
-    protected override async void OnNavigatedTo(NavigatedToEventArgs args) {
-        base.OnNavigatedTo(args);
-        await ViewModel.LoadData();
-    }
-    #region Interface
-    Overlay PageExtensions.IBasePage.PageOverlay => PageOverlay;
-    public void DragGestureRecognizer_DragStarting(object sender, DragStartingEventArgs e) {
-        DragComponent.DragStarting(sender, e);
-    }
-    public void DropGestureRecognizer_Drop(object sender, DropEventArgs e) {
-        DragComponent.Drop(sender, e);
-    }
-    public void OptionMenu_Clicked(object sender, TappedEventArgs e) {
-        OptionComponent.StartOptionMenu(sender, e);
+public partial class QueuePage: ContentView {
+    public QueuePage(QueuePageViewModel viewModel) {
+        InitializeComponent();
+        this.BindingContext = viewModel;
     }
 
-    public void GetPageEventHandler(object sender, GetBasePageEventArgs e) {
-        e.Page = this;
+    private void Menu_RemoveButton_Tapped(object sender, EventArgs e) {
+        if (sender is MenuItemButton button) {
+            var vm = (QueuePageViewModel)this.BindingContext;
+            vm.RemoveItemCommand.Execute(button.BindingContext);
+        }
     }
-    #endregion
 }

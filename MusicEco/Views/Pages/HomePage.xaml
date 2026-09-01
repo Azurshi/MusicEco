@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:service="clr-namespace:MusicEco.Services"
+             xmlns:pageVM="clr-namespace:MusicEco.ViewModels.Pages"
+             xmlns:itemVM="clr-namespace:MusicEco.ViewModels.Items"
+             xmlns:item="clr-namespace:MusicEco.Views.Items"
+             xmlns:control="clr-namespace:MusicEco.Views.Controls"
+             xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             xmlns:commands="clr-namespace:MusicEco.Views.Commands"
+             x:Class="MusicEco.Views.Pages.HomePage"
+             x:DataType="pageVM:HomePageViewModel">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="MenuTemplate"
+                          x:DataType="itemVM:AudioEntryViewModel">
+                <VerticalStackLayout>
+                    <button:FavouriteMenuItemButton />
+                    <button:MenuItemButton Text="{Binding [Menu_AddToQueue], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.AddToQueueCommand}" />
+                    <button:MenuItemButton Text="{Binding [Menu_AddToPlaylist], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.AddToPlaylistCommand}" />
+                    <button:MenuItemButton Text="{Binding [Menu_Info], Source={Static service:Localization.L}}"
+                                           Command="{Static commands:MenuCommands.ShowAudioInfoCommand}" />
+                </VerticalStackLayout>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <control:ManagedSKIcon Grid.Row="0"
+                               FileHash="{Binding FileHash}"
+                               Option="Large" 
+                               Margin="{DynamicResource PageContentMargin}"/>
+        <Rectangle Grid.Row="1"
+                   Style="{StaticResource HorizontalSeparator}" />
+        <Grid Grid.Row="2"
+              Style="{StaticResource HeaderGrid}">
+            <control:TextLabel  x:Name="TextElement"
+                               Style="{StaticResource CenterTitleTextLabel}"
+                               Text="{Binding DisplayTitle}"/>
+        </Grid>
+        <item:MenuButton Grid.RowSpan="3"
+                         Style="{StaticResource GridMenuButton}"
+                         MenuTemplate="{StaticResource MenuTemplate}" />
+    </Grid>
+</ContentView>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:button="clr-namespace:MusicEco.Views.Buttons"
+             xmlns:top="clr-namespace:MusicEco"
+             x:Class="MusicEco.Views.Shell.NavigationBar">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="LandscapeLayout">
+                <Grid RowDefinitions="*, Auto">
+                    <ScrollView Orientation="Vertical">
+                        <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto"
+                              RowSpacing="8">
+                            <button:NavigationButton Grid.Row="0"
+                                                     HeightRequest="{DynamicResource NavigationBarSize}"
+                                                     ResourcePath="play_raw.png"
+                                                     PageRoute="{x:Static top:PageRoute.Home}" />
+                            <button:NavigationButton Grid.Row="1"
+                                                     HeightRequest="{DynamicResource NavigationBarSize}"
+                                                     ResourcePath="playlist_raw.png"
+                                                     PageRoute="{x:Static top:PageRoute.Queue}" />
+                            <button:NavigationButton Grid.Row="2"
+                                                     HeightRequest="{DynamicResource NavigationBarSize}"
+                                                     ResourcePath="album_raw.png"
+                                                     PageRoute="{x:Static top:PageRoute.Album}" />
+                            <button:NavigationButton Grid.Row="3"
+                                                     HeightRequest="{DynamicResource NavigationBarSize}"
+                                                     ResourcePath="folder_raw.png"
+                                                     PageRoute="{x:Static top:PageRoute.Explorer}" />
+                            <button:NavigationButton Grid.Row="4"
+                                                     HeightRequest="{DynamicResource NavigationBarSize}"
+                                                     ResourcePath="search_raw.png"
+                                                     PageRoute="{x:Static top:PageRoute.Search}" />
+                            <button:NavigationButton Grid.Row="5"
+                                                     HeightRequest="{DynamicResource NavigationBarSize}"
+                                                     ResourcePath="user_raw.png"
+                                                     PageRoute="{x:Static top:PageRoute.User}" />
+                            <button:NavigationButton Grid.Row="6"
+                                                     HeightRequest="{DynamicResource NavigationBarSize}"
+                                                     ResourcePath="setting_raw.png"
+                                                     PageRoute="{x:Static top:PageRoute.Setting}" />
+                        </Grid>
+                    </ScrollView>
+                    <Grid Grid.Row="1"
+                          ColumnDefinitions="*, *">
+                        <button:NavigationBackwardButton Grid.Column="0" 
+                                                         Padding="{DynamicResource FrameMargin}"/>
+                        <button:NavigationForwardButton Grid.Column="1" 
+                                                        Padding="{DynamicResource FrameMargin}"/>
+                    </Grid>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="PortraitLayout">
+                <Grid ColumnDefinitions="Auto, *, *, *, *, *, *, *, Auto"
+                      ColumnSpacing="2">
+                    <button:NavigationBackwardButton Grid.Column="0"/>
+                    <button:NavigationButton Grid.Column="1"
+                                             ResourcePath="play_raw.png"
+                                             PageRoute="{x:Static top:PageRoute.Home}" />
+                    <button:NavigationButton Grid.Column="2"
+                                             ResourcePath="playlist_raw.png"
+                                             PageRoute="{x:Static top:PageRoute.Queue}" />
+                    <button:NavigationButton Grid.Column="3"
+                                             ResourcePath="album_raw.png"
+                                             PageRoute="{x:Static top:PageRoute.Album}" />
+                    <button:NavigationButton Grid.Column="4"
+                                             ResourcePath="folder_raw.png"
+                                             PageRoute="{x:Static top:PageRoute.Explorer}" />
+                    <button:NavigationButton Grid.Column="5"
+                                             ResourcePath="search_raw.png"
+                                             PageRoute="{x:Static top:PageRoute.Search}" />
+                    <button:NavigationButton Grid.Column="6"
+                                             ResourcePath="user_raw.png"
+                                             PageRoute="{x:Static top:PageRoute.User}" />
+                    <button:NavigationButton Grid.Column="7"
+                                             ResourcePath="setting_raw.png"
+                                             PageRoute="{x:Static top:PageRoute.Setting}" />
+                    <button:NavigationForwardButton Grid.Column="8" />
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentView.Resources>
+</ContentView>
